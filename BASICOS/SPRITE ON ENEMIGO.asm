@@ -22,12 +22,34 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES:
         ld      a,(ix+2)
         cp      #FF
         jp      z,.NO_HAY_COLISION
-             
-        ld      a,(ix)
-        ld      c,a
+
+        ld      l,(ix)
+        ld      h,0
         ld      a,(iy)
         add     14
-        sub     c
+        ld      e,a
+        ld      d,0
+        jp      nc,.COMPARA_DISTANCIA_X
+        inc     d
+
+.COMPARA_DISTANCIA_X:
+
+        xor     a
+        sbc     hl,de
+        jp      nc,.DISTANCIA_X_LISTA
+
+        ld      l,(ix)
+        ld      h,0
+        ex      de,hl
+        xor     a
+        sbc     hl,de
+
+.DISTANCIA_X_LISTA:
+
+        ld      a,h
+        or      a
+        jp      nz,.NO_HAY_COLISION
+        ld      a,l
         cp      30
         jp      nc,.NO_HAY_COLISION
 

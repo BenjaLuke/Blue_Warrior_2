@@ -171,6 +171,8 @@
         ld      a,(SECUENCIA_DE_ROCKAGER)
         inc     a
         ld      (SECUENCIA_DE_ROCKAGER),a
+        cp      2
+        call    z,.REINICIA_ESTADO_PIEDRAS
         ld      (FOTOGRAMA_SECUENCIA_ROCKAGER_1),a
         xor      a
 
@@ -178,6 +180,24 @@
 
         ld      (FOTOGRAMA_SECUENCIA_ROCKAGER_2),a
         jp      .PINTAMOS_FOTOGRAMA
+
+.REINICIA_ESTADO_PIEDRAS:
+
+        push    af
+        xor     a
+        ld      (PAUSA_TOQUE_ROCA_HACHA),a
+        ld      ix,VALORES_SPRITES_PIEDRAS
+        ld      a,25
+        ld      de,4
+        ld      b,6
+
+.BUCLE_REINICIA_ESTADO_PIEDRAS:
+
+        ld      (ix+3),a
+        add     ix,de
+        djnz    .BUCLE_REINICIA_ESTADO_PIEDRAS
+        pop     af
+        ret
 
 .SECUENCIA_2:
 

@@ -17,6 +17,11 @@ ROCKAGER:
         push    iy
         push    bc
         push    de
+
+                ld      ix,SPRITES_ACTIVOS+5
+                ld      a,1
+                ld      (ix),a
+                ld      (ix+1),a
         
         ld      ix,VALORES_SPRITE_MAREO
         ld      a,57*4

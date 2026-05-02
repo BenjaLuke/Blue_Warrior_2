@@ -1084,6 +1084,10 @@ PINTA_MAREO:
 RECARGAMOS_GRAFICOS_STAGE_X:
 RECARGAMOS_GRAFICOS_STAGE_2:
 
+	xor     a
+	ld      (SPRITES_ACTIVOS+5),a
+	ld      (SPRITES_ACTIVOS+6),a
+
     ld      a,12
     call	CHANGE_BANK_2
                                                                             ; Cargamos el mapa fase
