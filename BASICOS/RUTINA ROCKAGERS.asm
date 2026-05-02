@@ -198,10 +198,6 @@
         jp      z,.ACTIVANDO_3_2
         cp      13+36+36+36
         jp      z,.ACTIVANDO_4_2
-        cp      13+36+36+36+36
-        jp      z,.ACTIVANDO_5_2
-        cp      13+36+36+36+36+36
-        jp      z,.ACTIVANDO_6_2
      
         jp      .SECUENCIA_2_CONT_2
 
@@ -218,16 +214,6 @@
 .ACTIVANDO_4_2:
 
         ld      de,12
-        jp      .ACTIVANDO_COMUN_PRE_2
-
-.ACTIVANDO_5_2:
-
-        ld      de,16
-        jp      .ACTIVANDO_COMUN_PRE_2
-
-.ACTIVANDO_6_2:
-
-        ld      de,20
 
 .ACTIVANDO_COMUN_PRE_2:
 

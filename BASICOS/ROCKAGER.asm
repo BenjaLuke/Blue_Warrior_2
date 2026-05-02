@@ -256,12 +256,13 @@ ROCKAGER:
 
         ld      a,(TIEMPO_DE_ADJUST)
         or      a
-        jp      nz,.CONTROL_POST_BUCLE_2
+        jp      z,.CONTROL_POST_BUCLE_2
         dec     a
         ld      (TIEMPO_DE_ADJUST),a        
-/*        xor     a
+        jp      nz,.CONTROL_POST_BUCLE_2
+        xor     a
         ld      (COLOR_ALEATORIO),a
-*/
+
 .CONTROL_POST_BUCLE_2:
 
         ld      a,(PAUSA_TOQUE_ROCA_HACHA)
@@ -367,7 +368,6 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK:
         ld      b,6
 
 .revision_2:
-
         jp    .revision_bloque_1
 
 .revision_3:
@@ -385,7 +385,7 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK:
         cp      6
         jp      c,.PASAMOS_AL_SIGUIENTE_PROYECTIL
 	push    bc
-        ld      b,6
+        ld      b,4
 
         xor     a
         ld      (VARIABLE_UN_USO3),a

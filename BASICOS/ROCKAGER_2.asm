@@ -785,7 +785,7 @@ RUTINA_ROCAS:
 
 ON_SPRITE_CON_ROCAS:
 
-	ld	b,6
+	ld	b,4
 	xor	a
 	ld	(VARIABLE_UN_USO3),a
 
@@ -1005,7 +1005,7 @@ PINTA_MAREO:
 
         ld		de,#4A00+15*4
 
-		ld		b,6
+		ld		b,4
 
 .REVISA_TRES_POSICIONES_2:
 

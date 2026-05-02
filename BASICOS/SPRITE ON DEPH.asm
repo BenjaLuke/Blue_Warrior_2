@@ -47,9 +47,9 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH:
         or      a
         jp      z,MUERTE_POR_TOQUES
            
-        dec     a
-        ld      (CORAZONES),a
-        call    PINTA_CORAZONES
+;        dec     a          XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   no resta vida para opder jugar con corazones infinitos
+;        ld      (CORAZONES),a XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  no resta vida para opder jugar con corazones infinitos
+;        call    PINTA_CORAZONES XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  no resta vida para opder jugar con corazones infinitos
 
         ld      a,3
         ld      c,1

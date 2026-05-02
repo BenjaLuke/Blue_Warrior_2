@@ -1,6 +1,6 @@
 		push	ix
 		
-		ld		ix,ENEMIGOS
+		ld		ix,PROYECTILES
 
 .COMPARAMOS_EL_PROYECTIL_O_ENEMIGO_MIRADO:
 		
@@ -126,10 +126,10 @@
 
 		ld		de,16
 		add		ix,de
-		ld		hl,VARIABLE_UN_USO
 		push	ix
-		pop		de
-		call	XOR_Z_RAM
+		pop		hl
+		ld		de,PROYECTILES+16*6
+		call	DCOMPR_RAM
 		jp		z,.NOS_VAMOS
 		jp		.COMPARAMOS_EL_PROYECTIL_O_ENEMIGO_MIRADO
 		
