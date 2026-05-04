@@ -1,0 +1,6 @@
+; Variables RAM dedicadas al proyectil local del boss 2
+
+PROYECTIL_BOSS_2_X:		#1
+PROYECTIL_BOSS_2_Y:		#1
+PROYECTIL_BOSS_2_DIRECCION:	#1
+PROYECTIL_BOSS_2_PASO_TABLA:	#1

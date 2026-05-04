@@ -7,6 +7,7 @@ BIOS_KERNEL:
 VARIABLES:
 
 		include	"BASICOS/VARIABLES.asm"				                    ; Incluímos las referencias a las variables que se usarán en el juego
+		include	"BASICOS/VARIABLES BOSS 2.asm"
 
 /**********************
  ****** PAGINA 0 ******
