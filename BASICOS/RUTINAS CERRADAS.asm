@@ -696,13 +696,15 @@ BUCLE_PINTA_TILES:
 
 		ei
 		halt
+		call	VUELCA_DATOS_DEPH_A_VRAM
 		call	CARGA_1_A_45
 		call	CARGA_SKRULLEX_SLIME
 		call	VUELCA_DATOS_COLORES_DEPH_A_VRAM
-
-		ld		a,(ARMA_USANDO)
-		cp		2
-		call	z,CARGA_FLECHA_DOBLE
+		nop
+		nop
+		nop
+		nop
+		nop
 		ei
 		call	stpmus					
 		pop		ix	
@@ -1159,7 +1161,6 @@ FIN_SENTENCIA_VDP:
 		ret
 
 ENASCR_RAM:  
-		
 		ld      a,(RG1SAV)
         or      040H
         jr      A057C
@@ -1271,7 +1272,6 @@ T1243:
 		db      0,3,5,4,1,2,0,3,7,0,6,5,8,1,7,0
 
 GTTRIG_RAM:
-
 		dec     a
         jp      m,A126C
         push    af
@@ -1291,11 +1291,13 @@ A1268:
         ret
 ;
 A126C:  
+		
 		call    A1226
         and     001H
         jr      A1268
 
 A057F:  
+		
 		ld      a,b
         di
         out     (099H),a
@@ -2609,7 +2611,7 @@ RECUPERA_SPRITES_SALUDO:
 		call	CARGA_1_A_45
 
 		call	VUELCA_DATOS_COLORES_DEPH_A_VRAM
-        call    PAGE_10_A_SEGMENT_2
+		call	PAGE_10_A_SEGMENT_2
 
 		di		
 		ld		hl,POSICION_PARTIDA_DEPH	
@@ -2617,6 +2619,7 @@ RECUPERA_SPRITES_SALUDO:
 		ld		bc,40
 		ldir		
 		ei
+
 RETORNO:
 
 		ret														; Cuando una sentencia debe ser enviada de vuelta pero tenemos que dar una dirección por narices

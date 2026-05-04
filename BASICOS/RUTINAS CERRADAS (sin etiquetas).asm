@@ -696,13 +696,15 @@
 	
 		ei
 		halt
+		call	VUELCA_DATOS_DEPH_A_VRAM
 		call	CARGA_1_A_45
 		call	CARGA_SKRULLEX_SLIME
 		call	VUELCA_DATOS_COLORES_DEPH_A_VRAM
-
-		ld		a,(ARMA_USANDO)
-		cp		2
-		call	z,CARGA_FLECHA_DOBLE
+		nop
+		nop
+		nop
+		nop
+		nop
 		ei
 		call	stpmus					
 		pop		ix	
