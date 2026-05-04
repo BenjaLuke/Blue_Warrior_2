@@ -6,6 +6,15 @@ RUTINA_BOSS_2:
 
 		ld		a,27
 		ld		(PAGINA_DE_REGRESO),a
+		ld		a,#FF
+		ld		(PROYECTIL_BOSS_2_MARCA_LIBRE),a
+		xor		a
+		ld		(PROYECTIL_BOSS_2_DIRECCION),a
+		ld		(PROYECTIL_BOSS_2_PASO_TABLA),a
+		ld		(PROYECTIL_BOSS_2_X),a
+		ld		(SPRITES_ACTIVOS+12),a
+		ld		a,217
+		ld		(PROYECTIL_BOSS_2_Y),a
 
         ; Variables a reiniciar
 
@@ -554,6 +563,7 @@ RUTINA_BOSS_2:
 BUCLE_PELEA_BOSS_2:
 
 		HALT
+		call	NUCLEO_DE_LA_PELEA_BOSS_2
 		
 		call	MOVIMIENTO_DEPH_EN_BOSS_2
 		call	SECUENCIA_PROYECTILES_PROPIOS_EN_BOSS_2
@@ -581,7 +591,258 @@ BUCLE_PELEA_BOSS_2:
 
 .CONTROL_POST_BUCLE_2:
 
+		call	PINTA_PROYECTIL_BOSS_2
 		jp	BUCLE_PELEA_BOSS_2
+
+NUCLEO_DE_LA_PELEA_BOSS_2:
+
+		call	ACTIVA_PROYECTIL_BOSS_2
+		call	SECUENCIA_PROYECTIL_BOSS_2
+		ret
+
+ACTIVA_PROYECTIL_BOSS_2:
+
+		ld		a,(PROYECTIL_BOSS_2_DIRECCION)
+		or		a
+		ret		nz
+		ld		a,1
+		ld		(SPRITES_ACTIVOS+12),a
+		ld		hl,EMISOR_PROYECTIL_BOSS_2
+		ld		a,(hl)
+		ld		(PROYECTIL_BOSS_2_X),a
+		inc		hl
+		ld		a,(hl)
+		ld		(PROYECTIL_BOSS_2_Y),a
+		xor		a
+		ld		(PROYECTIL_BOSS_2_PASO_TABLA),a
+		call	CALCULA_DIRECCION_BASE_PROYECTIL_BOSS_2
+		ld		(PROYECTIL_BOSS_2_DIRECCION),a
+		ret
+
+SECUENCIA_PROYECTIL_BOSS_2:
+
+		ld		a,(PROYECTIL_BOSS_2_DIRECCION)
+		or		a
+		ret		z
+		call	LEE_DIRECCION_TABLA_PROYECTIL_BOSS_2
+		cp		2
+		jr		z,.PROYECTIL_2
+		cp		1
+		jr		z,.PROYECTIL_1
+		cp		4
+		jr		z,.PROYECTIL_4
+		cp		3
+		jr		z,.PROYECTIL_3
+		cp		6
+		jr		z,.PROYECTIL_6
+		cp		5
+		jr		z,.PROYECTIL_5
+		cp		8
+		jr		z,.PROYECTIL_8
+		cp		7
+		jr		z,.PROYECTIL_7
+		call	DESACTIVA_PROYECTIL_BOSS_2
+		ret
+
+.PROYECTIL_2:
+
+		ld		a,(PROYECTIL_BOSS_2_X)
+		inc		a
+		ld		(PROYECTIL_BOSS_2_X),a
+
+.PROYECTIL_1:
+
+		ld		a,(PROYECTIL_BOSS_2_Y)
+		sub		2
+		ld		(PROYECTIL_BOSS_2_Y),a
+		jp		COMPRUEBA_LIMITES_PROYECTIL_BOSS_2
+
+.PROYECTIL_4:
+
+		ld		a,(PROYECTIL_BOSS_2_Y)
+		inc		a
+		ld		(PROYECTIL_BOSS_2_Y),a
+
+.PROYECTIL_3:
+
+		ld		a,(PROYECTIL_BOSS_2_X)
+		inc		a
+		ld		(PROYECTIL_BOSS_2_X),a
+		jp		COMPRUEBA_LIMITES_PROYECTIL_BOSS_2
+
+.PROYECTIL_6:
+
+		ld		a,(PROYECTIL_BOSS_2_X)
+		dec		a
+		ld		(PROYECTIL_BOSS_2_X),a
+
+.PROYECTIL_5:
+
+		ld		a,(PROYECTIL_BOSS_2_Y)
+		inc		a
+		ld		(PROYECTIL_BOSS_2_Y),a
+		jp		COMPRUEBA_LIMITES_PROYECTIL_BOSS_2
+
+.PROYECTIL_8:
+
+		ld		a,(PROYECTIL_BOSS_2_Y)
+		sub		2
+		ld		(PROYECTIL_BOSS_2_Y),a
+
+.PROYECTIL_7:
+
+		ld		a,(PROYECTIL_BOSS_2_X)
+		dec		a
+		ld		(PROYECTIL_BOSS_2_X),a
+		jp		COMPRUEBA_LIMITES_PROYECTIL_BOSS_2
+
+COMPRUEBA_LIMITES_PROYECTIL_BOSS_2:
+
+		ld		a,(PROYECTIL_BOSS_2_Y)
+		cp		5
+		jp		c,DESACTIVA_PROYECTIL_BOSS_2
+		cp		192
+		jp		nc,DESACTIVA_PROYECTIL_BOSS_2
+		ld		a,(PROYECTIL_BOSS_2_X)
+		cp		251
+		jp		nc,DESACTIVA_PROYECTIL_BOSS_2
+		ret
+
+DESACTIVA_PROYECTIL_BOSS_2:
+
+		xor		a
+		ld		(PROYECTIL_BOSS_2_DIRECCION),a
+		ld		(PROYECTIL_BOSS_2_PASO_TABLA),a
+		ld		(PROYECTIL_BOSS_2_X),a
+		ld		(SPRITES_ACTIVOS+12),a
+		ld		a,217
+		ld		(PROYECTIL_BOSS_2_Y),a
+		ret
+
+PINTA_PROYECTIL_BOSS_2:
+
+		ld		hl,PROPIEDADES_PATRON_SPRITE
+		ld		a,(PROYECTIL_BOSS_2_DIRECCION)
+		or		a
+		jr		z,.OCULTA_PROYECTIL_BOSS_2
+		ld		a,(PROYECTIL_BOSS_2_Y)
+		ld		(hl),a
+		inc		hl
+		ld		a,(PROYECTIL_BOSS_2_X)
+		ld		(hl),a
+		inc		hl
+		ld		a,160
+		jr		.PINTA_PROYECTIL_BOSS_2_1
+
+.OCULTA_PROYECTIL_BOSS_2:
+
+		ld		a,217
+		ld		(hl),a
+		inc		hl
+		xor		a
+		ld		(hl),a
+		inc		hl
+		xor		a
+
+.PINTA_PROYECTIL_BOSS_2_1:
+
+		ld		(hl),a
+		ld		de,#4A58
+		ld		hl,PROPIEDADES_PATRON_SPRITE
+		ld		bc,3
+		call	PON_COLOR_2.sin_bc_impuesta
+		ld		de,#4960
+		ld		hl,TABLA_COLOR_SPRITE_CENTRAL_BOSS_2
+		ld		bc,16
+		call	PON_COLOR_2.sin_bc_impuesta
+		ret
+
+CALCULA_DIRECCION_BASE_PROYECTIL_BOSS_2:
+
+		ld		a,(X_DEPH)
+		ld		c,a
+		ld		a,(PROYECTIL_BOSS_2_X)
+		add		8
+		ld		b,a
+		ld		a,c
+		sub		b
+		jr		nc,.DEPH_A_LA_DERECHA
+		ld		a,b
+		sub		c
+		ld		d,4
+		jr		.COMPARA_DISTANCIAS
+
+.DEPH_A_LA_DERECHA:
+
+		ld		d,2
+
+.COMPARA_DISTANCIAS:
+
+		cp		12
+		jr		c,.CENTRO
+		ld		e,a
+		ld		a,(PROYECTIL_BOSS_2_Y)
+		ld		b,a
+		ld		a,(Y_DEPH)
+		cp		b
+		jr		c,.ANGULO_ABIERTO
+		sub		b
+		cp		e
+		jr		nc,.ANGULO_DIAGONAL
+
+.ANGULO_ABIERTO:
+
+		ld		a,d
+		inc		a
+		ret
+
+.ANGULO_DIAGONAL:
+
+		ld		a,d
+		ret
+
+.CENTRO:
+
+		ld		a,1
+		ret
+
+LEE_DIRECCION_TABLA_PROYECTIL_BOSS_2:
+
+		ld		a,(PROYECTIL_BOSS_2_DIRECCION)
+		or		a
+		ret		z
+		cp		6
+		jr		nc,.DIRECCION_INVALIDA
+		dec		a
+		ld		b,a
+		add		a,a
+		add		a,b
+		ld		e,a
+		ld		d,0
+		ld		hl,TABLA_DIRECCIONES_PROYECTIL_BOSS_2
+		add		hl,de
+		ld		a,(PROYECTIL_BOSS_2_PASO_TABLA)
+		ld		e,a
+		ld		d,0
+		add		hl,de
+		ld		b,(hl)
+		ld		a,(PROYECTIL_BOSS_2_PASO_TABLA)
+		inc		a
+		ld		(PROYECTIL_BOSS_2_PASO_TABLA),a
+		cp		3
+		jr		c,.NO_REINICIA_PASO_TABLA
+		xor		a
+		ld		(PROYECTIL_BOSS_2_PASO_TABLA),a
+
+.NO_REINICIA_PASO_TABLA:
+
+		ld		a,b
+		ret
+
+.DIRECCION_INVALIDA:
+
+		xor		a
+		ret
 
 MOVIMIENTO_DEPH_EN_BOSS_2:
 
@@ -600,8 +861,30 @@ ON_SPRITE_CON_ROCAS_EN_BOSS_2:
 	ld	b,4
 	xor	a
 	ld	(VARIABLE_UN_USO3),a
+	jp	BUCLE_REVISION_4_PIEDRAS_BOSS_2
 
-.BUCLE_REVISION_4_PIEDRAS:
+TABLA_COLOR_SPRITE_CENTRAL_BOSS_2:
+	db		$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F
+	db		$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F
+
+EMISOR_PROYECTIL_BOSS_2:
+	db		113,65
+
+PROYECTIL_BOSS_2_ENEMIGO_RAM	equ	ENEMIGOS+16*9
+PROYECTIL_BOSS_2_X		equ	PROYECTIL_BOSS_2_ENEMIGO_RAM
+PROYECTIL_BOSS_2_Y		equ	PROYECTIL_BOSS_2_ENEMIGO_RAM+1
+PROYECTIL_BOSS_2_MARCA_LIBRE	equ	PROYECTIL_BOSS_2_ENEMIGO_RAM+2
+PROYECTIL_BOSS_2_DIRECCION	equ	PROYECTIL_BOSS_2_ENEMIGO_RAM+13
+PROYECTIL_BOSS_2_PASO_TABLA	equ	PROYECTIL_BOSS_2_ENEMIGO_RAM+14
+
+TABLA_DIRECCIONES_PROYECTIL_BOSS_2:
+	db		5,5,5
+	db		4,5,4
+	db		3,4,3
+	db		6,5,6
+	db		7,6,7
+
+BUCLE_REVISION_4_PIEDRAS_BOSS_2:
 
 	push bc
 	ld	ix,VALORES_SPRITES_PIEDRAS
@@ -658,7 +941,7 @@ ON_SPRITE_CON_ROCAS_EN_BOSS_2:
 	ld		a,(VARIABLE_UN_USO3)
 	inc		a
 	ld		(VARIABLE_UN_USO3),a
-	djnz 	.BUCLE_REVISION_4_PIEDRAS
+	djnz 	BUCLE_REVISION_4_PIEDRAS_BOSS_2
 
 .FIN_DE_ON_SPRITE_CON_ROCAS:
 
@@ -672,11 +955,13 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH_ROCK_BOSS_2:
 		dec	a
 		ld	(INMUNE),a
 
-.adelante:
+		ld		a,32
 
 		ld	ix,.LIMITES_ROCKAGERS
 		ld	iy,.LIMITE_VARIABLE_Y_SUPERIOR
 		ld	b,4
+
+.adelante:
 
 .control_x:
 
@@ -771,21 +1056,6 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH_ROCK_BOSS_2:
 	ld	c,0
 	call	ayFX_INIT
         call    PAGE_10_A_SEGMENT_2
-
-	ld	a,(X_DEPH)
-	cp	128
-	jp	nc,.RETROCEDE
-
-.ADELANTA:
-
-	add	10
-	ld	(X_DEPH),a
-	ret
-
-.RETROCEDE:
-
-	sub	10
-	ld	(X_DEPH),a
 	ret
 
 ANIMA_ROCKAGERS_EN_BOSS_2:

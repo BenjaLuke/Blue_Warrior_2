@@ -1593,7 +1593,7 @@ VAMOS_A_BOSS_ADECUADO:
 
 AGILIZA_MAPA:
 
-		ld		hl,168
+		ld		hl,20
 		ld		(LINEA_A_LEER),hl
 		jp		CONTROL.teclado
 MENU:
