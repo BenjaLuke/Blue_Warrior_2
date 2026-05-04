@@ -178,17 +178,18 @@ NOS_VAMOS_AL_JUEGO:
 		jp		CARGA_SLOT_JUEGO
 
 ; Editar estas lineas al sacar una version nueva.
+; Regla del porcentaje: cada fase vale 2, cada enemigo y bloque auxiliar vale 1.
 TEXTO_MENU_1:
 		db		"Blue Warrior 2",0
 
 TEXTO_MENU_2:
-		db		"Beta version 4.0.6",0
+		db		"Beta version 4.0.7",0
 
 TEXTO_MENU_3:
 		db		"04/05/2026",0
 
 TEXTO_MENU_4:
-		db		"65%",0
+		db		"56%",0
 
 TEXTO_MENU_5:
 		db		"(c) Digital Moai",0
