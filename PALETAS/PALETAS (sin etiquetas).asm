@@ -11,4 +11,7 @@
 ;PALETA_GRISES_FADE_OUT:
 
 		incbin	"GRISES.FADEOUT"
+
+	db		$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F
+	db		$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F
 		
