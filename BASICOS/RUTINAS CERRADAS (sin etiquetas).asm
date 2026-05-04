@@ -694,6 +694,8 @@
 		add		4
 		djnz	BUCLE_PINTA_TILES.bucle_pinta_prota_espalda
 	
+		; En el saludo inicial, si recargamos sprites antes de volcar estos atributos,
+		; el prota se ve corrupto un instante al volver a la pose normal.
 		ei
 		halt
 		call	VUELCA_DATOS_DEPH_A_VRAM
