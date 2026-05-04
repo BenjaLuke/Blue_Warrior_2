@@ -203,16 +203,6 @@ FUEGO_QUE_TOCA:					#1
 DATAS_COPY_RECUP_SCROLL:		#15										; Aquí recuperamos los datos necesarios para recolocar los copys
 MUSIC_ON:						#2										; Dirección de memoria donde está la música a tocar
 
-; Variables_del_menu
-DOBLE_BUFFER_MENU:				#1										; controla pantalla a mostrar
-DOBLE_DE_COPIA_FONDO:			#15
-DOBLE_DE_COPIA_TITULO:			#15
-DOBLE_DE_COPIA_MONTANAS_1:		#15
-DOBLE_DE_COPIA_MONTANAS_2:		#15
-ROTACION_PALETA:				#1
-POSICION_DE_LAS_MONTANAS:		#1
-LARGO_A_COPIAR_MONTANA_1:		#1
-
 ; Variables de caída en el agujero
 
 AGU_ACTIVO:						#1										; Controla si caemos en el agujero al detectarlo o no

@@ -213,13 +213,7 @@ CARGA_SLOT_MENU:
 		org		#4000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
 
 		include	"MENU Y TRANSICIONES/MENU.asm"
-PALETA_ALTA_MENU:
-
-		incbin	"PALETAS/PALETA_ALTA.pal"
-
-PALETA_BAJA_MENU:
-
-		incbin	"PALETAS/PALETA_BAJA.pal"
+		; Menu reducido a espera de tecla. Espacio libre reservado para futuras necesidades.
 
         ds      #8000-$-#2200   
 			                                        ; Colocamos el resto del programa siempre en el mismo sitio    
@@ -242,12 +236,15 @@ PALETA_BAJA_MENU:
 
 /**********************
  ****** PAGINA 4 ******
- ****** SLOT   2 ******     graficos menu
+ ****** SLOT   2 ******     libre para necesidades del menu
  **********************/
 
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
 
-        incbin  "GRAFICOS/DIBUJO_MENU1.DAT"
+PAGINA_4_LIBRE_PARA_MENU:
+
+	; Pagina liberada tras eliminar la carga grafica del menu.
+	; Se deja rellena completa para conservar el mapa del megarom.
 
         ds		#C000-$
 
@@ -259,12 +256,15 @@ PALETA_BAJA_MENU:
 
 /**********************
  ****** PAGINA 5 ******
- ****** SLOT   2 ******     graficos menu
+ ****** SLOT   2 ******     libre para necesidades del menu
  **********************/
 
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
 
-        incbin  "GRAFICOS/DIBUJO_MENU2.DAT"
+PAGINA_5_LIBRE_PARA_MENU:
+
+	; Pagina liberada tras eliminar la carga grafica del menu.
+	; Se deja rellena completa para conservar el mapa del megarom.
 
         ds		#C000-$
 
@@ -276,15 +276,15 @@ PALETA_BAJA_MENU:
 
 /**********************
  ****** PAGINA 6 ******
- ****** SLOT   2 ******     ?
+ ****** SLOT   2 ******     libre para necesidades del menu
  **********************/
 
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
 
-        incbin  "GRAFICOS/TITULO_TROZO.DAT"
-MONTANAS:
-		
-        incbin  "GRAFICOS/MONTANAS.DAT"
+PAGINA_6_LIBRE_PARA_MENU:
+
+	; Pagina liberada tras eliminar titulo y montanas del menu.
+	; Se deja rellena completa para conservar el mapa del megarom.
 
         ds		#C000-$
 

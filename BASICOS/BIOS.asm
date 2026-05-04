@@ -35,6 +35,11 @@ ENASLT		equ		#0024												; Para ampliar la rom
 RSLREG  	equ		#0138												; Lee el registro del slot primario
 SLOTVAR		equ		#C000												; Se usa para control del cambio de slot. Dejar libre esta dirección al escribir variables
 CHGMOD		equ		#005F												; Elige el modo gráfico
+INITXT		equ		#006C												; Inicializa SCREEN 0 de 40 columnas
+CLS			equ		#00C3												; Limpia la pantalla de texto
+POSIT		equ		#00C6												; Situa el cursor en H=x, L=y
+ERAFNK		equ		#00CC												; Oculta las teclas de función en modos texto
+CHPUT		equ		#00A2												; Imprime el carácter de A
 FORCLR		equ		#F3E9												; Define el color de letras para CHGCLR
 BAKCLR		equ		#F3EA												; Define el color de fondo para CHGCLR
 BDRCLR		equ		#F3EB												; Defeine el color de bordes para CHGCLR
