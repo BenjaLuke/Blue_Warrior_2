@@ -641,7 +641,7 @@ BUCLE_PELEA_BOSS_2:
         and     00000011B                               ;  [
         ld      (VELOCIDAD_ROCKAGER),a                  ;  [
         or      a                                       ;  [
-        jp      nz,.CONTROL_POST_BUCLE_1                ;  [
+        jr      nz,.CONTROL_POST_BUCLE_1                ;  [
 
 		call	ANIMA_ROCKAGERS_EN_BOSS_2
 		ld		a,(ROCKAGER_MUERTO)
@@ -656,10 +656,10 @@ BUCLE_PELEA_BOSS_2:
 
         ld      a,(TIEMPO_DE_ADJUST)
         or      a
-        jp      z,.CONTROL_POST_BUCLE_2
+        jr      z,.CONTROL_POST_BUCLE_2
         dec     a
 	ld      (TIEMPO_DE_ADJUST),a
-	jp      nz,.CONTROL_POST_BUCLE_2
+	jr      nz,.CONTROL_POST_BUCLE_2
 	xor     a
 	ld      (COLOR_ALEATORIO),a
 
@@ -920,6 +920,7 @@ DESACTIVA_PROYECTIL_BOSS_2:
 		pop		af
 		ld		(hl),a
 		call	OBTIENE_PUNTERO_SPRITES_ACTIVOS_PROYECTIL_BOSS_2
+		xor		a
 		ld		(hl),a
 		call	OBTIENE_PUNTERO_Y_PROYECTIL_BOSS_2_ACTUAL
 		ld		a,217
@@ -1170,11 +1171,11 @@ CALCULA_DIRECCION_BASE_PROYECTIL_BOSS_2:
 		ld		d,a
 		ld		a,e
 		sub		d
-		jp		nc,.DEPH_A_LA_DERECHA
+		jr		nc,.DEPH_A_LA_DERECHA
 		ld		a,d
 		sub		e
 		ld		h,7
-		jp		.COMPARA_DISTANCIAS
+		jr		.COMPARA_DISTANCIAS
 
 .DEPH_A_LA_DERECHA:
 
@@ -1183,37 +1184,37 @@ CALCULA_DIRECCION_BASE_PROYECTIL_BOSS_2:
 .COMPARA_DISTANCIAS:
 
 		cp		8
-		jp		c,.CENTRO
+		jr		c,.CENTRO
 		ld		l,a
 		ld		a,(Y_DEPH)
 		cp		c
-		jp		c,.ANGULO_EXTREMO
+		jr		c,.ANGULO_EXTREMO
 		sub		c
 		ld		e,a
 		ld		a,l
 		add		a,a
-		jp		c,.ANGULO_EXTREMO
+		jr		c,.ANGULO_EXTREMO
 		add		a,a
-		jp		c,.ANGULO_EXTREMO
+		jr		c,.ANGULO_EXTREMO
 		cp		e
-		jp		c,.ANGULO_CERRADO
-		jp		z,.ANGULO_CERRADO
+		jr		c,.ANGULO_CERRADO
+		jr		z,.ANGULO_CERRADO
 		ld		a,l
 		add		a,a
-		jp		c,.ANGULO_ABIERTO
+		jr		c,.ANGULO_ABIERTO
 		cp		e
-		jp		c,.ANGULO_DIAGONAL
-		jp		z,.ANGULO_DIAGONAL
+		jr		c,.ANGULO_DIAGONAL
+		jr		z,.ANGULO_DIAGONAL
 		ld		a,l
 		cp		e
-		jp		c,.ANGULO_MEDIO
-		jp		z,.ANGULO_MEDIO
+		jr		c,.ANGULO_MEDIO
+		jr		z,.ANGULO_MEDIO
 		ld		a,e
 		add		a,a
-		jp		c,.ANGULO_ABIERTO
+		jr		c,.ANGULO_ABIERTO
 		cp		l
-		jp		c,.ANGULO_EXTREMO
-		jp		z,.ANGULO_ABIERTO
+		jr		c,.ANGULO_EXTREMO
+		jr		z,.ANGULO_ABIERTO
 
 .ANGULO_ABIERTO:
 
@@ -1555,9 +1556,9 @@ BUCLE_REVISION_TODOS_LOS_PROYECTILES_OJO_BOSS_2:
 		cp		c
 		jr		nc,.SIGUIENTE_PROYECTIL_OJO_BOSS_2
 
+		call	DESACTIVA_PROYECTIL_OJO_BOSS_2_ACTUAL
 		call	REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH.DANO_DE_PUPA
 		call	PAGE44_A_SEGMENT_1_PINTA_CORAZONES_VIDA_DEPH_ADECUADOS
-		call	DESACTIVA_PROYECTIL_OJO_BOSS_2_ACTUAL
 		ret
 
 .SIGUIENTE_PROYECTIL_OJO_BOSS_2:
@@ -1728,10 +1729,6 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH_ROCK_BOSS_2:
 
 REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK_BOSS_2:
 
-		ld		a,(ROCKAGER_MUERTO)
-		or		a
-		ret		nz
-
 		ld		iy,PROYECTILES
 		ld		b,6
 
@@ -1742,6 +1739,10 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK_BOSS_2:
 		cp		#FF
 		jp		z,.PASAMOS_AL_SIGUIENTE_PROYECTIL_ROCK_BOSS_2
 
+		ld		a,(ROCKAGER_MUERTO)
+		or		a
+		jr		nz,.REVISA_IMPACTO_DAVEANIX_BOSS_2
+
 		ld		ix,.DATAS_REVISIONES_ROCK_BOSS_2
 		ld		de,4
 		ld		b,4
@@ -1751,23 +1752,23 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK_BOSS_2:
 		ld		c,(ix)
 		ld		a,(iy)
 		cp		c
-		jp		c,.SIGUIENTE_REVISION_ROCK_BOSS_2
+		jr		c,.SIGUIENTE_REVISION_ROCK_BOSS_2
 		sub		11
 		cp		c
-		jp		nc,.SIGUIENTE_REVISION_ROCK_BOSS_2
+		jr		nc,.SIGUIENTE_REVISION_ROCK_BOSS_2
 		ld		c,(ix+1)
 		ld		a,(iy+1)
 		cp		c
-		jp		c,.SIGUIENTE_REVISION_ROCK_BOSS_2
+		jr		c,.SIGUIENTE_REVISION_ROCK_BOSS_2
 		sub		8
 		cp		c
-		jp		nc,.SIGUIENTE_REVISION_ROCK_BOSS_2
+		jr		nc,.SIGUIENTE_REVISION_ROCK_BOSS_2
 
 		ld		a,(FOTOGRAMA_SECUENCIA_ROCKAGER_3)
 		cp		(ix+2)
-		jp		c,.SIGUIENTE_REVISION_ROCK_BOSS_2
+		jr		c,.SIGUIENTE_REVISION_ROCK_BOSS_2
 		cp		(ix+3)
-		jp		nc,.SIGUIENTE_REVISION_ROCK_BOSS_2
+		jr		nc,.SIGUIENTE_REVISION_ROCK_BOSS_2
 
 		ld		a,(VIDA_ROCKAGER_BOSS_2)
 		or		a
@@ -1777,6 +1778,18 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK_BOSS_2:
 		call	PINTA_MARCADORES_VIDA_FINAL_BOSS_2
 
 .SOBRE_EL_PROYECTIL_ROCK_BOSS_2:
+
+		call	.LIMPIA_PROYECTIL_TRAS_IMPACTO_BOSS_2
+		pop		bc
+		ret
+
+.SOBRE_EL_PROYECTIL_MUERTE_DAVEANIX_BOSS_2:
+
+		call	.LIMPIA_PROYECTIL_TRAS_IMPACTO_BOSS_2
+		pop		bc
+		jp		MUERTE_DE_DAVEANIX_BOSS_2
+
+.LIMPIA_PROYECTIL_TRAS_IMPACTO_BOSS_2:
 
 		ld		a,5
 		ld		c,0
@@ -1795,13 +1808,54 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK_BOSS_2:
 		ld		(ix),a
 		ld		a,23*4
 		ld		(ix+2),a
-		pop		bc
 		ret
 
 .SIGUIENTE_REVISION_ROCK_BOSS_2:
 
 		add		ix,de
 		djnz	.REVISION_1_ROCK_BOSS_2
+
+.REVISA_IMPACTO_DAVEANIX_BOSS_2:
+
+		ld		a,(iy+1)
+		cp		58
+		jr		c,.PASAMOS_AL_SIGUIENTE_PROYECTIL_ROCK_BOSS_2
+		sub		58
+		cp		15
+		jr		nc,.PASAMOS_AL_SIGUIENTE_PROYECTIL_ROCK_BOSS_2
+		ld		hl,.DATAS_REVISIONES_X_DAVEANIX_BOSS_2
+		ld		b,2
+
+.REVISION_DAVEANIX_BOSS_2:
+
+		ld		c,(hl)
+		inc		hl
+		ld		a,(iy)
+		cp		c
+		jr		c,.SIGUIENTE_REVISION_DAVEANIX_BOSS_2
+		sub		c
+		cp		(hl)
+		jr		nc,.SIGUIENTE_REVISION_DAVEANIX_BOSS_2
+
+		ld		a,(VIDA_ROCKAGER_BOSS_2)
+		or		a
+		jr		nz,.SOBRE_EL_PROYECTIL_ROCK_BOSS_2
+		ld		a,(VIDA_DAVEANIX_BOSS_2)
+		or		a
+		jr		z,.SOBRE_EL_PROYECTIL_ROCK_BOSS_2
+		dec		a
+		ld		(VIDA_DAVEANIX_BOSS_2),a
+		push	af
+		call	PINTA_MARCADORES_VIDA_FINAL_BOSS_2
+		pop		af
+		or		a
+		jr		z,.SOBRE_EL_PROYECTIL_MUERTE_DAVEANIX_BOSS_2
+		jr		.SOBRE_EL_PROYECTIL_ROCK_BOSS_2
+
+.SIGUIENTE_REVISION_DAVEANIX_BOSS_2:
+
+		inc		hl
+		djnz	.REVISION_DAVEANIX_BOSS_2
 
 .PASAMOS_AL_SIGUIENTE_PROYECTIL_ROCK_BOSS_2:
 
@@ -1819,6 +1873,11 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK_BOSS_2:
 		db		75,109,6,30
 		db		219,141,38,63
 
+.DATAS_REVISIONES_X_DAVEANIX_BOSS_2:
+
+		db		110,12
+		db		130,16
+
 PINTA_EXPLOSION_ROCK_BOSS_2:
 
 		ld		ix,VALORES_EXPLOSION_CON_ROCK
@@ -1826,7 +1885,7 @@ PINTA_EXPLOSION_ROCK_BOSS_2:
 		or		a
 		ret		z
 		cp		25*4
-		jp		nz,.PINTAMOS_EXPLOSION_ROCK_BOSS_2
+		jr		nz,.PINTAMOS_EXPLOSION_ROCK_BOSS_2
 
 		xor		a
 		ld		(ix+2),a
@@ -2015,12 +2074,33 @@ ANIMA_ROCKAGERS_EN_BOSS_2:
 		jr		nz,.SALVA_FOTOGRAMA_MUERTE_BOSS_2
 		ld		a,2
 		ld		(ROCKAGER_MUERTO),a
+
+		xor		a
+		ld		hl,VALORES_SPRITES_PIEDRAS
+		ld		b,24
+
+.BUCLE_LIMPIA_VARIABLES_ROCAS_ROCKAGER_BOSS_2:
+
+		ld		(hl),a
+		inc		hl
+		djnz	.BUCLE_LIMPIA_VARIABLES_ROCAS_ROCKAGER_BOSS_2
+
+		ld		hl,.VACIO_SPRITES_ROCAS_ROCKAGER_BOSS_2
+		ld		de,#4A00+18*4
+		ld		bc,16
+		call	PON_COLOR_2.sin_bc_impuesta
+
 		ret
 
 .SALVA_FOTOGRAMA_MUERTE_BOSS_2:
 
 		ld		(FOTOGRAMA_SECUENCIA_ROCKAGER_2),a
 		ret
+
+.VACIO_SPRITES_ROCAS_ROCKAGER_BOSS_2:
+
+		db		0,0,0,0,0,0,0,0
+		db		0,0,0,0,0,0,0,0
                
 .DATA_SECUENCIA_2_ROCKAGER:
 
@@ -2825,12 +2905,14 @@ RUTINA_ROCAS_EN_BOSS_2:
 
 	db	0,0
 
+MUERTE_DE_DAVEANIX_BOSS_2:
+
 PULSA_UNA_TECLA_PARA_SEGUIR_b2:
 
 		xor		a
 		call	GTTRIG_RAM
 		or		a
-		jp		z,PULSA_UNA_TECLA_PARA_SEGUIR_b2
+		jr		z,PULSA_UNA_TECLA_PARA_SEGUIR_b2
 		
 TERMINANDO_LA_BATALLA_b2:
 
@@ -2854,10 +2936,6 @@ ULTIMO_DESPLAZAMIENTO_b2:
 
 VOLVEMOS_b2:
 
-        push    de
-        push    bc
-        push    iy
-        push    ix
 		jp		CARGA_SLOT_REGRESO_A_JUEGO
 
 FADE_DEPH_A_NEGRO_b2:

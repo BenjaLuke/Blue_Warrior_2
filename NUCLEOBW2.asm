@@ -2145,7 +2145,7 @@ FADE_FASE_1_3_A_NEGRO_b1:
 
 		include	"BOSS 2 PARTE 1.asm"
 
-        ds      #8000-$-#2200                                           ; Colocamos el resto del programa siempre en el mismo sitio    
+        ds      #5E00-$                                                 ; Colocamos el resto del programa siempre en el mismo sitio    
 
 		include "BASICOS/RUTINAS CERRADAS (sin etiquetas).asm"				            ; Incluímos las referencias a la BIOS
 		include "AUDIOS/LANZADOR EFECTOS PSG (sin etiquetas).asm"

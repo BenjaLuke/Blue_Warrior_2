@@ -26,11 +26,8 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES:
         ld      l,(ix)
         ld      h,0
         ld      a,(iy)
-        add     14
         ld      e,a
         ld      d,0
-        jp      nc,.COMPARA_DISTANCIA_X
-        inc     d
 
 .COMPARA_DISTANCIA_X:
 
@@ -50,7 +47,7 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES:
         or      a
         jp      nz,.NO_HAY_COLISION
         ld      a,l
-        cp      30
+        cp      16
         jp      nc,.NO_HAY_COLISION
 
         ld      a,(ix+1)                                                    ; Y enemigo

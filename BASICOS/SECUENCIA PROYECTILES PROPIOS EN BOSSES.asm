@@ -62,7 +62,9 @@
 
 	ld		a,1
 	ld		c,3
-    call    TIRA_FX
+	call	PAGE_31_A_SEGMENT_2
+	call	ayFX_INIT
+	call	PAGE_10_A_SEGMENT_2
 
 	ld		a,(ARMA_USANDO)
 	cp		7

@@ -71,7 +71,7 @@
 	ld	c,2
         call    PAGE_31_A_SEGMENT_2
 	call	ayFX_INIT
-        jp      TIRA_FX
+        jp      PAGE_10_A_SEGMENT_2
 
 
 .FLECHA:
