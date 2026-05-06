@@ -13,6 +13,6 @@ PALETA_GRISES_FADE_OUT:
 		incbin	"GRISES.FADEOUT"
 
 TABLA_COLOR_SPRITE_CENTRAL_BOSS_2:
-	db		$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F
-	db		$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F
+	db		$03,$03,$03,$03,$03,$03,$03,$03
+	db		$03,$03,$03,$03,$03,$03,$03,$03
 		

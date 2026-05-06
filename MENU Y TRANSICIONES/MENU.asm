@@ -183,10 +183,10 @@ TEXTO_MENU_1:
 		db		"Blue Warrior 2",0
 
 TEXTO_MENU_2:
-		db		"Beta version 4.0.8",0
+		db		"Beta version 4.0.10",0
 
 TEXTO_MENU_3:
-		db		"04/05/2026",0
+		db		"06/05/2026",0
 
 TEXTO_MENU_4:
 		db		"56%",0
