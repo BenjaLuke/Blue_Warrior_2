@@ -250,12 +250,19 @@
 	pop	af
 	ld	a,(MIRAMOS_SEGUNDO_SPRITE)
 	or	a
-	jp	z,.NOS_VAMOS
+	jp	z,.ANULA_PROYECTIL_SIN_SPRITE
 
         ld      a,(ix+12)
         call    .DEJA_LIBRE_SPRITE_EN_RAM
 	xor	a
 	ld	(ix+12),a
+	
+.ANULA_PROYECTIL_SIN_SPRITE:
+
+	ld	a,#FF
+	ld	(ix+2),a
+	ld	(ix),a
+	pop	af
 	jp	.NOS_VAMOS
 
 .OCUPAMOS_EL_SPRITE:
@@ -268,6 +275,10 @@
 .DEJA_LIBRE_SPRITE_EN_RAM:
 
 	or	a
+	cp	10*4
+	ret	c
+	cp	32*4
+	ret	nc
 [2]	rrc	a
 	sub	10
 	push	ix

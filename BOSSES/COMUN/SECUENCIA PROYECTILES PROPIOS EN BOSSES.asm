@@ -284,6 +284,10 @@
 .DEJA_LIBRE_SPRITE_EN_RAM:
 
 	or	a
+	cp	10*4
+	ret	c
+	cp	32*4
+	ret	nc
 [2]	rrc	a
 	sub	10
 	push	ix

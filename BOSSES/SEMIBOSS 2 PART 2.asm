@@ -1,3 +1,91 @@
+MAGIA_ROCK_FX_PART2_SEMIBOSS_2						equ		13
+FX_CANAL_0_PART2_SEMIBOSS_2							equ		0
+BANCO_FX_PART2_SEMIBOSS_2							equ		31
+BANCO_COMUN_PART2_SEMIBOSS_2						equ		10
+BANCO_SPRITES_PART2_SEMIBOSS_2						equ		32
+BANCO_FASE_OFFSET_MAGIA_PART2_SEMIBOSS_2			equ		20
+
+DATAS_COPY_TAM_PART2_SEMIBOSS_2						equ		15
+COPIAS_RESTO_RAYO_PART2_SEMIBOSS_2					equ		9
+RAYO_BUCLES_EXTERIORES_PART2_SEMIBOSS_2				equ		2
+PAUSA_RAYO_PART2_SEMIBOSS_2							equ		5
+RAYO_CAMBIA_ADJUST_EN_B_PART2_SEMIBOSS_2			equ		7
+ADJUST_ACTIVO_PART2_SEMIBOSS_2						equ		1
+ROCA_MAGIA_DANO_PART2_SEMIBOSS_2					equ		4
+VIDA_INICIAL_ROCKAGER_PART2_SEMIBOSS_2				equ		40
+
+ROCKAGER_LIMITES_CANT_PART2_SEMIBOSS_2				equ		6
+ROCKAGER_LIMITES_TAM_PART2_SEMIBOSS_2				equ		7
+ROCKAGER_ANCHO_COLISION_PART2_SEMIBOSS_2			equ		37
+SECUENCIA_ROCKAGER_DOS_PART2_SEMIBOSS_2				equ		2
+EMPUJE_DEPH_ROCKAGER_PART2_SEMIBOSS_2				equ		10
+X_CENTRO_PANTALLA_PART2_SEMIBOSS_2					equ		128
+FX_TOQUE_DEPH_PART2_SEMIBOSS_2						equ		3
+
+PIEDRAS_CANT_PART2_SEMIBOSS_2						equ		6
+PIEDRAS_ACTIVAS_COLISION_PART2_SEMIBOSS_2			equ		4
+PIEDRA_TAM_DATOS_PART2_SEMIBOSS_2					equ		4
+PIEDRA_ESTADO_QUIETA_PART2_SEMIBOSS_2				equ		25
+PIEDRA_ESTADO_FIN_BUCLE_PART2_SEMIBOSS_2			equ		26
+PIEDRA_ESTADO_SALE_DISPARADA_PART2_SEMIBOSS_2		equ		27
+PIEDRA_ESTADO_REBOTA_PART2_SEMIBOSS_2				equ		24
+PIEDRA_ESTADO_COGE_PART2_SEMIBOSS_2					equ		8
+PIEDRA_ESTADO_TOCA_SUELO_PART2_SEMIBOSS_2			equ		16
+PIEDRA_PARON_FOTOGRAMA_1_PART2_SEMIBOSS_2			equ		18
+PIEDRA_PARON_FOTOGRAMA_2_PART2_SEMIBOSS_2			equ		54
+PIEDRA_PARON_FOTOGRAMA_3_PART2_SEMIBOSS_2			equ		90
+PIEDRA_PATRON_BASE_PART2_SEMIBOSS_2					equ		60*4
+PIEDRA_REBOTE_PASO_PART2_SEMIBOSS_2					equ		10
+PIEDRA_LIMITE_X_REBOTE_PART2_SEMIBOSS_2				equ		245
+PIEDRA_LIMITE_Y_REBOTE_PART2_SEMIBOSS_2				equ		211
+PIEDRA_COLISION_MARGEN_PART2_SEMIBOSS_2				equ		8
+PROTA_COLISION_ANCHO_PART2_SEMIBOSS_2				equ		20
+CORAZONES_X_BASE_PART2_SEMIBOSS_2					equ		43
+MAGIA_X_BASE_PART2_SEMIBOSS_2						equ		25
+
+FX_ROCA_TOCA_SUELO_PART2_SEMIBOSS_2					equ		29
+FX_ROCA_SALE_PART2_SEMIBOSS_2						equ		27
+FX_ROCA_COGE_PART2_SEMIBOSS_2						equ		28
+TIEMPO_ADJUST_TOCA_SUELO_PART2_SEMIBOSS_2			equ		5
+COLOR_ALEATORIO_ACTIVO_PART2_SEMIBOSS_2				equ		1
+
+VRAM_SPRITES_PATRONES_PART2_SEMIBOSS_2				equ		#4000
+VRAM_SPRITES_ATRIBUTOS_PART2_SEMIBOSS_2				equ		#4A00
+VRAM_SPRITES_COLOR_PART2_SEMIBOSS_2					equ		#4800
+SPRITE_ROCAS_ATR_BASE_PART2_SEMIBOSS_2				equ		VRAM_SPRITES_ATRIBUTOS_PART2_SEMIBOSS_2+18*4
+SPRITES_ROCKAGER_MAREADO_PATRON_PART2_SEMIBOSS_2	equ		57*8*4
+SPRITES_ROCKAGER_MAREADO_CANT_PART2_SEMIBOSS_2		equ		7
+COLOR_PIEDRAS_DESTINO_PART2_SEMIBOSS_2				equ		VRAM_SPRITES_COLOR_PART2_SEMIBOSS_2+16*14
+COLOR_PIEDRAS_TAM_PART2_SEMIBOSS_2					equ		16*2
+COLOR_PIEDRAS_PASO_PART2_SEMIBOSS_2					equ		32
+COLOR_MAREO_DESTINO_PART2_SEMIBOSS_2				equ		VRAM_SPRITES_COLOR_PART2_SEMIBOSS_2+15*16
+COLOR_MAREO_TAM_PART2_SEMIBOSS_2					equ		16*2
+
+VIDA_MAREO_UMBRAL_PART2_SEMIBOSS_2					equ		10
+SPRITE_MAREO_1_ATR_PART2_SEMIBOSS_2					equ		VRAM_SPRITES_ATRIBUTOS_PART2_SEMIBOSS_2+15*4
+SPRITE_MAREO_2_ATR_PART2_SEMIBOSS_2					equ		VRAM_SPRITES_ATRIBUTOS_PART2_SEMIBOSS_2+16*4
+FOTOGRAMA_MAREO_FIN_SECUENCIA_1_PART2_SEMIBOSS_2	equ		98
+FOTOGRAMA_MAREO_FIN_SECUENCIA_2_PART2_SEMIBOSS_2	equ		134
+SPRITE_OCULTO_Y_PART2_SEMIBOSS_2					equ		217
+SPRITE_OCULTO_X_PART2_SEMIBOSS_2					equ		0
+SPRITE_MAREO_PATRON_INICIAL_PART2_SEMIBOSS_2		equ		57*4
+SPRITE_MAREO_PATRON_FIN_PART2_SEMIBOSS_2			equ		60*4
+SPRITE_PATRON_PASO_PART2_SEMIBOSS_2					equ		4
+SPRITE_ATRIBUTOS_TAM_PART2_SEMIBOSS_2				equ		3
+MAREO_POSICIONES_SECUENCIA_1_PART2_SEMIBOSS_2		equ		3
+MAREO_POSICIONES_SECUENCIA_2_PART2_SEMIBOSS_2		equ		4
+SECUENCIA_ROCKAGER_UNO_PART2_SEMIBOSS_2				equ		1
+SECUENCIA_ROCKAGER_TRES_PART2_SEMIBOSS_2			equ		3
+
+SPRITES_ACTIVOS_ROCKAGER_OFS_PART2_SEMIBOSS_2		equ		5
+SPRITES_FIJOS_ROCKAGER_CANT_PART2_SEMIBOSS_2		equ		7
+BANCO_STAGE_2_A_PART2_SEMIBOSS_2					equ		12
+BANCO_STAGE_2_B_PART2_SEMIBOSS_2					equ		17
+VRAM_GRAFICOS_ORIGEN_PART2_SEMIBOSS_2				equ		#8000
+VRAM_GRAFICOS_DESTINO_1_PART2_SEMIBOSS_2			equ		#8000
+VRAM_GRAFICOS_DESTINO_2_PART2_SEMIBOSS_2			equ		#C000
+TAM_BANCO_GRAFICOS_PART2_SEMIBOSS_2					equ		16384
+
 MAGIA_ROCK:
 
 .MIRAMOS_SI_PUEDE_HACER_MAGIA:
@@ -14,8 +102,8 @@ MAGIA_ROCK:
 	ei
 
     call    PAGE_31_A_SEGMENT_2
-	ld		a,13
-	ld		c,0
+	ld		a,MAGIA_ROCK_FX_PART2_SEMIBOSS_2
+	ld		c,FX_CANAL_0_PART2_SEMIBOSS_2
 	call	ayFX_INIT
     call    PAGE_10_A_SEGMENT_2
 
@@ -34,7 +122,7 @@ MAGIA_ROCK:
 
     ld      hl,COPIA_PARTE_1_DE_DOS_A_TRES_PARA_RAYO
  	ld		de,ATRIBUTOS_NUMERO_DE_VIDAS_O_PUNTOS	       
-	ld		bc,15
+	ld		bc,DATAS_COPY_TAM_PART2_SEMIBOSS_2
 	ldir
 
 .TROZO_1_EN_UNA_PIEZA:
@@ -46,7 +134,7 @@ MAGIA_ROCK:
 
     ld      hl,COPIA_PARTE_2_DE_DOS_A_TRES_PARA_RAYO
  	ld		de,ATRIBUTOS_NUMERO_DE_VIDAS_O_PUNTOS	       
-	ld		bc,15
+	ld		bc,DATAS_COPY_TAM_PART2_SEMIBOSS_2
 	ldir
     ld		ix,ATRIBUTOS_NUMERO_DE_VIDAS_O_PUNTOS
 
@@ -59,7 +147,7 @@ MAGIA_ROCK:
 
     ld      hl,COPIA_PARTE_3_DE_DOS_A_TRES_PARA_RAYO
  	ld		de,ATRIBUTOS_NUMERO_DE_VIDAS_O_PUNTOS	       
-	ld		bc,15
+	ld		bc,DATAS_COPY_TAM_PART2_SEMIBOSS_2
 	ldir
     ld		ix,ATRIBUTOS_NUMERO_DE_VIDAS_O_PUNTOS
 
@@ -72,7 +160,7 @@ MAGIA_ROCK:
 
 	ld	hl,COPIA_1_A_2
 
-	ld	b,9
+	ld	b,COPIAS_RESTO_RAYO_PART2_SEMIBOSS_2
 		
 .bucle_de_copys_1:
 
@@ -99,21 +187,21 @@ MAGIA_ROCK:
     xor      a
     ld      (TIEMPO_DE_ADJUST),a
 
-	ld	b,2
+	ld	b,RAYO_BUCLES_EXTERIORES_PART2_SEMIBOSS_2
 
 .bucle_de_copys_3:
 
 	push	bc
 	ld		hl,COPIA_RAYO_1_1
 	ld		ix,ATRIBUTOS_NUMERO_DE_VIDAS_O_PUNTOS
-	ld		b,15
+	ld		b,DATAS_COPY_TAM_PART2_SEMIBOSS_2
 
 .bucle_de_copys_2:
 
 	push	bc
 	push	hl
 	ld		de,ATRIBUTOS_NUMERO_DE_VIDAS_O_PUNTOS
-	ld		bc,15
+	ld		bc,DATAS_COPY_TAM_PART2_SEMIBOSS_2
 	ldir
 
 	pop		hl
@@ -131,20 +219,20 @@ MAGIA_ROCK:
 .regreso_de_bucle:
 
 	pop		hl
-	ld		de,15
+	ld		de,DATAS_COPY_TAM_PART2_SEMIBOSS_2
 	or		a
 	adc		hl,de
 
-	ld		a,5
+	ld		a,PAUSA_RAYO_PART2_SEMIBOSS_2
 	call	BUCLE_PINTA_TILES.rutina_de_pausa
 
 	pop		bc
 
 	ld		a,b
-	cp		7
+	cp		RAYO_CAMBIA_ADJUST_EN_B_PART2_SEMIBOSS_2
 	jp		nz,.sin_cambio_en_Adjust
 
-    ld      a,1
+    ld      a,ADJUST_ACTIVO_PART2_SEMIBOSS_2
     ld      (TIEMPO_DE_ADJUST),a		
 
 .sin_cambio_en_Adjust:
@@ -159,10 +247,10 @@ MAGIA_ROCK:
 .primer_rockager:
 
 	ld		a,(VIDA_ROCKAGER_1)
-	sub		4
+	sub		ROCA_MAGIA_DANO_PART2_SEMIBOSS_2
 	ld		(VIDA_ROCKAGER_1),a
 
-	cp		40
+	cp		VIDA_INICIAL_ROCKAGER_PART2_SEMIBOSS_2
 	jp		c,.segundo_rockager
 
 	xor		a
@@ -171,10 +259,10 @@ MAGIA_ROCK:
 .segundo_rockager:
 
 	ld		a,(VIDA_ROCKAGER_2)
-	sub		4
+	sub		ROCA_MAGIA_DANO_PART2_SEMIBOSS_2
 	ld		(VIDA_ROCKAGER_2),a
 
-	cp		40
+	cp		VIDA_INICIAL_ROCKAGER_PART2_SEMIBOSS_2
 	jp		c,.repintamos_puntos_de_magia
 
 	xor		a
@@ -184,13 +272,13 @@ MAGIA_ROCK:
 
 		call	PINTAMOS_LOS_PUNTOS_DE_MAGIA_ROCK
        	ld      a,(FASE)
-        add     20
+        add     BANCO_FASE_OFFSET_MAGIA_PART2_SEMIBOSS_2
         call    CHANGE_BANK_2
 		di
 		call	cntmus
 		ei
 
-        ld		a,10
+        ld		a,BANCO_COMUN_PART2_SEMIBOSS_2
 		call	CHANGE_BANK_2
 
 .VUELVE_A_PINTAR_TRES_EN_NEGRO:
@@ -225,7 +313,7 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH_ROCK:
 
 		ld		ix,.LIMITES_ROCKAGERS
 		ld		iy,.LIMITE_VARIABLE_Y_SUPERIOR
-		ld		b,6
+		ld		b,ROCKAGER_LIMITES_CANT_PART2_SEMIBOSS_2
 
 .control_x:
 
@@ -233,18 +321,18 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH_ROCK:
 		ld		de,(X_DEPH)					; 20
 		cp		e							; 4
 		jp		nc,.fin_bucle				; 10
-		add		a,37						; 7
+		add		a,ROCKAGER_ANCHO_COLISION_PART2_SEMIBOSS_2	; 7
 		cp		e							; 4
 		jp		c,.fin_bucle				; 10
 											; Total 74 20,43% + rápido
 		ld		a,(SECUENCIA_DE_ROCKAGER)
-		cp		2
+		cp		SECUENCIA_ROCKAGER_DOS_PART2_SEMIBOSS_2
 		jp		z,.control_y_2
 		jp		.control_y_1
 
 .fin_bucle:
 
-		ld		de,7
+		ld		de,ROCKAGER_LIMITES_TAM_PART2_SEMIBOSS_2
 		add		ix,de
 		djnz	.control_x
 
@@ -333,23 +421,23 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH_ROCK:
 	call	PINTA_CORAZONES_VIDA_DEPH_ADECUADOS
 
 	call    PAGE_31_A_SEGMENT_2
-	ld		a,3
-	ld		c,0
+	ld		a,FX_TOQUE_DEPH_PART2_SEMIBOSS_2
+	ld		c,FX_CANAL_0_PART2_SEMIBOSS_2
 	call	ayFX_INIT
     call    PAGE_10_A_SEGMENT_2
 
 	ld		a,(X_DEPH)
-	cp		128
+	cp		X_CENTRO_PANTALLA_PART2_SEMIBOSS_2
 	jp		nc,.RETROCEDE
 
 .ADELANTA:
-	add		10
+	add		EMPUJE_DEPH_ROCKAGER_PART2_SEMIBOSS_2
 	ld		(X_DEPH),a
 	ret
 
 .RETROCEDE:
 
-	sub		10
+	sub		EMPUJE_DEPH_ROCKAGER_PART2_SEMIBOSS_2
 	ld		(X_DEPH),a
 	ret
 
@@ -360,7 +448,7 @@ RUTINA_ROCAS:
 	push	ix
 	push	iy
 
-	ld		b,6
+	ld		b,PIEDRAS_CANT_PART2_SEMIBOSS_2
 	xor		a
 	ld		(VARIABLE_UN_USO3),a
 
@@ -395,30 +483,30 @@ RUTINA_ROCAS:
 
 .SALE_DISPARADA:
 
-	ld		a,26
+	ld		a,PIEDRA_ESTADO_FIN_BUCLE_PART2_SEMIBOSS_2
 	ld		(ix+3),a
 
 	ld		iy,VARIABLE_UN_USO
 	ld		a,(ix+2)
 [2]	add		a
-	add		60*4
+	add		PIEDRA_PATRON_BASE_PART2_SEMIBOSS_2
 	ld		(ix+2),a
 	
 	ld		a,(ix)
-	sub		10
+	sub		PIEDRA_REBOTE_PASO_PART2_SEMIBOSS_2
 	ld		(ix),a
-	cp		245
+	cp		PIEDRA_LIMITE_X_REBOTE_PART2_SEMIBOSS_2
 	jp		nc,.SALE_DISPARADA_1
 
 	ld		a,(ix+1)
-	sub		10
+	sub		PIEDRA_REBOTE_PASO_PART2_SEMIBOSS_2
 	ld		(ix+1),a
-	cp		211
+	cp		PIEDRA_LIMITE_Y_REBOTE_PART2_SEMIBOSS_2
 	jp		c,.SALTO_DESDE_REBOTA
 
 .SALE_DISPARADA_1:
 
-	ld		a,24
+	ld		a,PIEDRA_ESTADO_REBOTA_PART2_SEMIBOSS_2
 	ld		(ix+3),a
 	JP		.SALTO_DESDE_REBOTA
 
@@ -435,15 +523,15 @@ RUTINA_ROCAS:
 	ld		e,a
 	add		ix,de
 	ld		a,(ix+3)
-	cp		25
+	cp		PIEDRA_ESTADO_QUIETA_PART2_SEMIBOSS_2
 	jp		nc,.SEGUIMOS_SIN_PARON
 
 	ld		a,(FOTOGRAMA_SECUENCIA_ROCKAGER_1)
-	cp		18
+	cp		PIEDRA_PARON_FOTOGRAMA_1_PART2_SEMIBOSS_2
 	jp		z,.VOLVEMOS
-	cp		54
+	cp		PIEDRA_PARON_FOTOGRAMA_2_PART2_SEMIBOSS_2
 	jp		z,.VOLVEMOS
-	cp		90
+	cp		PIEDRA_PARON_FOTOGRAMA_3_PART2_SEMIBOSS_2
 	jp		z,.VOLVEMOS
 
 .SEGUIMOS_SIN_PARON:
@@ -466,15 +554,15 @@ RUTINA_ROCAS:
 	ld		a,(ix+3)
 	or		a
 	call	z,.SALE
-	cp		8
+	cp		PIEDRA_ESTADO_COGE_PART2_SEMIBOSS_2
 	call	Z,.COGE
-	cp		16
+	cp		PIEDRA_ESTADO_TOCA_SUELO_PART2_SEMIBOSS_2
 	call	z,.TOCA_SUELO
-	cp		25
+	cp		PIEDRA_ESTADO_QUIETA_PART2_SEMIBOSS_2
 	jp		z,.DESAPARECE
-	cp		26
+	cp		PIEDRA_ESTADO_FIN_BUCLE_PART2_SEMIBOSS_2
 	jp		z,.FIN_DEL_BUCLE
-	cp		27
+	cp		PIEDRA_ESTADO_SALE_DISPARADA_PART2_SEMIBOSS_2
 	jp		z,.SALE_DISPARADA
 
 	add		a
@@ -496,14 +584,14 @@ RUTINA_ROCAS:
 
 	ld		iy,VARIABLE_UN_USO
 	ld		a,(ix)
-	sub		8
+	sub		PIEDRA_COLISION_MARGEN_PART2_SEMIBOSS_2
 	ld		(iy+1),a
 	ld		a,(ix+1)
-	sub		8
+	sub		PIEDRA_COLISION_MARGEN_PART2_SEMIBOSS_2
 	ld		(iy),a
 	ld		a,(ix+2)
 [2]	add		a
-	add		60*4
+	add		PIEDRA_PATRON_BASE_PART2_SEMIBOSS_2
 	ld		(iy+2),a
 
 	call	.MAS_DE_UN_USO_1
@@ -515,7 +603,7 @@ RUTINA_ROCAS:
 .COMUN_PINTA_Y_DESAPARECE:
 	
 	call	.MAS_DE_UN_USO_1
-	ld		de,4
+	ld		de,PIEDRA_TAM_DATOS_PART2_SEMIBOSS_2
 	or		a
 	adc		hl,de
 	call	.MAS_DE_UN_USO_2
@@ -533,7 +621,7 @@ RUTINA_ROCAS:
 [3]	add		a
 	ld		e,a
 	ld		d,0
-	ld		hl,#4A00+18*4
+	ld		hl,SPRITE_ROCAS_ATR_BASE_PART2_SEMIBOSS_2
 	or		a
 	adc		hl,de
 
@@ -544,7 +632,7 @@ RUTINA_ROCAS:
 	ex		de,hl
 	ld		hl,VARIABLE_UN_USO
 	push	bc
-	ld		bc,3
+	ld		bc,SPRITE_ATRIBUTOS_TAM_PART2_SEMIBOSS_2
 	call	PON_COLOR_2.sin_bc_impuesta
 	pop		bc
 
@@ -553,13 +641,13 @@ RUTINA_ROCAS:
 .TOCA_SUELO:
 
 		push	af
-        ld      a,5
+        ld      a,TIEMPO_ADJUST_TOCA_SUELO_PART2_SEMIBOSS_2
         ld      (TIEMPO_DE_ADJUST),a
-        ld      a,1
+        ld      a,COLOR_ALEATORIO_ACTIVO_PART2_SEMIBOSS_2
         ld      (COLOR_ALEATORIO),a
 
-        ld      a,29
-        ld      c,0
+        ld      a,FX_ROCA_TOCA_SUELO_PART2_SEMIBOSS_2
+        ld      c,FX_CANAL_0_PART2_SEMIBOSS_2
 
         call    PAGE_31_A_SEGMENT_2       
         call    ayFX_INIT
@@ -571,8 +659,8 @@ RUTINA_ROCAS:
 .SALE:
 
 		push	af
-        ld      a,27
-        ld      c,0
+        ld      a,FX_ROCA_SALE_PART2_SEMIBOSS_2
+        ld      c,FX_CANAL_0_PART2_SEMIBOSS_2
 
         call    PAGE_31_A_SEGMENT_2       
         call    ayFX_INIT
@@ -584,8 +672,8 @@ RUTINA_ROCAS:
 .COGE:
 
 		push	af
-        ld      a,28
-        ld      c,0
+        ld      a,FX_ROCA_COGE_PART2_SEMIBOSS_2
+        ld      c,FX_CANAL_0_PART2_SEMIBOSS_2
 
         call    PAGE_31_A_SEGMENT_2       
         call    ayFX_INIT
@@ -785,7 +873,7 @@ RUTINA_ROCAS:
 
 ON_SPRITE_CON_ROCAS:
 
-	ld	b,4
+	ld	b,PIEDRAS_ACTIVAS_COLISION_PART2_SEMIBOSS_2
 	xor	a
 	ld	(VARIABLE_UN_USO3),a
 
@@ -799,30 +887,30 @@ ON_SPRITE_CON_ROCAS:
 	add	ix,de
 
 	ld	a,(ix)
-	sub	8
+	sub	PIEDRA_COLISION_MARGEN_PART2_SEMIBOSS_2
 	ld	c,a
 	ld	a,(X_DEPH)
-	add	20
+	add	PROTA_COLISION_ANCHO_PART2_SEMIBOSS_2
 	cp	c
 	jp	c,.SIGUIENTE_EN_EL_BUCLE
 
 	ld	a,(ix)
-	add	8
+	add	PIEDRA_COLISION_MARGEN_PART2_SEMIBOSS_2
 	ld	c,a
 	ld	a,(X_DEPH)
 	cp	c
 	jp	nc,.SIGUIENTE_EN_EL_BUCLE
 
 	ld	a,(ix+1)
-	sub	8
+	sub	PIEDRA_COLISION_MARGEN_PART2_SEMIBOSS_2
 	ld	c,a
 	ld	a,(Y_DEPH)
-	add	20
+	add	PROTA_COLISION_ANCHO_PART2_SEMIBOSS_2
 	cp	c
 	jp	c,.SIGUIENTE_EN_EL_BUCLE
 
 	ld	a,(ix+1)
-	add	8
+	add	PIEDRA_COLISION_MARGEN_PART2_SEMIBOSS_2
 	ld	c,a
 	ld	a,(Y_DEPH)
 	cp	c
@@ -833,8 +921,8 @@ ON_SPRITE_CON_ROCAS:
 	call	PINTA_CORAZONES_VIDA_DEPH_ADECUADOS
 
 	call    PAGE_31_A_SEGMENT_2
-	ld		a,3
-	ld		c,0
+	ld		a,FX_TOQUE_DEPH_PART2_SEMIBOSS_2
+	ld		c,FX_CANAL_0_PART2_SEMIBOSS_2
 	call	ayFX_INIT
     call    PAGE_10_A_SEGMENT_2
 	pop		bc
@@ -858,7 +946,7 @@ PINTA_CORAZONES_VIDA_DEPH_ADECUADOS:
 	ld		a,(CORAZONES)
 	ld		c,a
 [9]	add		c
-	ld		c,43
+	ld		c,CORAZONES_X_BASE_PART2_SEMIBOSS_2
 	add		c
 	ld		(ix),a
 	ld		(ix+4),a
@@ -873,7 +961,7 @@ PINTAMOS_LOS_PUNTOS_DE_MAGIA_ROCK:
 	ld		ix,PUNTOS_MAGIA_EN_BOSSES
 	ld		a,(MAGIAS)
 [3]	add		a
-	ld		c,25
+	ld		c,MAGIA_X_BASE_PART2_SEMIBOSS_2
 	add		c
 	ld		(ix),a
 	ld		hl,PUNTOS_MAGIA_EN_BOSSES
@@ -882,9 +970,9 @@ PINTAMOS_LOS_PUNTOS_DE_MAGIA_ROCK:
 PREPARACION_ROCKAGER:
 
     ld		ix,VALORES_SPRITES_PIEDRAS
-    ld      a,25
-    ld      de,4        
-    ld      b,6
+    ld      a,PIEDRA_ESTADO_QUIETA_PART2_SEMIBOSS_2
+    ld      de,PIEDRA_TAM_DATOS_PART2_SEMIBOSS_2        
+    ld      b,PIEDRAS_CANT_PART2_SEMIBOSS_2
 
 .BUCLE_TRANQUILIZA_PIEDRAS:
 
@@ -895,26 +983,26 @@ PREPARACION_ROCKAGER:
 .VOLCAMOS_LOS_NUEVOS_SPRITES_DE_PIEDRA:
 
 	ld		hl,SPRITES_ROCKAGER_MAREADO
-	ld		de,#4000+57*8*4
-	ld		bc,7*8*4
+	ld		de,VRAM_SPRITES_PATRONES_PART2_SEMIBOSS_2+SPRITES_ROCKAGER_MAREADO_PATRON_PART2_SEMIBOSS_2
+	ld		bc,SPRITES_ROCKAGER_MAREADO_CANT_PART2_SEMIBOSS_2*8*4
     call    PAGE_32_A_SEGMENT_2
 	call	PON_COLOR_2.sin_bc_impuesta
     call    PAGE_10_A_SEGMENT_2
 
 .COLOR_PIEDRAS:
 
-	ld		de,#4800+16*14
-	ld  	b,6
+	ld		de,COLOR_PIEDRAS_DESTINO_PART2_SEMIBOSS_2
+	ld  	b,PIEDRAS_CANT_PART2_SEMIBOSS_2
 
 .BUCLE_PINTA_PIEDRAS:
 
 	push    bc
 	ld      hl,COLOR_PIEDRA_1
-	ld		bc,16*2
+	ld		bc,COLOR_PIEDRAS_TAM_PART2_SEMIBOSS_2
 	push    de
 	call  	PON_COLOR_2.sin_bc_impuesta
 	pop     hl
-	ld      de,32
+	ld      de,COLOR_PIEDRAS_PASO_PART2_SEMIBOSS_2
 	or      a
 	adc     hl,de
 	ex		de,hl
@@ -924,9 +1012,9 @@ PREPARACION_ROCKAGER:
 
 .COLOR_MAREO_PINTA:
 
-    ld		de,#4800+15*16
+    ld		de,COLOR_MAREO_DESTINO_PART2_SEMIBOSS_2
     ld      hl,.COLOR_MAREO
-    ld      bc,16*2
+    ld      bc,COLOR_MAREO_TAM_PART2_SEMIBOSS_2
 	call	PON_COLOR_2.sin_bc_impuesta
 
 	ret
@@ -945,44 +1033,44 @@ PINTA_MAREO:
 		ld		ix,.DATAS_fotd_fotu_x_y_1
 
         ld      a,(SECUENCIA_DE_ROCKAGER)
-        cp      1
+        cp      SECUENCIA_ROCKAGER_UNO_PART2_SEMIBOSS_2
         ret     z
-        cp      3
+        cp      SECUENCIA_ROCKAGER_TRES_PART2_SEMIBOSS_2
         ret     z
-        cp      2
+        cp      SECUENCIA_ROCKAGER_DOS_PART2_SEMIBOSS_2
         jp      z,.REVISION_SECUENCIA_2
 
 .REVISION_SECUENCIA_1:
 
 		xor		a
 		ld		(VARIABLE_UN_USO),a
-        ld		de,#4A00+16*4
+        ld		de,SPRITE_MAREO_2_ATR_PART2_SEMIBOSS_2
 
 .SECUENCIA_1_ROCK_1:
 
         ld      a,(VIDA_ROCKAGER_1)
-        cp      10
+        cp      VIDA_MAREO_UMBRAL_PART2_SEMIBOSS_2
         jp      nc,.SECUENCIA_1_ROCK_2
 
-		ld		b,3
+		ld		b,MAREO_POSICIONES_SECUENCIA_1_PART2_SEMIBOSS_2
 		call	.REVISA_TRES_POSICIONES_1
 
 .SECUENCIA_1_ROCK_2:
 
 		ld		ix,.DATAS_fotd_fotu_x_y_2
         ld      a,(VIDA_ROCKAGER_2)
-        cp      10
+        cp      VIDA_MAREO_UMBRAL_PART2_SEMIBOSS_2
         ret     nc
 
-        ld		de,#4A00+15*4
+        ld		de,SPRITE_MAREO_1_ATR_PART2_SEMIBOSS_2
         ld      a,(FOTOGRAMA_SECUENCIA_ROCKAGER_1)
 
-		ld		b,3
+		ld		b,MAREO_POSICIONES_SECUENCIA_1_PART2_SEMIBOSS_2
 
 .REVISA_TRES_POSICIONES_1:
 
         ld      a,(FOTOGRAMA_SECUENCIA_ROCKAGER_1)
-		cp		98
+		cp		FOTOGRAMA_MAREO_FIN_SECUENCIA_1_PART2_SEMIBOSS_2
 		call	nc,.LIMPIA_ROCK
 
         ld      a,(FOTOGRAMA_SECUENCIA_ROCKAGER_1)
@@ -994,23 +1082,23 @@ PINTA_MAREO:
 .REVISION_SECUENCIA_2:
 
         ld      a,(VIDA_ROCKAGER_1)
-        cp      10
+        cp      VIDA_MAREO_UMBRAL_PART2_SEMIBOSS_2
         ret     nc
 
         ld      a,(VIDA_ROCKAGER_2)
-        cp      10
+        cp      VIDA_MAREO_UMBRAL_PART2_SEMIBOSS_2
         ret     nc
 
 		ld		ix,.DATAS_fotd_fotu_x_y_3
 
-        ld		de,#4A00+15*4
+        ld		de,SPRITE_MAREO_1_ATR_PART2_SEMIBOSS_2
 
-		ld		b,4
+		ld		b,MAREO_POSICIONES_SECUENCIA_2_PART2_SEMIBOSS_2
 
 .REVISA_TRES_POSICIONES_2:
 
         ld      a,(FOTOGRAMA_SECUENCIA_ROCKAGER_3)
-		cp		206
+		cp		FOTOGRAMA_MAREO_FIN_SECUENCIA_2_PART2_SEMIBOSS_2
 		call	nc,.LIMPIA_ROCK
 
         ld      a,(FOTOGRAMA_SECUENCIA_ROCKAGER_3)
@@ -1055,8 +1143,8 @@ PINTA_MAREO:
 
 .LIMPIA_ROCK:
 
-        ld    	a,255
-        ld      c,0
+        ld    	a,SPRITE_OCULTO_Y_PART2_SEMIBOSS_2
+        ld      c,SPRITE_OCULTO_X_PART2_SEMIBOSS_2
 
 .PINTA_ROCK_COMUN:
 
@@ -1064,19 +1152,27 @@ PINTA_MAREO:
         ld      (iy),c
         ld      (iy+1),a
         ld      a,(iy+2)
-        add     a,4
+        add     a,SPRITE_PATRON_PASO_PART2_SEMIBOSS_2
         ld      (iy+2),a
-        cp      60*4
-        jp      nz,.PINTA_ROCK_COMUN_PARTE_2
+        cp      SPRITE_MAREO_PATRON_INICIAL_PART2_SEMIBOSS_2
+        jp      c,.REINICIA_PATRON_MAREO
+        cp      SPRITE_MAREO_PATRON_FIN_PART2_SEMIBOSS_2
+        jp      c,.PINTA_ROCK_COMUN_PARTE_2
 
-        ld      a,57*4
+.REINICIA_PATRON_MAREO:
+
+        ld      a,SPRITE_MAREO_PATRON_INICIAL_PART2_SEMIBOSS_2
         ld      (iy+2),a
 
 .PINTA_ROCK_COMUN_PARTE_2:
 
         ld      hl,VALORES_SPRITE_MAREO
-		ld      bc,3
+		ld      bc,SPRITE_ATRIBUTOS_TAM_PART2_SEMIBOSS_2
+		push	ix
+		push	de
 		call	PON_COLOR_2.sin_bc_impuesta
+		pop		de
+		pop		ix
 		ld		b,1
 		ret
 ;    ds      #8000-$-#2200-#1799                                        ; Colocamos el resto del programa siempre en el mismo sitio    
@@ -1085,26 +1181,32 @@ RECARGAMOS_GRAFICOS_STAGE_X:
 RECARGAMOS_GRAFICOS_STAGE_2:
 
 	xor     a
-	ld      (SPRITES_ACTIVOS+5),a
-	ld      (SPRITES_ACTIVOS+6),a
+	ld      ix,SPRITES_ACTIVOS+SPRITES_ACTIVOS_ROCKAGER_OFS_PART2_SEMIBOSS_2
+	ld      b,SPRITES_FIJOS_ROCKAGER_CANT_PART2_SEMIBOSS_2
 
-    ld      a,12
+.LIBERA_SPRITES_FIJOS_ROCKAGER:
+
+	ld      (ix),a
+	inc     ix
+	djnz    .LIBERA_SPRITES_FIJOS_ROCKAGER
+
+    ld      a,BANCO_STAGE_2_A_PART2_SEMIBOSS_2
     call	CHANGE_BANK_2
                                                                             ; Cargamos el mapa fase
-    ld		hl,#8000												; Carga gráficos fase
-    ld		de,#8000
-    ld		bc,16384
+    ld		hl,VRAM_GRAFICOS_ORIGEN_PART2_SEMIBOSS_2				; Carga gráficos fase
+    ld		de,VRAM_GRAFICOS_DESTINO_1_PART2_SEMIBOSS_2
+    ld		bc,TAM_BANCO_GRAFICOS_PART2_SEMIBOSS_2
     call	PON_COLOR_2.sin_bc_impuesta
 
-    ld      a,17
+    ld      a,BANCO_STAGE_2_B_PART2_SEMIBOSS_2
     call	CHANGE_BANK_2
                                                                             ; Cargamos el mapa fase
-    ld		hl,#8000												; Carga gráficos fase
-    ld		de,#C000
-    ld		bc,16384
+    ld		hl,VRAM_GRAFICOS_ORIGEN_PART2_SEMIBOSS_2				; Carga gráficos fase
+    ld		de,VRAM_GRAFICOS_DESTINO_2_PART2_SEMIBOSS_2
+    ld		bc,TAM_BANCO_GRAFICOS_PART2_SEMIBOSS_2
     call	PON_COLOR_2.sin_bc_impuesta
 
-    ld  	a,10
+    ld  	a,BANCO_COMUN_PART2_SEMIBOSS_2
     call	CHANGE_BANK_2
 
     ld      hl,.BORRA_PARTE_DE_STATUS_PAGE_0

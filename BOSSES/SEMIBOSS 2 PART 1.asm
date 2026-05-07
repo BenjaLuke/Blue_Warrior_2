@@ -1,3 +1,63 @@
+VIDA_INICIAL_ROCKAGER_SEMIBOSS_2:			equ	40
+PAGINA_REGRESO_SEMIBOSS_2:			        equ	38
+
+SPRITES_ACTIVOS_ROCKAGER_OFS_SEMIBOSS_2:		equ	5
+SPRITES_FIJOS_ROCKAGER_CANT_SEMIBOSS_2:		        equ	7
+SPRITE_MAREO_PATRON_INICIAL_SEMIBOSS_2:		        equ	57*4
+
+DATAS_COPY_TAM_SEMIBOSS_2:			        equ	15
+Y_FALSA_DEPH_OFFSET_SEMIBOSS_2:				equ	32
+SET_PAGE_OCULTA_SEMIBOSS_2:			        equ	1
+SET_PAGE_VISIBLE_SEMIBOSS_2:			        equ	2
+
+INTERRUPCION_LINEAL_SEMIBOSS_2:				equ	202
+Y_PINTA_SCROLL_SEMIBOSS_2:			        equ	240
+LIM_Y_INF_SEMIBOSS_2:				        equ	159
+LIM_MUERTE_SEMIBOSS_2:				        equ	190
+Y_LINEA_INT_SEMIBOSS_2:				        equ	195
+
+BANCO_GRAFICOS_ROCKAGER_1_SEMIBOSS_2:		        equ	42
+BANCO_GRAFICOS_ROCKAGER_2_SEMIBOSS_2:		        equ	43
+BANCO_COMUN_SEMIBOSS_2:				        equ	10
+BANCO_STATUS_BOSS_SEMIBOSS_2:				equ	45
+BANCO_FX_SEMIBOSS_2:				        equ	31
+
+VRAM_PAGE_0_Y_SEMIBOSS_2:			        equ	#0000
+VRAM_PAGE_1_Y_SEMIBOSS_2:			        equ	#0100
+VRAM_PAGE_2_Y_SEMIBOSS_2:			        equ	#0200
+VRAM_GRAFICOS_ORIGEN_SEMIBOSS_2:		        equ	#8000
+VRAM_GRAFICOS_DESTINO_1_SEMIBOSS_2:			equ	#8000
+VRAM_GRAFICOS_DESTINO_2_SEMIBOSS_2:			equ	#C000
+VRAM_SPRITES_ATRIBUTOS_SEMIBOSS_2:			equ	#4A00
+VRAM_SPRITES_COLOR_SEMIBOSS_2:				equ	#4800
+
+TAM_BANCO_GRAFICOS_SEMIBOSS_2:				equ	16384
+ANCHO_PANTALLA_SEMIBOSS_2:			        equ	256
+ALTO_STATUS_CARGA_SEMIBOSS_2:				equ	54
+ALTO_STATUS_VISIBLE_SEMIBOSS_2:				equ	20
+CORAZONES_MAX_BOSS_SEMIBOSS_2:				equ	4
+
+PROYECTILES_DEPH_CANT_SEMIBOSS_2:			equ	6
+PROYECTIL_TAM_DATOS_SEMIBOSS_2:				equ	16
+REVISION_ROCKAGER_TAM_DATOS_SEMIBOSS_2:		        equ	8
+PIEDRAS_HACHA_CANT_SEMIBOSS_2:				equ	4
+ARMA_HACHA_MIN_SEMIBOSS_2:			        equ	6
+PROYECTIL_COLISION_ANCHO_SEMIBOSS_2:			equ	20
+
+SPRITE_MAREO_1_ATR_SEMIBOSS_2:				equ	VRAM_SPRITES_ATRIBUTOS_SEMIBOSS_2+15*4
+SPRITE_MAREO_2_ATR_SEMIBOSS_2:				equ	VRAM_SPRITES_ATRIBUTOS_SEMIBOSS_2+16*4
+SPRITE_EXPLOSION_ATR_SEMIBOSS_2:			equ	VRAM_SPRITES_ATRIBUTOS_SEMIBOSS_2+17*4
+SPRITE_EXPLOSION_COLOR_SEMIBOSS_2:			equ	VRAM_SPRITES_COLOR_SEMIBOSS_2+17*16
+SPRITE_EXPLOSION_PATRON_INICIAL_SEMIBOSS_2:	        equ	23*4
+SPRITE_EXPLOSION_PATRON_FIN_SEMIBOSS_2:		        equ	25*4
+
+FX_IMPACTO_ROCKAGER_SEMIBOSS_2:				equ	5
+FX_ROCA_HACHA_SEMIBOSS_2:			        equ	30
+FX_CANAL_0_SEMIBOSS_2:				        equ	0
+PAUSA_TOQUE_ROCA_HACHA_SEMIBOSS_2:			equ	30
+SCORE_ROCA_HACHA_SEMIBOSS_2:			        equ	5
+SCORE_ROCKAGER_MUERTO_SEMIBOSS_2:			equ	30
+
 ROCKAGER:
 
         xor     a
@@ -7,10 +67,10 @@ ROCKAGER:
         ld      (FOTOGRAMA_SECUENCIA_ROCKAGER_3),a
         ld      (FOTOGRAMA_SECUENCIA_ROCKAGER_4),a
         ld      (PRIMERA_APERTURA_SUELO),a
-        ld      a,40
+        ld      a,VIDA_INICIAL_ROCKAGER_SEMIBOSS_2
         ld      (VIDA_ROCKAGER_1),a
         ld      (VIDA_ROCKAGER_2),a
-        ld      a,38
+        ld      a,PAGINA_REGRESO_SEMIBOSS_2
         ld      (PAGINA_DE_REGRESO),a
 
         push    ix
@@ -18,13 +78,18 @@ ROCKAGER:
         push    bc
         push    de
 
-                ld      ix,SPRITES_ACTIVOS+5
-                ld      a,1
-                ld      (ix),a
-                ld      (ix+1),a
+        ld      ix,SPRITES_ACTIVOS+SPRITES_ACTIVOS_ROCKAGER_OFS_SEMIBOSS_2
+        ld      a,1
+        ld      b,SPRITES_FIJOS_ROCKAGER_CANT_SEMIBOSS_2
+
+.RESERVA_SPRITES_FIJOS_ROCKAGER:
+
+        ld      (ix),a
+        inc     ix
+        djnz    .RESERVA_SPRITES_FIJOS_ROCKAGER
         
         ld      ix,VALORES_SPRITE_MAREO
-        ld      a,57*4
+        ld      a,SPRITE_MAREO_PATRON_INICIAL_SEMIBOSS_2
         ld      (ix+2),a
 
         call    PAGE44_A_SEGMENT_1_PREPARACION_ROCKAGER
@@ -100,7 +165,7 @@ ROCKAGER:
         sub     b
         ld      (Y_DEPH),a
         sub     b
-        add     32
+        add     Y_FALSA_DEPH_OFFSET_SEMIBOSS_2
         ld      (Y_FALSA_PARA_DEPH),a
 
 .PUNTO_DE_SCROLL_RETOCADO:
@@ -114,7 +179,7 @@ ROCKAGER:
 
 .CAMBIA_PAGE_PARA_OCULTAR:
 
-        ld      a,1
+        ld      a,SET_PAGE_OCULTA_SEMIBOSS_2
         ld      (SET_PAGE),a
 
 .COPIA_ESCENARIO_RECOLOCADO_A_PAGE_2:
@@ -125,74 +190,74 @@ ROCKAGER:
 
 .DEVUELVE_LA_PAGE_2:
 
-        ld      a,2
+        ld      a,SET_PAGE_VISIBLE_SEMIBOSS_2
         ld      (SET_PAGE),a
 
 .CAMBIAMOS_MAS_VARIABLES_PARA_EL_CAMBIO_DE_SCROLL:
 
-	ld	a,202
+	ld	a,INTERRUPCION_LINEAL_SEMIBOSS_2
 	ld	(DONDE_VA_LA_INTERRUPCION_LINEAL),a 
 
-	ld	a,240
+	ld	a,Y_PINTA_SCROLL_SEMIBOSS_2
 	ld	(Y_PINTA_SCROLL),a
 
- 	ld	a,159
+ 	ld	a,LIM_Y_INF_SEMIBOSS_2
 	ld	(LIM_Y_INF),a	
 			
-	ld	a,190
+	ld	a,LIM_MUERTE_SEMIBOSS_2
 	ld	(LIM_MUERTE),a
 
-	ld	a,195
+	ld	a,Y_LINEA_INT_SEMIBOSS_2
 	ld	(Y_LINEA_INT),a  
 
 .CARGA_ROCAGER:
 
-        ld      a,42
+        ld      a,BANCO_GRAFICOS_ROCKAGER_1_SEMIBOSS_2
         call	CHANGE_BANK_2
                                                                             ; Cargamos el mapa fase
-        ld	hl,#8000												; Carga gráficos fase
-        ld	de,#8000
-        ld	bc,16384
+        ld	hl,VRAM_GRAFICOS_ORIGEN_SEMIBOSS_2												; Carga gráficos fase
+        ld	de,VRAM_GRAFICOS_DESTINO_1_SEMIBOSS_2
+        ld	bc,TAM_BANCO_GRAFICOS_SEMIBOSS_2
         call	PON_COLOR_2.sin_bc_impuesta
 
-        ld      a,43
+        ld      a,BANCO_GRAFICOS_ROCKAGER_2_SEMIBOSS_2
         call	CHANGE_BANK_2
                                                                             ; Cargamos el mapa fase
-        ld	hl,#8000												; Carga gráficos fase
-        ld	de,#C000
-        ld	bc,16384
+        ld	hl,VRAM_GRAFICOS_ORIGEN_SEMIBOSS_2												; Carga gráficos fase
+        ld	de,VRAM_GRAFICOS_DESTINO_2_SEMIBOSS_2
+        ld	bc,TAM_BANCO_GRAFICOS_SEMIBOSS_2
         call	PON_COLOR_2.sin_bc_impuesta
 
-        ld      a,10
+        ld      a,BANCO_COMUN_SEMIBOSS_2
         call	CHANGE_BANK_2
 
 .CARGA_STATUS_BOSS:
 
-        ld      a,45
+        ld      a,BANCO_STATUS_BOSS_SEMIBOSS_2
         call	CHANGE_BANK_2
 
-        ld	hl,#8000												; Carga gráficos fase
-        ld	de,#0000+(256*200)/2
-        ld	bc,(256*54)/2
+        ld	hl,VRAM_GRAFICOS_ORIGEN_SEMIBOSS_2												; Carga gráficos fase
+        ld	de,VRAM_PAGE_0_Y_SEMIBOSS_2+(ANCHO_PANTALLA_SEMIBOSS_2*200)/2
+        ld	bc,(ANCHO_PANTALLA_SEMIBOSS_2*ALTO_STATUS_CARGA_SEMIBOSS_2)/2
         call	PON_COLOR_2.sin_bc_impuesta
 
-        ld      a,10
+        ld      a,BANCO_COMUN_SEMIBOSS_2
         call	CHANGE_BANK_2  
 
 .PINTA_STATUS:
 
-        ld      b,15
+        ld      b,DATAS_COPY_TAM_SEMIBOSS_2
         ld      hl,.COPIA_PARTE_PAGE_2_DE_STATUS
 	call	DOCOPY 
 
-        ld      b,15
+        ld      b,DATAS_COPY_TAM_SEMIBOSS_2
         ld      hl,.COPIA_STATUS_BOSS_A_PAGE_2
 	call	DOCOPY 
 
 .BORRA_CORAZONES_QUE_SOBRAN:
 
         ld      a,(CORAZONES)
-        ld      b,4
+        ld      b,CORAZONES_MAX_BOSS_SEMIBOSS_2
         
 .BUCLE_BORRA_CORAZONES_DE_MAS:
 
@@ -223,7 +288,7 @@ ROCKAGER:
 
 .BUCLE_PINTA_DATAS:
 
-        ld      b,15
+        ld      b,DATAS_COPY_TAM_SEMIBOSS_2
 
 .BUCLE_PINTA_DATAS_1:
 
@@ -321,24 +386,24 @@ ROCKAGER:
 
 MOVIMIENTO_DEPH_EN_ROCKAGER:
 
-        include "MOVIMIENTO EN BOSSES.asm"
+        include "COMUN/MOVIMIENTO EN BOSSES.asm"
         
 RUTINA_ROCKAGER:
 
-        include "RUTINA ROCKAGERS.asm"
+        include "SEMIBOSS 2 PART 3.asm"
 
 SECUENCIA_PROYECTILES_PROPIOS_EN_ROCKAGER:
 
-        include "SECUENCIA PROYECTILES PROPIOS EN BOSSES.asm"        		
+        include "COMUN/SECUENCIA PROYECTILES PROPIOS EN BOSSES.asm"        		
 
 PINTA_PROYECTILES_DE_DEPH_EN_ROCKAGER:
 
-        include "PINTADO PROYECTILES PROPIOS EN BOSSES.asm"
+        include "COMUN/PINTADO PROYECTILES PROPIOS EN BOSSES.asm"
 
 REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK:
         
         ld      iy,PROYECTILES
-        ld      b,6
+        ld      b,PROYECTILES_DEPH_CANT_SEMIBOSS_2
 
 .BUCLE_6_PROYECTILES:
 
@@ -355,7 +420,7 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK:
 
 .PASAMOS_AL_SIGUIENTE_PROYECTIL:
 
-        ld      de,16
+        ld      de,PROYECTIL_TAM_DATOS_SEMIBOSS_2
         add     iy,de
         pop     bc
         djnz    .BUCLE_6_PROYECTILES
@@ -367,10 +432,10 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK:
 .revision_1:
 
         ld      ix,.DATAS_REVISIONES
-        ld      a,8
+        ld      a,REVISION_ROCKAGER_TAM_DATOS_SEMIBOSS_2
         ld      e,a
         ld      d,0
-        ld      b,6
+        ld      b,PROYECTILES_DEPH_CANT_SEMIBOSS_2
 
 .revision_2:
         jp    .revision_bloque_1
@@ -387,10 +452,10 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK:
 .revision_4:
 
         ld      a,(ARMA_USANDO)                 ; Nos aseguramos de que es un hacha
-        cp      6
+        cp      ARMA_HACHA_MIN_SEMIBOSS_2
         jp      c,.PASAMOS_AL_SIGUIENTE_PROYECTIL
 	push    bc
-        ld      b,4
+        ld      b,PIEDRAS_HACHA_CANT_SEMIBOSS_2
 
         xor     a
         ld      (VARIABLE_UN_USO3),a
@@ -413,7 +478,7 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK:
 	sub	8
 	ld	c,a
 	ld	a,(iy)
-	add	20
+	add	PROYECTIL_COLISION_ANCHO_SEMIBOSS_2
 	cp	c
 	jp	c,.SIGUIENTE_EN_EL_BUCLE
 
@@ -428,7 +493,7 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK:
 	sub	8
 	ld	c,a
 	ld	a,(iy+1)
-	add	20
+	add	PROYECTIL_COLISION_ANCHO_SEMIBOSS_2
 	cp	c
 	jp	c,.SIGUIENTE_EN_EL_BUCLE
 
@@ -442,18 +507,18 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK:
         ld      a,27
         ld      (ix+3),a
 
-	ld	hl,5
+	ld	hl,SCORE_ROCA_HACHA_SEMIBOSS_2
         ld      (SCORE_A_SUMAR),hl
         push    bc
         call    SUMA_SCORE
 
 	call    PAGE_31_A_SEGMENT_2
-	ld	a,30
-	ld	c,0
+	ld	a,FX_ROCA_HACHA_SEMIBOSS_2
+	ld	c,FX_CANAL_0_SEMIBOSS_2
 	call	ayFX_INIT
         call    PAGE_10_A_SEGMENT_2
 
-        ld      a,30
+        ld      a,PAUSA_TOQUE_ROCA_HACHA_SEMIBOSS_2
         ld      (PAUSA_TOQUE_ROCA_HACHA),a
 
         pop     bc
@@ -470,8 +535,8 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK:
 
 .sobre_el_proyectil:
 
-        ld      a,5
-        ld      c,0
+        ld      a,FX_IMPACTO_ROCKAGER_SEMIBOSS_2
+        ld      c,FX_CANAL_0_SEMIBOSS_2
         call    TIRA_FX
 
         xor     a
@@ -487,7 +552,7 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK:
         ld      a,(iy+1)
         sub     8
         ld      (ix),a
-        ld      a,23*4
+        ld      a,SPRITE_EXPLOSION_PATRON_INICIAL_SEMIBOSS_2
         ld      (ix+2),a
         
         jp      .SALIMOS
@@ -556,7 +621,7 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK:
         dec     a
         ld      (VIDA_ROCKAGER_1),a
 
-        cp      40
+        cp      VIDA_INICIAL_ROCKAGER_SEMIBOSS_2
         jp      c,.sobre_el_proyectil
         xor     a
         ld      (VIDA_ROCKAGER_1),a
@@ -569,7 +634,7 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK:
         dec     a
         ld      (VIDA_ROCKAGER_2),a
 
-        cp      40
+        cp      VIDA_INICIAL_ROCKAGER_SEMIBOSS_2
         jp      c,.sobre_el_proyectil
         xor     a
         ld      (VIDA_ROCKAGER_2),a
@@ -645,7 +710,7 @@ REVISAMOS_SI_MUERE_UN_ROCKAGER:
 
         ld      (POSICION_DERRUMBE_ROCKAGER),a
 
-	ld	hl,30
+	ld	hl,SCORE_ROCKAGER_MUERTO_SEMIBOSS_2
         ld      (SCORE_A_SUMAR),hl
         call    SUMA_SCORE
 
@@ -756,7 +821,7 @@ REVISAMOS_SI_MUERE_UN_ROCKAGER:
 
 PINTA_MARCADORES_VIDA_ROCK:
 
-        include "PINTA MARCADORES VIDA EN BOSSES.asm"
+        include "COMUN/PINTA MARCADORES VIDA EN BOSSES.asm"
 
 PINTA_EXPLOSION:
 
@@ -764,7 +829,7 @@ PINTA_EXPLOSION:
         ld      a,(ix+2)
         or      a
         ret     z
-        cp      25*4
+        cp      SPRITE_EXPLOSION_PATRON_FIN_SEMIBOSS_2
         jp      nz,.PINTAMOS
 
         xor     a
@@ -772,15 +837,19 @@ PINTA_EXPLOSION:
 
 .PINTAMOS:        
 
-        ld	de,#4A00+17*4
+        ld	de,SPRITE_EXPLOSION_ATR_SEMIBOSS_2
         ld      hl,VALORES_EXPLOSION_CON_ROCK
         ld      bc,3
+        push    ix
 	call	PON_COLOR_2.sin_bc_impuesta
+        pop     ix
 	
-        ld	de,#4800+17*16
+        ld	de,SPRITE_EXPLOSION_COLOR_SEMIBOSS_2
         ld      hl,.COLOR_EXPLOSION
         ld      bc,16
+        push    ix
 	call	PON_COLOR_2.sin_bc_impuesta
+        pop     ix
 
         ld      a,(ix+2)
         or      a

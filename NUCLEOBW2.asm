@@ -2143,7 +2143,7 @@ FADE_FASE_1_3_A_NEGRO_b1:
 
 		org		#4000
 
-		include	"BOSS 2 PARTE 1.asm"
+		include	"BOSSES/BOSS 2.asm"
 
         ds      #5E00-$                                                 ; Colocamos el resto del programa siempre en el mismo sitio    
 
@@ -2902,7 +2902,7 @@ PALETA_BLANCO_NEGRO_5:
 
 		include "BASICOS/GAME OVER 2.asm"
 
-		include	"BASICOS/ROCKAGER.asm"
+		include	"BOSSES/SEMIBOSS 2 PART 1.asm"
 
         ds      #8000-$-#2200                                           ; Colocamos el resto del programa siempre en el mismo sitio    
 
@@ -3009,7 +3009,7 @@ GRAFICOS_MOAI_3:
 
 		org		#4000
 
-		include	"BASICOS/ROCKAGER_2.asm"
+		include	"BOSSES/SEMIBOSS 2 PART 2.asm"
 
         ds      #8000-$-#2200                                           ; Colocamos el resto del programa siempre en el mismo sitio    
 
