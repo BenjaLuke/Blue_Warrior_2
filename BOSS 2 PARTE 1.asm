@@ -1,6 +1,7 @@
 VIDA_INICIAL_ROCKAGER_BOSS_2:	equ	10
-VIDA_INICIAL_DAVEANIX_BOSS_2:	equ	120
+VIDA_INICIAL_DAVEANIX_BOSS_2:	equ	10
 VIDA_TOTAL_INICIAL_BOSS_2:	equ	VIDA_INICIAL_ROCKAGER_BOSS_2+VIDA_INICIAL_DAVEANIX_BOSS_2
+VIDA_ANCHO_BARRA_BOSS_2:		equ	99
 
 RUTINA_BOSS_2:
 
@@ -574,7 +575,7 @@ RUTINA_BOSS_2:
 
 .COPI_MARCADOR_BOSSES_CORAZONES_VACIOS:
 
-		dw	#0000+151,#0000+220,#0000+151,#0201,#0000+19,#0000+16
+		dw	#0000+151,#0000+220,#0000+151,#0201,#0000+VIDA_ANCHO_BARRA_BOSS_2,#0000+16
 		db      #00,#00,10010000b
 
 .COPY_PUNTOS_MAGIA:
@@ -640,7 +641,6 @@ BUCLE_PELEA_BOSS_2:
         inc     a                                       ;  [
         and     00000011B                               ;  [
         ld      (VELOCIDAD_ROCKAGER),a                  ;  [
-        or      a                                       ;  [
         jr      nz,.CONTROL_POST_BUCLE_1                ;  [
 
 		call	ANIMA_ROCKAGERS_EN_BOSS_2
@@ -1318,67 +1318,21 @@ ON_SPRITE_GLOBAL:
 
 GUARDA_ESTADO_PROYECTIL_BOSS_2:
 
-		ld		a,(PROYECTIL_BOSS_2_X)
-		ld		(COPIA_PROYECTIL_BOSS_2_X),a
-		ld		a,(PROYECTIL_BOSS_2_Y)
-		ld		(COPIA_PROYECTIL_BOSS_2_Y),a
-		ld		a,(PROYECTIL_BOSS_2_DIRECCION)
-		ld		(COPIA_PROYECTIL_BOSS_2_DIRECCION),a
-		ld		a,(PROYECTIL_BOSS_2_PASO_TABLA)
-		ld		(COPIA_PROYECTIL_BOSS_2_PASO_TABLA),a
-		ld		a,(PROYECTIL_BOSS_2_ESPERA)
-		ld		(COPIA_PROYECTIL_BOSS_2_ESPERA),a
-		ld		a,(PROYECTIL_BOSS_2_SPRITE_ACTUAL)
-		ld		(COPIA_PROYECTIL_BOSS_2_SPRITE_ACTUAL),a
-		ld		a,(PROYECTIL_BOSS_2_SIGUIENTE_SPRITE)
-		ld		(COPIA_PROYECTIL_BOSS_2_SIGUIENTE_SPRITE),a
-		ld		a,(PROYECTIL_BOSS_2_SIGUIENTE_EMISOR)
-		ld		(COPIA_PROYECTIL_BOSS_2_SIGUIENTE_EMISOR),a
-		ld		a,(PROYECTIL_BOSS_2_PUNTERO_SPRITES_ACTIVOS)
-		ld		(COPIA_PROYECTIL_BOSS_2_PUNTERO_SPRITES_ACTIVOS),a
-		ld		a,(PROYECTIL_BOSS_2_PUNTERO_SPRITES_ACTIVOS+1)
-		ld		(COPIA_PROYECTIL_BOSS_2_PUNTERO_SPRITES_ACTIVOS+1),a
-		ld		a,(PROYECTIL_BOSS_2_DIRECCION_VRAM_ATRIBUTOS)
-		ld		(COPIA_PROYECTIL_BOSS_2_DIRECCION_VRAM_ATRIBUTOS),a
-		ld		a,(PROYECTIL_BOSS_2_DIRECCION_VRAM_ATRIBUTOS+1)
-		ld		(COPIA_PROYECTIL_BOSS_2_DIRECCION_VRAM_ATRIBUTOS+1),a
-		ld		a,(PROYECTIL_BOSS_2_DIRECCION_VRAM_COLOR)
-		ld		(COPIA_PROYECTIL_BOSS_2_DIRECCION_VRAM_COLOR),a
-		ld		a,(PROYECTIL_BOSS_2_DIRECCION_VRAM_COLOR+1)
-		ld		(COPIA_PROYECTIL_BOSS_2_DIRECCION_VRAM_COLOR+1),a
-		ret
+        ld      hl,PROYECTIL_BOSS_2_X
+        ld      de,COPIA_PROYECTIL_BOSS_2_X
+        ld      bc,14
+        ldir
+        ret
+
 
 RESTAURA_ESTADO_PROYECTIL_BOSS_2:
 
-		ld		a,(COPIA_PROYECTIL_BOSS_2_X)
-		ld		(PROYECTIL_BOSS_2_X),a
-		ld		a,(COPIA_PROYECTIL_BOSS_2_Y)
-		ld		(PROYECTIL_BOSS_2_Y),a
-		ld		a,(COPIA_PROYECTIL_BOSS_2_DIRECCION)
-		ld		(PROYECTIL_BOSS_2_DIRECCION),a
-		ld		a,(COPIA_PROYECTIL_BOSS_2_PASO_TABLA)
-		ld		(PROYECTIL_BOSS_2_PASO_TABLA),a
-		ld		a,(COPIA_PROYECTIL_BOSS_2_ESPERA)
-		ld		(PROYECTIL_BOSS_2_ESPERA),a
-		ld		a,(COPIA_PROYECTIL_BOSS_2_SPRITE_ACTUAL)
-		ld		(PROYECTIL_BOSS_2_SPRITE_ACTUAL),a
-		ld		a,(COPIA_PROYECTIL_BOSS_2_SIGUIENTE_SPRITE)
-		ld		(PROYECTIL_BOSS_2_SIGUIENTE_SPRITE),a
-		ld		a,(COPIA_PROYECTIL_BOSS_2_SIGUIENTE_EMISOR)
-		ld		(PROYECTIL_BOSS_2_SIGUIENTE_EMISOR),a
-		ld		a,(COPIA_PROYECTIL_BOSS_2_PUNTERO_SPRITES_ACTIVOS)
-		ld		(PROYECTIL_BOSS_2_PUNTERO_SPRITES_ACTIVOS),a
-		ld		a,(COPIA_PROYECTIL_BOSS_2_PUNTERO_SPRITES_ACTIVOS+1)
-		ld		(PROYECTIL_BOSS_2_PUNTERO_SPRITES_ACTIVOS+1),a
-		ld		a,(COPIA_PROYECTIL_BOSS_2_DIRECCION_VRAM_ATRIBUTOS)
-		ld		(PROYECTIL_BOSS_2_DIRECCION_VRAM_ATRIBUTOS),a
-		ld		a,(COPIA_PROYECTIL_BOSS_2_DIRECCION_VRAM_ATRIBUTOS+1)
-		ld		(PROYECTIL_BOSS_2_DIRECCION_VRAM_ATRIBUTOS+1),a
-		ld		a,(COPIA_PROYECTIL_BOSS_2_DIRECCION_VRAM_COLOR)
-		ld		(PROYECTIL_BOSS_2_DIRECCION_VRAM_COLOR),a
-		ld		a,(COPIA_PROYECTIL_BOSS_2_DIRECCION_VRAM_COLOR+1)
-		ld		(PROYECTIL_BOSS_2_DIRECCION_VRAM_COLOR+1),a
-		ret
+        ld      hl,COPIA_PROYECTIL_BOSS_2_X
+        ld      de,PROYECTIL_BOSS_2_X
+        ld      bc,14
+        ldir
+        ret
+		
 TABLA_DIRECCIONES_VRAM_ATRIBUTOS_PROYECTIL_BOSS_2:
 	dw		#4A58,#4A5C,#4A60,#4A64,#4A68,#4A6C,#4A70,#4A74
 
@@ -1462,58 +1416,69 @@ PINTA_MARCADORES_VIDA_FINAL_BOSS_2:
 		add		c
 		call	CONVIERTE_VIDA_FINAL_A_BARRA_BOSS_2
 
+		or		a
+		ret		z
+		ld		b,a
+		ld		a,VIDA_ANCHO_BARRA_BOSS_2
+		sub		b
 		ld		c,151
 		add		c
 
 		ld		ix,DATAS_COR_EMPT_MALO
-		ld		(ix),a
 		ld		(ix+4),a
+		ld		a,b
+		ld		(ix+8),a
+		xor		a
+		ld		(ix+9),a
 
 	 	ld	    hl,DATAS_COR_EMPT_MALO
 		jp		DOCOPY
 
 CONVIERTE_VIDA_FINAL_A_BARRA_BOSS_2:
 
-		ld		b,a
-		xor		a
-		ld		h,a
-		ld		l,a
-		ld		d,a
+		ld		c,a
+		ld		a,VIDA_TOTAL_INICIAL_BOSS_2
+		sub		c
+        ld      b,a
+        xor     a
+        ld      d,a
+        ld      l,a
 
 .BUCLE_ESCALA_VIDA_FINAL_BOSS_2:
 
-		ld		a,b
-		or		a
-		jr		z,.FIN_ESCALA_VIDA_FINAL_BOSS_2
-		dec		b
-		ld		a,l
-		add		80
-		ld		l,a
-		ld		a,h
-		adc		a,0
-		ld		h,a
-		ld		a,h
-		or		a
-		jr		nz,.RESTA_ESCALA_VIDA_FINAL_BOSS_2
-		ld		a,l
-		cp		VIDA_TOTAL_INICIAL_BOSS_2
-		jr		c,.BUCLE_ESCALA_VIDA_FINAL_BOSS_2
+        ld      a,b
+        or      a
+        jr      z,.FIN_ESCALA_VIDA_FINAL_BOSS_2
 
-.RESTA_ESCALA_VIDA_FINAL_BOSS_2:
+        dec     b
 
-		ld		a,l
-		sub		VIDA_TOTAL_INICIAL_BOSS_2
-		ld		l,a
-		ld		a,h
-		sbc		a,0
-		ld		h,a
-		inc		d
-		jr		.BUCLE_ESCALA_VIDA_FINAL_BOSS_2
+        ld      a,l
+        add     a,VIDA_ANCHO_BARRA_BOSS_2
+
+.AJUSTA_ESCALA_VIDA_FINAL_BOSS_2:
+
+        cp      VIDA_TOTAL_INICIAL_BOSS_2
+        jr      c,.GUARDA_RESTO_ESCALA_VIDA_FINAL_BOSS_2
+
+        sub     VIDA_TOTAL_INICIAL_BOSS_2
+        inc     d
+        jr      .AJUSTA_ESCALA_VIDA_FINAL_BOSS_2
+
+.GUARDA_RESTO_ESCALA_VIDA_FINAL_BOSS_2:
+
+        ld      l,a
+        jr      .BUCLE_ESCALA_VIDA_FINAL_BOSS_2
 
 .FIN_ESCALA_VIDA_FINAL_BOSS_2:
 
-		ld		a,d
-		ret
+        ld      a,d
+        ld      h,a
+        ld      a,l
+        or      a
+        ld      a,h
+        ret     z
+        inc     a
+        ret
 
 BUCLE_REVISION_TODOS_LOS_PROYECTILES_OJO_BOSS_2:
 
@@ -1524,37 +1489,25 @@ BUCLE_REVISION_TODOS_LOS_PROYECTILES_OJO_BOSS_2:
 
 .BUCLE_REVISION_PROYECTILES_OJO_BOSS_2:
 
-		ld		a,(hl)
-		or		a
-		jr		z,.SIGUIENTE_PROYECTIL_OJO_BOSS_2
+        ld      a,(hl)
+        or      a
+        jr      z,.SIGUIENTE_PROYECTIL_OJO_BOSS_2
 
-		ld		a,(ix)
-		ld		c,a
-		ld		a,(X_DEPH)
-		add		20
-		cp		c
-		jr		c,.SIGUIENTE_PROYECTIL_OJO_BOSS_2
+        ; --- Comprobar X ---
+        ld      a,(X_DEPH)
+        add     a,20
+        sub     (ix+0)          ; A = X_DEPH + 20 - X_PROYECTIL
+        cp      36              ; 20 + 16
+        jr      nc,.SIGUIENTE_PROYECTIL_OJO_BOSS_2
 
-		ld		a,(ix)
-		add		16
-		ld		c,a
-		ld		a,(X_DEPH)
-		cp		c
-		jr		nc,.SIGUIENTE_PROYECTIL_OJO_BOSS_2
+        ; --- Comprobar Y ---
+        ld      a,(Y_DEPH)
+        add     a,20
+        sub     (iy+0)          ; A = Y_DEPH + 20 - Y_PROYECTIL
+        cp      36              ; 20 + 16
+        jr      nc,.SIGUIENTE_PROYECTIL_OJO_BOSS_2
 
-		ld		a,(iy)
-		ld		c,a
-		ld		a,(Y_DEPH)
-		add		20
-		cp		c
-		jr		c,.SIGUIENTE_PROYECTIL_OJO_BOSS_2
-
-		ld		a,(iy)
-		add		16
-		ld		c,a
-		ld		a,(Y_DEPH)
-		cp		c
-		jr		nc,.SIGUIENTE_PROYECTIL_OJO_BOSS_2
+        ; Si llega aquí, hay colisión
 
 		call	DESACTIVA_PROYECTIL_OJO_BOSS_2_ACTUAL
 		call	REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH.DANO_DE_PUPA
@@ -1828,29 +1781,44 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK_BOSS_2:
 
 .REVISION_DAVEANIX_BOSS_2:
 
-		ld		c,(hl)
-		inc		hl
-		ld		a,(iy)
-		cp		c
-		jr		c,.SIGUIENTE_REVISION_DAVEANIX_BOSS_2
-		sub		c
-		cp		(hl)
-		jr		nc,.SIGUIENTE_REVISION_DAVEANIX_BOSS_2
+        ld      c,(hl)
+        inc     hl
+        ld      a,(iy)
+        cp      c
+        jr      c,.SIGUIENTE_REVISION_DAVEANIX_BOSS_2
+        sub     c
+        cp      (hl)
+        jr      nc,.SIGUIENTE_REVISION_DAVEANIX_BOSS_2
 
-		ld		a,(VIDA_ROCKAGER_BOSS_2)
-		or		a
-		jr		nz,.SOBRE_EL_PROYECTIL_ROCK_BOSS_2
-		ld		a,(VIDA_DAVEANIX_BOSS_2)
-		or		a
-		jr		z,.SOBRE_EL_PROYECTIL_ROCK_BOSS_2
-		dec		a
-		ld		(VIDA_DAVEANIX_BOSS_2),a
-		push	af
-		call	PINTA_MARCADORES_VIDA_FINAL_BOSS_2
-		pop		af
-		or		a
-		jr		z,.SOBRE_EL_PROYECTIL_MUERTE_DAVEANIX_BOSS_2
-		jr		.SOBRE_EL_PROYECTIL_ROCK_BOSS_2
+
+        ; Primero miramos la vida de Daveanix
+        ld      a,(VIDA_DAVEANIX_BOSS_2)
+        or      a
+        jr      z,.SOBRE_EL_PROYECTIL_ROCK_BOSS_2
+
+        ; Si vida de Daveanix >= 6, se le puede restar siempre
+        cp      6
+        jr      nc,.RESTAR_VIDA_DAVEANIX_BOSS_2
+
+        ; Si vida de Daveanix < 6, sólo se resta si Rockager está muerto
+        ld      a,(VIDA_ROCKAGER_BOSS_2)
+        or      a
+        jr      nz,.SOBRE_EL_PROYECTIL_ROCK_BOSS_2
+
+        ; Recuperamos la vida de Daveanix porque A ahora contiene vida de Rockager
+        ld      a,(VIDA_DAVEANIX_BOSS_2)
+
+
+.RESTAR_VIDA_DAVEANIX_BOSS_2:
+
+        dec     a
+        ld      (VIDA_DAVEANIX_BOSS_2),a
+        push    af
+        call    PINTA_MARCADORES_VIDA_FINAL_BOSS_2
+        pop     af
+        or      a
+        jr      z,.SOBRE_EL_PROYECTIL_MUERTE_DAVEANIX_BOSS_2
+        jr      .SOBRE_EL_PROYECTIL_ROCK_BOSS_2
 
 .SIGUIENTE_REVISION_DAVEANIX_BOSS_2:
 
@@ -1875,8 +1843,8 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK_BOSS_2:
 
 .DATAS_REVISIONES_X_DAVEANIX_BOSS_2:
 
-		db		110,12
-		db		130,16
+		db		102,12
+		db		122,16
 
 PINTA_EXPLOSION_ROCK_BOSS_2:
 
@@ -2260,12 +2228,12 @@ ANIMA_ROCKAGERS_EN_BOSS_2:
 				db  192,0,71,112,48,48
 				db  0,48,71,112,48,48
 
-	               db  0,0,208,155,48,48            ; ABAJO DERECHA
-	               db  48,0,208,155,48,48
-	               db  96,0,208,155,48,48
-	               db  144,0,208,155,48,48
-	               db  192,0,208,155,48,48
-	               db  0,48,208,155,48,48
+	            db  0,0,208,155,48,48            ; ABAJO DERECHA
+	            db  48,0,208,155,48,48
+	            db  96,0,208,155,48,48
+	            db  144,0,208,155,48,48
+	            db  192,0,208,155,48,48
+	            db  0,48,208,155,48,48
 
                 db  0,0,0,144,48,48           ; CENTRO DERECHA
                 db  48,0,0,144,48,48
@@ -2906,17 +2874,63 @@ RUTINA_ROCAS_EN_BOSS_2:
 	db	0,0
 
 MUERTE_DE_DAVEANIX_BOSS_2:
-
-PULSA_UNA_TECLA_PARA_SEGUIR_b2:
-
-		xor		a
-		call	GTTRIG_RAM
-		or		a
-		jr		z,PULSA_UNA_TECLA_PARA_SEGUIR_b2
+; paramos la música
+		call	stpmus
 		
+; Daveanix abre la boca
+		ld		hl,COPY_DAVEANIX_PRE_PAUSA_BOSS_2
+		call	DOCOPY
+
+; Nos aseguramos que el prota no está en modo transparente ni el fondo en colores varios
+		ld		a,1
+		ld		(COLOR_ALEATORIO),a
+		xor		a
+		ld		(INMUNE),a
+
+; pequeña pausa
+		ld		a,100
+		call	BUCLE_PINTA_TILES.rutina_de_pausa
+
+; limpiamos sprites
+		xor		a
+		ld		hl,#4A00+10*4
+		ld		bc,20*4
+		call	FILVRM_RAM
+		
+; animamos la muerte de Daveanix		
+		ld		b,64
+
+; audio de terremoto
+		ld		a,25
+		ld		c,0
+        call    PAGE_31_A_SEGMENT_2
+		call	ayFX_INIT
+        call   	PAGE_10_A_SEGMENT_2
+
+.BUCLE_ANIMA_MUERTE_DAVEANIX_BOSS_2:
+
+		push	bc
+		ld		hl,COPY_ANIMA_MUERTE_DAVEANIX_A_BUFFER_BOSS_2
+		call	DOCOPY
+		ld		hl,COPY_ANIMA_MUERTE_DAVEANIX_DESDE_BUFFER_BOSS_2
+		call	DOCOPY
+		ld		a,8
+		call	BUCLE_PINTA_TILES.rutina_de_pausa
+		pop		bc
+		djnz	.BUCLE_ANIMA_MUERTE_DAVEANIX_BOSS_2
+
 TERMINANDO_LA_BATALLA_b2:
 
 		include	"AUDIOS/INICIA MUSICA_WIN.asm"
+
+		ld		hl,TODOS_LOS_SPRITES
+		call	PAGE_32_A_SEGMENT_2
+		ld		de,#4000+1*8*4
+		ld		bc,45*8*4
+		call	PON_COLOR_2.sin_bc_impuesta
+		call	PAGE_10_A_SEGMENT_2
+		call	VUELCA_DATOS_COLORES_DEPH_A_VRAM
+		call	PAGE_10_A_SEGMENT_2
 
 CAMINITO_A_PUERTA_b2:
 
@@ -2937,6 +2951,21 @@ ULTIMO_DESPLAZAMIENTO_b2:
 VOLVEMOS_b2:
 
 		jp		CARGA_SLOT_REGRESO_A_JUEGO
+
+COPY_DAVEANIX_PRE_PAUSA_BOSS_2:
+
+		dw		#0000+128,#0100+224,#0000+112,#0200+78,#0000+32,#0000+16
+		db		#00,#00,10010000b
+
+COPY_ANIMA_MUERTE_DAVEANIX_A_BUFFER_BOSS_2:
+
+		dw		#0000+96,#0200+45,#0000+0,#0100+0,#0000+64,#0000+53
+		db		#00,#00,10010000b
+
+COPY_ANIMA_MUERTE_DAVEANIX_DESDE_BUFFER_BOSS_2:
+
+		dw		#0000+0,#0100+0,#0000+96,#0200+46,#0000+64,#0000+53
+		db		#00,#00,10010000b
 
 FADE_DEPH_A_NEGRO_b2:
 

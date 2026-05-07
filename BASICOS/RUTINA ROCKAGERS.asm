@@ -330,26 +330,33 @@
 
 .RECARGAMOS_GRAFICOS_STAGE_2:
 
-        pop     ix
+        pop     hl
+
+        di                  ; protegemos cambios de banco largos
 
         ld      a,12
-        call	CHANGE_BANK_2
-                                                                            ; Cargamos el mapa fase
-        ld	hl,#8000												; Carga gráficos fase
-        ld	de,#8000
-        ld	bc,16384
-        call	PON_COLOR_2.sin_bc_impuesta
+        call    CHANGE_BANK_2
+
+        call    VDPREADY
+        ld      hl,#8000
+        ld      de,#8000
+        ld      bc,16384
+        call    PON_COLOR_2.sin_bc_impuesta
+        call    VDPREADY
 
         ld      a,17
-        call	CHANGE_BANK_2
-                                                                            ; Cargamos el mapa fase
-        ld	hl,#8000												; Carga gráficos fase
-        ld	de,#C000
-        ld	bc,16384
-        call	PON_COLOR_2.sin_bc_impuesta
+        call    CHANGE_BANK_2
+
+        ld      hl,#8000
+        ld      de,#C000
+        ld      bc,16384
+        call    PON_COLOR_2.sin_bc_impuesta
+        call    VDPREADY
 
         ld      a,10
-        call	CHANGE_BANK_2
+        call    CHANGE_BANK_2
+
+        ei
 
 .BORRAMOS_PIEDRAS_EXPLOSIONES_Y_MAREOS
 
