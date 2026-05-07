@@ -25,7 +25,7 @@ BANCO_FX_SEMIBOSS_2:				        equ	31
 VRAM_PAGE_0_Y_SEMIBOSS_2:			        equ	#0000
 VRAM_PAGE_1_Y_SEMIBOSS_2:			        equ	#0100
 VRAM_PAGE_2_Y_SEMIBOSS_2:			        equ	#0200
-VRAM_GRAFICOS_ORIGEN_SEMIBOSS_2:		        equ	#8000
+VRAM_GRAFICOS_ORIGEN_SEMIBOSS_2:                        equ	#8000
 VRAM_GRAFICOS_DESTINO_1_SEMIBOSS_2:			equ	#8000
 VRAM_GRAFICOS_DESTINO_2_SEMIBOSS_2:			equ	#C000
 VRAM_SPRITES_ATRIBUTOS_SEMIBOSS_2:			equ	#4A00
@@ -236,7 +236,7 @@ ROCKAGER:
         ld      a,BANCO_STATUS_BOSS_SEMIBOSS_2
         call	CHANGE_BANK_2
 
-        ld	hl,VRAM_GRAFICOS_ORIGEN_SEMIBOSS_2												; Carga gráficos fase
+        ld	hl,STATUS_SEMIBOSS_2												; Carga gráficos fase
         ld	de,VRAM_PAGE_0_Y_SEMIBOSS_2+(ANCHO_PANTALLA_SEMIBOSS_2*200)/2
         ld	bc,(ANCHO_PANTALLA_SEMIBOSS_2*ALTO_STATUS_CARGA_SEMIBOSS_2)/2
         call	PON_COLOR_2.sin_bc_impuesta

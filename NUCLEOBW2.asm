@@ -2078,49 +2078,9 @@ M_GAME_OVER_5:
 
 		org		#4000
 
-RUTINA_BOSS_1:
+		include	"BOSSES/BOSS 1.asm"
 
-		include	"AUDIOS/INICIA MUSICA_BOSS.asm"
-
-; todo el codigo de enfrentamiento
-PULSA_UNA_TECLA_PARA_SEGUIR_b1:
-
-		xor		a
-		call	GTTRIG_RAM
-		or		a
-		jp		z,PULSA_UNA_TECLA_PARA_SEGUIR_b1
-
-TERMINANDO_LA_BATALLA_b1:
-
-		include	"AUDIOS/INICIA MUSICA_WIN.asm"
-
-CAMINITO_A_PUERTA_b1:
-
-		include	"VARIOS USOS/PASEITO HASTA PUERTA.asm"		
-SALUDO_b1:
-
-		include	"VARIOS USOS/SALUDO_GANA_FASE.asm"		
-FADE_DEPH_b1:
-
-;		ld		hl,FADE_DEPH_A_NEGRO_b1
-;		include	"VARIOS USOS/FADE DEPH SALIENDO DE ESCENA.asm"
-ULTIMO_DESPLAZAMIENTO_b1:
-
-		include	"VARIOS USOS/PASEITO DENTRO DE PUERTA.asm"		
-
-VOLVEMOS_b1:
-
-		jp		CARGA_SLOT_REGRESO_A_JUEGO
-
-FADE_DEPH_A_NEGRO_b1:
-
-		incbin	"PALETAS/BOSS1 DEPH.FADEOUT"
-
-FADE_FASE_1_3_A_NEGRO_b1:
-
-		incbin	"PALETAS/BOSS1.fadeout"
-
-        ds      #8000-$-#2200                                           ; Colocamos el resto del programa siempre en el mismo sitio    
+		ds      #5E00-$                                                 ; Colocamos el resto del programa siempre en el mismo sitio
 
 		include "BASICOS/RUTINAS CERRADAS (sin etiquetas).asm"				            ; Incluímos las referencias a la BIOS
 		include "AUDIOS/LANZADOR EFECTOS PSG (sin etiquetas).asm"
@@ -3031,8 +2991,10 @@ GRAFICOS_MOAI_3:
  **********************/
 
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
-
-        incbin  "GRAFICOS/STATUS SEMIBOSS 2.DAT"
+STATUS_SEMIBOSS_1:
+		incbin "GRAFICOS/STATUS SEMIBOSS 1.DAT"
+STATUS_SEMIBOSS_2:
+       	incbin  "GRAFICOS/STATUS SEMIBOSS 2.DAT"
 
         ds		#C000-$
 
