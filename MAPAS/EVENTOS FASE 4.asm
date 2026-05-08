@@ -227,7 +227,7 @@ TABLA_SUCESOS_FASE_4:
 		dw		RETORNO
 		dw		NUEVO_COVID_2_IZQUIERDA
 		dw		RETORNO
-		dw		RETORNO	
+		dw		BUCLE_PINTA_TILES.musica_mas_velocidad_mas_limites
 		dw		RETORNO
 		dw		RETORNO
 		dw		RETORNO
@@ -240,7 +240,7 @@ TABLA_SUCESOS_FASE_4:
 		dw		BUCLE_PINTA_TILES.SI_QUE_SE_MUEVE
 		dw		BUCLE_PINTA_TILES.PINTA_FADE_IN_1
 		dw		NUEVO_SKRULLEX_5_FUEGO
-		dw		BUCLE_PINTA_TILES.musica_mas_velocidad_mas_limites
+		dw		RETORNO
 		dw		CARGA_SKRULLEX
 		dw		RETORNO
 		dw		RETORNO

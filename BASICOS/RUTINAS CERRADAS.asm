@@ -712,6 +712,12 @@ BUCLE_PINTA_TILES:
 		pop		ix	
 		jp		.musica_mas_velocidad
 
+.bloqueamos_el_avance:
+
+		ld		a,1
+		ld		(AVANCE_BLOQUEADO),a
+		ret
+
 .musica_mas_velocidad_mas_limites_mas_rotacion:
 
 		jp		.musica_mas_velocidad_mas_limites

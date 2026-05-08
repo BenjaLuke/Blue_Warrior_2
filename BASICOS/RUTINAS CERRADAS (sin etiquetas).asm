@@ -711,7 +711,13 @@
 		call	stpmus					
 		pop		ix	
 		jp		BUCLE_PINTA_TILES.musica_mas_velocidad
-			
+
+	;.bloqueamos_el_avance:
+
+		ld		a,1
+		ld		(AVANCE_BLOQUEADO),a
+		ret
+				
 ;.musica_mas_velocidad_mas_limites_mas_rotacion:
 
 		jp		BUCLE_PINTA_TILES.musica_mas_velocidad_mas_limites

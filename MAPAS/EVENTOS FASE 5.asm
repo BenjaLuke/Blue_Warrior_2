@@ -201,7 +201,7 @@ TABLA_SUCESOS_FASE_5:
 		dw		RETORNO
 		dw		RETORNO
 		dw		RETORNO
-		dw		RETORNO
+		dw		BUCLE_PINTA_TILES.musica_mas_velocidad_mas_limites
 		dw		RETORNO
 		dw		RETORNO
 		dw		RETORNO
@@ -213,7 +213,7 @@ TABLA_SUCESOS_FASE_5:
 		dw		RETORNO
 		dw		BUCLE_PINTA_TILES.SI_QUE_SE_MUEVE
 		dw		BUCLE_PINTA_TILES.PINTA_FADE_IN_1
-		dw		BUCLE_PINTA_TILES.musica_mas_velocidad_mas_limites
+		dw		RETORNO
 		dw		RETORNO
 		dw		NUEVO_COVID_2_CENTRO
 		dw		RETORNO

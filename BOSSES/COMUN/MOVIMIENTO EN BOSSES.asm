@@ -77,7 +77,7 @@
 .resta_comun_y:
 
 	ld	a,(CONTROL_Y)
-	cp	#22
+	cp	65
 	jp	nc,.hay_que_restar
         jp      .pre_sigue_comun                        
 

@@ -855,6 +855,13 @@ CONTROL:
 			ld		a,(LENTO)
 			or		a
 			jp		nz,.pre_sigue_comun
+
+			ld		a,(AVANCE_BLOQUEADO)
+			or		a
+			jp		z,.si_que_puede
+			ld		a,(CONTROL_Y)
+			cp		65
+			jp		c,.hay_que_sumar
 						
 .si_que_puede:
 
@@ -951,7 +958,7 @@ CONTROL:
 
 			ld		a,(CONTROL_Y)
 			cp		65
-			jp		c,.pre_sigue_comun
+			jp		c,.hay_que_sumar
 			cp		220
 			jp		c,.hay_que_restar
 
@@ -1594,7 +1601,7 @@ VAMOS_A_BOSS_ADECUADO:
 
 AGILIZA_MAPA:
 
-		ld		hl,20
+		ld		hl,24
 		ld		(LINEA_A_LEER),hl
 		jp		CONTROL.teclado
 MENU:
