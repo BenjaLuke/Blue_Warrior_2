@@ -1416,6 +1416,8 @@
 ;.adjust_aleatorio:
 
 		ld		a,(COLOR_ALEATORIO)
+		cp		2
+		jp		z,INTERRUPCION_DE_VBLANK.puntoscroll
 		or		a
 		jp		nz,INTERRUPCION_DE_VBLANK.adjust_aleatorio_2
 

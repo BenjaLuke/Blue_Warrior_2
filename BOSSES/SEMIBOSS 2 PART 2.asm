@@ -72,6 +72,7 @@ SPRITE_MAREO_PATRON_INICIAL_PART2_SEMIBOSS_2		equ		57*4
 SPRITE_MAREO_PATRON_FIN_PART2_SEMIBOSS_2			equ		60*4
 SPRITE_PATRON_PASO_PART2_SEMIBOSS_2					equ		4
 SPRITE_ATRIBUTOS_TAM_PART2_SEMIBOSS_2				equ		3
+SPRITE_MAREO_BORRADO_TAM_PART2_SEMIBOSS_2			equ		4
 MAREO_POSICIONES_SECUENCIA_1_PART2_SEMIBOSS_2		equ		3
 MAREO_POSICIONES_SECUENCIA_2_PART2_SEMIBOSS_2		equ		4
 SECUENCIA_ROCKAGER_UNO_PART2_SEMIBOSS_2				equ		1
@@ -1143,8 +1144,22 @@ PINTA_MAREO:
 
 .LIMPIA_ROCK:
 
+        ld      iy,VALORES_SPRITE_MAREO
         ld    	a,SPRITE_OCULTO_Y_PART2_SEMIBOSS_2
-        ld      c,SPRITE_OCULTO_X_PART2_SEMIBOSS_2
+        ld      (iy),a
+        xor     a
+        ld      (iy+1),a
+        ld      (iy+2),a
+        ld      (iy+3),a
+        ld      hl,VALORES_SPRITE_MAREO
+		ld      bc,SPRITE_MAREO_BORRADO_TAM_PART2_SEMIBOSS_2
+		push	ix
+		push	de
+		call	PON_COLOR_2.sin_bc_impuesta
+		pop		de
+		pop		ix
+		ld		b,1
+		ret
 
 .PINTA_ROCK_COMUN:
 

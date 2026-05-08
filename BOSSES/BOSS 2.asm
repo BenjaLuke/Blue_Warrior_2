@@ -1,5 +1,5 @@
-VIDA_INICIAL_ROCKAGER_BOSS_2:			equ	40
-VIDA_INICIAL_DAVEANIX_BOSS_2:			equ	60
+VIDA_INICIAL_ROCKAGER_BOSS_2:			equ	5
+VIDA_INICIAL_DAVEANIX_BOSS_2:			equ	5
 VIDA_TOTAL_INICIAL_BOSS_2:				equ	VIDA_INICIAL_ROCKAGER_BOSS_2+VIDA_INICIAL_DAVEANIX_BOSS_2
 VIDA_ANCHO_BARRA_BOSS_2:				equ	99
 
@@ -2287,12 +2287,12 @@ ANIMA_ROCKAGERS_EN_BOSS_2:
 				db  192,0,71,112,48,48
 				db  0,48,71,112,48,48
 
-	            db  0,0,208,155,48,48            ; ABAJO DERECHA
-	            db  48,0,208,155,48,48
-	            db  96,0,208,155,48,48
-	            db  144,0,208,155,48,48
-	            db  192,0,208,155,48,48
-	            db  0,48,208,155,48,48
+	            db  0,0,208,144,48,48            ; ABAJO DERECHA
+	            db  48,0,208,144,48,48
+	            db  96,0,208,144,48,48
+	            db  144,0,208,144,48,48
+	            db  192,0,208,144,48,48
+	            db  0,48,208,144,48,48
 
                 db  0,0,0,144,48,48           ; CENTRO DERECHA
                 db  48,0,0,144,48,48
@@ -2321,23 +2321,24 @@ RUTINA_ROCAS_EN_BOSS_2:
 
 .BUCLE_4_PIEDRAS:
 
-	jp		.BUCLE_4_PIEDRAS_EXT
+	jr		.BUCLE_4_PIEDRAS_EXT
 
 .DESAPARECE:
 
-	ld		iy,VARIABLE_UN_USO
 	xor		a
-	ld		(iy),a
-	ld		(iy+1),a
-	ld		(iy+2),a
+	ld		hl,VARIABLE_UN_USO
+	ld		(hl),a
+	inc		hl
+	ld		(hl),a
+	inc		hl
+	ld		(hl),a
 		call	.PINTA_DOS_SPRITES_ROCA_BOSS_2
 	jp		.COMUN_PINTA_Y_DESAPARECE
 
 .FIN_DEL_BUCLE:
 
-	ld		a,(VARIABLE_UN_USO3)
-	inc		a
-	ld		(VARIABLE_UN_USO3),a
+	ld		hl,VARIABLE_UN_USO3
+	inc		(hl)
 
 	djnz	.BUCLE_4_PIEDRAS
 
@@ -2349,10 +2350,8 @@ RUTINA_ROCAS_EN_BOSS_2:
 
 .SALE_DISPARADA:
 
-	ld		a,26
-	ld		(ix+3),a
+	ld		(ix+3),26
 
-	ld		iy,VARIABLE_UN_USO
 	ld		a,(ix+2)
 [2]	add		a
 	add		60*4
@@ -2362,50 +2361,49 @@ RUTINA_ROCAS_EN_BOSS_2:
 	sub		10
 	ld		(ix),a
 	cp		245
-	jp		nc,.SALE_DISPARADA_1
+	jr		nc,.SALE_DISPARADA_1
 
 	ld		a,(ix+1)
 	sub		10
 	ld		(ix+1),a
 	cp		211
-	jp		c,.SALTO_DESDE_REBOTA
+	jr		c,.SALTO_DESDE_REBOTA
 
 .SALE_DISPARADA_1:
 
-	ld		a,24
-	ld		(ix+3),a
-	JP		.SALTO_DESDE_REBOTA
+	ld		(ix+3),24
+	jr		.SALTO_DESDE_REBOTA
+
 
 .BUCLE_4_PIEDRAS_EXT:
 
 .SEGUIMOS_SIN_PARON:
 
 	ld		a,(VARIABLE_UN_USO3)
-	ld		ix,VALORES_SPRITES_PIEDRAS
-	ld		iy,.DATA_RECORRIDO_ROCA_1_1
 [2]	add		a
 	ld		d,0
 	ld		e,a
+	ld		ix,VALORES_SPRITES_PIEDRAS
 	add		ix,de
-	push	de
-	pop		hl
-	xor		a
-[12]    adc	hl,de	
+	ld		iy,.DATA_RECORRIDO_ROCA_1_1
+	ld		h,d
+	ld		l,e
+[12]	add		hl,de
 	push	hl
 	pop		de
 	add		iy,de
 
 	ld		a,(RECORRIDO_ROCA)
 	or		a
-	jp		z,.SEGUIMOS_TRAS_AZAR
+	jr		z,.SEGUIMOS_TRAS_AZAR
 	cp		2
-	jp		z,.SEGUNDA_OPCION
+	jr		z,.SEGUNDA_OPCION
 
 .TERCERA_OPCION:
 
 	ld		de,26*4*2
 	add		iy,de
-	jp		.SEGUIMOS_TRAS_AZAR
+	jr		.SEGUIMOS_TRAS_AZAR
 
 .SEGUNDA_OPCION:
 
@@ -2439,25 +2437,23 @@ RUTINA_ROCAS_EN_BOSS_2:
 	ld		(ix+1),a
 
 	ld		a,(ix+2)
-	inc		a
-	and		00000001b
+	xor		1
 	ld		(ix+2),a
 
 .SALTO_DESDE_REBOTA:
 
-	ld		iy,VARIABLE_UN_USO
 	ld		a,(ix)
 	sub		8
-	ld		(iy+1),a
+	ld		(VARIABLE_UN_USO+1),a
 	ld		a,(ix+1)
 	sub		8
-	ld		(iy),a
+	ld		(VARIABLE_UN_USO),a
 	ld		a,(ix+2)
 [2]	add		a
 	add		60*4
-	ld		(iy+2),a
+	ld		(VARIABLE_UN_USO+2),a
 
-		call	.PINTA_DOS_SPRITES_ROCA_BOSS_2
+	call	.PINTA_DOS_SPRITES_ROCA_BOSS_2
 
 .COMUN_PINTA_Y_DESAPARECE:
 
@@ -2469,15 +2465,11 @@ RUTINA_ROCAS_EN_BOSS_2:
 
 .MAS_DE_UN_USO_1:
 
-	ld		a,(VARIABLE_UN_USO3)
-	and		00000001b
-[3]	add		a
-	ld		e,a
-	ld		d,0
 	ld		hl,#4A00+18*4
-	or		a
-	adc		hl,de
-
+	ld		a,(VARIABLE_UN_USO3)
+	rrca
+	ret		nc
+	ld		l,#50
 	ret
 
 .MAS_DE_UN_USO_2:
@@ -2488,25 +2480,24 @@ RUTINA_ROCAS_EN_BOSS_2:
 	ld		bc,3
 	call	PON_COLOR_2.sin_bc_impuesta
 	pop		bc
-
 	ret
 
 .PINTA_DOS_SPRITES_ROCA_BOSS_2:
 
-		call	.MAS_DE_UN_USO_1
-		call	.MAS_DE_UN_USO_2
-		ld		a,(iy+2)
-		add		8
-		ld		(iy+2),a
-		ld		de,4
-		or		a
-		adc		hl,de
-		call	.MAS_DE_UN_USO_2
-		ret
+	call	.MAS_DE_UN_USO_1
+	call	.MAS_DE_UN_USO_2
+	ld		a,(VARIABLE_UN_USO+2)
+	add		8
+	ld		(VARIABLE_UN_USO+2),a
+[4]	inc		l
+	call	.MAS_DE_UN_USO_2
+	ret
+
 
 .TOCA_SUELO:
 
 		push	af
+
         ld      a,5
         ld      (TIEMPO_DE_ADJUST),a
         ld      a,1
@@ -2514,13 +2505,11 @@ RUTINA_ROCAS_EN_BOSS_2:
 
         ld      a,29
         ld      c,0
+        call    A_31_DESDE_10
 
-        call    PAGE_31_A_SEGMENT_2       
-        call    ayFX_INIT
-        call    PAGE_10_A_SEGMENT_2 
 		pop		af
-
 		ret
+
 
 .SALE:
 
@@ -2528,9 +2517,7 @@ RUTINA_ROCAS_EN_BOSS_2:
         ld      a,27
         ld      c,0
 
-        call    PAGE_31_A_SEGMENT_2       
-        call    ayFX_INIT
-        call    PAGE_10_A_SEGMENT_2 
+        call    A_31_DESDE_10
 		pop		af
 
 		ret
@@ -2541,9 +2528,7 @@ RUTINA_ROCAS_EN_BOSS_2:
         ld      a,28
         ld      c,0
 
-        call    PAGE_31_A_SEGMENT_2       
-        call    ayFX_INIT
-        call    PAGE_10_A_SEGMENT_2 
+        call    A_31_DESDE_10
 		pop		af
 
 		ret
@@ -2945,6 +2930,16 @@ MUERTE_DE_DAVEANIX_BOSS_2:
 		ld		(COLOR_ALEATORIO),a
 		xor		a
 		ld		(INMUNE),a
+; clor rojo de fondo
+        ld      a,3
+        ld      (BDRCLR),a
+        call    CHGCOLOR_RAM
+
+        ld      a,1
+        ld      (COLOR_ALEATORIO),a
+
+        ld      a,60        ; o lo que dure la escena
+        ld      (TIEMPO_DE_ADJUST),a
 
 ; pequeña pausa
 		ld		a,DAVEANIX_PAUSA_BOCA_BOSS_2
@@ -2977,6 +2972,20 @@ MUERTE_DE_DAVEANIX_BOSS_2:
 		call	BUCLE_PINTA_TILES.rutina_de_pausa
 		pop		bc
 		djnz	.BUCLE_ANIMA_MUERTE_DAVEANIX_BOSS_2
+		
+; devolvemos los colores
+        xor     a
+        ld      (BDRCLR),a
+        call    CHGCOLOR_RAM
+
+        ld      (TIEMPO_DE_ADJUST),a
+        ld      b,a
+        ld      c,18
+        call    WRTVDP_EN_RAM
+
+        ld      a,2
+        ld      (COLOR_ALEATORIO),a
+
 
 TERMINANDO_LA_BATALLA_b2:
 
