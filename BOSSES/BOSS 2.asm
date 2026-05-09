@@ -128,7 +128,7 @@ RUTINA_BOSS_2:
 
 .COPIA_A_1_PARTE_ALTA:
 
-        ld      ix,.PAGE_2_A_PAGE_1_COMPLETA
+        ld      ix,BOSS_2_PAGE_2_A_PAGE_1_COMPLETA
         ld      iy,DATAS_COPY_RECUP_SCROLL
         call    .BUCLE_PINTA_DATAS
 
@@ -149,7 +149,7 @@ RUTINA_BOSS_2:
 
 .COPIA_A_1_PARTE_BAJA:
         
-        ld      ix,.PAGE_2_A_PAGE_1_COMPLETA
+        ld      ix,BOSS_2_PAGE_2_A_PAGE_1_COMPLETA
         ld      iy,DATAS_COPY_RECUP_SCROLL
         call    .BUCLE_PINTA_DATAS
 
@@ -173,19 +173,19 @@ RUTINA_BOSS_2:
 
 .GUARDA_DATOS_VIDAS_ROCKAGER:
 
-        ld      ix,.COPI_MARCADOR_BOSSES_CORAZONES_VACIOS
+        ld      ix,BOSS_2_COPI_MARCADOR_BOSSES_CORAZONES_VACIOS
         ld      iy,DATAS_COR_EMPT_MALO
         call    .BUCLE_PINTA_DATAS
 
 .GUARDA_DATOS_COPY_CORAZONES_EMPTY_DEPH:
 
-        ld      ix,.COPY_CORAZONES_EMPTY_DEPH
+        ld      ix,BOSS_2_COPY_CORAZONES_EMPTY_DEPH
         ld      iy,CORAZONES_DEPH_EN_BOSSES
         call    .BUCLE_PINTA_DATAS
 
 .GUARDA_DATOS_COPY_PUNTOS_MAGIA:
 
-        ld      ix,.COPY_PUNTOS_MAGIA
+        ld      ix,BOSS_2_COPY_PUNTOS_MAGIA
         ld      iy,PUNTOS_MAGIA_EN_BOSSES
         call    .BUCLE_PINTA_DATAS
 
@@ -215,7 +215,7 @@ RUTINA_BOSS_2:
 
 .COPIA_ESCENARIO_RECOLOCADO_A_PAGE_2:
 
- 		ld	hl,.PAGE_1_A_PAGE_2_COMPLETA
+ 		ld	hl,BOSS_2_PAGE_1_A_PAGE_2_COMPLETA
 		call	DOCOPY
         call    VDPREADY
 
@@ -263,11 +263,11 @@ RUTINA_BOSS_2:
 .PINTA_STATUS:
 
         ld      b,15
-        ld      hl,.COPIA_PARTE_PAGE_2_DE_STATUS
+        ld      hl,BOSS_2_COPIA_PARTE_PAGE_2_DE_STATUS
 		call	DOCOPY 
 
         ld      b,15
-        ld      hl,.COPIA_STATUS_BOSS_A_PAGE_2
+        ld      hl,BOSS_2_COPIA_STATUS_BOSS_A_PAGE_2
 		call	DOCOPY 
 		call	PINTA_MARCADORES_VIDA_FINAL_BOSS_2
 
@@ -352,7 +352,7 @@ RUTINA_BOSS_2:
 .BUCLE_PINTA_PIEDRAS:
 
 	push    bc
-	ld      hl,.COLOR_PIEDRA_1
+	ld      hl,BOSS_2_COLOR_PIEDRA_1
 	ld		bc,16*2
 	push    de
 	call  	PON_COLOR_2.sin_bc_impuesta
@@ -368,7 +368,7 @@ RUTINA_BOSS_2:
 .ANIMACION_AGUJEROS_SUELO:
 
 		call	.ANIMACION_COMUN_1
-        ld      ix,.DATA_APARECEN_AGUJEROS
+        ld      ix,BOSS_2_DATA_APARECEN_AGUJEROS
         ld      iy,DATAS_COPY_RECUP_SCROLL
 
 		call	.RUTINA_STANDAR_PASA_DATOS_COPY_ROCKAGER_DAV
@@ -390,7 +390,7 @@ RUTINA_BOSS_2:
 .BUCLE_DAV_1:
 
 		call	.ANIMACION_COMUN_1
-        ld      ix,.DATAS_APARECE_DAVAENIX_1
+        ld      ix,BOSS_2_DATAS_APARECE_DAVAENIX_1
         ld      iy,DATAS_COPY_RECUP_SCROLL
 
 		call	.RUTINA_STANDAR_PASA_DATOS_COPY_ROCKAGER_DAV
@@ -413,7 +413,7 @@ RUTINA_BOSS_2:
 .BUCLE_DAV_2:
 
 		call	.ANIMACION_COMUN_1
-        ld      ix,.DATAS_APARECE_DAVAENIX_2
+        ld      ix,BOSS_2_DATAS_APARECE_DAVAENIX_2
         ld      iy,DATAS_COPY_RECUP_SCROLL
 
 		call	.RUTINA_STANDAR_PASA_DATOS_COPY_ROCKAGER_DAV
@@ -515,61 +515,6 @@ RUTINA_BOSS_2:
 
         ret
 
-.COLOR_PIEDRA_1:
-
-	; attr 0
-	DB 		$01,$02,$02,$02,$02,$02,$02,$02
-	DB 		$02,$02,$02,$02,$02,$02,$02,$01
-	; attr 1
-	DB 		$00,$41,$41,$41,$41,$41,$41,$41
-	DB 		$41,$41,$41,$41,$41,$41,$41,$00
-
-.DATA_APARECEN_AGUJEROS:
-
-		db	208,144,144,064,016,048 ; 1-1
-		db	192,144,144,064,016,048 ; 1-2
-		db	208,144,176,208,016,048 ; 2-1
-		db	192,144,176,208,016,048 ; 2-2
-		db 	208,144,144,144,016,048 ; 3-1
-		db	192,144,144,144,016,048 ; 3-2
-		db	208,096,176,208,016,048	; 2-3
-		db	208,096,144,064,016,048	; 1-3
-		db	192,096,176,208,016,048	; 2-4
-		db 	208,144,176,000,016,048 ; 4-1
-		db	192,144,176,000,016,048 ; 4-2
-		db	208,096,144,144,016,048	; 3-3
-		db	192,096,144,144,016,048	; 3-4
-		db	208,096,176,000,016,048	; 4-3
-		db	192,096,176,000,016,048	; 4-4
-		db	192,096,144,064,016,048	; 1-4
-		
-.DATAS_APARECE_DAVAENIX_1:
-
-		db	000,000,96-34,112,32,32
-		db	032,000,96-34,112,32,32
-		db	064,000,96-34,112,48,32
-		db	112,000,96-34,112,48,32
-		db	000,032,80-34,096,64,64
-		db	064,032,80-34,096,64,64
-		db	128,032,80-34,096,64,80
-		db	000,112,64-34,080,80,96
-		db	080,112,64-34,080,80,96
-
-.DATAS_APARECE_DAVAENIX_2:
-
-		db	000,000,96-18,096,32,64
-		db	032,000,96-18,096,32,64
-		db	064,000,80-18,096,48,64
-		db	112,000,80-18,096,48,64
-		db	000,064,80-18,096,48,64
-		db	048,064,64-18,096,64,64
-		db	112,064,64-18,096,64,64
-		db	000,128,64-18,096,64,64
-		db	064,128,64-18,096,64,64
-		db	128,128,64-18,096,64,64
-		db	000,192,64-18,096,64,64
-		db	064,192,64-18,096,64,64
-
 .CARGA_PANTALLA_COMPLETA:
 
 		push	bc
@@ -621,66 +566,6 @@ RUTINA_BOSS_2:
         add     iy,de
         djnz    .BUCLE_PINTA_DATAS_1
         ret
-
-.PAGE_2_A_PAGE_1_COMPLETA:
-
-		dw      #0000,#0200,#0000,#0100,#0100,#0100
-		db      #00,#00,10010000b
-
-.COPY_CORAZONES_EMPTY_DEPH:
-
-        dw      #0000,#0000+29+200,#0000,#0200+6,#0000+10,#0000+8
-       	db      #00,#00,10010000b
-
-.COPI_MARCADOR_BOSSES_CORAZONES_VACIOS:
-
-		dw	#0000+151,#0000+220,#0000+151,#0201,#0000+VIDA_ANCHO_BARRA_BOSS_2,#0000+16
-		db      #00,#00,10010000b
-
-.COPY_PUNTOS_MAGIA:
-
-        dw      #0000+25,#0000+45+200,#0000+123,#0200+6,#0000+8,#0000+8
-       	db      #00,#00,10010000b
-
-.PAGE_1_A_PAGE_2_COMPLETA:
-
-		dw	#0000,#0100,#0000,#0200,#0100,#0100
-		db      #00,#00,10010000b
-
-.COPIA_PARTE_PAGE_2_DE_STATUS:
-
-        dw      #0000,#0200,#0000,#00B4,256,20
-       	db      #00,#00,10010000b
-
-.COPIA_STATUS_BOSS_A_PAGE_2:
-
-        dw      #0000,#00C8,#0000,#0200,256,20
-       	db      #00,#00,10010000b
-
-.DATAS_ROCKAGER:
-
-        dw		#0090,#01D0,#0000,#0200,#0041,#0010
-		db		#00,#00,10010000b
-
-OJO_DERECHO_ROJO:
-
-		dw		#00D5,#01E0,#006C,#023A,#0012,#0010
-		db		#00,#00,10010000b
-
-OJO_DERECHO_NORMAL:
-
-		dw		#00A6,#01E0,#006C,#023A,#0012,#0010
-		db		#00,#00,10010000b
-
-OJO_IZQUIERDO_ROJO:
-
-		dw		#00E8,#01E0,#0080,#023A,#0014,#0010
-		db		#00,#00,10010000b
-
-OJO_IZQUIERDO_NORMAL:
-
-		dw		#00BA,#01E0,#0080,#023A,#0014,#0010
-		db		#00,#00,10010000b
 
 BUCLE_PELEA_BOSS_2:
 
@@ -1392,25 +1277,6 @@ RESTAURA_ESTADO_PROYECTIL_BOSS_2:
         ldir
         ret
 		
-TABLA_DIRECCIONES_VRAM_ATRIBUTOS_PROYECTIL_BOSS_2:
-	dw		#4A58,#4A5C,#4A60,#4A64,#4A68,#4A6C,#4A70,#4A74
-
-TABLA_DIRECCIONES_VRAM_COLOR_PROYECTIL_BOSS_2:
-	dw		#4960,#4970,#4980,#4990,#49A0,#49B0,#49C0,#49D0
-
-TABLA_DIRECCIONES_PROYECTIL_BOSS_2:
-	db		5,5,5
-	db		5,4,5
-	db		4,5,4
-	db		3,5,4
-	db		3,4,4
-	db		3,4,3
-	db		5,6,5
-	db		6,5,6
-	db		7,5,6
-	db		7,6,6
-	db		7,6,7
-
 BUCLE_REVISION_4_PIEDRAS_BOSS_2:
 
 	push bc
@@ -1645,8 +1511,8 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH_ROCK_BOSS_2:
 
 		ld		a,32
 
-		ld	ix,.LIMITES_ROCKAGERS
-		ld	iy,.LIMITE_VARIABLE_Y_SUPERIOR
+		ld	ix,BOSS_2_LIMITES_ROCKAGERS
+		ld	iy,BOSS_2_LIMITE_VARIABLE_Y_SUPERIOR
 		ld	b,4
 
 .adelante:
@@ -1698,7 +1564,7 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH_ROCK_BOSS_2:
 		pop	de
 		ld	a,(Y_DEPH)
 		cp	d
-		ld	iy,.LIMITE_VARIABLE_Y_SUPERIOR
+		ld	iy,BOSS_2_LIMITE_VARIABLE_Y_SUPERIOR
 		jp	c,.fin_bucle
 
 		ld	c,(ix+1)
@@ -1706,32 +1572,6 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH_ROCK_BOSS_2:
 		jp	nc,.fin_bucle
 
 		jp	.recibe_un_toque
-
-.LIMITES_ROCKAGERS:
-
-		db	58,129,00,30
-		db	81
-
-		db	201,162,32,62
-		db	113
-
-		db	138,129,96,126
-		db	81
-
-		db	0,162,64,94
-		db	113
-
-.LIMITE_VARIABLE_Y_SUPERIOR:
-
-		db	43
-		db	39,34,30,27,23
-		db	19,15,12,08
-		db	05,06,05,02,01
-		db	06
-		db	01,02,05,06,05
-		db	08,12,15,19
-		db	23,27,30,34,39
-		db	43
 
 .recibe_un_toque:
 
@@ -1755,7 +1595,7 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK_BOSS_2:
 		or		a
 		jr		nz,.REVISA_IMPACTO_DAVEANIX_BOSS_2
 
-		ld		ix,.DATAS_REVISIONES_ROCK_BOSS_2
+		ld		ix,BOSS_2_DATAS_REVISIONES_ROCK_BOSS_2
 		ld		de,4
 		ld		b,4
 
@@ -1835,7 +1675,7 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK_BOSS_2:
 		sub		58
 		cp		15
 		jr		nc,.PASAMOS_AL_SIGUIENTE_PROYECTIL_ROCK_BOSS_2
-		ld		hl,.DATAS_REVISIONES_X_DAVEANIX_BOSS_2
+		ld		hl,BOSS_2_DATAS_REVISIONES_X_DAVEANIX_BOSS_2
 		ld		b,2
 
 .REVISION_DAVEANIX_BOSS_2:
@@ -1892,18 +1732,6 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK_BOSS_2:
 		dec		b
 		jp		nz,.BUCLE_6_PROYECTILES_ROCK_BOSS_2
 		ret
-
-.DATAS_REVISIONES_ROCK_BOSS_2:
-
-		db		12,141,70,95
-		db		153,108,102,127
-		db		75,109,6,30
-		db		219,141,38,63
-
-.DATAS_REVISIONES_X_DAVEANIX_BOSS_2:
-
-		db		102,12
-		db		122,16
 
 PINTA_EXPLOSION_ROCK_BOSS_2:
 
@@ -2025,7 +1853,7 @@ ANIMA_ROCKAGERS_EN_BOSS_2:
         or      a
  [5]    adc     hl,de
         ex      de,hl
-        ld      ix,.DATA_SECUENCIA_2_ROCKAGER
+        ld      ix,BOSS_2_DATA_SECUENCIA_2_ROCKAGER
         ld      iy,DATAS_COPY_RECUP_SCROLL
         call    .RUTINA_STANDAR_PASA_DATOS_COPY_ROCKAGER
 
@@ -2091,7 +1919,7 @@ ANIMA_ROCKAGERS_EN_BOSS_2:
 		or		a
 [36]		adc		hl,de
 		ex		de,hl
-		ld		ix,.DATA_MUERE_ROCKAGER
+		ld		ix,BOSS_2_DATA_MUERE_ROCKAGER
 		ld		iy,DATAS_COPY_RECUP_SCROLL
 		call	.RUTINA_STANDAR_PASA_DATOS_COPY_ROCKAGER
 		call	.PINTAMOS_FOTOGRAMA
@@ -2112,7 +1940,7 @@ ANIMA_ROCKAGERS_EN_BOSS_2:
 		inc		hl
 		djnz	.BUCLE_LIMPIA_VARIABLES_ROCAS_ROCKAGER_BOSS_2
 
-		ld		hl,.VACIO_SPRITES_ROCAS_ROCKAGER_BOSS_2
+		ld		hl,BOSS_2_VACIO_SPRITES_ROCAS_ROCKAGER_BOSS_2
 		ld		de,#4A00+18*4
 		ld		bc,16
 		call	PON_COLOR_2.sin_bc_impuesta
@@ -2123,190 +1951,6 @@ ANIMA_ROCKAGERS_EN_BOSS_2:
 
 		ld		(FOTOGRAMA_SECUENCIA_ROCKAGER_2),a
 		ret
-
-.VACIO_SPRITES_ROCAS_ROCKAGER_BOSS_2:
-
-		db		0,0,0,0,0,0,0,0
-		db		0,0,0,0,0,0,0,0
-               
-.DATA_SECUENCIA_2_ROCKAGER:
-
-
-                db  192,192,64,144,48,16
-                db  192,96,64,112,48,48
-                db  144,96,64,112,48,48
-                db  96,96,64,112,48,48
-                db  48,96,64,112,48,48
-                db  0,96,64,112,48,48
-                db  192,48,64,112,48,48
-                db  144,48,64,112,48,48
-                db  96,48,64,112,48,48
-                db  48,48,64,112,48,48
-                db  0,144,64,112,48,48
-                db  48,144,64,112,48,48
-                db  96,144,64,112,48,48
-                db  144,144,64,112,48,48
-                db  192,144,64,112,48,48
-                db  0,192,64,112,48,48
-                db  192,144,64,112,48,48
-                db  144,144,64,112,48,48
-                db  96,144,64,112,48,48
-                db  48,144,64,112,48,48
-                db  0,144,64,112,48,48
-                db  48,48,64,112,48,48
-                db  96,48,64,112,48,48
-                db  144,48,64,112,48,48
-                db  192,48,64,112,48,48
-                db  0,96,64,112,48,48
-                db  48,96,64,112,48,48
-                db  96,96,64,112,48,48
-                db  144,96,64,112,48,48
-                db  192,96,64,112,48,48
-                db  192,192,64,144,48,16
-                db  96,192,64,144,48,16
-
-                db  192,192,208,176,48,16
-                db  192,96,208,144,48,48
-                db  144,96,208,144,48,48
-                db  96,96,208,144,48,48
-                db  48,96,208,144,48,48
-                db  0,96,208,144,48,48
-                db  192,48,208,144,48,48
-                db  144,48,208,144,48,48
-                db  96,48,208,144,48,48
-                db  48,48,208,144,48,48
-                db  0,144,208,144,48,48
-                db  48,144,208,144,48,48
-                db  96,144,208,144,48,48
-                db  144,144,208,144,48,48
-                db  192,144,208,144,48,48
-                db  48,192,208,144,48,48
-                db  192,144,208,144,48,48
-                db  144,144,208,144,48,48
-                db  96,144,208,144,48,48
-                db  48,144,208,144,48,48
-                db  0,144,208,144,48,48
-                db  48,48,208,144,48,48
-                db  96,48,208,144,48,48
-                db  144,48,208,144,48,48
-                db  192,48,208,144,48,48
-                db  0,96,208,144,48,48
-                db  48,96,208,144,48,48
-                db  96,96,208,144,48,48
-                db  144,96,208,144,48,48
-                db  192,96,208,144,48,48
-                db  192,192,208,176,48,16
-                db  96,192,208,176,48,16
-
-                db  192,192,0,176,48,16
-                db  192,96,0,144,48,48
-                db  144,96,0,144,48,48
-                db  96,96,0,144,48,48
-                db  48,96,0,144,48,48
-                db  0,96,0,144,48,48
-                db  192,48,0,144,48,48
-                db  144,48,0,144,48,48
-                db  96,48,0,144,48,48
-                db  48,48,0,144,48,48
-                db  0,144,0,144,48,48
-                db  48,144,0,144,48,48
-                db  96,144,0,144,48,48
-                db  144,144,0,144,48,48
-                db  192,144,0,144,48,48
-                db  0,192,0,144,48,48
-                db  192,144,0,144,48,48
-                db  144,144,0,144,48,48
-                db  96,144,0,144,48,48
-                db  48,144,0,144,48,48
-                db  0,144,0,144,48,48
-                db  48,48,0,144,48,48
-                db  96,48,0,144,48,48
-                db  144,48,0,144,48,48
-                db  192,48,0,144,48,48
-                db  0,96,0,144,48,48
-                db  48,96,0,144,48,48
-                db  96,96,0,144,48,48
-                db  144,96,0,144,48,48
-                db  192,96,0,144,48,48
-                db  192,192,0,176,48,16
-                db  96,192,0,176,48,16
-
-                db  192,192,144,144,48,16
-                db  192,96,144,112,48,48
-                db  144,96,144,112,48,48
-                db  96,96,144,112,48,48
-                db  48,96,144,112,48,48
-                db  0,96,144,112,48,48
-                db  192,48,144,112,48,48
-                db  144,48,144,112,48,48
-                db  96,48,144,112,48,48
-                db  48,48,144,112,48,48
-                db  0,144,144,112,48,48
-                db  48,144,144,112,48,48
-                db  96,144,144,112,48,48
-                db  144,144,144,112,48,48
-                db  192,144,144,112,48,48
-                db  48,192,144,112,48,48
-                db  192,144,144,112,48,48
-                db  144,144,144,112,48,48
-                db  96,144,144,112,48,48
-                db  48,144,144,112,48,48
-                db  0,144,144,112,48,48
-                db  48,48,144,112,48,48
-                db  96,48,144,112,48,48
-                db  144,48,144,112,48,48
-                db  192,48,144,112,48,48
-                db  0,96,144,112,48,48
-                db  48,96,144,112,48,48
-                db  96,96,144,112,48,48
-                db  144,96,144,112,48,48
-                db  192,96,144,112,48,48
-                db  192,192,144,144,48,16
-                db  96,192,144,144,48,16
-
-.DATA_MUERE_ROCKAGER:
-
-                db  0,0,39,75,48,48             ; ARRIBA IZQUIERDA
-                db  48,0,39,75,48,48
-                db  96,0,39,75,48,48
-                db  144,0,39,75,48,48
-                db  192,0,39,75,48,48
-                db  0,48,39,75,48,48
-
-                db  0,0,144,112,48,48            ; CENTRO IZQUIERDA
-                db  48,0,144,112,48,48
-                db  96,0,144,112,48,48
-                db  144,0,144,112,48,48
-                db  192,0,144,112,48,48
-                db  0,48,144,112,48,48
-
-				db  0,0,71,112,48,48            ; ABAJO IZQUIERDA
-				db  48,0,71,112,48,48
-				db  96,0,71,112,48,48
-				db  144,0,71,112,48,48
-				db  192,0,71,112,48,48
-				db  0,48,71,112,48,48
-
-	            db  0,0,208,144,48,48            ; ABAJO DERECHA
-	            db  48,0,208,144,48,48
-	            db  96,0,208,144,48,48
-	            db  144,0,208,144,48,48
-	            db  192,0,208,144,48,48
-	            db  0,48,208,144,48,48
-
-                db  0,0,0,144,48,48           ; CENTRO DERECHA
-                db  48,0,0,144,48,48
-                db  96,0,0,144,48,48
-                db  144,0,0,144,48,48
-                db  192,0,0,144,48,48
-                db  0,48,0,144,48,48
-                
-                db  0,0,167,75,48,48           ; ARRIBA DERECHA
-                db  48,0,167,75,48,48
-                db  96,0,167,75,48,48
-                db  144,0,167,75,48,48
-                db  192,0,167,75,48,48
-                db  0,48,167,75,48,48
 
 RUTINA_ROCAS_EN_BOSS_2:
 
@@ -2385,7 +2029,7 @@ RUTINA_ROCAS_EN_BOSS_2:
 	ld		e,a
 	ld		ix,VALORES_SPRITES_PIEDRAS
 	add		ix,de
-	ld		iy,.DATA_RECORRIDO_ROCA_1_1
+	ld		iy,BOSS_2_DATA_RECORRIDO_ROCA_1_1
 	ld		h,d
 	ld		l,e
 [12]	add		hl,de
@@ -2533,390 +2177,6 @@ RUTINA_ROCAS_EN_BOSS_2:
 
 		ret
 
-.DATA_RECORRIDO_ROCA_1_1:
-
-	db	0,99
-	db	10,97
-	db	22,97
-	db	33,96
-	db	46,96
-	db	60,98
-	db	71,103
-	db	80,108
-	db	88,111
-	
-	db	94,83
-	db	114,64
-	db	146,59
-	db	173,67
-	db	191,80
-	db	203,89
-	db	217,99
-	db	230,116
-
-	db	233,115
-	db	236,113
-	db	239,113
-	db	243,113
-	db	247,115
-	db	250,117
-	db	253,119
-	db	255,120
-
-	db	0,0
-
-.DATA_RECORRIDO_ROCA_2_1:
-
-	db	255,120
-	db	251,120
-	db	246,120
-	db	241,123
-	db	238,126
-	db	234,131
-	db	232,136
-	db	231,139
-	db	231,143
-	
-	db	214,118
-	db	190,101
-	db	167,93
-	db	137,85
-	db	107,85
-	db	75,94
-	db	54,104
-	db	37,124
-	
-	db	32,120
-	db	29,118
-	db	24,116
-	db	19,114
-	db	14,116
-	db	9,118
-	db	4,120
-	db	0,125
-
-	db	0,0
-
-.DATA_RECORRIDO_ROCA_3_1:
-
-	db	0,125
-	db	4,126
-	db	10,127
-	db	13,127
-	db	17,128
-	db	21,131
-	db	23,135
-	db	24,138
-	db	25,143
-	
-	db	35,129
-	db	45,120
-	db	52,111
-	db	64,100
-	db	76,93
-	db	92,88
-	db	109,95
-	db	120,111
-	
-	db	129,103
-	db	147,94
-	db	165,91
-	db	181,91
-	db	199,87
-	db	222,87
-	db	238,91
-	db	255,96
-
-	db	0,0
-
-.DATA_RECORRIDO_ROCA_4_1:
-
-	db	255,96
-	db	245,89
-	db	233,82
-	db	219,81
-	db	208,83
-	db	193,89
-	db	184,95
-	db	173,106
-	db	167,112
-	
-	db	167,86
-	db	157,96
-	db	155,107
-	db	152,122
-	db	149,139
-	db	145,157
-	db	142,172
-	db	140,193
-	
-	db	134,173
-	db	121,157
-	db	109,145
-	db	91,131
-	db	76,118
-	db	52,102
-	db	31,96
-	db	0,99
-
-	db	0,0
-
-.DATA_RECORRIDO_ROCA_1_2:
-
-	db	0,99
-	db	10,97
-	db	22,97
-	db	33,96
-	db	46,96
-	db	60,98
-	db	71,103
-	db	80,108
-	db	88,111
-
-	db	95,95
-	db	106,79
-	db	127,79
-	db	137,93
-	db	141,109
-	db	144,124
-	db	143,143
-	db	141,160
-
-	db	153,153
-	db	168,144
-	db	180,139
-	db	193,134
-	db	206,128
-	db	223,123
-	db	237,121
-	db	255,120
-
-	db	0,0
-
-.DATA_RECORRIDO_ROCA_2_2:
-
-	db	255,120
-	db	251,120
-	db	246,120
-	db	241,123
-	db	238,126
-	db	234,131
-	db	232,136
-	db	231,139
-	db	231,143	
-	
-	db	215,132
-	db	203,128
-	db	190,125
-	db	175,125
-	db	156,124
-	db	144,127
-	db	131,132
-	db	118,142
-	
-	db	106,133
-	db	93,127
-	db	79,123
-	db	61,120
-	db	51,118
-	db	35,120
-	db	16,120
-	db	0,125
-
-	db	0,0
-
-.DATA_RECORRIDO_ROCA_3_2:
-
-	db	0,125
-	db	4,126
-	db	10,127
-	db	13,127
-	db	17,128
-	db	21,131
-	db	23,135
-	db	24,138
-	db	25,143
-	
-	db	56,130
-	db	78,127
-	db	97,128
-	db	122,137
-	db	139,147
-	db	156,157
-	db	172,168
-	db	191,181
-	
-	db	196,168
-	db	201,155
-	db	206,147
-	db	213,134
-	db	221,121
-	db	232,110
-	db	243,103
-	db	255,96
-
-	db	0,0
-
-.DATA_RECORRIDO_ROCA_4_2:
-
-	db	255,96
-	db	245,89
-	db	233,82
-	db	219,81
-	db	208,83
-	db	193,89
-	db	184,95
-	db	173,106
-	db	167,112
-	
-	db	164,103
-	db	163,97
-	db	157,90
-	db	151,92
-	db	146,98
-	db	142,107
-	db	140,120
-	db	140,128
-	
-	db	131,115
-	db	118,104
-	db	99,93
-	db	80,87
-	db	60,83
-	db	39,84
-	db	17,87
-	db	0,99
-
-	db	0,0
-
-.DATA_RECORRIDO_ROCA_1_3:
-	
-	db	0,99
-	db	10,97
-	db	22,97
-	db	33,96
-	db	46,96
-	db	60,98
-	db	71,103
-	db	80,108
-	db	88,111
-
-	db	104,115
-	db	112,128
-	db	117,140
-	db	118,150
-	db	118,162
-	db	119,175
-	db	117,189
-	db	120,205
-
-	db	128,185
-	db	141,168
-	db	157,155
-	db	176,146
-	db	190,141
-	db	207,135
-	db	229,127
-	db	255,120
-
-	db	0,0
-
-.DATA_RECORRIDO_ROCA_2_3:
-	
-	db	255,120
-	db	251,120
-	db	246,120
-	db	241,123
-	db	238,126
-	db	234,131
-	db	232,136
-	db	231,139
-	db	231,143
-	
-	db	221,139
-	db	208,137
-	db	196,137
-	db	181,136
-	db	167,142
-	db	157,147
-	db	148,155
-	db	139,163
-	
-	db	127,154
-	db	111,146
-	db	96,141
-	db	76,136
-	db	61,133
-	db	43,131
-	db	25,127
-	db	0,125
-
-	db	0,0
-
-.DATA_RECORRIDO_ROCA_3_3:
-	
-	db	0,125
-	db	4,126
-	db	10,127
-	db	13,127
-	db	17,128
-	db	21,131
-	db	23,135
-	db	24,138
-	db	25,143
-	
-	db	53,139
-	db	73,139
-	db	88,147
-	db	102,158
-	db	112,170
-	db	120,181
-	db	131,196
-	db	140,208
-	
-	db	150,188
-	db	163,170
-	db	174,157
-	db	186,142
-	db	200,129
-	db	213,118
-	db	231,104
-	db	255,96
-
-	db	0,0
-
-.DATA_RECORRIDO_ROCA_4_3:
-	
-	db	255,96
-	db	245,89
-	db	233,82
-	db	219,81
-	db	208,83
-	db	193,89
-	db	184,95
-	db	173,106
-	db	167,112
-	
-	db	156,112
-	db	143,116
-	db	128,121
-	db	116,128
-	db	100,142
-	db	91,152
-	db	84,166
-	db	78,190
-	
-	db	74,171
-	db	68,159
-	db	60,146
-	db	50,128
-	db	42,118
-	db	29,107
-	db	17,101
-	db	0,99
-
-	db	0,0
-
 MUERTE_DE_DAVEANIX_BOSS_2:
 ; paramos la música
 		call	stpmus
@@ -3020,27 +2280,6 @@ VOLVEMOS_b2:
 
 		jp		CARGA_SLOT_REGRESO_A_JUEGO
 
-COPY_DAVEANIX_PRE_PAUSA_BOSS_2:
-
-		dw		PAGE_X_VRAM_BOSS_2+DAVEANIX_BOCA_SX_BOSS_2,PAGE_1_VRAM_Y_BOSS_2+DAVEANIX_BOCA_SY_BOSS_2
-		dw		PAGE_X_VRAM_BOSS_2+DAVEANIX_BOCA_DX_BOSS_2,PAGE_2_VRAM_Y_BOSS_2+DAVEANIX_BOCA_DY_BOSS_2
-		dw		PAGE_X_VRAM_BOSS_2+DAVEANIX_BOCA_ANCHO_BOSS_2,PAGE_X_VRAM_BOSS_2+DAVEANIX_BOCA_ALTO_BOSS_2
-		db		COPY_SIN_OFFSET_BOSS_2,COPY_SIN_OFFSET_BOSS_2,COPY_LOGICA_NORMAL_BOSS_2
-
-COPY_ANIMA_MUERTE_DAVEANIX_A_BUFFER_BOSS_2:
-
-		dw		PAGE_X_VRAM_BOSS_2+DAVEANIX_MUERTE_SX_BOSS_2,PAGE_2_VRAM_Y_BOSS_2+DAVEANIX_MUERTE_SY_BOSS_2
-		dw		PAGE_X_VRAM_BOSS_2+DAVEANIX_BUFFER_X_BOSS_2,PAGE_1_VRAM_Y_BOSS_2+DAVEANIX_BUFFER_Y_BOSS_2
-		dw		PAGE_X_VRAM_BOSS_2+DAVEANIX_MUERTE_ANCHO_BOSS_2,PAGE_X_VRAM_BOSS_2+DAVEANIX_MUERTE_ALTO_BOSS_2
-		db		COPY_SIN_OFFSET_BOSS_2,COPY_SIN_OFFSET_BOSS_2,COPY_LOGICA_NORMAL_BOSS_2
-
-COPY_ANIMA_MUERTE_DAVEANIX_DESDE_BUFFER_BOSS_2:
-
-		dw		PAGE_X_VRAM_BOSS_2+DAVEANIX_BUFFER_X_BOSS_2,PAGE_1_VRAM_Y_BOSS_2+DAVEANIX_BUFFER_Y_BOSS_2
-		dw		PAGE_X_VRAM_BOSS_2+DAVEANIX_MUERTE_DX_BOSS_2,PAGE_2_VRAM_Y_BOSS_2+DAVEANIX_MUERTE_DY_BOSS_2
-		dw		PAGE_X_VRAM_BOSS_2+DAVEANIX_MUERTE_ANCHO_BOSS_2,PAGE_X_VRAM_BOSS_2+DAVEANIX_MUERTE_ALTO_BOSS_2
-		db		COPY_SIN_OFFSET_BOSS_2,COPY_SIN_OFFSET_BOSS_2,COPY_LOGICA_NORMAL_BOSS_2
-
 FADE_DEPH_A_NEGRO_b2:
 
 		incbin	"../PALETAS/BOSS2 DEPH.FADEOUT"
@@ -3048,3 +2287,5 @@ FADE_DEPH_A_NEGRO_b2:
 FADE_FASE_1_3_A_NEGRO_b2:
 
 		incbin	"../PALETAS/BOSS2.fadeout"
+
+	include	"BOS 2 DATA.asm"

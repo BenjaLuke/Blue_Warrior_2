@@ -1,9 +1,8 @@
-VIDA_INICIAL_ROCKAGER_BOSS_1:	equ	40
-VIDA_INICIAL_DAVEANIX_BOSS_1:	equ	60
-VIDA_TOTAL_INICIAL_BOSS_1:	equ	VIDA_INICIAL_ROCKAGER_BOSS_1+VIDA_INICIAL_DAVEANIX_BOSS_1
+VIDA_INICIAL_AGONIX_BOSS_1:	equ	60
+VIDA_TOTAL_INICIAL_BOSS_1:	equ	VIDA_INICIAL_AGONIX_BOSS_1
 VIDA_ANCHO_BARRA_BOSS_1:		equ	99
 
-PAGINA_REGRESO_BOSS_1:					equ	27
+PAGINA_REGRESO_BOSS_1:					equ	26
 
 ; VRAM / sprites
 SPRITES_ATRIBUTOS_VRAM_BOSS_1:			equ	#4A00
@@ -33,65 +32,35 @@ PROYECTIL_BOSS_1_EMISOR_DER_Y:			equ	54
 PROYECTIL_BOSS_1_EMISOR_IZQ_X:			equ	110
 PROYECTIL_BOSS_1_EMISOR_IZQ_Y:			equ	55
 
-; Salida y muerte de Daveanix
+; Salida y muerte de Agonix
 COLOR_ALEATORIO_SIN_CAMBIOS_BOSS_1:		equ	1
-DAVEANIX_PAUSA_BOCA_BOSS_1:				equ	100
-DAVEANIX_LIMPIA_SPRITE_INICIAL_BOSS_1:	equ	10
-DAVEANIX_LIMPIA_SPRITES_CANT_BOSS_1:		equ	20
-DAVEANIX_MUERTE_BUCLES_BOSS_1:			equ	64
-DAVEANIX_MUERTE_FX_BOSS_1:				equ	25
-DAVEANIX_MUERTE_FX_CANAL_BOSS_1:			equ	0
-DAVEANIX_MUERTE_PAUSA_BOSS_1:			equ	8
+AGONIX_PAUSA_BOCA_BOSS_1:				equ	100
+AGONIX_LIMPIA_SPRITE_INICIAL_BOSS_1:		equ	10
+AGONIX_LIMPIA_SPRITES_CANT_BOSS_1:		equ	20
+AGONIX_MUERTE_BUCLES_BOSS_1:				equ	64
+AGONIX_MUERTE_FX_BOSS_1:					equ	25
+AGONIX_MUERTE_FX_CANAL_BOSS_1:			equ	0
+AGONIX_MUERTE_PAUSA_BOSS_1:				equ	8
 
-DAVEANIX_BOCA_SX_BOSS_1:				equ	128
-DAVEANIX_BOCA_SY_BOSS_1:				equ	224
-DAVEANIX_BOCA_DX_BOSS_1:				equ	112
-DAVEANIX_BOCA_DY_BOSS_1:				equ	78
-DAVEANIX_BOCA_ANCHO_BOSS_1:				equ	32
-DAVEANIX_BOCA_ALTO_BOSS_1:				equ	16
+AGONIX_BOCA_SX_BOSS_1:					equ	128
+AGONIX_BOCA_SY_BOSS_1:					equ	224
+AGONIX_BOCA_DX_BOSS_1:					equ	112
+AGONIX_BOCA_DY_BOSS_1:					equ	78
+AGONIX_BOCA_ANCHO_BOSS_1:				equ	32
+AGONIX_BOCA_ALTO_BOSS_1:					equ	16
 
-DAVEANIX_MUERTE_SX_BOSS_1:				equ	96
-DAVEANIX_MUERTE_SY_BOSS_1:				equ	45
-DAVEANIX_MUERTE_DX_BOSS_1:				equ	96
-DAVEANIX_MUERTE_DY_BOSS_1:				equ	46
-DAVEANIX_MUERTE_ANCHO_BOSS_1:			equ	64
-DAVEANIX_MUERTE_ALTO_BOSS_1:				equ	53
-DAVEANIX_BUFFER_X_BOSS_1:				equ	0
-DAVEANIX_BUFFER_Y_BOSS_1:				equ	0
+AGONIX_MUERTE_SX_BOSS_1:					equ	96
+AGONIX_MUERTE_SY_BOSS_1:					equ	45
+AGONIX_MUERTE_DX_BOSS_1:					equ	96
+AGONIX_MUERTE_DY_BOSS_1:					equ	46
+AGONIX_MUERTE_ANCHO_BOSS_1:				equ	64
+AGONIX_MUERTE_ALTO_BOSS_1:				equ	53
+AGONIX_BUFFER_X_BOSS_1:					equ	0
+AGONIX_BUFFER_Y_BOSS_1:					equ	0
 
 DEPH_SALIDA_SPRITES_INICIO_BOSS_1:		equ	1
 DEPH_SALIDA_SPRITES_CANT_BOSS_1:			equ	45
 
-; Alias temporales: el boss 1 todavia reutiliza la RAM reservada para la copia base del boss 2.
-VIDA_ROCKAGER_BOSS_1:							equ	VIDA_ROCKAGER_BOSS_2
-VIDA_DAVEANIX_BOSS_1:							equ	VIDA_DAVEANIX_BOSS_2
-PROYECTIL_BOSS_1_X:								equ	PROYECTIL_BOSS_2_X
-PROYECTIL_BOSS_1_Y:								equ	PROYECTIL_BOSS_2_Y
-PROYECTIL_BOSS_1_DIRECCION:						equ	PROYECTIL_BOSS_2_DIRECCION
-PROYECTIL_BOSS_1_PASO_TABLA:					equ	PROYECTIL_BOSS_2_PASO_TABLA
-PROYECTIL_BOSS_1_ESPERA:						equ	PROYECTIL_BOSS_2_ESPERA
-PROYECTIL_BOSS_1_SPRITE_ACTUAL:					equ	PROYECTIL_BOSS_2_SPRITE_ACTUAL
-PROYECTIL_BOSS_1_SIGUIENTE_SPRITE:				equ	PROYECTIL_BOSS_2_SIGUIENTE_SPRITE
-PROYECTIL_BOSS_1_SIGUIENTE_EMISOR:				equ	PROYECTIL_BOSS_2_SIGUIENTE_EMISOR
-PROYECTIL_BOSS_1_PUNTERO_SPRITES_ACTIVOS:		equ	PROYECTIL_BOSS_2_PUNTERO_SPRITES_ACTIVOS
-PROYECTIL_BOSS_1_DIRECCION_VRAM_ATRIBUTOS:		equ	PROYECTIL_BOSS_2_DIRECCION_VRAM_ATRIBUTOS
-PROYECTIL_BOSS_1_DIRECCION_VRAM_COLOR:			equ	PROYECTIL_BOSS_2_DIRECCION_VRAM_COLOR
-COPIA_PROYECTIL_BOSS_1_X:						equ	COPIA_PROYECTIL_BOSS_2_X
-COPIA_PROYECTIL_BOSS_1_Y:						equ	COPIA_PROYECTIL_BOSS_2_Y
-COPIA_PROYECTIL_BOSS_1_DIRECCION:				equ	COPIA_PROYECTIL_BOSS_2_DIRECCION
-COPIA_PROYECTIL_BOSS_1_PASO_TABLA:				equ	COPIA_PROYECTIL_BOSS_2_PASO_TABLA
-COPIA_PROYECTIL_BOSS_1_ESPERA:					equ	COPIA_PROYECTIL_BOSS_2_ESPERA
-COPIA_PROYECTIL_BOSS_1_SPRITE_ACTUAL:			equ	COPIA_PROYECTIL_BOSS_2_SPRITE_ACTUAL
-COPIA_PROYECTIL_BOSS_1_SIGUIENTE_SPRITE:			equ	COPIA_PROYECTIL_BOSS_2_SIGUIENTE_SPRITE
-COPIA_PROYECTIL_BOSS_1_SIGUIENTE_EMISOR:			equ	COPIA_PROYECTIL_BOSS_2_SIGUIENTE_EMISOR
-COPIA_PROYECTIL_BOSS_1_PUNTERO_SPRITES_ACTIVOS:	equ	COPIA_PROYECTIL_BOSS_2_PUNTERO_SPRITES_ACTIVOS
-COPIA_PROYECTIL_BOSS_1_DIRECCION_VRAM_ATRIBUTOS:	equ	COPIA_PROYECTIL_BOSS_2_DIRECCION_VRAM_ATRIBUTOS
-COPIA_PROYECTIL_BOSS_1_DIRECCION_VRAM_COLOR:		equ	COPIA_PROYECTIL_BOSS_2_DIRECCION_VRAM_COLOR
-PROYECTIL_BOSS_1_INDICE_ACTUAL:					equ	PROYECTIL_BOSS_2_INDICE_ACTUAL
-PROYECTILES_BOSS_1_X:							equ	PROYECTILES_BOSS_2_X
-PROYECTILES_BOSS_1_Y:							equ	PROYECTILES_BOSS_2_Y
-PROYECTILES_BOSS_1_DIRECCION:					equ	PROYECTILES_BOSS_2_DIRECCION
-PROYECTILES_BOSS_1_PASO_TABLA:					equ	PROYECTILES_BOSS_2_PASO_TABLA
 TABLA_COLOR_SPRITE_CENTRAL_BOSS_1:				equ	TABLA_COLOR_SPRITE_CENTRAL_BOSS_2
 
 RUTINA_BOSS_1:
@@ -133,19 +102,13 @@ RUTINA_BOSS_1:
 		ld		a,h
 		ld		(PROYECTIL_BOSS_1_DIRECCION_VRAM_COLOR+1),a
 		xor		a
-		ld		(ROCKAGER_MUERTO),a
-		ld		(PAUSA_EN_ANIMACION_ROCKAGER),a
-		ld		(POSICION_DERRUMBE_ROCKAGER),a
-		ld		(FOTOGRAMA_SECUENCIA_ROCKAGER_2),a
 		ld		(SPRITES_ACTIVOS+PROYECTIL_BOSS_1_SPRITES_ACTIVOS_OFS),a
 		ld		(VALORES_EXPLOSION_CON_ROCK),a
 		ld		(VALORES_EXPLOSION_CON_ROCK+1),a
 		ld		(VALORES_EXPLOSION_CON_ROCK+2),a
 		ld		(VALORES_EXPLOSION_CON_ROCK+3),a
-		ld		a,VIDA_INICIAL_ROCKAGER_BOSS_1
-		ld		(VIDA_ROCKAGER_BOSS_1),a
-		ld		a,VIDA_INICIAL_DAVEANIX_BOSS_1
-		ld		(VIDA_DAVEANIX_BOSS_1),a
+		ld		a,VIDA_INICIAL_AGONIX_BOSS_1
+		ld		(VIDA_AGONIX_BOSS_1),a
 		ld		a,PROYECTIL_BOSS_1_Y_OCULTO
 		ld		(PROYECTIL_BOSS_1_Y),a
 		call	INICIALIZA_POOL_PROYECTILES_BOSS_1
@@ -160,7 +123,7 @@ RUTINA_BOSS_1:
 
 .COPIA_A_1_PARTE_ALTA:
 
-        ld      ix,.PAGE_2_A_PAGE_1_COMPLETA
+        ld      ix,BOSS_1_PAGE_2_A_PAGE_1_COMPLETA
         ld      iy,DATAS_COPY_RECUP_SCROLL
         call    .BUCLE_PINTA_DATAS
 
@@ -181,7 +144,7 @@ RUTINA_BOSS_1:
 
 .COPIA_A_1_PARTE_BAJA:
         
-        ld      ix,.PAGE_2_A_PAGE_1_COMPLETA
+        ld      ix,BOSS_1_PAGE_2_A_PAGE_1_COMPLETA
         ld      iy,DATAS_COPY_RECUP_SCROLL
         call    .BUCLE_PINTA_DATAS
 
@@ -203,21 +166,21 @@ RUTINA_BOSS_1:
 		call	DOCOPY 
         call    VDPREADY
 
-.GUARDA_DATOS_VIDAS_ROCKAGER:
+.GUARDA_DATOS_VIDA_AGONIX:
 
-        ld      ix,.COPI_MARCADOR_BOSSES_CORAZONES_VACIOS
+        ld      ix,BOSS_1_COPI_MARCADOR_BOSSES_CORAZONES_VACIOS
         ld      iy,DATAS_COR_EMPT_MALO
         call    .BUCLE_PINTA_DATAS
 
 .GUARDA_DATOS_COPY_CORAZONES_EMPTY_DEPH:
 
-        ld      ix,.COPY_CORAZONES_EMPTY_DEPH
+        ld      ix,BOSS_1_COPY_CORAZONES_EMPTY_DEPH
         ld      iy,CORAZONES_DEPH_EN_BOSSES
         call    .BUCLE_PINTA_DATAS
 
 .GUARDA_DATOS_COPY_PUNTOS_MAGIA:
 
-        ld      ix,.COPY_PUNTOS_MAGIA
+        ld      ix,BOSS_1_COPY_PUNTOS_MAGIA
         ld      iy,PUNTOS_MAGIA_EN_BOSSES
         call    .BUCLE_PINTA_DATAS
 
@@ -247,7 +210,7 @@ RUTINA_BOSS_1:
 
 .COPIA_ESCENARIO_RECOLOCADO_A_PAGE_2:
 
- 		ld	hl,.PAGE_1_A_PAGE_2_COMPLETA
+ 		ld	hl,BOSS_1_PAGE_1_A_PAGE_2_COMPLETA
 		call	DOCOPY
         call    VDPREADY
 
@@ -281,18 +244,11 @@ RUTINA_BOSS_1:
 
 .COPIA_PAGE_1_A_PAGE_3:
 
-		ld		hl,.DATOS_COPY_PAGE_1_A_PAGE_3
+		ld		hl,BOSS_1_DATOS_COPY_PAGE_1_A_PAGE_3
 		call	DOCOPY
 		call    VDPREADY
 		jp		.CARGA_AGONIX_PARTE_2
 
-.DATOS_COPY_PAGE_1_A_PAGE_3:
-
-		dw		#0000,#0100		; origen  x=0, y=page 1
-		dw		#0000,#0300		; destino x=0, y=page 3
-		dw		#0100,#0100		; ancho 256, alto 256
-		db		#00,#00,10010000b
-		
 .CARGA_AGONIX_PARTE_2:
 		ld      a,52
 		ld		b,53
@@ -314,11 +270,11 @@ RUTINA_BOSS_1:
 .PINTA_STATUS:
 
         ld      b,15
-        ld      hl,.COPIA_PARTE_PAGE_2_DE_STATUS
+        ld      hl,BOSS_1_COPIA_PARTE_PAGE_2_DE_STATUS
 		call	DOCOPY 
 
         ld      b,15
-        ld      hl,.COPIA_STATUS_BOSS_A_PAGE_2
+        ld      hl,BOSS_1_COPIA_STATUS_BOSS_A_PAGE_2
 		call	DOCOPY 
 		call	PINTA_MARCADORES_VIDA_FINAL_BOSS_1
 
@@ -342,7 +298,7 @@ RUTINA_BOSS_1:
 
         ld      (CORAZONES),a
 
-.PINTA_MAGIAS_REALES
+.PINTA_MAGIAS_REALES:
 
 	ld		ix,PUNTOS_MAGIA_EN_BOSSES
 	ld		a,(MAGIAS)
@@ -353,155 +309,18 @@ RUTINA_BOSS_1:
 	ld		hl,PUNTOS_MAGIA_EN_BOSSES
 	call	DOCOPY
 		
+.ANIMACION_AGONIX:
 
+	jp	.PREPARACION_PELEA
+.PREPARACION_PELEA:
 .EMPIEZA_LA_MUSICA:
 
 		include	"../AUDIOS/INICIA MUSICA_BOSS.asm"
 
-.bucle:
-	jr	.bucle
-
-.CARGA_ROCAGER_2:
-
-		xor		a
-		ld		(FOTOGRAMA_SECUENCIA_ROCKAGER_3),a
-
-        ld      a,42
-        ld		b,43
-        call	.CARGA_PANTALLA_COMPLETA
 
 ; todo el codigo de enfrentamiento
 
 		jp	BUCLE_PELEA_BOSS_1
-
-.ANIMACION_COMUN_1:
-
-		ld		a,(FOTOGRAMA_SECUENCIA_DAV)
-        ld      e,a
-        ld      d,0
-        push    de
-        pop     hl
-        or      a
-[5]     adc     hl,de
-        ex      de,hl
-		ret
-
-.ANIMACION_COMUN_2:
-
-		ld		a,(TIEMPO_DE_ADJUST)
-		dec		a
-		ld		(TIEMPO_DE_ADJUST),a
-
-		ld		a,25
-		ld		c,0
-        call    PAGE_31_A_SEGMENT_2
-		call	ayFX_INIT
-        call   	PAGE_10_A_SEGMENT_2
-
-		push    de
-        call    .PINTAMOS_FOTOGRAMA
-        pop     de
-        ld      a,(FOTOGRAMA_SECUENCIA_DAV)
-		inc		a
-		ret
-
-.CARGA_DAV_COMUN:
-
-		ld		(TIEMPO_DE_ADJUST),a
-        ld      a,1
-        ld      (COLOR_ALEATORIO),a
-
-		xor		a
-		ld      (FOTOGRAMA_SECUENCIA_DAV),a
-		ret
-
-.PINTAMOS_FOTOGRAMA:
-
- 		ld		hl,DATAS_COPY_RECUP_SCROLL
-		call	DOCOPY
-		jp		VDPREADY
-
-.RUTINA_STANDAR_PASA_DATOS_COPY_ROCKAGER_DAV:
-
-		ld		a,8
-		call	BUCLE_PINTA_TILES.rutina_de_pausa
-
-        add     ix,de
-        ld      a,(ix+1)
-        ld      (iy),a
-        ld      a,(ix)
-        ld      (iy+2),a
-		ld		a,COLOR_ALEATORIO_SIN_CAMBIOS_BOSS_1
-		ld		(iy+3),a
-        ld      a,(ix+3)
-        ld      (iy+4),a
-        ld      a,(ix+2)
-        ld      (iy+6),a
-		ld		a,2
-		ld		(iy+7),a
-        ld      a,(ix+5)
-        ld      (iy+8),a
-		xor		a
-		ld		(iy+9),a
-        ld      a,(ix+4)
-        ld      (iy+10),a
-
-        ret
-
-.COLOR_PIEDRA_1:
-
-	; attr 0
-	DB 		$01,$02,$02,$02,$02,$02,$02,$02
-	DB 		$02,$02,$02,$02,$02,$02,$02,$01
-	; attr 1
-	DB 		$00,$41,$41,$41,$41,$41,$41,$41
-	DB 		$41,$41,$41,$41,$41,$41,$41,$00
-
-.DATA_APARECEN_AGUJEROS:
-
-		db	208,144,144,064,016,048 ; 1-1
-		db	192,144,144,064,016,048 ; 1-2
-		db	208,144,176,208,016,048 ; 2-1
-		db	192,144,176,208,016,048 ; 2-2
-		db 	208,144,144,144,016,048 ; 3-1
-		db	192,144,144,144,016,048 ; 3-2
-		db	208,096,176,208,016,048	; 2-3
-		db	208,096,144,064,016,048	; 1-3
-		db	192,096,176,208,016,048	; 2-4
-		db 	208,144,176,000,016,048 ; 4-1
-		db	192,144,176,000,016,048 ; 4-2
-		db	208,096,144,144,016,048	; 3-3
-		db	192,096,144,144,016,048	; 3-4
-		db	208,096,176,000,016,048	; 4-3
-		db	192,096,176,000,016,048	; 4-4
-		db	192,096,144,064,016,048	; 1-4
-		
-.DATAS_APARECE_DAVAENIX_1:
-
-		db	000,000,96-34,112,32,32
-		db	032,000,96-34,112,32,32
-		db	064,000,96-34,112,48,32
-		db	112,000,96-34,112,48,32
-		db	000,032,80-34,096,64,64
-		db	064,032,80-34,096,64,64
-		db	128,032,80-34,096,64,80
-		db	000,112,64-34,080,80,96
-		db	080,112,64-34,080,80,96
-
-.DATAS_APARECE_DAVAENIX_2:
-
-		db	000,000,96-18,096,32,64
-		db	032,000,96-18,096,32,64
-		db	064,000,80-18,096,48,64
-		db	112,000,80-18,096,48,64
-		db	000,064,80-18,096,48,64
-		db	048,064,64-18,096,64,64
-		db	112,064,64-18,096,64,64
-		db	000,128,64-18,096,64,64
-		db	064,128,64-18,096,64,64
-		db	128,128,64-18,096,64,64
-		db	000,192,64-18,096,64,64
-		db	064,192,64-18,096,64,64
 
 .CARGA_PANTALLA_COMPLETA:
 
@@ -555,66 +374,6 @@ RUTINA_BOSS_1:
         djnz    .BUCLE_PINTA_DATAS_1
         ret
 
-.PAGE_2_A_PAGE_1_COMPLETA:
-
-		dw      #0000,#0200,#0000,#0100,#0100,#0100
-		db      #00,#00,10010000b
-
-.COPY_CORAZONES_EMPTY_DEPH:
-
-        dw      #0000,#0000+29+200,#0000,#0200+6,#0000+10,#0000+8
-       	db      #00,#00,10010000b
-
-.COPI_MARCADOR_BOSSES_CORAZONES_VACIOS:
-
-		dw	#0000+151,#0000+220,#0000+151,#0201,#0000+VIDA_ANCHO_BARRA_BOSS_1,#0000+16
-		db      #00,#00,10010000b
-
-.COPY_PUNTOS_MAGIA:
-
-        dw      #0000+25,#0000+45+200,#0000+123,#0200+6,#0000+8,#0000+8
-       	db      #00,#00,10010000b
-
-.PAGE_1_A_PAGE_2_COMPLETA:
-
-		dw	#0000,#0100,#0000,#0200,#0100,#0100
-		db      #00,#00,10010000b
-
-.COPIA_PARTE_PAGE_2_DE_STATUS:
-
-        dw      #0000,#0200,#0000,#00B4,256,20
-       	db      #00,#00,10010000b
-
-.COPIA_STATUS_BOSS_A_PAGE_2:
-
-        dw      #0000,#00C8,#0000,#0200,256,20
-       	db      #00,#00,10010000b
-
-.DATAS_ROCKAGER:
-
-        dw		#0090,#01D0,#0000,#0200,#0041,#0010
-		db		#00,#00,10010000b
-
-OJO_DERECHO_ROJO_BOSS_1:
-
-		dw		#00D5,#01E0,#006C,#023A,#0012,#0010
-		db		#00,#00,10010000b
-
-OJO_DERECHO_NORMAL_BOSS_1:
-
-		dw		#00A6,#01E0,#006C,#023A,#0012,#0010
-		db		#00,#00,10010000b
-
-OJO_IZQUIERDO_ROJO_BOSS_1:
-
-		dw		#00E8,#01E0,#0080,#023A,#0014,#0010
-		db		#00,#00,10010000b
-
-OJO_IZQUIERDO_NORMAL_BOSS_1:
-
-		dw		#00BA,#01E0,#0080,#023A,#0014,#0010
-		db		#00,#00,10010000b
-
 BUCLE_PELEA_BOSS_1:
 
 		HALT
@@ -624,27 +383,10 @@ BUCLE_PELEA_BOSS_1:
 		call	MOVIMIENTO_DEPH_EN_BOSS_1
 		call	SECUENCIA_PROYECTILES_PROPIOS_EN_BOSS_1
 		call	PINTA_PROYECTILES_DE_DEPH_EN_BOSS_1
-        call    REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH_ROCK_BOSS_1
+        call    REVISAMOS_COLISION_CON_AGONIX_Y_DEPH
 		call	ON_SPRITE_GLOBAL_BOSS_1
-		call	REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK_BOSS_1
-		call	REVISAMOS_SI_MUERE_ROCKAGER_BOSS_1
+		call	REVISAMOS_COLISION_CON_AGONIX_Y_PROYECTILES_DEPH
 
-        ld      a,(VELOCIDAD_ROCKAGER)                  ;  [ Esta secuencia pone una pausa a la velocidad de los rockagers
-        inc     a                                       ;  [
-        and     00000011B                               ;  [
-        ld      (VELOCIDAD_ROCKAGER),a                  ;  [
-        jr      nz,.CONTROL_POST_BUCLE_1                ;  [
-
-		call	ANIMA_ROCKAGERS_EN_BOSS_1
-		ld		a,(ROCKAGER_MUERTO)
-		cp		2
-		jr		z,.SIN_RUTINA_ROCAS_BOSS_1
-		call	RUTINA_ROCAS_EN_BOSS_1
-
-.SIN_RUTINA_ROCAS_BOSS_1:
-		call	PINTA_EXPLOSION_ROCK_BOSS_1
-
-.CONTROL_POST_BUCLE_1:
 
         ld      a,(TIEMPO_DE_ADJUST)
         or      a
@@ -1305,7 +1047,7 @@ ON_SPRITE_GLOBAL_BOSS_1:
 	ld	b,4
 	xor	a
 	ld	(VARIABLE_UN_USO3),a
-	call	BUCLE_REVISION_4_PIEDRAS_BOSS_1
+	call	BUCLE_REVISION_PROYECTILES_AGONIX_BOSS_1
 	jp	BUCLE_REVISION_TODOS_LOS_PROYECTILES_OJO_BOSS_1
 
 GUARDA_ESTADO_PROYECTIL_BOSS_1:
@@ -1325,26 +1067,7 @@ RESTAURA_ESTADO_PROYECTIL_BOSS_1:
         ldir
         ret
 		
-TABLA_DIRECCIONES_VRAM_ATRIBUTOS_PROYECTIL_BOSS_1:
-	dw		#4A58,#4A5C,#4A60,#4A64,#4A68,#4A6C,#4A70,#4A74
-
-TABLA_DIRECCIONES_VRAM_COLOR_PROYECTIL_BOSS_1:
-	dw		#4960,#4970,#4980,#4990,#49A0,#49B0,#49C0,#49D0
-
-TABLA_DIRECCIONES_PROYECTIL_BOSS_1:
-	db		5,5,5
-	db		5,4,5
-	db		4,5,4
-	db		3,5,4
-	db		3,4,4
-	db		3,4,3
-	db		5,6,5
-	db		6,5,6
-	db		7,5,6
-	db		7,6,6
-	db		7,6,7
-
-BUCLE_REVISION_4_PIEDRAS_BOSS_1:
+BUCLE_REVISION_PROYECTILES_AGONIX_BOSS_1:
 
 	push bc
 	ld	ix,VALORES_SPRITES_PIEDRAS
@@ -1394,7 +1117,7 @@ BUCLE_REVISION_4_PIEDRAS_BOSS_1:
 	ld		a,(VARIABLE_UN_USO3)
 	inc		a
 	ld		(VARIABLE_UN_USO3),a
-	djnz 	BUCLE_REVISION_4_PIEDRAS_BOSS_1
+	djnz 	BUCLE_REVISION_PROYECTILES_AGONIX_BOSS_1
 
 .FIN_DE_ON_SPRITE_CON_ROCAS:
 
@@ -1402,10 +1125,7 @@ BUCLE_REVISION_4_PIEDRAS_BOSS_1:
 
 PINTA_MARCADORES_VIDA_FINAL_BOSS_1:
 
-		ld		a,(VIDA_ROCKAGER_BOSS_1)
-		ld		c,a
-		ld		a,(VIDA_DAVEANIX_BOSS_1)
-		add		c
+		ld		a,(VIDA_AGONIX_BOSS_1)
 		call	CONVIERTE_VIDA_FINAL_A_BARRA_BOSS_1
 
 		or		a
@@ -1525,146 +1245,7 @@ DESACTIVA_PROYECTIL_OJO_BOSS_1_ACTUAL:
 		pop		hl
 		jp		DESACTIVA_PROYECTIL_BOSS_1
 
-REVISAMOS_SI_MUERE_ROCKAGER_BOSS_1:
-
-		ld		a,(ROCKAGER_MUERTO)
-		or		a
-		ret		nz
-		ld		a,(VIDA_ROCKAGER_BOSS_1)
-		or		a
-		ret		nz
-		ld		a,(FOTOGRAMA_SECUENCIA_ROCKAGER_3)
-		cp		102
-		jr		nc,.MUERTE_POSICION_4_BOSS_1
-		cp		70
-		jr		nc,.MUERTE_POSICION_3_BOSS_1
-		cp		38
-		jr		nc,.MUERTE_POSICION_2_BOSS_1
-		ld		a,2
-		jr		.GUARDA_MUERTE_ROCKAGER_BOSS_1
-
-.MUERTE_POSICION_2_BOSS_1:
-
-		ld		a,3
-		jr		.GUARDA_MUERTE_ROCKAGER_BOSS_1
-
-.MUERTE_POSICION_3_BOSS_1:
-
-		ld		a,4
-		jr		.GUARDA_MUERTE_ROCKAGER_BOSS_1
-
-.MUERTE_POSICION_4_BOSS_1:
-
-		ld		a,1
-
-.GUARDA_MUERTE_ROCKAGER_BOSS_1:
-
-		ld		(POSICION_DERRUMBE_ROCKAGER),a
-		ld		a,1
-		ld		(ROCKAGER_MUERTO),a
-		xor		a
-		ld		(PAUSA_EN_ANIMACION_ROCKAGER),a
-		ld		(FOTOGRAMA_SECUENCIA_ROCKAGER_2),a
-		ld		hl,30
-		ld		(SCORE_A_SUMAR),hl
-		call	SUMA_SCORE
-		ret
-
-REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH_ROCK_BOSS_1:
-
-		ld		a,(ROCKAGER_MUERTO)
-		or		a
-		ret		nz
-
-		ld		a,32
-
-		ld	ix,.LIMITES_ROCKAGERS
-		ld	iy,.LIMITE_VARIABLE_Y_SUPERIOR
-		ld	b,4
-
-.adelante:
-
-.control_x:
-
-		ld	a,(ix)					; 19
-		ld	de,(X_DEPH)				; 20
-		cp	e					; 4
-		jp	nc,.fin_bucle				; 10
-		add	a,37					; 7
-		cp	e					; 4
-		jp	c,.fin_bucle				; 10
-								; Total 74 20,43% + rápido
-		jp	.control_y_2
-
-.fin_bucle:
-
-		ld	de,5
-		add	ix,de
-		djnz	.control_x
-
-		ret
-
-.control_y_2:
-
-		ld	c,(ix+3)        ; 0 - X INFERIOR
-                                        ; 1 - Y SUPERIOR
-                                        ; 2 - FOTOGRAMA INFERIOR
-                                        ; 3 - FOTOGRAMA SUPERIOR
-                                        ; 4 - Y INFERIOR
-		ld	a,(FOTOGRAMA_SECUENCIA_ROCKAGER_3)
-		cp	c
-		jp	nc,.fin_bucle
-		ld	c,(ix+2)
-
-.control_y_1_2:
-
-		cp	c
-		jp	c,.fin_bucle
-		sub	c
-		ld	e,a
-		ld	d,0
-		add	iy,de
-		ld	c,(iy)
-		ld	a,(ix+4)
-		add	c
-		push	af
-		pop	de
-		ld	a,(Y_DEPH)
-		cp	d
-		ld	iy,.LIMITE_VARIABLE_Y_SUPERIOR
-		jp	c,.fin_bucle
-
-		ld	c,(ix+1)
-		cp	c
-		jp	nc,.fin_bucle
-
-		jp	.recibe_un_toque
-
-.LIMITES_ROCKAGERS:
-
-		db	58,129,00,30
-		db	81
-
-		db	201,162,32,62
-		db	113
-
-		db	138,129,96,126
-		db	81
-
-		db	0,162,64,94
-		db	113
-
-.LIMITE_VARIABLE_Y_SUPERIOR:
-
-		db	43
-		db	39,34,30,27,23
-		db	19,15,12,08
-		db	05,06,05,02,01
-		db	06
-		db	01,02,05,06,05
-		db	08,12,15,19
-		db	23,27,30,34,39
-		db	43
+REVISAMOS_COLISION_CON_AGONIX_Y_DEPH:
 
 .recibe_un_toque:
 
@@ -1672,207 +1253,15 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH_ROCK_BOSS_1:
 	call	PAGE44_A_SEGMENT_1_PINTA_CORAZONES_VIDA_DEPH_ADECUADOS
 	ret
 
-REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK_BOSS_1:
+REVISAMOS_COLISION_CON_AGONIX_Y_PROYECTILES_DEPH:
 
-		ld		iy,PROYECTILES
-		ld		b,6
-
-.BUCLE_6_PROYECTILES_ROCK_BOSS_1:
-
-		push	bc
-		ld		a,(iy+2)
-		cp		#FF
-		jp		z,.PASAMOS_AL_SIGUIENTE_PROYECTIL_ROCK_BOSS_1
-
-		ld		a,(ROCKAGER_MUERTO)
-		or		a
-		jr		nz,.REVISA_IMPACTO_DAVEANIX_BOSS_1
-
-		ld		ix,.DATAS_REVISIONES_ROCK_BOSS_1
-		ld		de,4
-		ld		b,4
-
-.REVISION_1_ROCK_BOSS_1:
-
-		ld		c,(ix)
-		ld		a,(iy)
-		cp		c
-		jr		c,.SIGUIENTE_REVISION_ROCK_BOSS_1
-		sub		11
-		cp		c
-		jr		nc,.SIGUIENTE_REVISION_ROCK_BOSS_1
-		ld		c,(ix+1)
-		ld		a,(iy+1)
-		cp		c
-		jr		c,.SIGUIENTE_REVISION_ROCK_BOSS_1
-		sub		8
-		cp		c
-		jr		nc,.SIGUIENTE_REVISION_ROCK_BOSS_1
-
-		ld		a,(FOTOGRAMA_SECUENCIA_ROCKAGER_3)
-		cp		(ix+2)
-		jr		c,.SIGUIENTE_REVISION_ROCK_BOSS_1
-		cp		(ix+3)
-		jr		nc,.SIGUIENTE_REVISION_ROCK_BOSS_1
-
-		ld		a,(VIDA_ROCKAGER_BOSS_1)
-		or		a
-		jr		z,.SOBRE_EL_PROYECTIL_ROCK_BOSS_1
-		dec		a
-		ld		(VIDA_ROCKAGER_BOSS_1),a
-		call	PINTA_MARCADORES_VIDA_FINAL_BOSS_1
-
-.SOBRE_EL_PROYECTIL_ROCK_BOSS_1:
-
-		call	.LIMPIA_PROYECTIL_TRAS_IMPACTO_BOSS_1
-		pop		bc
+		; Gancho limpio para el futuro control de impactos contra Agonix.
+		; La rutina real de vida/muerte se construira aqui.
 		ret
 
-.SOBRE_EL_PROYECTIL_MUERTE_DAVEANIX_BOSS_1:
+PINTA_EXPLOSION_AGONIX_BOSS_1:
 
-		call	.LIMPIA_PROYECTIL_TRAS_IMPACTO_BOSS_1
-		pop		bc
-		jp		MUERTE_DE_DAVEANIX_BOSS_1
-
-.LIMPIA_PROYECTIL_TRAS_IMPACTO_BOSS_1:
-
-		ld		a,5
-		ld		c,0
-		call	TIRA_FX_BOSS_1
-
-		xor		a
-		ld		(iy+8),a
-		ld		a,(iy+12)
-		call	SECUENCIA_PROYECTILES_PROPIOS_EN_BOSS_1.DEJA_LIBRE_SPRITE_EN_RAM
-
-		ld		ix,VALORES_EXPLOSION_CON_ROCK
-		ld		a,(iy)
-		ld		(ix+1),a
-		ld		a,(iy+1)
-		sub		8
-		ld		(ix),a
-		ld		a,23*4
-		ld		(ix+2),a
 		ret
-
-.SIGUIENTE_REVISION_ROCK_BOSS_1:
-
-		add		ix,de
-		djnz	.REVISION_1_ROCK_BOSS_1
-
-.REVISA_IMPACTO_DAVEANIX_BOSS_1:
-
-		ld		a,(iy+1)
-		cp		58
-		jr		c,.PASAMOS_AL_SIGUIENTE_PROYECTIL_ROCK_BOSS_1
-		sub		58
-		cp		15
-		jr		nc,.PASAMOS_AL_SIGUIENTE_PROYECTIL_ROCK_BOSS_1
-		ld		hl,.DATAS_REVISIONES_X_DAVEANIX_BOSS_1
-		ld		b,2
-
-.REVISION_DAVEANIX_BOSS_1:
-
-        ld      c,(hl)
-        inc     hl
-        ld      a,(iy)
-        cp      c
-        jr      c,.SIGUIENTE_REVISION_DAVEANIX_BOSS_1
-        sub     c
-        cp      (hl)
-        jr      nc,.SIGUIENTE_REVISION_DAVEANIX_BOSS_1
-
-
-        ; Primero miramos la vida de Daveanix
-        ld      a,(VIDA_DAVEANIX_BOSS_1)
-        or      a
-        jr      z,.SOBRE_EL_PROYECTIL_ROCK_BOSS_1
-
-        ; Si vida de Daveanix >= 6, se le puede restar siempre
-        cp      6
-        jr      nc,.RESTAR_VIDA_DAVEANIX_BOSS_1
-
-        ; Si vida de Daveanix < 6, sólo se resta si Rockager está muerto
-        ld      a,(VIDA_ROCKAGER_BOSS_1)
-        or      a
-        jr      nz,.SOBRE_EL_PROYECTIL_ROCK_BOSS_1
-
-        ; Recuperamos la vida de Daveanix porque A ahora contiene vida de Rockager
-        ld      a,(VIDA_DAVEANIX_BOSS_1)
-
-
-.RESTAR_VIDA_DAVEANIX_BOSS_1:
-
-        dec     a
-        ld      (VIDA_DAVEANIX_BOSS_1),a
-        push    af
-        call    PINTA_MARCADORES_VIDA_FINAL_BOSS_1
-        pop     af
-        or      a
-        jr      z,.SOBRE_EL_PROYECTIL_MUERTE_DAVEANIX_BOSS_1
-        jr      .SOBRE_EL_PROYECTIL_ROCK_BOSS_1
-
-.SIGUIENTE_REVISION_DAVEANIX_BOSS_1:
-
-		inc		hl
-		djnz	.REVISION_DAVEANIX_BOSS_1
-
-.PASAMOS_AL_SIGUIENTE_PROYECTIL_ROCK_BOSS_1:
-
-		ld		de,16
-		add		iy,de
-		pop		bc
-		dec		b
-		jp		nz,.BUCLE_6_PROYECTILES_ROCK_BOSS_1
-		ret
-
-.DATAS_REVISIONES_ROCK_BOSS_1:
-
-		db		12,141,70,95
-		db		153,108,102,127
-		db		75,109,6,30
-		db		219,141,38,63
-
-.DATAS_REVISIONES_X_DAVEANIX_BOSS_1:
-
-		db		102,12
-		db		122,16
-
-PINTA_EXPLOSION_ROCK_BOSS_1:
-
-		ld		ix,VALORES_EXPLOSION_CON_ROCK
-		ld		a,(ix+2)
-		or		a
-		ret		z
-		cp		25*4
-		jr		nz,.PINTAMOS_EXPLOSION_ROCK_BOSS_1
-
-		xor		a
-		ld		(ix+2),a
-
-.PINTAMOS_EXPLOSION_ROCK_BOSS_1:
-
-		ld		de,#4A00+17*4
-		ld		hl,VALORES_EXPLOSION_CON_ROCK
-		ld		bc,3
-		call	PON_COLOR_2.sin_bc_impuesta
-
-		ld		de,#4800+17*16
-		ld		hl,.COLOR_EXPLOSION_ROCK_BOSS_1
-		ld		bc,16
-		call	PON_COLOR_2.sin_bc_impuesta
-
-		ld		a,(ix+2)
-		or		a
-		ret		z
-		add		4
-		ld		(ix+2),a
-		ret
-
-.COLOR_EXPLOSION_ROCK_BOSS_1:
-
-		DB      $03,$03,$03,$03,$03,$03,$03,$03
-		DB      $03,$03,$03,$03,$03,$03,$03,$03
 
 TIRA_FX_BOSS_1:
 
@@ -1880,997 +1269,12 @@ TIRA_FX_BOSS_1:
 		call	ayFX_INIT
 		jp		PAGE_10_A_SEGMENT_2
 
-ANIMA_ROCKAGERS_EN_BOSS_1:
-
-		ld		a,(ROCKAGER_MUERTO)
-		cp		1
-		jp		z,.ANIMA_MUERTE_ROCKAGER_BOSS_1
-		cp		2
-		ret		z
-
-.ACTIVA_ROCAS_FASE_2:
-
-        ld      ix,VALORES_SPRITES_PIEDRAS
-        ld      a,(FOTOGRAMA_SECUENCIA_ROCKAGER_3)
-        cp      6
-        jp      z,.ACTIVANDO_COMUN_2
-        cp      6+32
-        jp      z,.ACTIVANDO_2_2
-        cp      6+32+32
-        jp      z,.ACTIVANDO_3_2
-        cp      6+32+32+32
-        jp      z,.ACTIVANDO_4_2
-     
-        jp      .SECUENCIA_2_CONT_2
-
-.ACTIVANDO_2_2:
-
-        ld      de,4
-        jp      .ACTIVANDO_COMUN_PRE_2
-
-.ACTIVANDO_3_2:
-
-        ld      de,8
-        jp      .ACTIVANDO_COMUN_PRE_2
-
-.ACTIVANDO_4_2:
-
-        ld      de,12
-
-.ACTIVANDO_COMUN_PRE_2:
-
-        add     ix,de
-
-.ACTIVANDO_COMUN_2:
-
-        xor     a
-        ld      (ix+3),a
-
-		srl		a
-		ld		a,r
-		and		00000011B
-		ld		(RECORRIDO_ROCA),a
-
-.SECUENCIA_2_CONT_2:
-
-        ld      a,(FOTOGRAMA_SECUENCIA_ROCKAGER_3)
-
-.MIRAMOS_SI_SALTA_AGUJERO:
-
-        cp      32+32+32+32
-        jp      z,.CAMBIO_DE_FOTOGRAMA_A_CERO
-        jp      .CAMBIO_DE_FOTOGRAMA
-
-.CAMBIO_DE_FOTOGRAMA_A_CERO:
-
-        xor     a
-
-.CAMBIO_DE_FOTOGRAMA:
-
-        ld      (FOTOGRAMA_SECUENCIA_ROCKAGER_3),a
-
-.SEGUIMOS_CON_EL_FOTOGRAMA:
-
-        ld      e,a
-        ld      d,0
-        push    de
-        pop     hl
-        or      a
- [5]    adc     hl,de
-        ex      de,hl
-        ld      ix,.DATA_SECUENCIA_2_ROCKAGER
-        ld      iy,DATAS_COPY_RECUP_SCROLL
-        call    .RUTINA_STANDAR_PASA_DATOS_COPY_ROCKAGER
-
-        ld      a,(FOTOGRAMA_SECUENCIA_ROCKAGER_3)
-        inc     a
-        cp      128
-        jp      c,.SALVAMOS_FOTOGRAMA_2
-        xor     a
-
-.SALVAMOS_FOTOGRAMA_2:
-
-        ld      (FOTOGRAMA_SECUENCIA_ROCKAGER_3),a
-        
-        jp      .PINTAMOS_FOTOGRAMA
-
-.RUTINA_STANDAR_PASA_DATOS_COPY_ROCKAGER:
-
-        add     ix,de
-        ld      a,(ix)
-        ld      (iy),a
-        ld      a,(ix+1)
-        ld      (iy+2),a
-        ld      a,(ix+2)
-        ld      (iy+4),a
-        ld      a,(ix+3)
-        ld      (iy+6),a
-        ld      a,(ix+4)
-        ld      (iy+8),a
-        ld      a,(ix+5)
-        ld      (iy+10),a
-
-        ret
-
-.PAUSA_DE_ANIMACION_2:
-
-        ld      a,(PAUSA_EN_ANIMACION_ROCKAGER)
-        inc     a
-        and     00000111b
-        ld      (PAUSA_EN_ANIMACION_ROCKAGER),a
-        or      a
-        jp      nz,.PINTAMOS_FOTOGRAMA
-        ld      a,(FOTOGRAMA_SECUENCIA_ROCKAGER_3)
-        inc     a
-        jp      .SALVAMOS_FOTOGRAMA_2
-
-.PINTAMOS_FOTOGRAMA:
-
- 		ld		hl,DATAS_COPY_RECUP_SCROLL
-		call	DOCOPY
-        ret
-
-.ANIMA_MUERTE_ROCKAGER_BOSS_1:
-
-		ld		a,(FOTOGRAMA_SECUENCIA_ROCKAGER_2)
-		ld		b,a
-[2]		sla		a
-[2]		add		b
-		ld		l,a
-		ld		h,0
-		ld		a,(POSICION_DERRUMBE_ROCKAGER)
-		ld		e,a
-		ld		d,0
-		or		a
-[36]		adc		hl,de
-		ex		de,hl
-		ld		ix,.DATA_MUERE_ROCKAGER
-		ld		iy,DATAS_COPY_RECUP_SCROLL
-		call	.RUTINA_STANDAR_PASA_DATOS_COPY_ROCKAGER
-		call	.PINTAMOS_FOTOGRAMA
-		ld		a,(FOTOGRAMA_SECUENCIA_ROCKAGER_2)
-		inc		a
-		cp		5
-		jr		nz,.SALVA_FOTOGRAMA_MUERTE_BOSS_1
-		ld		a,2
-		ld		(ROCKAGER_MUERTO),a
-
-		xor		a
-		ld		hl,VALORES_SPRITES_PIEDRAS
-		ld		b,24
-
-.BUCLE_LIMPIA_VARIABLES_ROCAS_ROCKAGER_BOSS_1:
-
-		ld		(hl),a
-		inc		hl
-		djnz	.BUCLE_LIMPIA_VARIABLES_ROCAS_ROCKAGER_BOSS_1
-
-		ld		hl,.VACIO_SPRITES_ROCAS_ROCKAGER_BOSS_1
-		ld		de,#4A00+18*4
-		ld		bc,16
-		call	PON_COLOR_2.sin_bc_impuesta
-
-		ret
-
-.SALVA_FOTOGRAMA_MUERTE_BOSS_1:
-
-		ld		(FOTOGRAMA_SECUENCIA_ROCKAGER_2),a
-		ret
-
-.VACIO_SPRITES_ROCAS_ROCKAGER_BOSS_1:
-
-		db		0,0,0,0,0,0,0,0
-		db		0,0,0,0,0,0,0,0
-               
-.DATA_SECUENCIA_2_ROCKAGER:
-
-
-                db  192,192,64,144,48,16
-                db  192,96,64,112,48,48
-                db  144,96,64,112,48,48
-                db  96,96,64,112,48,48
-                db  48,96,64,112,48,48
-                db  0,96,64,112,48,48
-                db  192,48,64,112,48,48
-                db  144,48,64,112,48,48
-                db  96,48,64,112,48,48
-                db  48,48,64,112,48,48
-                db  0,144,64,112,48,48
-                db  48,144,64,112,48,48
-                db  96,144,64,112,48,48
-                db  144,144,64,112,48,48
-                db  192,144,64,112,48,48
-                db  0,192,64,112,48,48
-                db  192,144,64,112,48,48
-                db  144,144,64,112,48,48
-                db  96,144,64,112,48,48
-                db  48,144,64,112,48,48
-                db  0,144,64,112,48,48
-                db  48,48,64,112,48,48
-                db  96,48,64,112,48,48
-                db  144,48,64,112,48,48
-                db  192,48,64,112,48,48
-                db  0,96,64,112,48,48
-                db  48,96,64,112,48,48
-                db  96,96,64,112,48,48
-                db  144,96,64,112,48,48
-                db  192,96,64,112,48,48
-                db  192,192,64,144,48,16
-                db  96,192,64,144,48,16
-
-                db  192,192,208,176,48,16
-                db  192,96,208,144,48,48
-                db  144,96,208,144,48,48
-                db  96,96,208,144,48,48
-                db  48,96,208,144,48,48
-                db  0,96,208,144,48,48
-                db  192,48,208,144,48,48
-                db  144,48,208,144,48,48
-                db  96,48,208,144,48,48
-                db  48,48,208,144,48,48
-                db  0,144,208,144,48,48
-                db  48,144,208,144,48,48
-                db  96,144,208,144,48,48
-                db  144,144,208,144,48,48
-                db  192,144,208,144,48,48
-                db  48,192,208,144,48,48
-                db  192,144,208,144,48,48
-                db  144,144,208,144,48,48
-                db  96,144,208,144,48,48
-                db  48,144,208,144,48,48
-                db  0,144,208,144,48,48
-                db  48,48,208,144,48,48
-                db  96,48,208,144,48,48
-                db  144,48,208,144,48,48
-                db  192,48,208,144,48,48
-                db  0,96,208,144,48,48
-                db  48,96,208,144,48,48
-                db  96,96,208,144,48,48
-                db  144,96,208,144,48,48
-                db  192,96,208,144,48,48
-                db  192,192,208,176,48,16
-                db  96,192,208,176,48,16
-
-                db  192,192,0,176,48,16
-                db  192,96,0,144,48,48
-                db  144,96,0,144,48,48
-                db  96,96,0,144,48,48
-                db  48,96,0,144,48,48
-                db  0,96,0,144,48,48
-                db  192,48,0,144,48,48
-                db  144,48,0,144,48,48
-                db  96,48,0,144,48,48
-                db  48,48,0,144,48,48
-                db  0,144,0,144,48,48
-                db  48,144,0,144,48,48
-                db  96,144,0,144,48,48
-                db  144,144,0,144,48,48
-                db  192,144,0,144,48,48
-                db  0,192,0,144,48,48
-                db  192,144,0,144,48,48
-                db  144,144,0,144,48,48
-                db  96,144,0,144,48,48
-                db  48,144,0,144,48,48
-                db  0,144,0,144,48,48
-                db  48,48,0,144,48,48
-                db  96,48,0,144,48,48
-                db  144,48,0,144,48,48
-                db  192,48,0,144,48,48
-                db  0,96,0,144,48,48
-                db  48,96,0,144,48,48
-                db  96,96,0,144,48,48
-                db  144,96,0,144,48,48
-                db  192,96,0,144,48,48
-                db  192,192,0,176,48,16
-                db  96,192,0,176,48,16
-
-                db  192,192,144,144,48,16
-                db  192,96,144,112,48,48
-                db  144,96,144,112,48,48
-                db  96,96,144,112,48,48
-                db  48,96,144,112,48,48
-                db  0,96,144,112,48,48
-                db  192,48,144,112,48,48
-                db  144,48,144,112,48,48
-                db  96,48,144,112,48,48
-                db  48,48,144,112,48,48
-                db  0,144,144,112,48,48
-                db  48,144,144,112,48,48
-                db  96,144,144,112,48,48
-                db  144,144,144,112,48,48
-                db  192,144,144,112,48,48
-                db  48,192,144,112,48,48
-                db  192,144,144,112,48,48
-                db  144,144,144,112,48,48
-                db  96,144,144,112,48,48
-                db  48,144,144,112,48,48
-                db  0,144,144,112,48,48
-                db  48,48,144,112,48,48
-                db  96,48,144,112,48,48
-                db  144,48,144,112,48,48
-                db  192,48,144,112,48,48
-                db  0,96,144,112,48,48
-                db  48,96,144,112,48,48
-                db  96,96,144,112,48,48
-                db  144,96,144,112,48,48
-                db  192,96,144,112,48,48
-                db  192,192,144,144,48,16
-                db  96,192,144,144,48,16
-
-.DATA_MUERE_ROCKAGER:
-
-                db  0,0,39,75,48,48             ; ARRIBA IZQUIERDA
-                db  48,0,39,75,48,48
-                db  96,0,39,75,48,48
-                db  144,0,39,75,48,48
-                db  192,0,39,75,48,48
-                db  0,48,39,75,48,48
-
-                db  0,0,144,112,48,48            ; CENTRO IZQUIERDA
-                db  48,0,144,112,48,48
-                db  96,0,144,112,48,48
-                db  144,0,144,112,48,48
-                db  192,0,144,112,48,48
-                db  0,48,144,112,48,48
-
-				db  0,0,71,112,48,48            ; ABAJO IZQUIERDA
-				db  48,0,71,112,48,48
-				db  96,0,71,112,48,48
-				db  144,0,71,112,48,48
-				db  192,0,71,112,48,48
-				db  0,48,71,112,48,48
-
-	            db  0,0,208,155,48,48            ; ABAJO DERECHA
-	            db  48,0,208,155,48,48
-	            db  96,0,208,155,48,48
-	            db  144,0,208,155,48,48
-	            db  192,0,208,155,48,48
-	            db  0,48,208,155,48,48
-
-                db  0,0,0,144,48,48           ; CENTRO DERECHA
-                db  48,0,0,144,48,48
-                db  96,0,0,144,48,48
-                db  144,0,0,144,48,48
-                db  192,0,0,144,48,48
-                db  0,48,0,144,48,48
-                
-                db  0,0,167,75,48,48           ; ARRIBA DERECHA
-                db  48,0,167,75,48,48
-                db  96,0,167,75,48,48
-                db  144,0,167,75,48,48
-                db  192,0,167,75,48,48
-                db  0,48,167,75,48,48
-
-RUTINA_ROCAS_EN_BOSS_1:
-
-.PREPARAMOS_ENTRADA:
-
-	push	ix
-	push	iy
-
-	ld		b,4
-	xor		a
-	ld		(VARIABLE_UN_USO3),a
-
-.BUCLE_4_PIEDRAS:
-
-	jp		.BUCLE_4_PIEDRAS_EXT
-
-.DESAPARECE:
-
-	ld		iy,VARIABLE_UN_USO
-	xor		a
-	ld		(iy),a
-	ld		(iy+1),a
-	ld		(iy+2),a
-		call	.PINTA_DOS_SPRITES_ROCA_BOSS_1
-	jp		.COMUN_PINTA_Y_DESAPARECE
-
-.FIN_DEL_BUCLE:
-
-	ld		a,(VARIABLE_UN_USO3)
-	inc		a
-	ld		(VARIABLE_UN_USO3),a
-
-	djnz	.BUCLE_4_PIEDRAS
-
-.VOLVEMOS:
-
-	pop		iy
-	pop		ix
-	ret
-
-.SALE_DISPARADA:
-
-	ld		a,26
-	ld		(ix+3),a
-
-	ld		iy,VARIABLE_UN_USO
-	ld		a,(ix+2)
-[2]	add		a
-	add		60*4
-	ld		(ix+2),a
-	
-	ld		a,(ix)
-	sub		10
-	ld		(ix),a
-	cp		245
-	jp		nc,.SALE_DISPARADA_1
-
-	ld		a,(ix+1)
-	sub		10
-	ld		(ix+1),a
-	cp		211
-	jp		c,.SALTO_DESDE_REBOTA
-
-.SALE_DISPARADA_1:
-
-	ld		a,24
-	ld		(ix+3),a
-	JP		.SALTO_DESDE_REBOTA
-
-.BUCLE_4_PIEDRAS_EXT:
-
-.SEGUIMOS_SIN_PARON:
-
-	ld		a,(VARIABLE_UN_USO3)
-	ld		ix,VALORES_SPRITES_PIEDRAS
-	ld		iy,.DATA_RECORRIDO_ROCA_1_1
-[2]	add		a
-	ld		d,0
-	ld		e,a
-	add		ix,de
-	push	de
-	pop		hl
-	xor		a
-[12]    adc	hl,de	
-	push	hl
-	pop		de
-	add		iy,de
-
-	ld		a,(RECORRIDO_ROCA)
-	or		a
-	jp		z,.SEGUIMOS_TRAS_AZAR
-	cp		2
-	jp		z,.SEGUNDA_OPCION
-
-.TERCERA_OPCION:
-
-	ld		de,26*4*2
-	add		iy,de
-	jp		.SEGUIMOS_TRAS_AZAR
-
-.SEGUNDA_OPCION:
-
-	ld		de,26*4*2*2
-	add		iy,de	
-
-.SEGUIMOS_TRAS_AZAR:
-
-	ld		a,(ix+3)
-	or		a
-	call	z,.SALE
-	cp		8
-	call	Z,.COGE
-	cp		16
-	call	z,.TOCA_SUELO
-	cp		25
-	jp		z,.DESAPARECE
-	cp		26
-	jp		z,.FIN_DEL_BUCLE
-	cp		27
-	jp		z,.SALE_DISPARADA
-
-	add		a
-	ld		e,a
-	ld		d,0
-	add		iy,de
-
-	ld		a,(iy)
-	ld		(ix),a
-	ld		a,(iy+1)
-	ld		(ix+1),a
-
-	ld		a,(ix+2)
-	inc		a
-	and		00000001b
-	ld		(ix+2),a
-
-.SALTO_DESDE_REBOTA:
-
-	ld		iy,VARIABLE_UN_USO
-	ld		a,(ix)
-	sub		8
-	ld		(iy+1),a
-	ld		a,(ix+1)
-	sub		8
-	ld		(iy),a
-	ld		a,(ix+2)
-[2]	add		a
-	add		60*4
-	ld		(iy+2),a
-
-		call	.PINTA_DOS_SPRITES_ROCA_BOSS_1
-
-.COMUN_PINTA_Y_DESAPARECE:
-
-	ld		a,(ix+3)
-	inc		a
-	ld		(ix+3),a
-
-	jp		.FIN_DEL_BUCLE
-
-.MAS_DE_UN_USO_1:
-
-	ld		a,(VARIABLE_UN_USO3)
-	and		00000001b
-[3]	add		a
-	ld		e,a
-	ld		d,0
-	ld		hl,#4A00+18*4
-	or		a
-	adc		hl,de
-
-	ret
-
-.MAS_DE_UN_USO_2:
-
-	ex		de,hl
-	ld		hl,VARIABLE_UN_USO
-	push	bc
-	ld		bc,3
-	call	PON_COLOR_2.sin_bc_impuesta
-	pop		bc
-
-	ret
-
-.PINTA_DOS_SPRITES_ROCA_BOSS_1:
-
-		call	.MAS_DE_UN_USO_1
-		call	.MAS_DE_UN_USO_2
-		ld		a,(iy+2)
-		add		8
-		ld		(iy+2),a
-		ld		de,4
-		or		a
-		adc		hl,de
-		call	.MAS_DE_UN_USO_2
-		ret
-
-.TOCA_SUELO:
-
-		push	af
-        ld      a,5
-        ld      (TIEMPO_DE_ADJUST),a
-        ld      a,1
-        ld      (COLOR_ALEATORIO),a
-
-        ld      a,29
-        ld      c,0
-
-        call    PAGE_31_A_SEGMENT_2       
-        call    ayFX_INIT
-        call    PAGE_10_A_SEGMENT_2 
-		pop		af
-
-		ret
-
-.SALE:
-
-		push	af
-        ld      a,27
-        ld      c,0
-
-        call    PAGE_31_A_SEGMENT_2       
-        call    ayFX_INIT
-        call    PAGE_10_A_SEGMENT_2 
-		pop		af
-
-		ret
-
-.COGE:
-
-		push	af
-        ld      a,28
-        ld      c,0
-
-        call    PAGE_31_A_SEGMENT_2       
-        call    ayFX_INIT
-        call    PAGE_10_A_SEGMENT_2 
-		pop		af
-
-		ret
-
-.DATA_RECORRIDO_ROCA_1_1:
-
-	db	0,99
-	db	10,97
-	db	22,97
-	db	33,96
-	db	46,96
-	db	60,98
-	db	71,103
-	db	80,108
-	db	88,111
-	
-	db	94,83
-	db	114,64
-	db	146,59
-	db	173,67
-	db	191,80
-	db	203,89
-	db	217,99
-	db	230,116
-
-	db	233,115
-	db	236,113
-	db	239,113
-	db	243,113
-	db	247,115
-	db	250,117
-	db	253,119
-	db	255,120
-
-	db	0,0
-
-.DATA_RECORRIDO_ROCA_2_1:
-
-	db	255,120
-	db	251,120
-	db	246,120
-	db	241,123
-	db	238,126
-	db	234,131
-	db	232,136
-	db	231,139
-	db	231,143
-	
-	db	214,118
-	db	190,101
-	db	167,93
-	db	137,85
-	db	107,85
-	db	75,94
-	db	54,104
-	db	37,124
-	
-	db	32,120
-	db	29,118
-	db	24,116
-	db	19,114
-	db	14,116
-	db	9,118
-	db	4,120
-	db	0,125
-
-	db	0,0
-
-.DATA_RECORRIDO_ROCA_3_1:
-
-	db	0,125
-	db	4,126
-	db	10,127
-	db	13,127
-	db	17,128
-	db	21,131
-	db	23,135
-	db	24,138
-	db	25,143
-	
-	db	35,129
-	db	45,120
-	db	52,111
-	db	64,100
-	db	76,93
-	db	92,88
-	db	109,95
-	db	120,111
-	
-	db	129,103
-	db	147,94
-	db	165,91
-	db	181,91
-	db	199,87
-	db	222,87
-	db	238,91
-	db	255,96
-
-	db	0,0
-
-.DATA_RECORRIDO_ROCA_4_1:
-
-	db	255,96
-	db	245,89
-	db	233,82
-	db	219,81
-	db	208,83
-	db	193,89
-	db	184,95
-	db	173,106
-	db	167,112
-	
-	db	167,86
-	db	157,96
-	db	155,107
-	db	152,122
-	db	149,139
-	db	145,157
-	db	142,172
-	db	140,193
-	
-	db	134,173
-	db	121,157
-	db	109,145
-	db	91,131
-	db	76,118
-	db	52,102
-	db	31,96
-	db	0,99
-
-	db	0,0
-
-.DATA_RECORRIDO_ROCA_1_2:
-
-	db	0,99
-	db	10,97
-	db	22,97
-	db	33,96
-	db	46,96
-	db	60,98
-	db	71,103
-	db	80,108
-	db	88,111
-
-	db	95,95
-	db	106,79
-	db	127,79
-	db	137,93
-	db	141,109
-	db	144,124
-	db	143,143
-	db	141,160
-
-	db	153,153
-	db	168,144
-	db	180,139
-	db	193,134
-	db	206,128
-	db	223,123
-	db	237,121
-	db	255,120
-
-	db	0,0
-
-.DATA_RECORRIDO_ROCA_2_2:
-
-	db	255,120
-	db	251,120
-	db	246,120
-	db	241,123
-	db	238,126
-	db	234,131
-	db	232,136
-	db	231,139
-	db	231,143	
-	
-	db	215,132
-	db	203,128
-	db	190,125
-	db	175,125
-	db	156,124
-	db	144,127
-	db	131,132
-	db	118,142
-	
-	db	106,133
-	db	93,127
-	db	79,123
-	db	61,120
-	db	51,118
-	db	35,120
-	db	16,120
-	db	0,125
-
-	db	0,0
-
-.DATA_RECORRIDO_ROCA_3_2:
-
-	db	0,125
-	db	4,126
-	db	10,127
-	db	13,127
-	db	17,128
-	db	21,131
-	db	23,135
-	db	24,138
-	db	25,143
-	
-	db	56,130
-	db	78,127
-	db	97,128
-	db	122,137
-	db	139,147
-	db	156,157
-	db	172,168
-	db	191,181
-	
-	db	196,168
-	db	201,155
-	db	206,147
-	db	213,134
-	db	221,121
-	db	232,110
-	db	243,103
-	db	255,96
-
-	db	0,0
-
-.DATA_RECORRIDO_ROCA_4_2:
-
-	db	255,96
-	db	245,89
-	db	233,82
-	db	219,81
-	db	208,83
-	db	193,89
-	db	184,95
-	db	173,106
-	db	167,112
-	
-	db	164,103
-	db	163,97
-	db	157,90
-	db	151,92
-	db	146,98
-	db	142,107
-	db	140,120
-	db	140,128
-	
-	db	131,115
-	db	118,104
-	db	99,93
-	db	80,87
-	db	60,83
-	db	39,84
-	db	17,87
-	db	0,99
-
-	db	0,0
-
-.DATA_RECORRIDO_ROCA_1_3:
-	
-	db	0,99
-	db	10,97
-	db	22,97
-	db	33,96
-	db	46,96
-	db	60,98
-	db	71,103
-	db	80,108
-	db	88,111
-
-	db	104,115
-	db	112,128
-	db	117,140
-	db	118,150
-	db	118,162
-	db	119,175
-	db	117,189
-	db	120,205
-
-	db	128,185
-	db	141,168
-	db	157,155
-	db	176,146
-	db	190,141
-	db	207,135
-	db	229,127
-	db	255,120
-
-	db	0,0
-
-.DATA_RECORRIDO_ROCA_2_3:
-	
-	db	255,120
-	db	251,120
-	db	246,120
-	db	241,123
-	db	238,126
-	db	234,131
-	db	232,136
-	db	231,139
-	db	231,143
-	
-	db	221,139
-	db	208,137
-	db	196,137
-	db	181,136
-	db	167,142
-	db	157,147
-	db	148,155
-	db	139,163
-	
-	db	127,154
-	db	111,146
-	db	96,141
-	db	76,136
-	db	61,133
-	db	43,131
-	db	25,127
-	db	0,125
-
-	db	0,0
-
-.DATA_RECORRIDO_ROCA_3_3:
-	
-	db	0,125
-	db	4,126
-	db	10,127
-	db	13,127
-	db	17,128
-	db	21,131
-	db	23,135
-	db	24,138
-	db	25,143
-	
-	db	53,139
-	db	73,139
-	db	88,147
-	db	102,158
-	db	112,170
-	db	120,181
-	db	131,196
-	db	140,208
-	
-	db	150,188
-	db	163,170
-	db	174,157
-	db	186,142
-	db	200,129
-	db	213,118
-	db	231,104
-	db	255,96
-
-	db	0,0
-
-.DATA_RECORRIDO_ROCA_4_3:
-	
-	db	255,96
-	db	245,89
-	db	233,82
-	db	219,81
-	db	208,83
-	db	193,89
-	db	184,95
-	db	173,106
-	db	167,112
-	
-	db	156,112
-	db	143,116
-	db	128,121
-	db	116,128
-	db	100,142
-	db	91,152
-	db	84,166
-	db	78,190
-	
-	db	74,171
-	db	68,159
-	db	60,146
-	db	50,128
-	db	42,118
-	db	29,107
-	db	17,101
-	db	0,99
-
-	db	0,0
-
-MUERTE_DE_DAVEANIX_BOSS_1:
+MUERTE_DE_AGONIX_BOSS_1:
 ; paramos la música
 		call	stpmus
 		
-; Daveanix abre la boca
-		ld		hl,COPY_DAVEANIX_PRE_PAUSA_BOSS_1
+; AGONIX abre la boca
+		ld		hl,COPY_AGONIX_PRE_PAUSA_BOSS_1
 		call	DOCOPY
 
 ; Nos aseguramos que el prota no está en modo transparente ni el fondo en colores varios
@@ -2880,36 +1284,36 @@ MUERTE_DE_DAVEANIX_BOSS_1:
 		ld		(INMUNE),a
 
 ; pequeña pausa
-		ld		a,DAVEANIX_PAUSA_BOCA_BOSS_1
+		ld		a,AGONIX_PAUSA_BOCA_BOSS_1
 		call	BUCLE_PINTA_TILES.rutina_de_pausa
 
 ; limpiamos sprites
 		xor		a
-		ld		hl,SPRITES_ATRIBUTOS_VRAM_BOSS_1+DAVEANIX_LIMPIA_SPRITE_INICIAL_BOSS_1*4
-		ld		bc,DAVEANIX_LIMPIA_SPRITES_CANT_BOSS_1*4
+		ld		hl,SPRITES_ATRIBUTOS_VRAM_BOSS_1+AGONIX_LIMPIA_SPRITE_INICIAL_BOSS_1*4
+		ld		bc,AGONIX_LIMPIA_SPRITES_CANT_BOSS_1*4
 		call	FILVRM_RAM
 		
-; animamos la muerte de Daveanix		
-		ld		b,DAVEANIX_MUERTE_BUCLES_BOSS_1
+; animamos la muerte de AGONIX		
+		ld		b,AGONIX_MUERTE_BUCLES_BOSS_1
 
 ; audio de terremoto
-		ld		a,DAVEANIX_MUERTE_FX_BOSS_1
-		ld		c,DAVEANIX_MUERTE_FX_CANAL_BOSS_1
+		ld		a,AGONIX_MUERTE_FX_BOSS_1
+		ld		c,AGONIX_MUERTE_FX_CANAL_BOSS_1
         call    PAGE_31_A_SEGMENT_2
 		call	ayFX_INIT
         call   	PAGE_10_A_SEGMENT_2
 
-.BUCLE_ANIMA_MUERTE_DAVEANIX_BOSS_1:
+.BUCLE_ANIMA_MUERTE_AGONIX_BOSS_1:
 
 		push	bc
-		ld		hl,COPY_ANIMA_MUERTE_DAVEANIX_A_BUFFER_BOSS_1
+		ld		hl,COPY_ANIMA_MUERTE_AGONIX_A_BUFFER_BOSS_1
 		call	DOCOPY
-		ld		hl,COPY_ANIMA_MUERTE_DAVEANIX_DESDE_BUFFER_BOSS_1
+		ld		hl,COPY_ANIMA_MUERTE_AGONIX_DESDE_BUFFER_BOSS_1
 		call	DOCOPY
-		ld		a,DAVEANIX_MUERTE_PAUSA_BOSS_1
+		ld		a,AGONIX_MUERTE_PAUSA_BOSS_1
 		call	BUCLE_PINTA_TILES.rutina_de_pausa
 		pop		bc
-		djnz	.BUCLE_ANIMA_MUERTE_DAVEANIX_BOSS_1
+		djnz	.BUCLE_ANIMA_MUERTE_AGONIX_BOSS_1
 
 TERMINANDO_LA_BATALLA_b1:
 
@@ -2944,27 +1348,6 @@ VOLVEMOS_b1:
 
 		jp		CARGA_SLOT_REGRESO_A_JUEGO
 
-COPY_DAVEANIX_PRE_PAUSA_BOSS_1:
-
-		dw		PAGE_X_VRAM_BOSS_1+DAVEANIX_BOCA_SX_BOSS_1,PAGE_1_VRAM_Y_BOSS_1+DAVEANIX_BOCA_SY_BOSS_1
-		dw		PAGE_X_VRAM_BOSS_1+DAVEANIX_BOCA_DX_BOSS_1,PAGE_2_VRAM_Y_BOSS_1+DAVEANIX_BOCA_DY_BOSS_1
-		dw		PAGE_X_VRAM_BOSS_1+DAVEANIX_BOCA_ANCHO_BOSS_1,PAGE_X_VRAM_BOSS_1+DAVEANIX_BOCA_ALTO_BOSS_1
-		db		COPY_SIN_OFFSET_BOSS_1,COPY_SIN_OFFSET_BOSS_1,COPY_LOGICA_NORMAL_BOSS_1
-
-COPY_ANIMA_MUERTE_DAVEANIX_A_BUFFER_BOSS_1:
-
-		dw		PAGE_X_VRAM_BOSS_1+DAVEANIX_MUERTE_SX_BOSS_1,PAGE_2_VRAM_Y_BOSS_1+DAVEANIX_MUERTE_SY_BOSS_1
-		dw		PAGE_X_VRAM_BOSS_1+DAVEANIX_BUFFER_X_BOSS_1,PAGE_1_VRAM_Y_BOSS_1+DAVEANIX_BUFFER_Y_BOSS_1
-		dw		PAGE_X_VRAM_BOSS_1+DAVEANIX_MUERTE_ANCHO_BOSS_1,PAGE_X_VRAM_BOSS_1+DAVEANIX_MUERTE_ALTO_BOSS_1
-		db		COPY_SIN_OFFSET_BOSS_1,COPY_SIN_OFFSET_BOSS_1,COPY_LOGICA_NORMAL_BOSS_1
-
-COPY_ANIMA_MUERTE_DAVEANIX_DESDE_BUFFER_BOSS_1:
-
-		dw		PAGE_X_VRAM_BOSS_1+DAVEANIX_BUFFER_X_BOSS_1,PAGE_1_VRAM_Y_BOSS_1+DAVEANIX_BUFFER_Y_BOSS_1
-		dw		PAGE_X_VRAM_BOSS_1+DAVEANIX_MUERTE_DX_BOSS_1,PAGE_2_VRAM_Y_BOSS_1+DAVEANIX_MUERTE_DY_BOSS_1
-		dw		PAGE_X_VRAM_BOSS_1+DAVEANIX_MUERTE_ANCHO_BOSS_1,PAGE_X_VRAM_BOSS_1+DAVEANIX_MUERTE_ALTO_BOSS_1
-		db		COPY_SIN_OFFSET_BOSS_1,COPY_SIN_OFFSET_BOSS_1,COPY_LOGICA_NORMAL_BOSS_1
-
 FADE_DEPH_A_NEGRO_b1:
 
 		incbin	"../PALETAS/BOSS2 DEPH.FADEOUT"
@@ -2972,3 +1355,5 @@ FADE_DEPH_A_NEGRO_b1:
 FADE_FASE_1_3_A_NEGRO_b1:
 
 		incbin	"../PALETAS/BOSS2.fadeout"
+
+	include	"BOSS 1 DATA.asm"
