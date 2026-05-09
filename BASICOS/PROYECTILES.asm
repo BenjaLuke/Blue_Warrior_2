@@ -100,7 +100,6 @@ NUEVO_PROYECTIL:
 		ld		a,(FUEGO_QUE_TOCA)
 		inc		a
 		and		00000011b
-		or		a
 		jp		nz,.FUEGO_2
 		inc		a
 
@@ -300,12 +299,10 @@ SECUENCIA_PROYECTILES_Y_ENEMIGOS:
 
 .COMUN_TRES_FUEGOS:
 
-		ld		a,(ix+11)
-		ld		b,a
-		ld		a,(ix+1)
-		sub		b
-		ld		(ix+1),a
-		ret
+        ld      a,(ix+1)
+        sub     (ix+11)
+        ld      (ix+1),a
+        ret
 
 .HACHA_1:
 .HACHA_2:
@@ -551,23 +548,22 @@ PINTA_PROYECTILES_ENEMIGOS:
 
 .PINTADO_DE_SPRITE:
 
-		ld		iy,PROPIEDADES_PATRON_SPRITE
-		ld		a,(ix+1)
-		ld		(iy),a
-		ld		a,(ix)
-		ld		(iy+1),a
-		ld		a,(ix+8)
-		ld		(iy+2),a
+        ld      iy,PROPIEDADES_PATRON_SPRITE
+        ld      a,(ix+1)
+        ld      (iy),a
+        ld      a,(ix)
+        ld      (iy+1),a
+        ld      a,(ix+8)
+        ld      (iy+2),a
 
-		ld		e,(ix+12)
-		ld		d,0
-		ld		hl,#4A00												; Depositamos los sprites en vram	
-		or		a
-		adc		hl,de
-		ex		de,hl
-		ld		hl,PROPIEDADES_PATRON_SPRITE
-		ld		bc,3
-		jp		PON_COLOR_2.sin_bc_impuesta
+        ld      e,(ix+12)
+        ld      d,0
+        ld      hl,#4A00
+        add     hl,de
+        ex      de,hl
+        ld      hl,PROPIEDADES_PATRON_SPRITE
+        ld      bc,3
+        jp      PON_COLOR_2.sin_bc_impuesta
 
 .VAMOS_TERMINANDO_EL_CICLO:
 
@@ -651,19 +647,18 @@ MIRAMOS_SI_ESTA_LIBRE_ESE_SPRITE_BUCLE:
 
 DEJA_LIBRE_SPRITE_EN_RAM:
 
-		or		a
-	[2]	rrc		a
-		sub		10
-		push	ix
-		ld		ix,SPRITES_ACTIVOS
-		ld		e,a
-		ld		d,0
-		add		ix,de
-		xor		a
-		ld		(ix),a
-		pop		ix
-		
-		ret
+        rrca
+        rrca
+        sub     10
+        push    ix
+        ld      ix,SPRITES_ACTIVOS
+        ld      e,a
+        ld      d,0
+        add     ix,de
+        xor     a
+        ld      (ix),a
+        pop     ix
+        ret
 
 APARTAMOS_SPRITES_QUE_MOLESTAN:
 
@@ -691,10 +686,9 @@ APARTAMOS_SPRITES_QUE_MOLESTAN:
 
 .quitamos_de_en_medio:
 
-		ld		hl,#4A00+(4*10)
-		or		a
-	[4]	adc		hl,de
-		ex		de,hl
+        ld      hl,#4A00+(4*10)
+    [4] add     hl,de
+        ex      de,hl
 		ld		a,(DONDE_VA_LA_INTERRUPCION_LINEAL)
 		add		50
 		cp		216
@@ -717,381 +711,309 @@ CALCULAMOS_PROYECTILES_ENEMIGOS:
 
 .calcula_la_y_falsa:
 
-		ld		a,(PUNTO_DEL_SCROLL)
-		ld		b,a
-		ld		a,(Y_DEPH)
-		sub		b
-		add		16
-		ld		(Y_FALSA_PARA_DEPH),a
-		ld		a,(ix+1)
-		sub		b
-		add		8
-		ld		(Y_FALSA_PARA_PROYECTILES),a
-		ld		a,(X_DEPH)
-		add		10
-		ld		(X_FALSA_PARA_DEPH),a
-		ld		a,(ix)
-		add		8
-		ld		(X_FALSA_PARA_PROYECTILES),a
+        ld      a,(PUNTO_DEL_SCROLL)
+        ld      b,a
+        ld      a,(Y_DEPH)
+        sub     b
+        add     16
+        ld      (Y_FALSA_PARA_DEPH),a
+        ld      a,(ix+1)
+        sub     b
+        add     8
+        ld      (Y_FALSA_PARA_PROYECTILES),a
+        ld      a,(X_DEPH)
+        add     10
+        ld      (X_FALSA_PARA_DEPH),a
+        ld      a,(ix)
+        add     8
+        ld      (X_FALSA_PARA_PROYECTILES),a
 
 .primer_calculo:
 
-		ld		a,(X_FALSA_PARA_PROYECTILES)
-		ld		b,a
-		ld		a,(X_FALSA_PARA_DEPH)
-		add		3
-		cp		b
-		jp		c,.p3
-		sub		5
-		cp		b		
-		jp		nc,.p2
+        ld      a,(X_FALSA_PARA_PROYECTILES)
+        ld      b,a
+        ld      a,(X_FALSA_PARA_DEPH)
+        add     3
+        cp      b
+        jp      c,.p3
+        sub     5
+        cp      b
+        jp      nc,.p2
 
 .p1:
 
-		call	.rutina_de_comparacion_ys
-		jp		c,.p1_1
-		jp		nc,.p1_2
-
-.p1_1:
-
-		xor		a
-		ret
-
-.p1_2:
-
-		ld		a,36
-		ret
+        call    .rutina_de_comparacion_ys
+        xor     a
+        ret     c
+        ld      a,36
+        ret
 
 .p2:
 
-		ld		a,(Y_FALSA_PARA_PROYECTILES)
-		ld		b,a
-		ld		a,(Y_FALSA_PARA_DEPH)
-		add		11
-		cp		b
-		jp		c,.p2_3
-		sub		21
-		cp		b		
-		jp		nc,.p2_2
+        ld      a,(Y_FALSA_PARA_PROYECTILES)
+        ld      b,a
+        ld      a,(Y_FALSA_PARA_DEPH)
+        add     11
+        cp      b
+        jp      c,.p2_3
+        sub     21
+        cp      b
+        jp      nc,.p2_2
 
 .p2_1:
 
-		ld		a,18
-		ret
+        ld      a,18
+        ret
 
 .p2_2:
 
-		call	.rutina_de_comparacion_xb_menos_xa_yb_menos_ya
-		jp		z,.p2_2_1
-		jp		nc,.p2_2_2
-		jp		c,.p2_2_3
+        call    .rutina_de_comparacion_xb_menos_xa_yb_menos_ya
+        jp      z,.p2_2_1
+        jp      nc,.p2_2_2
+        jp      c,.p2_2_3
 
 .p2_2_1:
 
-		ld		a,27
-		ret
+        ld      a,27
+        ret
 
 .p2_2_2:
 
-		call	.rutina_de_comparacion_yb_menos_ya_xb_menos_xa_entre_dos
-		jp		c,.p2_2_2_1
-		jp		nc,.p2_2_2_2
-
-.p2_2_2_1:
-
-		ld		a,21
-		ret
-
-
-.p2_2_2_2:
-
-		ld		a,24
-		ret
+        call    .rutina_de_comparacion_yb_menos_ya_xb_menos_xa_entre_dos
+        ld      a,21
+        ret     c
+        ld      a,24
+        ret
 
 .p2_2_3:
 
-		call	.rutina_de_comparacion_yb_menos_ya_xb_menos_xa_entre_dos
-		jp		c,.p2_2_3_1
-		jp		nc,.p2_2_3_2
-
-.p2_2_3_1:
-
-		ld		a,30
-		ret
-
-.p2_2_3_2:
-
-		ld		a,33
-		ret
+        call    .rutina_de_comparacion_yb_menos_ya_xb_menos_xa_entre_dos
+        ld      a,30
+        ret     c
+        ld      a,33
+        ret
 
 .p2_3:
 
-		call	.rutina_de_comparacion_xb_menos_xa_ya_menos_yb
-		jp		z,.p2_3_1
-		jp		nc,.p2_3_2
-		jp		c,.p2_3_3
+        call    .rutina_de_comparacion_xb_menos_xa_ya_menos_yb
+        jp      z,.p2_3_1
+        jp      nc,.p2_3_2
+        jp      c,.p2_3_3
 
 .p2_3_1:
 
-		ld		a,9
-		ret
+        ld      a,9
+        ret
 
 .p2_3_2:
 
-		call	.rutina_de_comparacion_ya_menos_yb_xb_menos_xa_entre_dos
-		jp		c,.p2_3_2_1
-		jp		nc,.p2_3_2_2
-
-.p2_3_2_1:
-
-		ld		a,15
-		ret
-
-.p2_3_2_2:
-
-		ld		a,12
-		ret
+        call    .rutina_de_comparacion_ya_menos_yb_xb_menos_xa_entre_dos
+        ld      a,15
+        ret     c
+        ld      a,12
+        ret
 
 .p2_3_3:
 
-		call	.rutina_de_comparacion_ya_menos_yb_xb_menos_xa_entre_dos
-		jp		c,.p2_3_3_1
-		jp		nc,.p2_3_3_2
-
-.p2_3_3_1:
-
-		ld		a,6
-		ret
-
-.p2_3_3_2:
-
-		ld		a,3
-		ret
+        call    .rutina_de_comparacion_ya_menos_yb_xb_menos_xa_entre_dos
+        ld      a,6
+        ret     c
+        ld      a,3
+        ret
 
 .p3:
 
-		ld		a,(Y_FALSA_PARA_PROYECTILES)
-		ld		b,a
-		ld		a,(Y_FALSA_PARA_DEPH)
-		add		11
-		cp		b
-		jp		c,.p3_3
-		sub		21
-		cp		b		
-		jp		nc,.p3_2
+        ld      a,(Y_FALSA_PARA_PROYECTILES)
+        ld      b,a
+        ld      a,(Y_FALSA_PARA_DEPH)
+        add     11
+        cp      b
+        jp      c,.p3_3
+        sub     21
+        cp      b
+        jp      nc,.p3_2
 
 .p3_1:
 
-		ld		a,54
-		ret
+        ld      a,54
+        ret
 
 .p3_2:
 
-		call	.rutina_de_comparacion_xa_menos_xb_yb_menos_ya
-		jp		z,.p3_2_1
-		jp		nc,.p3_2_2
-		jp		c,.p3_2_3
+        call    .rutina_de_comparacion_xa_menos_xb_yb_menos_ya
+        jp      z,.p3_2_1
+        jp      nc,.p3_2_2
+        jp      c,.p3_2_3
 
 .p3_2_1:
 
-		ld		a,45
-		ret
+        ld      a,45
+        ret
 
 .p3_2_2:
 
-		call	.rutina_de_comparacion_yb_menos_ya_xa_menos_xb_entre_dos
-		jp		c,.p3_2_2_1
-		jp		nc,.p3_2_2_2
-
-.p3_2_2_1:
-
-		ld		a,51
-		ret
-
-.p3_2_2_2:
-
-		ld		a,48
-		ret
+        call    .rutina_de_comparacion_yb_menos_ya_xa_menos_xb_entre_dos
+        ld      a,51
+        ret     c
+        ld      a,48
+        ret
 
 .p3_2_3:
 
-		call	.rutina_de_comparacion_yb_menos_ya_xb_menos_xa_entre_dos
-		jp		c,.p3_2_3_1
-		jp		nc,.p3_2_3_2
-
-.p3_2_3_1:
-
-		ld		a,42
-		ret
-
-.p3_2_3_2:
-
-		ld		a,39
-		ret
+        call    .rutina_de_comparacion_yb_menos_ya_xb_menos_xa_entre_dos
+        ld      a,42
+        ret     c
+        ld      a,39
+        ret
 
 .p3_3:
 
-		call	.rutina_de_comparacion_xa_menos_xb_ya_menos_yb
-		jp		z,.p3_3_1
-		jp		nc,.p3_3_2
-		jp		c,.p3_3_3
+        call    .rutina_de_comparacion_xa_menos_xb_ya_menos_yb
+        jp      z,.p3_3_1
+        jp      nc,.p3_3_2
+        jp      c,.p3_3_3
 
 .p3_3_1:
 
-		ld		a,63
-		ret
+        ld      a,63
+        ret
 
 .p3_3_2:
 
-		call	.rutina_de_comparacion_ya_menos_yb_xa_menos_xb_entre_dos
-		jp		c,.p3_3_2_1
-		jp		nc,.p3_3_2_2
-
-.p3_3_2_1:
-
-		ld		a,57
-		ret
-
-.p3_3_2_2:
-
-		ld		a,60
-		ret
+        call    .rutina_de_comparacion_ya_menos_yb_xa_menos_xb_entre_dos
+        ld      a,57
+        ret     c
+        ld      a,60
+        ret
 
 .p3_3_3:
 
-		call	.rutina_de_comparacion_ya_menos_yb_xb_menos_xa_entre_dos
-		jp		c,.p3_3_3_1
-		jp		nc,.p3_3_3_2
+        call    .rutina_de_comparacion_ya_menos_yb_xb_menos_xa_entre_dos
+        ld      a,66
+        ret     c
+        ld      a,69
+        ret
 
-.p3_3_3_1:
-
-		ld		a,66
-		ret
-
-.p3_3_3_2:
-
-		ld		a,69
-		ret
 
 .rutina_de_comparacion_ys:
 
-		ld		a,(Y_FALSA_PARA_PROYECTILES)
-		ld		b,a
-		ld		a,(Y_FALSA_PARA_DEPH)
-		cp		b
-		ret
+        ld      a,(Y_FALSA_PARA_PROYECTILES)
+        ld      b,a
+        ld      a,(Y_FALSA_PARA_DEPH)
+        cp      b
+        ret
+
 
 .rutina_de_comparacion_yb_menos_ya_xb_menos_xa_entre_dos:
 
-		call	.rutina_xb_menos_xa
-		srl		a	
-		push	af
-		call	.rutina_yb_menos_ya
-		pop		bc
-		cp		b
-		ret
+        call    .rutina_xb_menos_xa
+        srl     a
+        ld      c,a
+        call    .rutina_yb_menos_ya
+        cp      c
+        ret
+
 
 .rutina_de_comparacion_ya_menos_yb_xb_menos_xa_entre_dos:
 
-		call	.rutina_xb_menos_xa
-		srl		a	
-		push	af
-		call	.rutina_ya_menos_yb
-		pop		bc
-		cp		b
-		ret
+        call    .rutina_xb_menos_xa
+        srl     a
+        ld      c,a
+        call    .rutina_ya_menos_yb
+        cp      c
+        ret
+
 
 .rutina_de_comparacion_yb_menos_ya_xa_menos_xb_entre_dos:
 
-		call	.rutina_xa_menos_xb
-		srl		a	
-		push	af
-		call	.rutina_yb_menos_ya
-		pop		bc
-		cp		b
-		ret
+        call    .rutina_xa_menos_xb
+        srl     a
+        ld      c,a
+        call    .rutina_yb_menos_ya
+        cp      c
+        ret
+
 
 .rutina_de_comparacion_ya_menos_yb_xa_menos_xb_entre_dos:
 
-		call	.rutina_xa_menos_xb
-		srl		a	
-		push	af
-		call	.rutina_ya_menos_yb
-		pop		bc
-		cp		b
-		ret
+        call    .rutina_xa_menos_xb
+        srl     a
+        ld      c,a
+        call    .rutina_ya_menos_yb
+        cp      c
+        ret
+
 
 .rutina_de_comparacion_xb_menos_xa_yb_menos_ya:
 
-		call	.rutina_yb_menos_ya
-		push	af
-		call	.rutina_xb_menos_xa
-		pop		bc
-		cp		b
-		
-		ret
+        call    .rutina_yb_menos_ya
+        ld      c,a
+        call    .rutina_xb_menos_xa
+        cp      c
+        ret
+
 
 .rutina_de_comparacion_xb_menos_xa_ya_menos_yb:
 
-		call	.rutina_ya_menos_yb
-		push	af
-		call	.rutina_xb_menos_xa
-		pop		bc
-		cp		b
-		
-		ret
+        call    .rutina_ya_menos_yb
+        ld      c,a
+        call    .rutina_xb_menos_xa
+        cp      c
+        ret
+
 
 .rutina_de_comparacion_xa_menos_xb_yb_menos_ya:
 
-		call	.rutina_yb_menos_ya
-		push	af
-		call	.rutina_xa_menos_xb
-		pop		bc
-		cp		b
-		
-		ret
+        call    .rutina_yb_menos_ya
+        ld      c,a
+        call    .rutina_xa_menos_xb
+        cp      c
+        ret
+
 
 .rutina_de_comparacion_xa_menos_xb_ya_menos_yb:
 
-		call	.rutina_ya_menos_yb
-		push	af
-		call	.rutina_xa_menos_xb
-		pop		bc
-		cp		b
-		
-		ret
+        call    .rutina_ya_menos_yb
+        ld      c,a
+        call    .rutina_xa_menos_xb
+        cp      c
+        ret
+
 
 .rutina_xb_menos_xa:
 
-		ld		a,(X_FALSA_PARA_PROYECTILES)
-		ld		b,a
-		ld		a,(X_FALSA_PARA_DEPH)
-		sub		b
-		ret
+        ld      a,(X_FALSA_PARA_PROYECTILES)
+        ld      b,a
+        ld      a,(X_FALSA_PARA_DEPH)
+        sub     b
+        ret
+
 
 .rutina_xa_menos_xb:
 
-		ld		a,(X_FALSA_PARA_DEPH)
-		ld		b,a
-		ld		a,(X_FALSA_PARA_PROYECTILES)
-		sub		b
-		ret
+        ld      a,(X_FALSA_PARA_DEPH)
+        ld      b,a
+        ld      a,(X_FALSA_PARA_PROYECTILES)
+        sub     b
+        ret
+
 
 .rutina_yb_menos_ya:
 
-		ld		a,(Y_FALSA_PARA_PROYECTILES)
-		ld		b,a
-		ld		a,(Y_FALSA_PARA_DEPH)
-		sub		b
-		ret
+        ld      a,(Y_FALSA_PARA_PROYECTILES)
+        ld      b,a
+        ld      a,(Y_FALSA_PARA_DEPH)
+        sub     b
+        ret
+
 
 .rutina_ya_menos_yb:
 
-		ld		a,(Y_FALSA_PARA_DEPH)
-		ld		b,a
-		ld		a,(Y_FALSA_PARA_PROYECTILES)
-		sub		b
-		ret
+        ld      a,(Y_FALSA_PARA_DEPH)
+        ld      b,a
+        ld      a,(Y_FALSA_PARA_PROYECTILES)
+        sub     b
+        ret
 
 MAGIA:
 
@@ -1158,16 +1080,15 @@ MAGIA:
 
 .BUCLE_PARA_CORREGIR_LA_Y_DE_2:
 
-		ld		e,a
-		ld		d,0
-		ld		l,(ix+2)
-		ld		h,(ix+3)
-		or		a
-		adc		hl,de
-		ld		(ix+2),l
-		ld		(ix+3),h
+        ld      e,a
+        ld      d,0
+        ld      l,(ix+2)
+        ld      h,(ix+3)
+        add     hl,de
+        ld      (ix+2),l
+        ld      (ix+3),h
 
-		ret
+        ret
 
 .BUCLE_DE_COPIA_DE_DATOS_SALVADOS:
         ld      hl,ATRIBUTOS_NUMERO_DE_VIDAS_O_PUNTOS
@@ -1192,8 +1113,7 @@ MAGIA:
 		ld		e,a
 		ld		d,0
 		ld		hl,#0200
-		or		a
-		adc		hl,de
+		add		hl,de
 
 		ld		(ix+2),l
 		ld		(ix+3),h
@@ -1223,8 +1143,7 @@ MAGIA:
 		ld		e,b
 		ld		d,0
 		ld		hl,#300
-		or		a
-		adc		hl,de
+		add		hl,de
 		ld		(ix+6),l
 		ld		(ix+7),h
 
@@ -1378,8 +1297,7 @@ MAGIA:
 
 		pop		hl
 		ld		de,15
-		or		a
-		adc		hl,de
+		add		hl,de
 
 		ld		a,5
 		call	BUCLE_PINTA_TILES.rutina_de_pausa
@@ -1436,8 +1354,7 @@ MAGIA:
 ;corrige origen y 2
 		pop		de
 		ld		hl,#300
-		or		a
-		adc		hl,de
+		add		hl,de
 		call	.marca_origen_y	
 ; copia
 
@@ -1454,8 +1371,7 @@ MAGIA:
 		ld		e,a
 		ld		d,0
 		ld		hl,#200
-		or		a
-		adc		hl,de
+		add		hl,de
 		jp		.marca_destino_y
 
 .marca_origen_y:
@@ -1573,15 +1489,14 @@ MAGIA:
 PATRONES_SPRITE_SECUNDARIO:
 
         ld      a,(ix+3)
-		ld		e,a
-		ld		d,0
-        ld		hl,#4A00		                                                        ; Depositamos los sprites en vram	
-		or		a
-		adc		hl,de
-		ex		de,hl
-		ld		hl,PROPIEDADES_PATRON_SPRITE
-		ld		bc,3
-		jp		PON_COLOR_2.sin_bc_impuesta
+        ld      e,a
+        ld      d,0
+        ld      hl,#4A00
+        add     hl,de
+        ex      de,hl
+        ld      hl,PROPIEDADES_PATRON_SPRITE
+        ld      bc,3
+        jp      PON_COLOR_2.sin_bc_impuesta
 
 DIRECCIONES_DE_PROYECTIL:
 
