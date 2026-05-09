@@ -2839,10 +2839,74 @@
 
 ;PAGE9_A_SEGMENT_1:
 
-		call	RECARGAMOS_GRAFICOS_STAGE_X
 		ld		a,9
 
 		di
 		ld		[DIRPA1],a												; Cambiamos la página del bloque 2	
 		ei			
+		call	RECARGAMOS_GRAFICOS_STAGE_X
 		jp		INICIA_SCROLL	
+
+;PREPARA_VRAM_PARA_MUERTE_DEPH_EN_BOSS:
+
+		ld		hl,DATOS_LIMPIA_PAGE_0_FIN_BOSS
+		call	DOCOPY
+		ld		hl,DATOS_LIMPIA_PAGE_3_FIN_BOSS
+		call	DOCOPY
+
+		ld      a,(FASE)
+		add		10
+		call	CHANGE_BANK_2
+		ld		hl,#8000
+		ld		de,#8000
+		ld		bc,16384
+		call	PON_COLOR_2.sin_bc_impuesta
+
+		ld      a,(FASE)
+		add		15
+		call	CHANGE_BANK_2
+		ld		hl,#8000
+		ld		de,#C000
+		ld		bc,16384
+		call	PON_COLOR_2.sin_bc_impuesta
+		jp		PAGE_10_A_SEGMENT_2
+
+;DANO_DEPH_EN_BOSS_COMUN:
+
+		ld		a,(CORAZONES)
+		or		a
+		jr		z,.MUERE_DEPH_EN_BOSS_COMUN
+
+		ld		a,(INMUNE)
+		or		a
+		ret		nz
+
+		ld		a,(CORAZONES)
+		dec		a
+		ld		(CORAZONES),a
+		jr		z,.MUERE_DEPH_EN_BOSS_COMUN
+
+		ld		a,3
+		ld		c,1
+		call	A_31_DESDE_10
+
+		ld		a,150
+		ld		(INMUNE),a
+		ld		a,30
+		ld		(TIEMPO_DE_ADJUST),a
+		ret
+
+.MUERE_DEPH_EN_BOSS_COMUN:
+
+		call	PREPARA_VRAM_PARA_MUERTE_DEPH_EN_BOSS
+		jp		MUERTE_POR_TOQUES_DESDE_BOSS
+
+;DATOS_LIMPIA_PAGE_0_FIN_BOSS:
+
+		dw		#0000,#0000,#0000,#00AF,#0100,#0051
+		db		#00,#00,11000000b
+
+;DATOS_LIMPIA_PAGE_3_FIN_BOSS:
+
+		dw		#0000,#0000,#0000,#0300,#0100,#0100
+		db		#00,#00,11000000b

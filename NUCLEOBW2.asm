@@ -1599,6 +1599,12 @@ VAMOS_A_BOSS_ADECUADO:
 		ld      (DIRPA1),a											    ; Banco 1, pagina 26-30 del MEGAROM
 		jp		RUTINA_BOSS_1
 
+MUERTE_POR_TOQUES_DESDE_BOSS:
+
+		ld		a,9
+		ld      (DIRPA1),a
+		jp		MUERTE_POR_TOQUES
+
 AGILIZA_MAPA:
 
 		ld		hl,24
