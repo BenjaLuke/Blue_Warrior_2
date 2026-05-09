@@ -184,20 +184,20 @@ NOS_VAMOS_AL_JUEGO:
 ; Regla del porcentaje: cada fase vale 2, cada enemigo y bloque auxiliar vale 1.
 ; EN TOTAL HAY 
 ; 5 PUNTOS DE 2(FASES) 4 HECHOS
-; 6 PUNTOS DE 2(ENEMIGOS) 2 HECHOS
+; 6 PUNTOS DE 2(ENEMIGOS) 3 HECHOS
 ; 4 PUNTOS DE 1(LOGO, MENU, ANIMACION PRESENTACION Y ANIMACION CIERRE) 1 HECHO
-; PUNTOS ACTUALES = (4+2)*2 + 1*1 = 13, PORCENTAJE ACTUAL = 13/16 = 81% APROXIMADAMENTE
+; PUNTOS ACTUALES = (4+3)*2 + 1*1 = 15, PORCENTAJE ACTUAL = 15/16 = 93% APROXIMADAMENTE
 TEXTO_MENU_1:
 		db		"Blue Warrior 2",0
 
 TEXTO_MENU_2:
-		db		"Beta version 4.0.13",0
+		db		"Beta version 4.1.03",0
 
 TEXTO_MENU_3:
-		db		"07/05/2026",0
+		db		"09/05/2026",0
 
 TEXTO_MENU_4:
-		db		"81%",0
+		db		"93%",0
 
 TEXTO_MENU_5:
 		db		"(c) Digital Moai",0
