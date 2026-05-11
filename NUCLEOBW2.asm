@@ -7,7 +7,7 @@ BIOS_KERNEL:
 VARIABLES:
 
 		include	"BASICOS/VARIABLES.asm"				                    ; Incluímos las referencias a las variables que se usarán en el juego
-		include	"BASICOS/VARIABLES BOSS 2.asm"
+		include	"BOSSES/VARIABLES BOSS 2.asm"
 
 /**********************
  ****** PAGINA 0 ******
@@ -172,7 +172,7 @@ REINICIAMOS_MAX_SCORE:
 
 GRAFICOS_MOAI_1:
 
-        incbin  "GRAFICOS/SOLOTITULO1.DAT" ;incbin  "GRAFICOS/DIGITAL MOAI 1.DAT"
+        incbin  "GRAFICOS/PRESENTACIONES/SOLOTITULO1.DAT" ;incbin  "GRAFICOS/DIGITAL MOAI 1.DAT"
 
         ds		#C000-$
 
@@ -191,7 +191,7 @@ GRAFICOS_MOAI_1:
 
 GRAFICOS_MOAI_4:
 
-        incbin  "GRAFICOS/SOLOTITULO4.DAT";incbin  "GRAFICOS/DIGITAL MOAI 2.DAT"
+        incbin  "GRAFICOS/PRESENTACIONES/SOLOTITULO4.DAT";incbin  "GRAFICOS/DIGITAL MOAI 2.DAT"
 CARGA_SLOT_MENU:
 
 		ld		a,3
@@ -1607,7 +1607,7 @@ MUERTE_POR_TOQUES_DESDE_BOSS:
 
 AGILIZA_MAPA:
 
-		ld		hl,24
+		ld		hl,40
 		ld		(LINEA_A_LEER),hl
 		jp		CONTROL.teclado
 MENU:
@@ -1651,7 +1651,7 @@ VOLVEMOS_TRAS_ROCKAGER:
 
 GRAFICOS_FASE_1_1:
 
-			incbin 	"GRAFICOS/FASE1-1.DAT"
+			incbin 	"GRAFICOS/FASES/FASE1-1.DAT"
 
         ds		#C000-$
 
@@ -1671,7 +1671,7 @@ GRAFICOS_FASE_1_1:
 
 GRAFICOS_FASE_2_1:
 
-			incbin 	"GRAFICOS/FASE2-1.DAT"
+			incbin 	"GRAFICOS/FASES/FASE2-1.DAT"
 
         ds		#C000-$
 
@@ -1691,7 +1691,7 @@ GRAFICOS_FASE_2_1:
 
 GRAFICOS_FASE_3_1:
 
-			incbin 	"GRAFICOS/FASE3-1.DAT"
+			incbin 	"GRAFICOS/FASES/FASE3-1.DAT"
 
         ds		#C000-$
 
@@ -1711,7 +1711,7 @@ GRAFICOS_FASE_3_1:
 
 GRAFICOS_FASE_4_1:
 
-			incbin 	"GRAFICOS/FASE4-1.DAT"
+			incbin 	"GRAFICOS/FASES/FASE4-1.DAT"
 
         ds		#C000-$
 
@@ -1731,7 +1731,7 @@ GRAFICOS_FASE_4_1:
 
 GRAFICOS_FASE_5_1:
 
-			incbin 	"GRAFICOS/FASE5-1.DAT"
+			incbin 	"GRAFICOS/FASES/FASE5-1.DAT"
 
         ds		#C000-$
 
@@ -1751,7 +1751,7 @@ GRAFICOS_FASE_5_1:
 
 GRAFICOS_FASE_1_2:
 
-			incbin 	"GRAFICOS/FASE1-2.DAT"
+			incbin 	"GRAFICOS/FASES/FASE1-2.DAT"
 
         ds		#C000-$
 
@@ -1771,7 +1771,7 @@ GRAFICOS_FASE_1_2:
 
 GRAFICOS_FASE_2_2:
 
-			incbin 	"GRAFICOS/FASE2-2.DAT"
+			incbin 	"GRAFICOS/FASES/FASE2-2.DAT"
 
         ds		#C000-$
 
@@ -1791,7 +1791,7 @@ GRAFICOS_FASE_2_2:
 
 GRAFICOS_FASE_3_2:
 
-			incbin 	"GRAFICOS/FASE3-2.DAT"
+			incbin 	"GRAFICOS/FASES/FASE3-2.DAT"
 
         ds		#C000-$
 
@@ -1811,7 +1811,7 @@ GRAFICOS_FASE_3_2:
 
 GRAFICOS_FASE_4_2:
 
-			incbin 	"GRAFICOS/FASE4-2.DAT"
+			incbin 	"GRAFICOS/FASES/FASE4-2.DAT"
 
         ds		#C000-$
 
@@ -1831,7 +1831,7 @@ GRAFICOS_FASE_4_2:
 
 GRAFICOS_FASE_5_2:
 
-			incbin 	"GRAFICOS/FASE5-2.DAT"
+			incbin 	"GRAFICOS/FASES/FASE5-2.DAT"
 
         ds		#C000-$
 
@@ -2207,49 +2207,9 @@ FADE_FASE_1_3_A_NEGRO_b3:
 
 		org		#4000
 
-RUTINA_BOSS_4:
+		include	"BOSSES/BOSS 4.asm"
 
-		include	"AUDIOS/INICIA MUSICA_BOSS.asm"
-
-; todo el codigo de enfrentamiento
-PULSA_UNA_TECLA_PARA_SEGUIR_b4:
-
-		xor		a
-		call	GTTRIG_RAM
-		or		a
-		jp		z,PULSA_UNA_TECLA_PARA_SEGUIR_b4
-TERMINANDO_LA_BATALLA_b4:
-
-		include	"AUDIOS/INICIA MUSICA_WIN.asm"
-
-CAMINITO_A_PUERTA_b4:
-
-		include	"VARIOS USOS/PASEITO HASTA PUERTA.asm"		
-SALUDO_b4:
-
-		include	"VARIOS USOS/SALUDO_GANA_FASE.asm"		
-
-FADE_DEPH_b4:
-
-;		ld		hl,FADE_DEPH_A_NEGRO_b4
-;		include	"VARIOS USOS/FADE DEPH SALIENDO DE ESCENA.asm"
-
-ULTIMO_DESPLAZAMIENTO_b4:
-
-		include	"VARIOS USOS/PASEITO DENTRO DE PUERTA.asm"	
-VOLVEMOS_b4:
-
-		jp		CARGA_SLOT_REGRESO_A_JUEGO
-
-FADE_DEPH_A_NEGRO_b4:
-
-		incbin	"PALETAS/BOSS4 DEPH.FADEOUT"
-
-FADE_FASE_1_3_A_NEGRO_b4:
-
-		incbin	"PALETAS/BOSS4.fadeout"
-
-        ds      #8000-$-#2200                                           ; Colocamos el resto del programa siempre en el mismo sitio    
+        ds      #5E00-$                                                 ; Colocamos el resto del programa siempre en el mismo sitio    
 
 		include "BASICOS/RUTINAS CERRADAS (sin etiquetas).asm"				            ; Incluímos las referencias a la BIOS
 		include "AUDIOS/LANZADOR EFECTOS PSG (sin etiquetas).asm"
@@ -2356,11 +2316,11 @@ EFECTOS_DE_SONIDO:
 
 		org		#8000
 
-		include	"GRAFICOS/SPRITES.asm"
+		include	"GRAFICOS/FASES COMUN/SPRITES.asm"
 		include "PALETAS/COLORES SPRITES.asm"
 RAYOS_EN_PACK:
 
-		incbin 	"GRAFICOS/RAYOS_48x112.DAT"	        
+		incbin 	"GRAFICOS/FASES COMUN/RAYOS_48x112.DAT"	        
 COPIA_RAYOS_A_VRAM:
 
 		dw	#C0,#0300,48,112
@@ -2917,7 +2877,7 @@ M_THE_BEST:
 
 GRAFICOS_MOAI_2:
 
-        incbin  "GRAFICOS/SOLOTITULO2.DAT"
+        incbin  "GRAFICOS/PRESENTACIONES/SOLOTITULO2.DAT"
 
         ds		#C000-$
 
@@ -2934,7 +2894,7 @@ GRAFICOS_MOAI_2:
 
 GRAFICOS_MOAI_3:
 
-        incbin  "GRAFICOS/SOLOTITULO3.DAT"
+        incbin  "GRAFICOS/PRESENTACIONES/SOLOTITULO3.DAT"
 
         ds		#C000-$
 
@@ -2950,7 +2910,7 @@ GRAFICOS_MOAI_3:
 
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
 
-        incbin  "GRAFICOS/ROCKAGER1.DAT"
+        incbin  "GRAFICOS/BOSSES/ROCKAGER1.DAT"
 
         ds		#C000-$
 
@@ -2966,7 +2926,7 @@ GRAFICOS_MOAI_3:
 
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
 
-        incbin  "GRAFICOS/ROCKAGER2.DAT"
+        incbin  "GRAFICOS/BOSSES/ROCKAGER2.DAT"
 
         ds		#C000-$
 
@@ -3000,46 +2960,46 @@ GRAFICOS_MOAI_3:
 
   /**********************
  ****** PAGINA 45 ******
- ****** SLOT   2 ******     graficos menu
+ ****** SLOT   2 ******     graficos status
  **********************/
 
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
-STATUS_SEMIBOSS_1:
-		incbin "GRAFICOS/STATUS SEMIBOSS 1.DAT"
-STATUS_SEMIBOSS_2:
-       	incbin  "GRAFICOS/STATUS SEMIBOSS 2.DAT"
+STATUS_BOSS_1:
+		incbin "GRAFICOS/STATUS/STATUS BOSS 1.DAT"
+STATUS_BOSS_2_AND_SEMIBOSS_2:
+       	incbin  "GRAFICOS/STATUS/STATUS BOSS 2 AND SEMIBOSS 2.DAT"
 
         ds		#C000-$
 
 /**********************
- ****** PAGINA 45 ******
+ ****** PAGINA 45 *****
  ******   END    ******
  **********************/
 
  /**********************
- ****** PAGINA 46 ******
- ****** SLOT   2 ******     graficos Daveatnix 1-1
- **********************/
+  ****** PAGINA 46 *****
+  ****** SLOT   2 ******     graficos Daveatnix 1-1
+  **********************/
 
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
 
-        incbin  "GRAFICOS/TILES DAVEATNIX 11.DAT"
+        incbin  "GRAFICOS/BOSSES/TILES DAVEATNIX 11.DAT"
 
         ds		#C000-$
 
 /**********************
- ****** PAGINA 46 ******
+ ****** PAGINA 46 *****
  ******   END    ******
  **********************/
 
  /**********************
- ****** PAGINA 47 ******
- ****** SLOT   2 ******     graficos Daveatnix 1-2
- **********************/
+  ****** PAGINA 47 *****
+  ****** SLOT   2 ******     graficos Daveatnix 1-2
+  **********************/
 
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
 
-        incbin  "GRAFICOS/TILES DAVEATNIX 12.DAT"
+        incbin  "GRAFICOS/BOSSES/TILES DAVEATNIX 12.DAT"
 
         ds		#C000-$
 
@@ -3055,7 +3015,7 @@ STATUS_SEMIBOSS_2:
 
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
 
-        incbin  "GRAFICOS/TILES DAVEATNIX 21.DAT"
+        incbin  "GRAFICOS/BOSSES/TILES DAVEATNIX 21.DAT"
 
         ds		#C000-$
 
@@ -3071,7 +3031,7 @@ STATUS_SEMIBOSS_2:
 
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
 
-        incbin  "GRAFICOS/TILES DAVEATNIX 22.DAT"
+        incbin  "GRAFICOS/BOSSES/TILES DAVEATNIX 22.DAT"
 
         ds		#C000-$
 
@@ -3087,7 +3047,7 @@ STATUS_SEMIBOSS_2:
 
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
 
-        incbin  "GRAFICOS/TILES AGONIX 11.DAT"
+        incbin  "GRAFICOS/BOSSES/TILES AGONIX 11.DAT"
 
         ds		#C000-$
 
@@ -3103,7 +3063,7 @@ STATUS_SEMIBOSS_2:
 
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
 
-        incbin  "GRAFICOS/TILES AGONIX 12.DAT"
+        incbin  "GRAFICOS/BOSSES/TILES AGONIX 12.DAT"
 
         ds		#C000-$
 
@@ -3119,7 +3079,7 @@ STATUS_SEMIBOSS_2:
 
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
 
-        incbin  "GRAFICOS/TILES AGONIX 21.DAT"
+        incbin  "GRAFICOS/BOSSES/TILES AGONIX 21.DAT"
 
         ds		#C000-$
 
@@ -3135,7 +3095,7 @@ STATUS_SEMIBOSS_2:
 
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
 
-        incbin  "GRAFICOS/TILES AGONIX 22.DAT"
+        incbin  "GRAFICOS/BOSSES/TILES AGONIX 22.DAT"
 
         ds		#C000-$
 
@@ -3145,13 +3105,13 @@ STATUS_SEMIBOSS_2:
  **********************/
 
  /**********************
- ****** PAGINA 54 ******
+ ****** PAGINA 54 *****
  ****** SLOT   2 ******     graficos Idius 1-1
  **********************/
 
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
 
-        incbin  "GRAFICOS/TILES IDIUS 11.DAT"
+        incbin  "GRAFICOS/BOSSES/TILES IDIUS 11.DAT"
 
         ds		#C000-$
 
@@ -3167,11 +3127,61 @@ STATUS_SEMIBOSS_2:
 
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
 
-        incbin  "GRAFICOS/TILES IDIUS 12.DAT"
+        incbin  "GRAFICOS/BOSSES/TILES IDIUS 12.DAT"
 
         ds		#C000-$
 
 /**********************
  ****** PAGINA 55 ******
+ ******   END    ******
+ **********************/
+
+ /**********************
+ ****** PAGINA 56 ******
+ ****** SLOT   2 ******     graficos Errecenyx 1-1
+ **********************/
+
+		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
+
+        incbin  "GRAFICOS/BOSSES/TILES ERRECENYX 11.DAT"
+
+        ds		#C000-$
+
+/**********************
+ ****** PAGINA 56 ******
+ ******   END    ******
+ **********************/
+
+/**********************
+ ****** PAGINA 57 ******
+ ****** SLOT   2 ******     graficos Errecenyx 1-2
+ **********************/
+
+		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
+
+        incbin  "GRAFICOS/BOSSES/TILES ERRECENYX 12.DAT"
+
+        ds		#C000-$
+
+/**********************
+ ****** PAGINA 57 ******
+ ******   END    ******
+ **********************/
+
+   /**********************
+ ****** PAGINA 58 ******
+ ****** SLOT   2 ******     graficos status
+ **********************/
+
+		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
+STATUS_BOSS_3:
+		incbin "GRAFICOS/STATUS/STATUS BOSS 1.DAT"
+STATUS_BOSS_4:
+       	incbin  "GRAFICOS/STATUS/STATUS BOSS 4.DAT"
+
+        ds		#C000-$
+
+/**********************
+ ****** PAGINA 58 ******
  ******   END    ******
  **********************/

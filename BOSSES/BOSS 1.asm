@@ -340,7 +340,7 @@ RUTINA_BOSS_1:
         ld      a,45
         call	CHANGE_BANK_2
 
-        ld		hl,STATUS_SEMIBOSS_1												; Carga gráficos fase
+        ld		hl,STATUS_BOSS_1												; Carga gráficos fase
         ld		de,#0000+(256*200)/2
         ld		bc,(256*54)/2
         call	PON_COLOR_2.sin_bc_impuesta
