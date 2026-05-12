@@ -1,4 +1,4 @@
-VIDA_INICIAL_AGONIX_BOSS_1:					equ	80
+VIDA_INICIAL_AGONIX_BOSS_1:					equ	8
 VIDA_TOTAL_INICIAL_BOSS_1:					equ	VIDA_INICIAL_AGONIX_BOSS_1
 VIDA_ANCHO_BARRA_BOSS_1:					equ	99
 
@@ -59,18 +59,18 @@ AGONIX_PAUSA_BOCA_BOSS_1:					equ	100
 AGONIX_LIMPIA_SPRITE_INICIAL_BOSS_1:		equ	10
 AGONIX_LIMPIA_SPRITES_CANT_BOSS_1:			equ	20
 AGONIX_MUERTE_Y_LIMITE_VISIBLE_BOSS_1:		equ	162
-AGONIX_MUERTE_BUCLES_BOSS_1:				equ	AGONIX_MUERTE_Y_LIMITE_VISIBLE_BOSS_1-AGONIX_MUERTE_DY_BOSS_1
+AGONIX_MUERTE_BUCLES_BOSS_1:                equ AGONIX_MUERTE_Y_LIMITE_VISIBLE_BOSS_1-(AGONIX_MUERTE_SY_BOSS_1+AGONIX_MUERTE_ALTO_BOSS_1)
 AGONIX_MUERTE_FX_BOSS_1:					equ	31
 AGONIX_MUERTE_FX_CANAL_BOSS_1:				equ	0
 AGONIX_MUERTE_PAUSA_BOSS_1:					equ	8
 
 AGONIX_MUERTE_SX_BOSS_1:					equ	0
-AGONIX_MUERTE_SY_BOSS_1:					equ	108
+AGONIX_MUERTE_SY_BOSS_1:					equ	66
 AGONIX_MUERTE_DX_BOSS_1:					equ	0
-AGONIX_MUERTE_DY_BOSS_1:					equ	109
+AGONIX_MUERTE_DY_BOSS_1:					equ	67
 AGONIX_MUERTE_ANCHO_BOSS_1:					equ	130
 AGONIX_MUERTE_ALTO_BOSS_1:					equ	48
-RATAS_MUERTE_Y_BOSS_1:						equ	AGONIX_MUERTE_DY_BOSS_1+AGONIX_MUERTE_ALTO_BOSS_1-16
+RATAS_MUERTE_Y_BOSS_1:                      equ AGONIX_MUERTE_SY_BOSS_1+AGONIX_MUERTE_ALTO_BOSS_1-16
 RATAS_MUERTE_X_MIN_OFFSET_BOSS_1:			equ	20
 RATAS_MUERTE_X_MAX_OFFSET_BOSS_1:			equ	AGONIX_MUERTE_ANCHO_BOSS_1-20
 AGONIX_BUFFER_X_BOSS_1:						equ	0
@@ -92,7 +92,7 @@ AGONIX_ANIMACION_FX_CANAL_BOSS_1:			equ	0
 AGONIX_ANIMACION_FX_CADA_COPYS_BOSS_1:		equ	00000011b
 
 AGONIX_MOVIMIENTO_X_MAX_BOSS_1:				equ	126
-AGONIX_MOVIMIENTO_Y_BOSS_1:					equ	108
+AGONIX_MOVIMIENTO_Y_BOSS_1:					equ	66
 AGONIX_MOVIMIENTO_PASO_X_BOSS_1:			equ	6
 AGONIX_MOVIMIENTO_ESPERA_BOSS_1:			equ	6
 AGONIX_MOVIMIENTO_PAG_DERECHA_BOSS_1:		equ	3
@@ -2324,6 +2324,53 @@ MUERTE_DE_AGONIX_BOSS_1:
 
 		call	ESCAPA_RATAS_MUERTE_AGONIX_BOSS_1
 		call	PREPARA_VRAM_PARA_MUERTE_DEPH_EN_BOSS
+
+.REJAS_SUBEN:
+
+        ld      ix,BOSS_1_COPY_REJAS_SUBEN
+        ld      iy,DATAS_COPY_RECUP_SCROLL
+        call    RUTINA_BOSS_1.BUCLE_PINTA_DATAS
+
+        ld      a,55
+
+.BUCLE_REJAS_SUBEN:
+
+        push    af
+
+        ; Cambiamos la Y destino del COPY.
+        ; El dato Y está en el cuarto word del bloque:
+        ; bytes 6 y 7 dentro de DATAS_COPY_RECUP_SCROLL.
+
+        ld      iy,DATAS_COPY_RECUP_SCROLL
+        ld      (iy+6),a
+        ld      (iy+7),#02          ; page 2
+
+        ; Sonido en cada paso
+
+        ld      a,11
+        ld      c,0
+        call    TIRA_FX_BOSS_1
+
+        ; Pintamos el rectángulo
+
+        ld      hl,DATAS_COPY_RECUP_SCROLL
+        call    DOCOPY
+        call    VDPREADY
+
+        ; Pausa de una décima aprox.
+        ; En PAL/50Hz, 5 frames ≈ 0,1 segundos.
+        ; Si lo pruebas en 60Hz, puedes poner 6.
+
+        ld      a,5
+        call    BUCLE_PINTA_TILES.rutina_de_pausa
+
+        pop     af
+
+        cp      20
+        jp      z,TERMINANDO_LA_BATALLA_b1
+
+        dec     a
+        jp      .BUCLE_REJAS_SUBEN
 
 TERMINANDO_LA_BATALLA_b1:
 

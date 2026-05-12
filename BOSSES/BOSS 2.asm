@@ -2298,10 +2298,10 @@ VOLVEMOS_b2:
 
 FADE_DEPH_A_NEGRO_b2:
 
-		incbin	"../PALETAS/BOSS2 DEPH.FADEOUT"
+		incbin	"../PALETAS/BOSSES/BOSS2 DEPH.FADEOUT"
 
 FADE_FASE_1_3_A_NEGRO_b2:
 
-		incbin	"../PALETAS/BOSS2.fadeout"
+		incbin	"../PALETAS/BOSSES/BOSS2.fadeout"
 
 	include	"BOSS 2 DATA.asm"
