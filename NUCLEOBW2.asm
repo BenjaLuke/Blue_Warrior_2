@@ -1147,20 +1147,28 @@ CONTROL:
 .miramos_si_hay_cambio_de_velocidad:
 			ld		a,(TILE_O)
 			cp		8
-			jp		z,.MIRAMOS_FASE
+			jp		z,.MIRAMOS_FASE_1
 			cp		9
-			jp		z,.MIRAMOS_FASE
+			jp		z,.MIRAMOS_FASE_1
 			cp		23
-			jp		z,.MIRAMOS_FASE
+			jp		z,.MIRAMOS_FASE_1
 			cp		43
-			jp		z,.MIRAMOS_FASE
+			jp		z,.MIRAMOS_FASE_1
+			cp		1
+			jp		z,.MIRAMOS_FASE_5
 			jp		.MIRAMOS_SI_HAY_AGUJERO
-.MIRAMOS_FASE:
+.MIRAMOS_FASE_1:
 			ld		a,(FASE)
 			cp		1
 			jp		nz,.MIRAMOS_SI_HAY_AGUJERO
 			call    BUCLE_PINTA_TILES.VELOCIDAD_DE_FASE_GALOPE
+			jp		.MIRAMOS_SI_HAY_AGUJERO
 
+.MIRAMOS_FASE_5:
+			ld		a,(FASE)
+			cp		5
+			jp		nz,.MIRAMOS_SI_HAY_AGUJERO
+			call    BUCLE_PINTA_TILES.VELOCIDAD_DE_FASE_GALOPE
 .MIRAMOS_SI_HAY_AGUJERO:
 
 
