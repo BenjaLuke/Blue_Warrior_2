@@ -629,6 +629,7 @@ INICIA_SCROLL:
 		ld		(NO_SE_MUEVE),a
 		ld		(ECTOPALLERS_NUEVO_NECESARIO),a
 		ld		(SEMAFORO_PUENTE),a
+		ld		(MUSICA_BEST_ON),a
 
 		inc		a
 		ld		(FINAL_DEL_SCROLL),a									; Activamos el scroll
@@ -1171,7 +1172,7 @@ CONTROL:
 			inc		a
 			ld		(SEMAFORO_PUENTE),a
 			
-			;include "AUDIOS/INICIA MUSICA_PUENTE.asm"   ;XXXXXX hay que analizar porqué se vuelve loca del coño la música al incluir esto. De momento lo dejo fuera y la música del puente no se oirá, pero al menos el juego será jugable. Hay que arreglarlo antes de la versión final.
+			include "AUDIOS/INICIA MUSICA_PUENTE.asm"   ;XXXXXX hay que analizar porqué se vuelve loca del coño la música al incluir esto. De momento lo dejo fuera y la música del puente no se oirá, pero al menos el juego será jugable. Hay que arreglarlo antes de la versión final.
 
 			call    BUCLE_PINTA_TILES.VELOCIDAD_DE_FASE_GALOPE
 			jp		.MIRAMOS_SI_HAY_AGUJERO
@@ -2901,6 +2902,18 @@ M_THE_BEST:
 
 		incbin	"AUDIOS/TEMAS/FASE 5/THE BEST.mbm"
 
+M_PUENTE:
+
+		incbin	"AUDIOS/TEMAS/FASE 1/PUENTE.mbm"
+
+M_MENU:
+
+		incbin	"AUDIOS/TEMAS/OTRAS/MENU.mbm"
+
+M_SEMIBOSS_2:
+
+		incbin	"AUDIOS/TEMAS/FASE 2/SEMIBOSS.mbm"      
+
         ds		#c000-$
 
 /**********************
@@ -3226,30 +3239,3 @@ STATUS_BOSS_4:
  ******   END    ******
  **********************/
 
-/**********************
- ****** PAGINA 59******
- ****** SLOT   1 ******     Música presentation
- **********************/
-
-		org		#8000
-
-M_PUENTE:
-
-		incbin	"AUDIOS/TEMAS/FASE 1/PUENTE.mbm"
-
-M_MENU:
-
-		incbin	"AUDIOS/TEMAS/OTRAS/MENU.mbm"
-
-
-
-M_SEMIBOSS_2:
-
-		incbin	"AUDIOS/TEMAS/FASE 2/SEMIBOSS.mbm"        
-		
-		ds		#c000-$
-
-/**********************
- ****** PAGINA 59******
- ******   END    ******
- **********************/

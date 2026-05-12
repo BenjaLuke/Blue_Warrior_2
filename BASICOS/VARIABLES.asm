@@ -45,7 +45,7 @@ FX_ON_OFF:						#1										; 0 off 1 on
 SPRITE_QUE_TOCA:				#1										; Nos indica los atributos de sprite que toca usar
 VARIABLE_CARGA_AGUA:			#1										; 0 es normal, 1 es de lodo
 FASE:							#1										; Fase en la que está jugando
-MUSICA_BEST_ON:					#1										; 0 - Pagína de musicas de la fase 1 - página de the best
+MUSICA_BEST_ON:					#1										; 0 - Pagína de musicas de la fase 1 - página de the best 2 - pagina de puente
 DESACTIVA_PUPA:					#1										; Se desactiva para alguna zona concreta que usa los tiles de pupa
 PAGE_A_GUARDAR:					#1
 HAY_CORAZONES:					#1										; Nos dice si los spries de SKRULLEX son ahora de corazones

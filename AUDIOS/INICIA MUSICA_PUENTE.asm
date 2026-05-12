@@ -3,7 +3,7 @@
 		ld		a,1
 		ld		(MUSICA_BEST_ON),a
 		
-        ld      a,59
+        ld      a,39
         call    CHANGE_BANK_2
 		ld		hl,M_PUENTE
 		ld		(MUSIC_ON),hl
