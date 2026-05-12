@@ -9,7 +9,7 @@ popd
 if not "%EXITCODE%"=="0" (
     echo.
     echo Error al ensamblar NUCLEOBW2.asm
+    pause
 )
 
-pause
 exit /b %EXITCODE%

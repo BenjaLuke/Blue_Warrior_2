@@ -85,7 +85,7 @@ TABLA_SUCESOS_FASE_1:
 		dw		RETORNO
 		dw		RETORNO
 		dw		RETORNO
-		dw		RETORNO
+		dw		BUCLE_PINTA_TILES.musica_mas_velocidad_mas_limites
 		dw		BUCLE_PINTA_TILES.VELOCIDAD_DE_FASE_TROTE
 		dw		RETORNO
 		dw		RETORNO

@@ -628,6 +628,7 @@ INICIA_SCROLL:
 		ld		(PARALIZAMOS),a
 		ld		(NO_SE_MUEVE),a
 		ld		(ECTOPALLERS_NUEVO_NECESARIO),a
+		ld		(SEMAFORO_PUENTE),a
 
 		inc		a
 		ld		(FINAL_DEL_SCROLL),a									; Activamos el scroll
@@ -657,6 +658,7 @@ INICIA_SCROLL:
 
 		ld		a,120
 		ld		(X_DEPH),a
+
 
 		ld		a,183
 		ld		(DONDE_VA_LA_INTERRUPCION_LINEAL),a
@@ -1157,10 +1159,20 @@ CONTROL:
 			cp		1
 			jp		z,.MIRAMOS_FASE_5
 			jp		.MIRAMOS_SI_HAY_AGUJERO
+
 .MIRAMOS_FASE_1:
 			ld		a,(FASE)
 			cp		1
 			jp		nz,.MIRAMOS_SI_HAY_AGUJERO
+			
+			ld		a,(SEMAFORO_PUENTE)
+			cp		0
+			jp		nz,.MIRAMOS_SI_HAY_AGUJERO
+			inc		a
+			ld		(SEMAFORO_PUENTE),a
+			
+			;include "AUDIOS/INICIA MUSICA_PUENTE.asm"   ;XXXXXX hay que analizar porqué se vuelve loca del coño la música al incluir esto. De momento lo dejo fuera y la música del puente no se oirá, pero al menos el juego será jugable. Hay que arreglarlo antes de la versión final.
+
 			call    BUCLE_PINTA_TILES.VELOCIDAD_DE_FASE_GALOPE
 			jp		.MIRAMOS_SI_HAY_AGUJERO
 
@@ -1411,6 +1423,7 @@ CARGA_MUSICA_THE_BEST:
 		call	strmus
 		ei	
 		jp		PAGE_10_A_SEGMENT_2
+
 REVISA_LETRAS_DE_LA_FASE:
 
 		ld		a,(TENEMOS_D)
@@ -1876,35 +1889,35 @@ GRAFICOS_FASE_5_2:
 
 M_STAGE_1:
 
-		incbin 	"AUDIOS/STAGE 1.mbm"
+		incbin 	"AUDIOS/TEMAS/FASE 1/STAGE 1.mbm"
 
 		ds		#8000+4400-$
 
 M_BOSS_1:
 
-		incbin	"AUDIOS/BOSS 1.mbm"
+		incbin	"AUDIOS/TEMAS/FASE 1/BOSS 1.mbm"
 
 		ds		#8000+4400+3800-$
 
 M_BONUS_1:
 
-		incbin	"AUDIOS/BONUS.mbm"
+		incbin	"AUDIOS/TEMAS/BONUS.mbm"
         
 		ds      #8000+4400+3800+3800-$    
 
 M_FANFARE_1:
 
-		incbin 	"AUDIOS/S1_INTRO.mbm"
+		incbin 	"AUDIOS/TEMAS/FASE 1/S1_INTRO.mbm"
 
 		ds      #8000+4400+3800+3800+600-$    
 
 M_WIN_1:
 
-		incbin 	"AUDIOS/CLEAR.mbm"
+		incbin 	"AUDIOS/TEMAS/OTRAS/FASE_WIN.mbm"
 
 M_GAME_OVER_1:
 
-		incbin	"AUDIOS/GAMEOVER.MBM"
+		incbin	"AUDIOS/TEMAS/OTRAS/GAME_OVER.MBM"
 
         ds		#C000-$
 
@@ -1923,40 +1936,40 @@ M_GAME_OVER_1:
 
 M_STAGE_2:
 
-		incbin 	"AUDIOS/STAGE 2.mbm"
+		incbin 	"AUDIOS/TEMAS/FASE 2/STAGE 2.mbm"
 
 
 		ds		#8000+4400-$
 
 M_BOSS_2:
 
-		incbin	"AUDIOS/BOSS 2.mbm"
+		incbin	"AUDIOS/TEMAS/FASE 2/BOSS 2.mbm"
 
 		ds		#8000+4400+3800-$
 
 M_BONUS_2:
 
-		incbin	"AUDIOS/BONUS.mbm"
+		incbin	"AUDIOS/TEMAS/BONUS.mbm"
         
 		ds      #8000+4400+3800+3800-$    
 
 M_FANFARE_2:
 
-		incbin 	"AUDIOS/S2_INTRO.mbm"
+		incbin 	"AUDIOS/TEMAS/FASE 2/S2_INTRO.mbm"
 
 		ds      #8000+4400+3800+3800+600-$    
 
 M_WIN_2:
 
-		incbin 	"AUDIOS/CLEAR.mbm"
+		incbin 	"AUDIOS/TEMAS/OTRAS/FASE_WIN.mbm"
 
 M_GAME_OVER_2:
 
-		incbin	"AUDIOS/GAMEOVER.MBM"
+		incbin	"AUDIOS/TEMAS/OTRAS/GAME_OVER.MBM"
 
 M_INTRO_BOSS_2:
 
-		incbin 	"AUDIOS/BOSS 2 INTRO.MBM"
+		incbin 	"AUDIOS/TEMAS/FASE 2/BOSS 2 INTRO.MBM"
 
         ds		#C000-$
 
@@ -1975,35 +1988,35 @@ M_INTRO_BOSS_2:
 
 M_STAGE_3:
 
-		incbin 	"AUDIOS/STAGE 3.mbm"
+		incbin 	"AUDIOS/TEMAS/FASE 3/STAGE 3.mbm"
 
 		ds		#8000+4400-$
 
 M_BOSS_3:
 
-		incbin	"AUDIOS/BOSS 1.mbm"
+		incbin	"AUDIOS/TEMAS/FASE 3/BOSS 1.mbm"
 
 		ds		#8000+4400+3800-$
 
 M_BONUS_3:
 
-		incbin	"AUDIOS/BONUS.mbm"
+		incbin	"AUDIOS/TEMAS/BONUS.mbm"
         
 		ds      #8000+4400+3800+3800-$    
 
 M_FANFARE_3:
 
-		incbin 	"AUDIOS/S3_INTRO.mbm"
+		incbin 	"AUDIOS/TEMAS/FASE 3/S3_INTRO.mbm"
 
 		ds      #8000+4400+3800+3800+600-$    
 
 M_WIN_3:
 
-		incbin 	"AUDIOS/CLEAR.mbm"
+		incbin 	"AUDIOS/TEMAS/OTRAS/FASE_WIN.mbm"
 
 M_GAME_OVER_3:
 
-		incbin	"AUDIOS/GAMEOVER.MBM"
+		incbin	"AUDIOS/TEMAS/OTRAS/GAME_OVER.MBM"
 
         ds		#C000-$
 
@@ -2022,36 +2035,36 @@ M_GAME_OVER_3:
 
 M_STAGE_4:
 
-		incbin 	"AUDIOS/STAGE 4.mbm"
+		incbin 	"AUDIOS/TEMAS/FASE 4/STAGE 4.mbm"
 
 
 		ds		#8000+4400-$
 
 M_BOSS_4:
 
-		incbin	"AUDIOS/BOSS 1.mbm"
+		incbin	"AUDIOS/TEMAS/FASE 4/BOSS 1.mbm"
 
 		ds		#8000+4400+3800-$
 
 M_BONUS_4:
 
-		incbin	"AUDIOS/BONUS.mbm"
+		incbin	"AUDIOS/TEMAS/BONUS.mbm"
         
 		ds      #8000+4400+3800+3800-$    
 
 M_FANFARE_4:
 
-		incbin 	"AUDIOS/S4_INTRO.mbm"
+		incbin 	"AUDIOS/TEMAS/FASE 4/S4_INTRO.mbm"
 
 		ds      #8000+4400+3800+3800+600-$    
 
 M_WIN_4:
 
-		incbin 	"AUDIOS/CLEAR.mbm"
+		incbin 	"AUDIOS/TEMAS/OTRAS/FASE_WIN.mbm"
 
 M_GAME_OVER_4:
 
-		incbin	"AUDIOS/GAMEOVER.MBM"
+		incbin	"AUDIOS/TEMAS/OTRAS/GAME_OVER.MBM"
 
         ds		#C000-$
 
@@ -2070,36 +2083,36 @@ M_GAME_OVER_4:
 
 M_STAGE_5:
 
-		incbin 	"AUDIOS/STAGE 5.mbm"
+		incbin 	"AUDIOS/TEMAS/FASE 5/STAGE 5.mbm"
 
 
 		ds		#8000+4400-$
 
 M_BOSS_5:
 
-		incbin	"AUDIOS/BOSS 5.mbm"
+		incbin	"AUDIOS/TEMAS/FASE 5/BOSS 5.mbm"
 
 		ds		#8000+4400+3800-$
 
 M_BONUS_5:
 
-		incbin	"AUDIOS/BONUS.mbm"
+		incbin	"AUDIOS/TEMAS/BONUS.mbm"
         
 		ds      #8000+4400+3800+3800-$    
 
 M_FANFARE_5:
 
-		incbin 	"AUDIOS/S5_INTRO.mbm"
+		incbin 	"AUDIOS/TEMAS/FASE 5/S5_INTRO.mbm"
 
 		ds      #8000+4400+3800+3800+600-$    
 
 M_WIN_5:
 
-		incbin 	"AUDIOS/CLEAR.mbm"
+		incbin 	"AUDIOS/TEMAS/OTRAS/FASE_WIN.mbm"
 
 M_GAME_OVER_5:
 
-		incbin	"AUDIOS/GAMEOVER.MBM"
+		incbin	"AUDIOS/TEMAS/OTRAS/GAME_OVER.MBM"
 
         ds		#C000-$
 
@@ -2886,7 +2899,7 @@ PALETA_BLANCO_NEGRO_5:
 
 M_THE_BEST:
 
-		incbin	"AUDIOS/THE BEST.mbm"
+		incbin	"AUDIOS/TEMAS/FASE 5/THE BEST.mbm"
 
         ds		#c000-$
 
@@ -2894,6 +2907,7 @@ M_THE_BEST:
  ****** PAGINA 39******
  ******   END    ******
  **********************/
+
 /**********************
  ****** PAGINA 40 *****
  ****** SLOT   2 ******     gráficos de marca parte 1
@@ -3209,5 +3223,33 @@ STATUS_BOSS_4:
 
 /**********************
  ****** PAGINA 58 ******
+ ******   END    ******
+ **********************/
+
+/**********************
+ ****** PAGINA 59******
+ ****** SLOT   1 ******     Música presentation
+ **********************/
+
+		org		#8000
+
+M_PUENTE:
+
+		incbin	"AUDIOS/TEMAS/FASE 1/PUENTE.mbm"
+
+M_MENU:
+
+		incbin	"AUDIOS/TEMAS/OTRAS/MENU.mbm"
+
+
+
+M_SEMIBOSS_2:
+
+		incbin	"AUDIOS/TEMAS/FASE 2/SEMIBOSS.mbm"        
+		
+		ds		#c000-$
+
+/**********************
+ ****** PAGINA 59******
  ******   END    ******
  **********************/
