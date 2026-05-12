@@ -11,7 +11,7 @@ COMIENZA_MENU:
 		call	INICIAMOS_MUSICA
 
 		di
-		call	strmus
+		;call	strmus   XXXX Aun to funciona bien el strmus, lo dejo comentado por si acaso
 		ei
 
     	call    PAGE_10_A_SEGMENT_2
