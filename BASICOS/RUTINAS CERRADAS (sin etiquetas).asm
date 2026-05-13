@@ -2629,6 +2629,7 @@
 		ld		bc,40
 		ldir		
 		ei
+		
 ;RETORNO:
 
 		ret														; Cuando una sentencia debe ser enviada de vuelta pero tenemos que dar una dirección por narices
@@ -2827,14 +2828,6 @@
 		push	ix
 		call	PARTE_A	
         call	PREPARACION_ROCKAGER
-		jp		PARTE_B
-
-;PAGE_44_A_SEGMENT_1_PINTA_MAREO:
-
-		push	af
-		push	ix
-		call	PARTE_A	
-        call	PINTA_MAREO
 		jp		PARTE_B
 
 ;PAGE9_A_SEGMENT_1:
