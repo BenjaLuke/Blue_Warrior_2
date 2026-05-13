@@ -57,6 +57,14 @@ SCORE_ROCKAGER_MUERTO_SEMIBOSS_2:			equ	30
 
 ROCKAGER:
 
+.musica:
+
+        call    stpmus
+
+        include "../AUDIOS/INICIA MUSICA SEMIBOSS FASE 2.asm"
+        
+.continua:
+
         xor     a
         ld      (SECUENCIA_DE_ROCKAGER),a
         ld      (FOTOGRAMA_SECUENCIA_ROCKAGER_1),a

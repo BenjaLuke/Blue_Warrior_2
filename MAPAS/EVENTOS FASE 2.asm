@@ -167,7 +167,7 @@ TABLA_SUCESOS_FASE_2:
 		dw		RETORNO
 		dw		CHECK_POINT
 		dw		RETORNO
-		dw		RETORNO
+		dw		BUCLE_PINTA_TILES.musica_mas_velocidad_mas_limites
 		dw		SHOW_STATUS_COMP	
 		dw		NUEVO_ROCKAGER
 		dw		BUCLE_PINTA_TILES.PINTA_PALETA_1
