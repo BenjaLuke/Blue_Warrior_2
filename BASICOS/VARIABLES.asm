@@ -293,4 +293,3 @@ psgcnt:	#1    	 														;db	 0
 psgvol:	#1     															;db	 0
 
 SEMAFORO_PUENTE: #1														;Controla la activacion de velocidad en el puente de fase 1 para sólo una vez
-

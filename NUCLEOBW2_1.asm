@@ -2139,7 +2139,54 @@ M_GAME_OVER_5:
 		include "AUDIOS/LANZADOR EFECTOS PSG (sin etiquetas).asm"
         include "PALETAS/PALETAS (sin etiquetas).asm"
 		include "AUDIOS/LANZADOR FMPACK Y MUSIC MODULE (sin etiquetas).asm"        
-		
+
+DANO_MAGIA_EN_AGONIX_BOSS_1:
+
+		ld		a,(VIDA_AGONIX_BOSS_1)
+		or		a
+		ret		z
+		call	CALCULA_DANO_MAGIA_BOSS_1
+		ld		c,a
+		ld		a,(VIDA_AGONIX_BOSS_1)
+		cp		c
+		jr		nc,.RESTA_DANO_MAGIA_AGONIX_BOSS_1
+		xor		a
+		jr		.GUARDA_VIDA_MAGIA_AGONIX_BOSS_1
+
+.RESTA_DANO_MAGIA_AGONIX_BOSS_1:
+
+		sub		c
+
+.GUARDA_VIDA_MAGIA_AGONIX_BOSS_1:
+
+		ld		(VIDA_AGONIX_BOSS_1),a
+		push	af
+		call	PINTA_MARCADORES_VIDA_FINAL_BOSS_1
+		pop		af
+		or		a
+		jp		z,MUERTE_DE_AGONIX_BOSS_1
+		ret
+
+CALCULA_DANO_MAGIA_BOSS_1:
+
+		ld		a,(ARMA_USANDO)
+		cp		3
+		jr		c,.DANO_MAGIA_FLECHA_BOSS_1
+		cp		6
+		jr		c,.DANO_MAGIA_FUEGO_BOSS_1
+		ld		a,6
+		ret
+
+.DANO_MAGIA_FLECHA_BOSS_1:
+
+		ld		a,24
+		ret
+
+.DANO_MAGIA_FUEGO_BOSS_1:
+
+		ld		a,3
+		ret
+
         ds		#8000-$
 
 /**********************
@@ -2164,6 +2211,53 @@ M_GAME_OVER_5:
 		include "AUDIOS/LANZADOR EFECTOS PSG (sin etiquetas).asm"
         include "PALETAS/PALETAS (sin etiquetas).asm"
 		include "AUDIOS/LANZADOR FMPACK Y MUSIC MODULE (sin etiquetas).asm"        
+
+DANO_MAGIA_EN_DAVEANIX_BOSS_2:
+
+		ld		a,(VIDA_DAVEANIX_BOSS_2)
+		or		a
+		ret		z
+		call	CALCULA_DANO_MAGIA_BOSS_2
+		ld		c,a
+		ld		a,(VIDA_DAVEANIX_BOSS_2)
+		cp		c
+		jr		nc,.RESTA_DANO_MAGIA_DAVEANIX_BOSS_2
+		xor		a
+		jr		.GUARDA_VIDA_MAGIA_DAVEANIX_BOSS_2
+
+.RESTA_DANO_MAGIA_DAVEANIX_BOSS_2:
+
+		sub		c
+
+.GUARDA_VIDA_MAGIA_DAVEANIX_BOSS_2:
+
+		ld		(VIDA_DAVEANIX_BOSS_2),a
+		push	af
+		call	PINTA_MARCADORES_VIDA_FINAL_BOSS_2
+		pop		af
+		or		a
+		jp		z,MUERTE_DE_DAVEANIX_BOSS_2
+		ret
+
+CALCULA_DANO_MAGIA_BOSS_2:
+
+		ld		a,(ARMA_USANDO)
+		cp		3
+		jr		c,.DANO_MAGIA_FLECHA_BOSS_2
+		cp		6
+		jr		c,.DANO_MAGIA_FUEGO_BOSS_2
+		ld		a,6
+		ret
+
+.DANO_MAGIA_FLECHA_BOSS_2:
+
+		ld		a,24
+		ret
+
+.DANO_MAGIA_FUEGO_BOSS_2:
+
+		ld		a,3
+		ret
 
         ds		#8000-$
 
@@ -2255,6 +2349,53 @@ FADE_FASE_1_3_A_NEGRO_b3:
 		include "AUDIOS/LANZADOR EFECTOS PSG (sin etiquetas).asm"
         include "PALETAS/PALETAS (sin etiquetas).asm"
 		include "AUDIOS/LANZADOR FMPACK Y MUSIC MODULE (sin etiquetas).asm"        
+
+DANO_MAGIA_EN_ERRECENYX_BOSS_4:
+
+		ld		a,(VIDA_ERRECENYX_BOSS_4)
+		or		a
+		ret		z
+		call	CALCULA_DANO_MAGIA_BOSS_4
+		ld		c,a
+		ld		a,(VIDA_ERRECENYX_BOSS_4)
+		cp		c
+		jr		nc,.RESTA_DANO_MAGIA_ERRECENYX_BOSS_4
+		xor		a
+		jr		.GUARDA_VIDA_MAGIA_ERRECENYX_BOSS_4
+
+.RESTA_DANO_MAGIA_ERRECENYX_BOSS_4:
+
+		sub		c
+
+.GUARDA_VIDA_MAGIA_ERRECENYX_BOSS_4:
+
+		ld		(VIDA_ERRECENYX_BOSS_4),a
+		push	af
+		call	PINTA_MARCADORES_VIDA_FINAL_BOSS_4
+		pop		af
+		or		a
+		jp		z,MUERTE_DE_ERRECENYX_BOSS_4
+		ret
+
+CALCULA_DANO_MAGIA_BOSS_4:
+
+		ld		a,(ARMA_USANDO)
+		cp		3
+		jr		c,.DANO_MAGIA_FLECHA_BOSS_4
+		cp		6
+		jr		c,.DANO_MAGIA_FUEGO_BOSS_4
+		ld		a,6
+		ret
+
+.DANO_MAGIA_FLECHA_BOSS_4:
+
+		ld		a,24
+		ret
+
+.DANO_MAGIA_FUEGO_BOSS_4:
+
+		ld		a,3
+		ret
 
         ds		#8000-$
 

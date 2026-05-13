@@ -911,19 +911,18 @@ PINTA_PROYECTIL_BOSS_2_1:
 
 CARGA_ATRIBUTOS_PROYECTIL_BOSS_2:
 
-		ld		hl,PROPIEDADES_PATRON_SPRITE
-		call	OBTIENE_PUNTERO_Y_PROYECTIL_BOSS_2_ACTUAL
-		ld		a,(hl)
-		ld		hl,PROPIEDADES_PATRON_SPRITE
-		ld		(hl),a
-		inc		hl
-		call	OBTIENE_PUNTERO_X_PROYECTIL_BOSS_2_ACTUAL
-		ld		a,(hl)
-		ld		hl,PROPIEDADES_PATRON_SPRITE+1
-		ld		(hl),a
-		inc		hl
-		ld		a,PROYECTIL_BOSS_2_PATRON_SPRITE
-		jr		PINTA_PROYECTIL_BOSS_2_1
+        call    OBTIENE_PUNTERO_Y_PROYECTIL_BOSS_2_ACTUAL
+        ld      a,(hl)
+        ld      (PROPIEDADES_PATRON_SPRITE),a
+
+        call    OBTIENE_PUNTERO_X_PROYECTIL_BOSS_2_ACTUAL
+        ld      a,(hl)
+        ld      hl,PROPIEDADES_PATRON_SPRITE+1
+        ld      (hl),a
+        inc     hl
+
+        ld      a,PROYECTIL_BOSS_2_PATRON_SPRITE
+        jr      PINTA_PROYECTIL_BOSS_2_1
 
 CARGA_COLOR_PROYECTIL_BOSS_2_ACTUAL:
 
@@ -1354,13 +1353,46 @@ PINTA_MARCADORES_VIDA_FINAL_BOSS_2:
 		add		c
 		call	CONVIERTE_VIDA_FINAL_A_BARRA_BOSS_2
 
-		or		a
-		ret		z
-		ld		b,a
-		ld		a,VIDA_ANCHO_BARRA_BOSS_2
-		sub		b
-		ld		c,151
-		add		c
+        ; Si es el ancho total, lo dejamos tal cual
+        ; para que al morir borre la barra completa.
+        cp      VIDA_ANCHO_BARRA_BOSS_2
+        jr      z,.ANCHO_BARRA_BOSS_2_OK
+
+        ; Redondeamos hacia abajo a múltiplos de 6
+        ; 1-5   -> 0
+        ; 6-11  -> 6
+        ; 12-17 -> 12
+        ; 18-23 -> 18
+        ; etc.
+        ld      b,0
+
+.REDONDEA_BARRA_A_6_BOSS_2:
+
+        cp      6
+        jr      c,.FIN_REDONDEA_BARRA_A_6_BOSS_2
+
+        sub     6
+        ld      c,a
+        ld      a,b
+        add     a,6
+        ld      b,a
+        ld      a,c
+
+        jr      .REDONDEA_BARRA_A_6_BOSS_2	
+
+.FIN_REDONDEA_BARRA_A_6_BOSS_2:
+
+        ld      a,b
+
+.ANCHO_BARRA_BOSS_2_OK:
+
+        or      a
+        ret     z
+        ld      b,a
+        ld      a,VIDA_ANCHO_BARRA_BOSS_2
+        sub     b
+        ld      c,151
+        add     c
 
 		ld		ix,DATAS_COR_EMPT_MALO
 		ld		(ix+4),a

@@ -321,13 +321,12 @@ RUTINA_BOSS_1:
 
         ld      a,50
         ld		b,51
-        call	.CARGA_PANTALLA_COMPLETA
+        call	.CARGA_PANTALLA_COMPLETA_PAGE_3
 
 .COPIA_PAGE_1_A_PAGE_3:
 
-		ld		hl,BOSS_1_DATOS_COPY_PAGE_1_A_PAGE_3
-		call	DOCOPY
-		call    VDPREADY
+		; Antes aquí copiábamos page 1 a page 3 con DOCOPY.
+		; Ahora la parte 1 de Agonix ya se carga directamente en page 3.
 		jp		.CARGA_AGONIX_PARTE_2
 
 .CARGA_AGONIX_PARTE_2:
@@ -498,6 +497,108 @@ RUTINA_BOSS_1:
 
 		ld		a,10
         jp		CHANGE_BANK_2
+
+
+.CARGA_PANTALLA_COMPLETA_PAGE_3:
+
+		push	bc
+        call	CHANGE_BANK_2
+
+		; Banco A -> VRAM #18000
+        ld		a,1
+        ld		hl,#8000
+        ld		de,#8000
+        ld		bc,16384
+        call	.LDIRVM2_BOSS_1_CON_A
+
+		pop		af
+        call	CHANGE_BANK_2
+
+		; Banco B -> VRAM #1C000
+        ld		a,1
+        ld		hl,#8000
+        ld		de,#C000
+        ld		bc,16384
+        call	.LDIRVM2_BOSS_1_CON_A
+
+		call	VDPREADY
+
+		; Dejamos el registro 14 limpio, como hace PON_COLOR_2.
+		xor		a
+		ld		(RG14SAV),a
+		ld		b,a
+		ld		c,14
+		call	WRTVDP_EN_RAM
+
+		ld		a,10
+        jp		CHANGE_BANK_2
+
+
+.LDIRVM2_BOSS_1_CON_A:
+
+		ex		de,hl
+		call	.SETVDP_WRITE_BOSS_1_CON_A
+		ex		de,hl
+
+		ld		a,c
+		or		a
+		ld		a,b
+		ld		b,c
+		jr		z,.BLK_VRAM_0_BOSS_1
+		inc		a
+
+.BLK_VRAM_0_BOSS_1:
+
+		ld		c,#98
+
+.BLK_VRAM_LOOP_BOSS_1:
+
+		otir
+		dec		a
+		jr		nz,.BLK_VRAM_LOOP_BOSS_1
+		ex		de,hl
+		ret
+
+
+.SETVDP_WRITE_BOSS_1_CON_A:
+
+		push	af
+		push	hl
+
+		; A debe entrar con 1 para acceder a la segunda mitad de VRAM.
+		; Con DE=#8000 escribimos en #18000.
+		; Con DE=#C000 escribimos en #1C000.
+		and		1
+		rlc		h
+		rla
+		rlc		h
+		rla
+		srl		h
+		srl		h
+
+		di
+		out		(#99),a
+		ld		a,14+128
+		out		(#99),a
+
+		ld		a,l
+		nop
+		out		(#99),a
+
+		ld		a,h
+		or		64
+		ei
+		out		(#99),a
+
+		pop		hl
+		pop		af
+		ret
+
+.RESTAURA_GRAFICOS_PAGE_3_AGONIX_BOSS_1:
+
+		ld      a,50
+		ld		b,51
+		jp		.CARGA_PANTALLA_COMPLETA_PAGE_3
 
 .PINTA_CORAZONES_VIDA_DEPH_ADECUADOS:
 
@@ -1442,16 +1543,49 @@ ON_SPRITE_GLOBAL_BOSS_1:
 
 PINTA_MARCADORES_VIDA_FINAL_BOSS_1:
 
-		ld		a,(VIDA_AGONIX_BOSS_1)
-		call	CONVIERTE_VIDA_FINAL_A_BARRA_BOSS_1
+        ld      a,(VIDA_AGONIX_BOSS_1)
+        call    CONVIERTE_VIDA_FINAL_A_BARRA_BOSS_1
 
-		or		a
-		ret		z
-		ld		b,a
-		ld		a,VIDA_ANCHO_BARRA_BOSS_1
-		sub		b
-		ld		c,151
-		add		c
+        ; Si es el ancho total, lo dejamos tal cual
+        ; para que al morir borre la barra completa.
+        cp      VIDA_ANCHO_BARRA_BOSS_1
+        jr      z,.ANCHO_BARRA_BOSS_1_OK
+
+        ; Redondeamos hacia abajo a múltiplos de 6
+        ; 1-5   -> 0
+        ; 6-11  -> 6
+        ; 12-17 -> 12
+        ; 18-23 -> 18
+        ; etc.
+        ld      b,0
+
+.REDONDEA_BARRA_A_6_BOSS_1:
+
+        cp      6
+        jr      c,.FIN_REDONDEA_BARRA_A_6_BOSS_1
+
+        sub     6
+        ld      c,a
+        ld      a,b
+        add     a,6
+        ld      b,a
+        ld      a,c
+
+        jr      .REDONDEA_BARRA_A_6_BOSS_1
+
+.FIN_REDONDEA_BARRA_A_6_BOSS_1:
+
+        ld      a,b
+
+.ANCHO_BARRA_BOSS_1_OK:
+
+        or      a
+        ret     z
+        ld      b,a
+        ld      a,VIDA_ANCHO_BARRA_BOSS_1
+        sub     b
+        ld      c,151
+        add     c
 
 		ld		ix,DATAS_COR_EMPT_MALO
 		ld		(ix+4),a

@@ -2,7 +2,7 @@ VIDA_INICIAL_ERRECENYX_BOSS_4:					equ	80
 VIDA_TOTAL_INICIAL_BOSS_4:					equ	VIDA_INICIAL_ERRECENYX_BOSS_4
 VIDA_ANCHO_BARRA_BOSS_4:					equ	99
 
-PAGINA_REGRESO_BOSS_4:						equ	26
+PAGINA_REGRESO_BOSS_4:						equ	29
 
 ; VRAM / sprites
 SPRITES_ATRIBUTOS_VRAM_BOSS_4:				equ	#4A00
@@ -1433,13 +1433,46 @@ PINTA_MARCADORES_VIDA_FINAL_BOSS_4:
 		ld		a,(VIDA_ERRECENYX_BOSS_4)
 		call	CONVIERTE_VIDA_FINAL_A_BARRA_BOSS_4
 
-		or		a
-		ret		z
-		ld		b,a
-		ld		a,VIDA_ANCHO_BARRA_BOSS_4
-		sub		b
-		ld		c,151
-		add		c
+        ; Si es el ancho total, lo dejamos tal cual
+        ; para que al morir borre la barra completa.
+        cp      VIDA_ANCHO_BARRA_BOSS_4
+        jr      z,.ANCHO_BARRA_BOSS_4_OK
+
+        ; Redondeamos hacia abajo a múltiplos de 6
+        ; 1-5   -> 0
+        ; 6-11  -> 6
+        ; 12-17 -> 12
+        ; 18-23 -> 18
+        ; etc.
+        ld      b,0
+
+.REDONDEA_BARRA_A_6_BOSS_4:
+
+        cp      6
+        jr      c,.FIN_REDONDEA_BARRA_A_6_BOSS_4
+
+        sub     6
+        ld      c,a
+        ld      a,b
+        add     a,6
+        ld      b,a
+        ld      a,c
+
+        jr      .REDONDEA_BARRA_A_6_BOSS_4
+
+.FIN_REDONDEA_BARRA_A_6_BOSS_4:
+
+        ld      a,b
+
+.ANCHO_BARRA_BOSS_4_OK:
+
+        or      a
+        ret     z
+        ld      b,a
+        ld      a,VIDA_ANCHO_BARRA_BOSS_4
+        sub     b
+        ld      c,151
+        add     c
 
 		ld		ix,DATAS_COR_EMPT_MALO
 		ld		(ix+4),a

@@ -2758,6 +2758,11 @@ PAGE_COMUN:
 PAGE_44_A_SEGMENT_1_MAGIA:
 
 		push	af
+		push	bc
+		push    de
+		push    ix
+		ld		a,(MAGIAS)
+		ld		(VARIABLE_UN_USO2),a
 		call	PARTE_A	
         call	MAGIA_ROCK
 
@@ -2769,7 +2774,33 @@ PARTE_B:
 		ld		[DIRPA1],a												; Cambiamos la página del bloque 2	
 		ei	
 
+		ld		a,(MAGIAS)
+		ld		b,a
+		ld		a,(VARIABLE_UN_USO2)
+		cp		b
+		jr		z,.SIN_DANO_MAGIA_BOSS
+
+		ld		a,(PAGINA_DE_REGRESO)
+		cp		26
+		call	z,RUTINA_BOSS_1.RESTAURA_GRAFICOS_PAGE_3_AGONIX_BOSS_1
+
+		ld		a,(PAGINA_DE_REGRESO)
+		cp		26
+		call	z,DANO_MAGIA_EN_AGONIX_BOSS_1
+
+		ld		a,(PAGINA_DE_REGRESO)
+		cp		27
+
+		call	z,DANO_MAGIA_EN_DAVEANIX_BOSS_2
+		ld		a,(PAGINA_DE_REGRESO)
+		cp		29
+		call	z,DANO_MAGIA_EN_ERRECENYX_BOSS_4
+
+.SIN_DANO_MAGIA_BOSS:
+
 		pop		ix
+		pop		de
+		pop		bc
 		pop     af
 		ret		
 
