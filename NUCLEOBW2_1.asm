@@ -237,15 +237,14 @@ CARGA_SLOT_MENU:
 
 /**********************
  ****** PAGINA 4 ******
- ****** SLOT   2 ******     libre para necesidades del menu
+ ****** SLOT   2 ******     graficos presentación
  **********************/
 
-		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
+		org		#8000													
 
-PAGINA_4_LIBRE_PARA_MENU:
+PANTALLA_DE_PRESENTACION_1:
 
-	; Pagina liberada tras eliminar la carga grafica del menu.
-	; Se deja rellena completa para conservar el mapa del megarom.
+		incbin  "GRAFICOS/PRESENTACIONES/DIBUJO_MENU1.DAT"
 
         ds		#C000-$
 
@@ -257,15 +256,24 @@ PAGINA_4_LIBRE_PARA_MENU:
 
 /**********************
  ****** PAGINA 5 ******
- ****** SLOT   2 ******     libre para necesidades del menu
+ ****** SLOT   2 ******     graficos presentación Y PALETAS DE PRESENTACION
  **********************/
 
-		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
+		org		#8000													
 
-PAGINA_5_LIBRE_PARA_MENU:
+PANTALLA_DE_PRESENTACION_2:
 
-	; Pagina liberada tras eliminar la carga grafica del menu.
-	; Se deja rellena completa para conservar el mapa del megarom.
+		incbin  "GRAFICOS/PRESENTACIONES/DIBUJO_MENU2.DAT"
+
+PALETA_PRESENTACION_FIJA:
+		incbin  "PALETAS/PRESENTACION/MENUIMAG.palete"
+
+PALETA_PRESENTACION_FADE_IN:
+		incbin  "PALETAS/PRESENTACION/MENUIMAG.fadein"
+
+PALETA_PRESENTACION_FADE_OUT:
+		incbin  "PALETAS/PRESENTACION/MENUIMAG.fadeout"
+
 
         ds		#C000-$
 
