@@ -104,6 +104,8 @@ PEUQUENA_PAUSA_2:
 
 SALIMOS_DE_LA_ANIMACION:
 
+        call    FADE_OUT_Y_SUBE_MOAI
+
         call    DISSCR_RAM
 
         ld      a,5                                                     ; Modo gráfico G4
@@ -116,6 +118,51 @@ SALIMOS_DE_LA_ANIMACION:
         call    DISSCR_RAM
 
         jp      CARGA_SLOT_MENU
+
+FADE_OUT_Y_SUBE_MOAI:
+
+        ld      hl,FADE_OUT_MOAI
+        ld      de,TABLA_ADJUST_SUBE_MOAI
+        ld      b,8
+
+.BUCLE_FADE_OUT_Y_SUBE_MOAI:
+
+        push    bc
+        push    de
+        push    hl
+
+        ; Set adjust: mueve ligeramente la imagen.
+        ld      a,(de)
+        ld      b,a
+        ld      c,18
+        call    WRTVDP_EN_RAM
+
+        ; Paleta del fade out.
+        pop     hl
+        push    hl
+        call    SETPALETE
+
+        ld      b,5
+        call    BLOQUE_PAUSA
+
+        pop     hl
+        ld      de,32
+        or      a
+        adc     hl,de
+
+        pop     de
+        inc     de
+
+        pop     bc
+        djnz    .BUCLE_FADE_OUT_Y_SUBE_MOAI
+
+        ; Dejamos el adjust limpio para que no afecte al menú.
+        xor     a
+        ld      b,a
+        ld      c,18
+        call    WRTVDP_EN_RAM
+
+        ret
 
 BLOQUE_PAUSA:
 
@@ -157,6 +204,10 @@ LIMPIA_PANTALLA_3_sc5:
 	dw      #0000,#0000,#0000,#0300,#0100,#0100
 	db      #00,#00,10000000b
 
+TABLA_ADJUST_SUBE_MOAI:
+
+        db      #00,#10,#20,#30,#40,#50,#60,#70
+        
 FOTOGRAMAS:
 
         dw      256,#1B4,128,096,254,018
