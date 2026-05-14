@@ -665,7 +665,7 @@ APARTAMOS_SPRITES_QUE_MOLESTAN:
 		push	ix
 		push	iy
 		
-		ld		b,19
+		ld		b,20
 
 .bucle_molestias:
 
@@ -689,14 +689,8 @@ APARTAMOS_SPRITES_QUE_MOLESTAN:
         ld      hl,#4A00+(4*10)
     [4] add     hl,de
         ex      de,hl
-		ld		a,(DONDE_VA_LA_INTERRUPCION_LINEAL)
-		add		50
-		cp		216
-		jp		nz,.quitamos_de_en_medio_2
 
-		ld		a,217
-
-.quitamos_de_en_medio_2:
+		ld		a,216
 
 		ld		(PROPIEDADES_PATRON_SPRITE),a
 		ld		hl,PROPIEDADES_PATRON_SPRITE
