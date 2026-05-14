@@ -154,12 +154,38 @@ INICIA_MUSICA_MENU_PRESENTACION:
 
 		di
 		call	strmus
+
+		; strmus instala musint directamente en HTIMI.
+		; Para el menú necesitamos envolverla para forzar page 39.
+
+		call	INSTALA_INTERRUPCION_MUSICA_MENU
 		ei
 
 		call	PAGE_10_A_SEGMENT_2
 
 		ret
 
+INSTALA_INTERRUPCION_MUSICA_MENU:
+
+		ld		a,#C3
+		ld		(HTIMI),a
+		ld		hl,INTERRUPCION_MUSICA_MENU
+		ld		(HTIMI+1),hl
+		ret
+
+
+INTERRUPCION_MUSICA_MENU:
+
+		ld		a,39
+		ld		(DIRPA2),a
+
+		call	musint
+
+		ld		a,10
+		ld		(DIRPA2),a
+
+		ret
+		
 PARA_MUSICA_MENU_PRESENTACION:
 
 		call	stpmus
@@ -170,7 +196,7 @@ PARA_MUSICA_MENU_PRESENTACION:
 		call	PAGE_10_A_SEGMENT_2
 
 		ret
-		
+
 FADE_IN_PRESENTACION:
 
 		ld		a,5
