@@ -2217,26 +2217,65 @@ DANO_MAGIA_EN_DAVEANIX_BOSS_2:
 		ld		a,(VIDA_DAVEANIX_BOSS_2)
 		or		a
 		ret		z
+
+		ld		b,a								; B = vida actual de Daveanix
+
 		call	CALCULA_DANO_MAGIA_BOSS_2
-		ld		c,a
-		ld		a,(VIDA_DAVEANIX_BOSS_2)
+		ld		c,a								; C = daño de magia
+
+		ld		a,(VIDA_ROCKAGER_BOSS_2)
+		or		a
+		jr		z,.ROCKAGER_YA_NO_PROTEGE_A_DAVEANIX_BOSS_2
+
+
+		; Si Rockager sigue vivo, Daveanix no puede bajar de 5.
+		; Es la misma idea que ya usas con los proyectiles normales.
+
+		ld		a,b								; A = vida actual de Daveanix
+		cp		6
+		ret		c								; Si ya tiene 1-5, no recibe más daño mientras Rockager viva
+
+		cp		c
+		jr		nc,.RESTA_DANO_MAGIA_DAVEANIX_CON_ROCKAGER_VIVO_BOSS_2
+
+		ld		a,5
+		jr		.GUARDA_VIDA_MAGIA_DAVEANIX_BOSS_2
+
+
+.RESTA_DANO_MAGIA_DAVEANIX_CON_ROCKAGER_VIVO_BOSS_2:
+
+		sub		c
+		cp		6
+		jr		nc,.GUARDA_VIDA_MAGIA_DAVEANIX_BOSS_2
+
+		ld		a,5
+		jr		.GUARDA_VIDA_MAGIA_DAVEANIX_BOSS_2
+
+
+.ROCKAGER_YA_NO_PROTEGE_A_DAVEANIX_BOSS_2:
+
+		ld		a,b								; A = vida actual de Daveanix
 		cp		c
 		jr		nc,.RESTA_DANO_MAGIA_DAVEANIX_BOSS_2
+
 		xor		a
 		jr		.GUARDA_VIDA_MAGIA_DAVEANIX_BOSS_2
+
 
 .RESTA_DANO_MAGIA_DAVEANIX_BOSS_2:
 
 		sub		c
 
+
 .GUARDA_VIDA_MAGIA_DAVEANIX_BOSS_2:
 
 		ld		(VIDA_DAVEANIX_BOSS_2),a
+
 		push	af
 		call	PINTA_MARCADORES_VIDA_FINAL_BOSS_2
 		pop		af
-		or		a
-		jp		z,MUERTE_DE_DAVEANIX_BOSS_2
+
+		or		a								; Z activo si Daveanix ha muerto
 		ret
 
 CALCULA_DANO_MAGIA_BOSS_2:
@@ -2373,8 +2412,7 @@ DANO_MAGIA_EN_ERRECENYX_BOSS_4:
 		push	af
 		call	PINTA_MARCADORES_VIDA_FINAL_BOSS_4
 		pop		af
-		or		a
-		jp		z,MUERTE_DE_ERRECENYX_BOSS_4
+		or		a								; Z activo si Errecenyx ha muerto
 		ret
 
 CALCULA_DANO_MAGIA_BOSS_4:

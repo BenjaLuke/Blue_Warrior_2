@@ -2778,7 +2778,7 @@
 		ld		b,a
 		ld		a,(VARIABLE_UN_USO2)
 		cp		b
-		jr		z,.SIN_DANO_MAGIA_BOSS
+		jr		z,SIN_DANO_MAGIA_BOSS
 
 		ld		a,(PAGINA_DE_REGRESO)
 		cp		26
@@ -2790,13 +2790,35 @@
 
 		ld		a,(PAGINA_DE_REGRESO)
 		cp		27
-
 		call	z,DANO_MAGIA_EN_DAVEANIX_BOSS_2
-		ld		a,(PAGINA_DE_REGRESO)
+		jp		z,MAGIA_MATA_DAVEANIX_BOSS_2
+
+				ld		a,(PAGINA_DE_REGRESO)
 		cp		29
 		call	z,DANO_MAGIA_EN_ERRECENYX_BOSS_4
+		jp		z,MAGIA_MATA_ERRECENYX_BOSS_4
 
-.SIN_DANO_MAGIA_BOSS:
+		jr		SIN_DANO_MAGIA_BOSS
+
+
+;MAGIA_MATA_DAVEANIX_BOSS_2:
+
+		pop		ix
+		pop		de
+		pop		bc
+		pop     af
+		jp		MUERTE_DE_DAVEANIX_BOSS_2
+
+
+;MAGIA_MATA_ERRECENYX_BOSS_4:
+
+		pop		ix
+		pop		de
+		pop		bc
+		pop     af
+		jp		MUERTE_DE_ERRECENYX_BOSS_4
+
+;SIN_DANO_MAGIA_BOSS:
 
 		pop		ix
 		pop     de
@@ -2816,6 +2838,8 @@
 ;PAGE_44_A_SEGMENT_1_ON_SPRITE_ENEMIGO_DEPH:
 
 		push	af
+		push	bc
+		push	de
 		push	ix
 		call	PARTE_A	
         call	REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH_ROCK
@@ -2824,6 +2848,8 @@
 ;PAGE_44_A_SEGMENT_1_RUTINA_ROCAS:
 
 		push	af
+		push	bc
+		push	de
 		push	ix
 		call	PARTE_A	
         call	RUTINA_ROCAS
@@ -2832,6 +2858,8 @@
 ;PAGE_44_A_SEGMENT_1_ON_SPRITE_CON_ROCAS:
 
 		push	af
+		push	bc
+		push	de
 		push	ix
 		call	PARTE_A	
         call	ON_SPRITE_CON_ROCAS
@@ -2840,6 +2868,8 @@
 ;PAGE44_A_SEGMENT_1_PINTA_CORAZONES_VIDA_DEPH_ADECUADOS:
 
 		push	af
+		push	bc
+		push	de
 		push	ix
 		call	PARTE_A	
         call	PINTA_CORAZONES_VIDA_DEPH_ADECUADOS
@@ -2848,6 +2878,8 @@
 ;PAGE44_A_SEGMENT_1_PINTA_MAGIAS_ROCK:
 
 		push	af
+		push	bc
+		push	de
 		push	ix
 		call	PARTE_A	
         call	PINTAMOS_LOS_PUNTOS_DE_MAGIA_ROCK
@@ -2856,6 +2888,8 @@
 ;PAGE44_A_SEGMENT_1_PREPARACION_ROCKAGER:
 
 		push	af
+		push	bc
+		push	de
 		push	ix
 		call	PARTE_A	
         call	PREPARACION_ROCKAGER

@@ -431,6 +431,16 @@ SPRITES_COVID_TAM_PART3_SEMIBOSS_2				equ		2*8*4
         pop     bc
         pop     iy
         pop     ix
+        
+        xor     a
+        ld      hl,SPRITES_ACTIVOS+SPRITES_ACTIVOS_ROCKAGER_OFS_SEMIBOSS_2
+        ld      b,SPRITES_FIJOS_ROCKAGER_CANT_SEMIBOSS_2
+
+.LIMPIA_SPRITES_ACTIVOS_ROCKAGER_FIN:
+
+        ld      (hl),a
+        inc     hl
+        djnz    .LIMPIA_SPRITES_ACTIVOS_ROCKAGER_FIN
         jp      VOLVEMOS_TRAS_ROCKAGER
 
 .TEMBLEQUE:
