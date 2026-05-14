@@ -1,87 +1,407 @@
-COMIENZA_MENU:
-		call	stpmus
+GRPPRT		equ		#008D
+GRPACX		equ		#FCB7
+GRPACY		equ		#FCB9
+ACPAGE		equ		#FAF6
 
-		ld		a,1
+COMIENZA_MENU:
+
+		; Presentación provisional.
+		; Música quitada de momento.
+
+		call	stpmus
+		xor		a
 		ld		(MUSICA_BEST_ON),a
 
-		ld      a,39
-        call    CHANGE_BANK_2
-		ld		hl,M_MENU
-		ld		(MUSIC_ON),hl
-		call	INICIAMOS_MUSICA
+		call	PAGE_10_A_SEGMENT_2
 
-		di
-		;call	strmus   XXXX Aun to funciona bien el strmus, lo dejo comentado por si acaso
-		ei
-
-    	call    PAGE_10_A_SEGMENT_2
-
-		call	MUESTRA_CARTELA_DE_VERSION
+		call	MUESTRA_PRESENTACION_PROVISIONAL
 		jp		PULSA_UNA_TECLA_PARA_EMPEZAR
 
-MUESTRA_CARTELA_DE_VERSION:
+
+MUESTRA_PRESENTACION_PROVISIONAL:
 
 		call	DISSCR_RAM
-		call	INITXT
+
+		ld		a,5
+		call	CHGMOD
+
+		call	DISSCR_RAM
+
+		; Página visible = 0
+
+		xor		a
+		call	SETPAGE
+
+		; 1 - Cargamos los gráficos de presentación en page 1, no visible.
+
+		call	CARGA_GRAFICOS_PRESENTACION_EN_PAGE_1
+
+		; 2 - Ponemos la primera paleta del fade in.
+
+		call	PONE_PRIMERA_PALETA_PRESENTACION
+
+		; 3 - Copiamos la imagen de page 1 a page visible 0.
+
+		ld		hl,DATOS_COPY_PRESENTACION_PAGE_1_A_PAGE_0
+		call	DOCOPY
+		call	VDPREADY
+
+		; 4 - Arrancamos música antes del fade in.
+
+		call	INICIA_MUSICA_MENU_PRESENTACION
+
+		; 5 - Mostramos pantalla y hacemos fade in.
+
+		call	ENASCR_RAM
+		call	FADE_IN_PRESENTACION
+
+		; 6 - Pintamos texto de aviso.
+
+		call	PINTA_TEXTO_PUSH_SPACE_KEY
+
+		; 7 - Preparamos rotativo inferior.
+
+		call	INICIALIZA_ROTATIVO_PRESENTACION
+
+		ret
+
+PINTA_TEXTO_PUSH_SPACE_KEY:
+
+		; SCREEN 5: texto gráfico.
+		; "PUSH SPACE KEY" = 14 letras.
+		; 14 * 8 = 112 px.
+		; (256 - 112) / 2 = 72.
+		; Y = 160 deja margen inferior.
 
 		ld		a,15
 		ld		(FORCLR),a
-		xor		a
-		ld		(BAKCLR),a
-		ld		(BDRCLR),a
-		call	CHGCOLOR_RAM
-		call	ERAFNK
-		ld		a,40
-		ld		(#F3AF),a
-		ld		(#F3B0),a
-		call	CLS
 
-		ld		hl,TEXTO_MENU_1
-		ld		de,#0D07
-		call	IMPRIME_TEXTO_EN
+		ld		hl,72
+		ld		(GRPACX),hl
 
-		ld		hl,TEXTO_MENU_2
-		ld		de,#0B08
-		call	IMPRIME_TEXTO_EN
+		ld		hl,181
+		ld		(GRPACY),hl
 
-		ld		hl,TEXTO_MENU_3
-		ld		de,#0F09
-		call	IMPRIME_TEXTO_EN
+		ld		hl,TEXTO_PUSH_SPACE_KEY
 
-		ld		hl,TEXTO_MENU_4
-		ld		de,#120A
-		call	IMPRIME_TEXTO_EN
-
-		ld		hl,TEXTO_MENU_5
-		ld		de,#0C0B
-		call	IMPRIME_TEXTO_EN
-
-		ld		hl,TEXTO_MENU_6
-		ld		de,#0A0D
-		call	IMPRIME_TEXTO_EN
-
-		ld		hl,TEXTO_MENU_7
-		ld		de,#040E
-		call	IMPRIME_TEXTO_EN
-
-		jp		ENASCR_RAM
-
-IMPRIME_TEXTO_EN:
-
-		push	hl
-		ld		h,d
-		ld		l,e
-		call	POSIT
-		pop		hl
-
-.bucle:
+.BUCLE_PINTA_TEXTO_PUSH_SPACE_KEY:
 
 		ld		a,(hl)
 		or		a
 		ret		z
-		call	CHPUT
+
+		push	hl
+		call	GRPPRT
+		pop		hl
+
 		inc		hl
-		jp		.bucle
+		jp		.BUCLE_PINTA_TEXTO_PUSH_SPACE_KEY
+
+
+TEXTO_PUSH_SPACE_KEY:
+
+		db		"PUSH SPACE KEY",0
+
+CARGA_GRAFICOS_PRESENTACION_EN_PAGE_1:
+
+		; Página 4 ROM -> primera mitad de VRAM page 1
+
+		ld		a,4
+		call	CHANGE_BANK_2
+
+		ld		hl,PANTALLA_DE_PRESENTACION_1
+		ld		de,#8000
+		ld		bc,#4000
+		call	PON_COLOR_2.sin_bc_impuesta
+
+
+		; Página 5 ROM -> segunda mitad de VRAM page 1
+		; Copiamos sólo hasta donde empiezan las paletas.
+
+		ld		a,5
+		call	CHANGE_BANK_2
+
+		ld		hl,PANTALLA_DE_PRESENTACION_2
+		ld		de,#C000
+		ld		bc,PALETA_PRESENTACION_FIJA-PANTALLA_DE_PRESENTACION_2
+		call	PON_COLOR_2.sin_bc_impuesta
+
+		ret
+
+
+PONE_PRIMERA_PALETA_PRESENTACION:
+
+		ld		a,5
+		call	CHANGE_BANK_2
+
+		ld		hl,PALETA_PRESENTACION_FADE_IN
+		jp		SETPALETE
+
+INICIA_MUSICA_MENU_PRESENTACION:
+
+		call	stpmus
+
+		ld		a,1
+		ld		(MUSICA_BEST_ON),a
+		
+        ld      a,39
+        call    CHANGE_BANK_2
+
+		ld		hl,M_MENU
+		ld		(MUSIC_ON),hl
+
+		call	INICIAMOS_MUSICA
+
+		di
+		call	strmus
+		ei
+
+		call	PAGE_10_A_SEGMENT_2
+
+		ret
+
+PARA_MUSICA_MENU_PRESENTACION:
+
+		call	stpmus
+
+		xor		a
+		ld		(MUSICA_BEST_ON),a
+
+		call	PAGE_10_A_SEGMENT_2
+
+		ret
+		
+FADE_IN_PRESENTACION:
+
+		ld		a,5
+		call	CHANGE_BANK_2
+
+		; La primera paleta ya se ha puesto antes.
+		; Empezamos en la segunda.
+
+		ld		hl,PALETA_PRESENTACION_FADE_IN+32
+		ld		e,7
+
+.BUCLE_FADE_IN_PRESENTACION:
+
+		call	SETPALETE
+
+		ld		a,6
+		call	BUCLE_PINTA_TILES.rutina_de_pausa
+
+		dec		e
+		jp		nz,.BUCLE_FADE_IN_PRESENTACION
+
+		; Dejamos la paleta final fija por seguridad.
+
+		ld		a,5
+		call	CHANGE_BANK_2
+		ld		hl,PALETA_PRESENTACION_FIJA
+		jp		SETPALETE
+
+FADE_OUT_PRESENTACION:
+
+		ld		a,5
+		call	CHANGE_BANK_2
+
+		ld		hl,PALETA_PRESENTACION_FADE_OUT
+		ld		e,8
+
+.BUCLE_FADE_OUT_PRESENTACION:
+
+		call	SETPALETE
+
+		ld		a,6
+		call	BUCLE_PINTA_TILES.rutina_de_pausa
+
+		dec		e
+		jp		nz,.BUCLE_FADE_OUT_PRESENTACION
+
+		ret
+
+DATOS_COPY_PRESENTACION_PAGE_1_A_PAGE_0:
+
+		dw		#0000,#0100		; origen  x=0, y=page 1
+		dw		#0000,#0000		; destino x=0, y=page 0 visible
+		dw		#0100,#0100		; ancho 256, alto 256
+		db		#00,#00,10010000b
+
+ROTATIVO_X_PRESENTACION				equ		VARIABLE_UN_USO
+ROTATIVO_CONTADOR_PRESENTACION		equ		VARIABLE_UN_USO2
+
+ROTATIVO_Y_PRESENTACION				equ		195
+ROTATIVO_VELOCIDAD_PRESENTACION		equ		1
+ROTATIVO_LIMITE_PRESENTACION		equ		65536-((TEXTO_ROTATIVO_PRESENTACION_FIN-TEXTO_ROTATIVO_PRESENTACION-1)*8)
+
+
+INICIALIZA_ROTATIVO_PRESENTACION:
+
+		ld		hl,255
+		ld		(ROTATIVO_X_PRESENTACION),hl
+
+		xor		a
+		ld		(ROTATIVO_CONTADOR_PRESENTACION),a
+
+		call	PREPARA_ROTATIVO_EN_PAGE_1
+		call	PINTA_ROTATIVO_PRESENTACION_EN_PAGE_1
+		call	COPIA_ROTATIVO_PAGE_1_A_VISIBLE
+		ret
+
+
+ACTUALIZA_ROTATIVO_PRESENTACION:
+
+		ld		a,(ROTATIVO_CONTADOR_PRESENTACION)
+		inc		a
+		cp		ROTATIVO_VELOCIDAD_PRESENTACION
+		jr		nc,.MUEVE_ROTATIVO_PRESENTACION
+
+		ld		(ROTATIVO_CONTADOR_PRESENTACION),a
+		ret
+
+
+.MUEVE_ROTATIVO_PRESENTACION:
+
+		xor		a
+		ld		(ROTATIVO_CONTADOR_PRESENTACION),a
+
+		call	PREPARA_ROTATIVO_EN_PAGE_1
+		call	PINTA_ROTATIVO_PRESENTACION_EN_PAGE_1
+		call	COPIA_ROTATIVO_PAGE_1_A_VISIBLE
+
+		ld		hl,(ROTATIVO_X_PRESENTACION)
+		dec		hl
+		ld		(ROTATIVO_X_PRESENTACION),hl
+
+		ld		de,ROTATIVO_LIMITE_PRESENTACION
+		or		a
+		sbc		hl,de
+		ret		nz
+
+		ld		hl,255
+		ld		(ROTATIVO_X_PRESENTACION),hl
+		ret
+
+
+PREPARA_ROTATIVO_EN_PAGE_1:
+
+		; Pintamos un rectángulo negro en page 1,
+		; sólo en la ventana central X=8..247.
+
+		ld		hl,DATOS_NEGRO_ROTATIVO_EN_PAGE_1
+		call	DOCOPY
+		jp		VDPREADY
+
+
+COPIA_ROTATIVO_PAGE_1_A_VISIBLE:
+
+		; Copiamos de page 1 a page 0 visible,
+		; sólo X=8..247 para evitar bordes feos.
+
+		ld		hl,DATOS_COPY_ROTATIVO_PAGE_1_A_VISIBLE
+		call	DOCOPY
+		jp		VDPREADY
+
+
+PINTA_ROTATIVO_PRESENTACION_EN_PAGE_1:
+
+		; GRPPRT dibuja en la página activa.
+		; Ponemos page 1 como activa, pero NO como visible.
+
+		ld		a,1
+		ld		(ACPAGE),a
+
+		ld		a,15
+		ld		(FORCLR),a
+
+		ld		ix,TEXTO_ROTATIVO_PRESENTACION
+		ld		hl,(ROTATIVO_X_PRESENTACION)
+
+
+.BUCLE_PINTA_ROTATIVO_PRESENTACION:
+
+		ld		a,(ix+0)
+		or		a
+		jp		z,.FIN_PINTA_ROTATIVO_PRESENTACION
+
+		; Sólo pintamos caracteres cuyo inicio esté entre 0 y 247.
+		; Luego sólo copiaremos X=8..247 a page visible.
+
+		ld		a,h
+		or		a
+		jr		nz,.SALTA_CARACTER_ROTATIVO_PRESENTACION
+
+		ld		a,l
+		cp		248
+		jr		nc,.SALTA_CARACTER_ROTATIVO_PRESENTACION
+
+		push	hl
+		push	ix
+
+		ld		(GRPACX),hl
+
+		ld		hl,ROTATIVO_Y_PRESENTACION
+		ld		(GRPACY),hl
+
+		ld		a,(ix+0)
+		call	GRPPRT
+
+		pop		ix
+		pop		hl
+
+
+.SALTA_CARACTER_ROTATIVO_PRESENTACION:
+
+		ld		de,8
+		add		hl,de
+
+		inc		ix
+		jp		.BUCLE_PINTA_ROTATIVO_PRESENTACION
+
+
+.FIN_PINTA_ROTATIVO_PRESENTACION:
+
+		; Devolvemos page 0 como activa para no dejar el sistema raro.
+
+		xor		a
+		ld		(ACPAGE),a
+		ret
+
+
+DATOS_NEGRO_ROTATIVO_EN_PAGE_1:
+
+		; Rectángulo negro en page 1.
+		; X=8, Y=ROTATIVO_Y_PRESENTACION
+		; ancho 240, alto 8.
+
+		dw		#0000,#0000
+		dw		#0008,#0100+ROTATIVO_Y_PRESENTACION
+		dw		#00F0,#0008
+		db		#00,#00,11000000b
+
+
+DATOS_COPY_ROTATIVO_PAGE_1_A_VISIBLE:
+
+		; Page 1 -> page 0 visible.
+		; Sólo ventana central X=8..247.
+
+		dw		#0008,#0100+ROTATIVO_Y_PRESENTACION
+		dw		#0008,#0000+ROTATIVO_Y_PRESENTACION
+		dw		#00F0,#0008
+		db		#00,#00,10010000b
+
+; Editar estas lineas al sacar una version nueva.
+; Regla del porcentaje: cada fase vale 2, cada enemigo y bloque auxiliar vale 1.
+; EN TOTAL HAY 
+; 5 PUNTOS DE 2(FASES) 4 HECHOS
+; 6 PUNTOS DE 2(ENEMIGOS) 3 HECHOS
+; 4 PUNTOS DE 1(LOGO, MENU, ANIMACION PRESENTACION Y ANIMACION CIERRE) 1 HECHO
+; PUNTOS ACTUALES = (4+3)*2 + 1*1 = 15, PORCENTAJE ACTUAL = 15/16 = 93% APROXIMADAMENTE
+
+TEXTO_ROTATIVO_PRESENTACION:
+
+		db		"BLUE WARRIOR II - Beta version 4.3.3 - 14/5/2026 - 93% - (C) Digital Moai - TECLAS 1 - 5 PARA IR DIRECTO A FASE",0
+
+TEXTO_ROTATIVO_PRESENTACION_FIN:
 
 PULSA_UNA_TECLA_PARA_EMPEZAR:
 
@@ -115,6 +435,8 @@ PULSA_UNA_TECLA_PARA_EMPEZAR:
 		bit		5,a
 		jp		z,INICIA_EN_FASE_5
 
+		halt
+		call 	ACTUALIZA_ROTATIVO_PRESENTACION
 		jp		PULSA_UNA_TECLA_PARA_EMPEZAR
 
 INICIA_EN_FASE_1:
@@ -147,6 +469,9 @@ INICIA_EN_FASE_5:
 		ld		(FASE),a
 
 SEGUIMOS:
+
+		call	FADE_OUT_PRESENTACION
+		call	PARA_MUSICA_MENU_PRESENTACION
 
 		call	DISSCR_RAM
 		ld		a,5
@@ -195,31 +520,3 @@ NOS_VAMOS_AL_JUEGO:
 		ld		a,8
 		ld      (DIRPA2),a										    ; Banco 1, pagina 3 del MEGAROM
 		jp		CARGA_SLOT_JUEGO
-
-; Editar estas lineas al sacar una version nueva.
-; Regla del porcentaje: cada fase vale 2, cada enemigo y bloque auxiliar vale 1.
-; EN TOTAL HAY 
-; 5 PUNTOS DE 2(FASES) 4 HECHOS
-; 6 PUNTOS DE 2(ENEMIGOS) 3 HECHOS
-; 4 PUNTOS DE 1(LOGO, MENU, ANIMACION PRESENTACION Y ANIMACION CIERRE) 1 HECHO
-; PUNTOS ACTUALES = (4+3)*2 + 1*1 = 15, PORCENTAJE ACTUAL = 15/16 = 93% APROXIMADAMENTE
-TEXTO_MENU_1:
-		db		"Blue Warrior 2",0
-
-TEXTO_MENU_2:
-		db		"Beta version 4.2.13",0
-
-TEXTO_MENU_3:
-		db		"12/05/2026",0
-
-TEXTO_MENU_4:
-		db		"93%",0
-
-TEXTO_MENU_5:
-		db		"(c) Digital Moai",0
-
-TEXTO_MENU_6:
-		db		"ESPACIO PARA EMPEZAR",0
-
-TEXTO_MENU_7:
-		db		"TECLAS 1 - 5 PARA IR DIRECTO A FASE",0
