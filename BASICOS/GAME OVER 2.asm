@@ -159,7 +159,15 @@ MOSTRAMOS_GAME_OVER:
 
     call    DISSCR_RAM
 
-	call	stpmus
+	di
+	ld		a,#C9
+	ld		(HTIMI),a
+	ld		(HKEYI),a
+	xor		a
+	ld		(busply),a
+
+	ld		a,10
+	ld		(DIRPA2),a
 
 	jp		CARGA_SLOT_JUEGO_TRAS_GAME_OVER
 

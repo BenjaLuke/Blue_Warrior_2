@@ -107,6 +107,7 @@ PREPARANDO_FX:
 		call  	ayFX_SETUP
         ld      a,1
         call    CHANGE_BANK_2
+
 PREPARACION_GRAFICA:
 
         ld      a,5                                                     ; Modo gráfico G4
@@ -143,8 +144,8 @@ REINICIAMOS_MAX_SCORE:
 		ld		hl,0
 		ld		(MAX_SCORE),hl
 
+MARCA:
         include "MARCA/ANIMACION DE MARCA sc7.asm" 
-		; include "MARCA/ANIMACION DE MARCA.asm"
 
         include "AUDIOS/FMPAC FOUND.asm"
 
@@ -1637,6 +1638,14 @@ CARGA_SLOT_PARA_GAME_OVER:
 
 CARGA_SLOT_JUEGO_TRAS_GAME_OVER:
 
+		di
+		ld		a,#C9
+		ld		(HTIMI),a
+		ld		(HKEYI),a
+
+		ld		a,10
+		ld		(DIRPA2),a
+
 		ld		a,9
 		ld      (DIRPA1),a											    ; Banco 1, pagina 39 del MEGAROM
 		ret
@@ -1660,10 +1669,22 @@ AGILIZA_MAPA:
 		jp		CONTROL.teclado
 MENU:
 
+		di
+		ld		a,#C9
+		ld		(HTIMI),a
+		ld		(HKEYI),a
+		ld		sp,0xE500
+		ld 		a,(RG0SAV)
+		and		11101111B
+		ld		(RG0SAV),a
+		ld		b,a
+		ld		c,0
+		call	WRTVDP_EN_RAM
+
 		ld		a,0
 		ld      (DIRPA1),a
 
-		jp		TRAS_GAME_OVER_JUEGO_AQUI
+		jp		MARCA
 
 CARGAMOS_PAGE_ROCKAGER:
 

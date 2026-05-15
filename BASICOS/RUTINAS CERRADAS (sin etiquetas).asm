@@ -2716,11 +2716,8 @@
 			xor		a
 			ld		(ESTADO_MARCADOR),a
 
-			ld		hl,LIMPIA_PANTALLA_2
-	[2]		call	DOCOPY
-
 			xor		a
-			ld		(PUNTO_DEL_SCROLL),a
+			ld		(PUNTO_DEL_SCROLL),a		
 ;fin:
 
 			jp		MENU

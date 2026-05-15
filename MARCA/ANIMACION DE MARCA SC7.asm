@@ -1,6 +1,13 @@
 
         jp      CARGA_LOGO_EN_VRAM
+
 TRAS_GAME_OVER_JUEGO_AQUI:
+
+        di
+        ld      a,#C9
+        ld      (HTIMI),a
+        ld      (HKEYI),a
+        ei
 
         ld	    a,2
         call    CHANGE_BANK_2
@@ -14,15 +21,66 @@ TRAS_GAME_OVER_JUEGO_AQUI:
         ld	    a,0							                            ; a     = el valor que vamos a poner
         ld	    bc,#ffff						                        ; bc	= longitud del area a rellenar con el dato A
         ld	    hl,#4A00						                        ; hl	= dirección en la que empieza a pintar
-        call	FILVRM_RAM						                        ; Limpiamos toda esta zona de la VRAM 
+;        call	FILVRM_RAM						                        ; Limpiamos toda esta zona de la VRAM 
 
         jp      CARGA_SLOT_MENU
+
+INICIA_MUSICA_MENU_DESDE_LOGO:
+
+		call	stpmus
+
+		ld		a,1
+		ld		(MUSICA_BEST_ON),a
+
+        ld      a,39
+        call    CHANGE_BANK_2
+
+		ld		hl,M_MENU
+		ld		(MUSIC_ON),hl
+
+		call	INICIAMOS_MUSICA
+
+		di
+		call	strmus
+		call	INSTALA_INTERRUPCION_MUSICA_MENU_LOGO
+		ei
+
+		call	PAGE_10_A_SEGMENT_2
+
+		ret
+
+INSTALA_INTERRUPCION_MUSICA_MENU_LOGO:
+
+		ld		a,#C3
+		ld		(HTIMI),a
+		ld		hl,INTERRUPCION_MUSICA_MENU_LOGO
+		ld		(HTIMI+1),hl
+		ret
+
+
+INTERRUPCION_MUSICA_MENU_LOGO:
+
+		ld		a,(DIRPA2)
+		push	af
+		ld		a,39
+		ld		(DIRPA2),a
+
+		call	musint
+
+		pop		af
+		ld		(DIRPA2),a
+
+		ret
+
 CARGA_LOGO_EN_VRAM:
 
         ld      a,7                                                     ; Modo gráfico G6
         call    CHGMOD
 
         call    DISSCR_RAM
+
+        ld      a,1
+        call    CHANGE_BANK_2
 
         ld	    hl,GRAFICOS_MOAI_1					                    ; Carga gráficos Moai
         ld	    de,#0000
@@ -53,6 +111,8 @@ CARGA_LOGO_EN_VRAM:
         ld	    bc,6912
         call	PON_COLOR_2.sin_bc_impuesta 
 
+        ei
+
 RECOLOCAMOS_GRAFICOS_Y_LIMPIEZA:
 
         ld	    hl,COPIA_PAGE_0_A_PAGE_1
@@ -61,6 +121,7 @@ RECOLOCAMOS_GRAFICOS_Y_LIMPIEZA:
         call	DOCOPY
         ld      b,28
         call    BLOQUE_PAUSA
+        call    INICIA_MUSICA_MENU_DESDE_LOGO
         call    ENASCR_RAM                                              ; Conectamos la pantalla
 
 CARGAMOS_PALETA:
@@ -105,17 +166,29 @@ PEUQUENA_PAUSA_2:
 SALIMOS_DE_LA_ANIMACION:
 
         call    FADE_OUT_Y_SUBE_MOAI
-
+        
         call    DISSCR_RAM
 
-        ld      a,5                                                     ; Modo gráfico G4
+        ld      a,5
         call    CHGMOD  
 
         ld	    hl,LIMPIA_PANTALLA_3_sc5
-        halt
         call	DOCOPY
+        call    VDPREADY
 
         call    DISSCR_RAM
+
+        ; Cortamos cualquier interrupción que apunte todavía
+        ; a código de la página del logo.
+
+        di
+
+        ld      a,#C9
+        ld      (HTIMI),a
+        ld      (HKEYI),a
+
+        ld      a,2
+        ld      (DIRPA2),a
 
         jp      CARGA_SLOT_MENU
 
@@ -179,6 +252,7 @@ PALETAS:
 PALETA_MOAI:
 
         incbin  "PALETAS/SOLOTITULO.PAL"
+
 FADE_IN_MOAI:
 
         incbin  "PALETAS/DIGITAL_MOAI.FADEIN"
@@ -207,7 +281,7 @@ LIMPIA_PANTALLA_3_sc5:
 TABLA_ADJUST_SUBE_MOAI:
 
         db      #00,#10,#20,#30,#40,#50,#60,#70
-        
+
 FOTOGRAMAS:
 
         dw      256,#1B4,128,096,254,018

@@ -5,12 +5,15 @@ ACPAGE		equ		#FAF6
 
 COMIENZA_MENU:
 
-		; Presentación provisional.
-		; Música quitada de momento.
+		; La música viene arrancada desde el logo.
+		; Reinstalamos aquí la interrupción musical del menú,
+		; porque la rutina anterior vivía en la página del logo.
 
-		call	stpmus
-		xor		a
-		ld		(MUSICA_BEST_ON),a
+		di
+		ld		a,#C9
+		ld		(HTIMI),a
+		ld		(HKEYI),a
+		ei
 
 		call	PAGE_10_A_SEGMENT_2
 
@@ -26,6 +29,14 @@ MUESTRA_PRESENTACION_PROVISIONAL:
 		call	CHGMOD
 
 		call	DISSCR_RAM
+
+		; La segunda parte de la imagen de menu solo ocupa #2A00 bytes.
+		; Limpiamos VRAM para que no queden restos de la pantalla SC7 del logo.
+
+		xor		a
+		ld		hl,#0000
+		ld		bc,#ffff
+		call	FILVRM_RAM
 
 		; Página visible = 0
 
@@ -46,19 +57,19 @@ MUESTRA_PRESENTACION_PROVISIONAL:
 		call	DOCOPY
 		call	VDPREADY
 
-		; 4 - Arrancamos música antes del fade in.
-
-		call	INICIA_MUSICA_MENU_PRESENTACION
-
-		; 5 - Mostramos pantalla y hacemos fade in.
+		; 4 - Mostramos pantalla y hacemos fade in.
 
 		call	ENASCR_RAM
 		call	FADE_IN_PRESENTACION
 
-		; 6 - Pintamos texto de aviso.
+		di
+		call	INSTALA_INTERRUPCION_MUSICA_MENU
+		ei
+
+		; 5 - Pintamos texto de aviso.
 
 		call	PINTA_TEXTO_PUSH_SPACE_KEY
-
+	
 		; 7 - Preparamos rotativo inferior.
 
 		call	INICIALIZA_ROTATIVO_PRESENTACION
@@ -106,8 +117,9 @@ CARGA_GRAFICOS_PRESENTACION_EN_PAGE_1:
 
 		; Página 4 ROM -> primera mitad de VRAM page 1
 
+		di
 		ld		a,4
-		call	CHANGE_BANK_2
+		ld		(DIRPA2),a
 
 		ld		hl,PANTALLA_DE_PRESENTACION_1
 		ld		de,#8000
@@ -119,13 +131,14 @@ CARGA_GRAFICOS_PRESENTACION_EN_PAGE_1:
 		; Copiamos sólo hasta donde empiezan las paletas.
 
 		ld		a,5
-		call	CHANGE_BANK_2
+		ld		(DIRPA2),a
 
 		ld		hl,PANTALLA_DE_PRESENTACION_2
 		ld		de,#C000
 		ld		bc,PALETA_PRESENTACION_FIJA-PANTALLA_DE_PRESENTACION_2
 		call	PON_COLOR_2.sin_bc_impuesta
 
+		ei
 		ret
 
 
@@ -176,16 +189,18 @@ INSTALA_INTERRUPCION_MUSICA_MENU:
 
 INTERRUPCION_MUSICA_MENU:
 
+		ld		a,(DIRPA2)
+		push	af
 		ld		a,39
 		ld		(DIRPA2),a
 
 		call	musint
 
-		ld		a,10
+		pop		af
 		ld		(DIRPA2),a
 
 		ret
-		
+
 PARA_MUSICA_MENU_PRESENTACION:
 
 		call	stpmus
@@ -495,6 +510,12 @@ INICIA_EN_FASE_5:
 		ld		(FASE),a
 
 SEGUIMOS:
+
+		di
+		ld		a,#C9
+		ld		(HTIMI),a
+		ld		(HKEYI),a
+		ei
 
 		call	FADE_OUT_PRESENTACION
 		call	PARA_MUSICA_MENU_PRESENTACION
