@@ -554,7 +554,8 @@ DATOS_NEGRO_ROTATIVO_EN_PAGE_1:
 
 TEXTO_ROTATIVO_PRESENTACION:
 
-		db		"BLUE WARRIOR II - Beta version 4.3.8 - 15/5/2026 - 93% - (C) Digital Moai - TECLAS 1 - 5 PARA IR DIRECTO A FASE",0
+		db		"BLUE WARRIOR II - Beta version 4.3.12 - 15/5/2026 - 93% - (C) Digital Moai - TECLAS 1 - 5 PARA IR DIRECTO A FASE",0
+		db		"A Digital Moai Production - Project Direction, Phase Design, Pixel Art & Music Composition: Manuel Dópico - Programming, Sprites & Pixel Art Corrections: Benjamín Miguel - Lead Beta Tester: Xavier Sorinas - (c) Digital Moai 2026",0
 
 TEXTO_ROTATIVO_PRESENTACION_FIN:
 
