@@ -1,4 +1,4 @@
-VIDA_INICIAL_AGONIX_BOSS_1:					equ	80
+VIDA_INICIAL_AGONIX_BOSS_1:					equ	8
 VIDA_TOTAL_INICIAL_BOSS_1:					equ	VIDA_INICIAL_AGONIX_BOSS_1
 VIDA_ANCHO_BARRA_BOSS_1:					equ	99
 
@@ -2013,6 +2013,11 @@ ENTRAN_RATAS_MUERTE_AGONIX_BOSS_1:
 .BUCLE_ENTRAN_RATAS_MUERTE_AGONIX_BOSS_1:
 
 		call	MUEVE_RATAS_ENTRADA_AGONIX_BOSS_1
+
+		ld		a,AGONIX_MUERTE_FX_BOSS_1
+		ld		c,AGONIX_MUERTE_FX_CANAL_BOSS_1
+		call	TIRA_FX_BOSS_1
+
 		ld		a,RATAS_MUERTE_ENTRADA_PAUSA_BOSS_1
 		call	BUCLE_PINTA_TILES.rutina_de_pausa
 		ld		a,(RATAS_MUERTE_AGONIX_CONTADOR)
@@ -2419,25 +2424,87 @@ MUERTE_DE_AGONIX_BOSS_1:
 		call	ayFX_INIT
         call   	PAGE_10_A_SEGMENT_2
 
-		ld		ix,COPY_ANIMA_MUERTE_AGONIX_A_BUFFER_BOSS_1
-		ld		iy,DATAS_COPY_RECUP_SCROLL
-		call	RUTINA_BOSS_1.BUCLE_PINTA_DATAS
-		ld		iy,DATAS_COPY_RECUP_SCROLL
-		ld		a,(AGONIX_BOSS_1_X)
-		ld		(iy),a
-		xor		a
-		ld		(iy+1),a
-		ld		hl,DATAS_COPY_RECUP_SCROLL
-		call	DOCOPY
+		; Animación de muerte:
+		; copiamos siempre desde el primer recuadro de la page fuente
+		; hacia page 2, recortando altura y bajando destino.
+		;
+		; derecha  -> page 3
+		; izquierda -> page 1
 
-		ld		ix,COPY_ANIMA_MUERTE_AGONIX_DESDE_BUFFER_BOSS_1
+		ld		ix,BOSS_1_COPY_MOVIMIENTO_AGONIX
 		ld		iy,DATAS_COPY_RECUP_SCROLL
 		call	RUTINA_BOSS_1.BUCLE_PINTA_DATAS
+
 		ld		iy,DATAS_COPY_RECUP_SCROLL
-		ld		a,(AGONIX_BOSS_1_X)
-		ld		(iy+4),a
+
+		; Página fuente según dirección.
+
+		ld		a,(AGONIX_BOSS_1_DIRECCION)
+		or		a
+		ld		a,AGONIX_MOVIMIENTO_PAG_DERECHA_BOSS_1
+		jr		z,.GUARDA_PAGE_ORIGEN_MUERTE_AGONIX_BOSS_1
+
+		ld		a,AGONIX_MOVIMIENTO_PAG_IZQUIERDA_BOSS_1
+
+.GUARDA_PAGE_ORIGEN_MUERTE_AGONIX_BOSS_1:
+
+		ld		(iy+3),a							; page origen: 3 o 1
+
+
+		; Origen: primer recuadro arriba izquierda.
+		; x=0, y=0. La page ya la hemos puesto en iy+3.
+
 		xor		a
-		ld		(iy+5),a
+		ld		(iy),a								; origen x low
+		ld		(iy+1),a							; origen x high
+		ld		(iy+2),a							; origen y low
+
+
+		; Destino X: posición actual de Agonix en page 2.
+
+		ld		a,(AGONIX_BOSS_1_X)
+		ld		(iy+4),a							; destino x low
+		xor		a
+		ld		(iy+5),a							; destino x high
+
+
+		; Recuperamos el contador externo del bucle.
+		; B = altura actual que vamos a copiar.
+		; Primera vuelta: B = 48.
+		; Última vuelta: B = 1.
+		; Cuando B llega a 0, el djnz de fuera termina la animación.
+
+		pop		bc
+		push	bc
+
+		; offset = altura inicial - altura actual.
+		; Este offset baja el destino.
+
+		ld		a,AGONIX_MUERTE_ALTO_BOSS_1
+		sub		b
+		ld		c,a									; C = offset vertical
+
+
+		; Destino Y = y actual de Agonix + offset.
+		; Page destino sigue siendo page 2.
+
+		ld		a,AGONIX_MOVIMIENTO_Y_BOSS_1
+		add		c
+		ld		(iy+6),a							; destino y low
+
+		ld		a,PAGE_2_VRAM_Y_BOSS_1 / 256
+		ld		(iy+7),a							; destino page 2
+
+
+		; Tamaño destino/fuente:
+		; ancho fijo, altura decreciendo.
+
+		ld		a,b
+		ld		(iy+10),a							; alto low = B
+		xor		a
+		ld		(iy+11),a							; alto high = 0
+
+
 		ld		hl,DATAS_COPY_RECUP_SCROLL
 		call	DOCOPY
 		call	VDPREADY
