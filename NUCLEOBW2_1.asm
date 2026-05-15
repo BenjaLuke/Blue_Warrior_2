@@ -145,7 +145,7 @@ REINICIAMOS_MAX_SCORE:
 		ld		(MAX_SCORE),hl
 
 MARCA:
-        include "MARCA/ANIMACION DE MARCA sc7.asm" 
+        include "MENU Y TRANSICIONES/ANIMACION DE MARCA sc7.asm" 
 
         include "AUDIOS/FMPAC FOUND.asm"
 

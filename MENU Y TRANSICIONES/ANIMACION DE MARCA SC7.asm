@@ -251,15 +251,15 @@ BLOQUE_COPY_HALT:
 PALETAS:
 PALETA_MOAI:
 
-        incbin  "PALETAS/SOLOTITULO.PAL"
+        incbin  "../PALETAS/PRESENTACION/DIGITAL_MOAI.palete"
 
 FADE_IN_MOAI:
 
-        incbin  "PALETAS/DIGITAL_MOAI.FADEIN"
+        incbin  "../PALETAS/PRESENTACION/DIGITAL_MOAI.fadein"
 
 FADE_OUT_MOAI:
 
-        incbin  "PALETAS/DIGITAL_MOAI.FADEOUT"
+        incbin  "../PALETAS/PRESENTACION/DIGITAL_MOAI.fadeout"
         
 DATAS:
 
