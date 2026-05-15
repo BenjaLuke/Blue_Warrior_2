@@ -68,8 +68,8 @@ MUESTRA_PRESENTACION_PROVISIONAL:
 
 		; 5 - Pintamos texto de aviso.
 
-		call	PINTA_TEXTO_PUSH_SPACE_KEY
-	
+		call	PINTA_TEXTO_PUSH_SPACE_KEY_EN_DOS_PAGES
+
 		; 7 - Preparamos rotativo inferior.
 
 		call	INICIALIZA_ROTATIVO_PRESENTACION
@@ -94,8 +94,24 @@ PINTA_TEXTO_PUSH_SPACE_KEY:
 		ld		(GRPACY),hl
 
 		ld		hl,TEXTO_PUSH_SPACE_KEY
+		jp		BUCLE_PINTA_TEXTO_PUSH_SPACE_KEY
 
-.BUCLE_PINTA_TEXTO_PUSH_SPACE_KEY:
+
+PINTA_TEXTO_PUSH_SPACE_KEY_EN_DOS_PAGES:
+
+		xor		a
+		ld		(ACPAGE),a
+		call	PINTA_TEXTO_PUSH_SPACE_KEY
+
+		ld		a,1
+		ld		(ACPAGE),a
+		call	PINTA_TEXTO_PUSH_SPACE_KEY
+
+		xor		a
+		ld		(ACPAGE),a
+		ret
+
+BUCLE_PINTA_TEXTO_PUSH_SPACE_KEY:
 
 		ld		a,(hl)
 		or		a
@@ -106,7 +122,7 @@ PINTA_TEXTO_PUSH_SPACE_KEY:
 		pop		hl
 
 		inc		hl
-		jp		.BUCLE_PINTA_TEXTO_PUSH_SPACE_KEY
+		jp		BUCLE_PINTA_TEXTO_PUSH_SPACE_KEY
 
 
 TEXTO_PUSH_SPACE_KEY:
@@ -269,9 +285,18 @@ DATOS_COPY_PRESENTACION_PAGE_1_A_PAGE_0:
 
 ROTATIVO_X_PRESENTACION				equ		VARIABLE_UN_USO
 ROTATIVO_CONTADOR_PRESENTACION		equ		VARIABLE_UN_USO2
+ROTATIVO_PAGINA_VISIBLE_PRESENTACION	equ		VARIABLE_UN_USO3
 
 ROTATIVO_Y_PRESENTACION				equ		195
+
+; Cada cuántos frames se actualiza el rotativo.
+; 1 = cada frame, 2 = cada dos frames, etc.
 ROTATIVO_VELOCIDAD_PRESENTACION		equ		1
+
+; Cuántos píxeles avanza cada actualización.
+; 1 = suave, 2 = más rápido, 3 = más rápido pero menos fino.
+ROTATIVO_PIXELES_POR_PASO_PRESENTACION	equ		3
+
 ROTATIVO_LIMITE_PRESENTACION		equ		65536-((TEXTO_ROTATIVO_PRESENTACION_FIN-TEXTO_ROTATIVO_PRESENTACION-1)*8)
 
 
@@ -283,9 +308,14 @@ INICIALIZA_ROTATIVO_PRESENTACION:
 		xor		a
 		ld		(ROTATIVO_CONTADOR_PRESENTACION),a
 
-		call	PREPARA_ROTATIVO_EN_PAGE_1
-		call	PINTA_ROTATIVO_PRESENTACION_EN_PAGE_1
-		call	COPIA_ROTATIVO_PAGE_1_A_VISIBLE
+		; Ahora mismo la visible es page 0.
+
+		ld		(ROTATIVO_PAGINA_VISIBLE_PRESENTACION),a
+
+		call	PREPARA_ROTATIVO_EN_PAGE_OCULTA
+		call	PINTA_ROTATIVO_PRESENTACION_EN_PAGE_OCULTA
+		call	TAPA_BORDES_ROTATIVO_EN_PAGE_OCULTA
+		call	MUESTRA_PAGE_OCULTA_ROTATIVO
 		ret
 
 
@@ -305,50 +335,82 @@ ACTUALIZA_ROTATIVO_PRESENTACION:
 		xor		a
 		ld		(ROTATIVO_CONTADOR_PRESENTACION),a
 
-		call	PREPARA_ROTATIVO_EN_PAGE_1
-		call	PINTA_ROTATIVO_PRESENTACION_EN_PAGE_1
-		call	COPIA_ROTATIVO_PAGE_1_A_VISIBLE
+		call	PREPARA_ROTATIVO_EN_PAGE_OCULTA
+		call	PINTA_ROTATIVO_PRESENTACION_EN_PAGE_OCULTA
+		call	TAPA_BORDES_ROTATIVO_EN_PAGE_OCULTA
+		call	MUESTRA_PAGE_OCULTA_ROTATIVO
 
 		ld		hl,(ROTATIVO_X_PRESENTACION)
-		dec		hl
+		ld		de,ROTATIVO_PIXELES_POR_PASO_PRESENTACION
+		or		a
+		sbc		hl,de
 		ld		(ROTATIVO_X_PRESENTACION),hl
 
+		; Si sigue en zona positiva, continuamos.
+		ld		a,h
+		or		a
+		ret		z
+
+		; Si ya ha pasado el límite negativo, reiniciamos.
 		ld		de,ROTATIVO_LIMITE_PRESENTACION
 		or		a
 		sbc		hl,de
-		ret		nz
+		ret		nc
+
+		ld		hl,255
+		ld		(ROTATIVO_X_PRESENTACION),hl
+		ret
 
 		ld		hl,255
 		ld		(ROTATIVO_X_PRESENTACION),hl
 		ret
 
 
-PREPARA_ROTATIVO_EN_PAGE_1:
+OBTIENE_PAGE_OCULTA_ROTATIVO:
 
-		; Pintamos un rectángulo negro en page 1,
-		; sólo en la ventana central X=8..247.
+		ld		a,(ROTATIVO_PAGINA_VISIBLE_PRESENTACION)
+		xor		1
+		ret
+
+
+PREPARA_ROTATIVO_EN_PAGE_OCULTA:
+
+		call	OBTIENE_PAGE_OCULTA_ROTATIVO
+		or		a
+		jr		z,.PREPARA_ROTATIVO_EN_PAGE_0
 
 		ld		hl,DATOS_NEGRO_ROTATIVO_EN_PAGE_1
 		call	DOCOPY
 		jp		VDPREADY
 
 
-COPIA_ROTATIVO_PAGE_1_A_VISIBLE:
+.PREPARA_ROTATIVO_EN_PAGE_0:
 
-		; Copiamos de page 1 a page 0 visible,
-		; sólo X=8..247 para evitar bordes feos.
-
-		ld		hl,DATOS_COPY_ROTATIVO_PAGE_1_A_VISIBLE
+		ld		hl,DATOS_NEGRO_ROTATIVO_EN_PAGE_0
 		call	DOCOPY
 		jp		VDPREADY
 
 
-PINTA_ROTATIVO_PRESENTACION_EN_PAGE_1:
+MUESTRA_PAGE_OCULTA_ROTATIVO:
 
-		; GRPPRT dibuja en la página activa.
-		; Ponemos page 1 como activa, pero NO como visible.
+		call	OBTIENE_PAGE_OCULTA_ROTATIVO
 
-		ld		a,1
+		push	af
+		call	SETPAGE
+		pop		af
+
+		ld		(ROTATIVO_PAGINA_VISIBLE_PRESENTACION),a
+		ld		(ACPAGE),a
+
+		ret
+
+
+PINTA_ROTATIVO_PRESENTACION_EN_PAGE_OCULTA:
+
+		; GRPPRT dibuja en ACPAGE.
+		; Ponemos como activa la page que ahora no se ve.
+
+		call	OBTIENE_PAGE_OCULTA_ROTATIVO
 		ld		(ACPAGE),a
 
 		ld		a,15
@@ -401,11 +463,74 @@ PINTA_ROTATIVO_PRESENTACION_EN_PAGE_1:
 
 .FIN_PINTA_ROTATIVO_PRESENTACION:
 
-		; Devolvemos page 0 como activa para no dejar el sistema raro.
-
-		xor		a
-		ld		(ACPAGE),a
 		ret
+
+TAPA_BORDES_ROTATIVO_EN_PAGE_OCULTA:
+
+		call	OBTIENE_PAGE_OCULTA_ROTATIVO
+		or		a
+		jr		z,.TAPA_BORDES_ROTATIVO_PAGE_0
+
+		ld		hl,DATOS_TAPA_BORDE_IZQ_ROTATIVO_PAGE_1
+		call	DOCOPY
+		call	VDPREADY
+
+		ld		hl,DATOS_TAPA_BORDE_DER_ROTATIVO_PAGE_1
+		call	DOCOPY
+		jp		VDPREADY
+
+
+.TAPA_BORDES_ROTATIVO_PAGE_0:
+
+		ld		hl,DATOS_TAPA_BORDE_IZQ_ROTATIVO_PAGE_0
+		call	DOCOPY
+		call	VDPREADY
+
+		ld		hl,DATOS_TAPA_BORDE_DER_ROTATIVO_PAGE_0
+		call	DOCOPY
+		jp		VDPREADY
+
+DATOS_TAPA_BORDE_IZQ_ROTATIVO_PAGE_0:
+
+		dw		#0000,#0000
+		dw		#0000,#0000+ROTATIVO_Y_PRESENTACION
+		dw		#0008,#0008
+		db		#00,#00,11000000b
+
+
+DATOS_TAPA_BORDE_DER_ROTATIVO_PAGE_0:
+
+		dw		#0000,#0000
+		dw		#00F8,#0000+ROTATIVO_Y_PRESENTACION
+		dw		#0008,#0008
+		db		#00,#00,11000000b
+
+
+DATOS_TAPA_BORDE_IZQ_ROTATIVO_PAGE_1:
+
+		dw		#0000,#0000
+		dw		#0000,#0100+ROTATIVO_Y_PRESENTACION
+		dw		#0008,#0008
+		db		#00,#00,11000000b
+
+
+DATOS_TAPA_BORDE_DER_ROTATIVO_PAGE_1:
+
+		dw		#0000,#0000
+		dw		#00F8,#0100+ROTATIVO_Y_PRESENTACION
+		dw		#0008,#0008
+		db		#00,#00,11000000b
+
+DATOS_NEGRO_ROTATIVO_EN_PAGE_0:
+
+		; Rectángulo negro en page 0.
+		; X=8, Y=ROTATIVO_Y_PRESENTACION
+		; ancho 240, alto 8.
+
+		dw		#0000,#0000
+		dw		#0008,#0000+ROTATIVO_Y_PRESENTACION
+		dw		#00F0,#0008
+		db		#00,#00,11000000b
 
 
 DATOS_NEGRO_ROTATIVO_EN_PAGE_1:
@@ -419,17 +544,6 @@ DATOS_NEGRO_ROTATIVO_EN_PAGE_1:
 		dw		#00F0,#0008
 		db		#00,#00,11000000b
 
-
-DATOS_COPY_ROTATIVO_PAGE_1_A_VISIBLE:
-
-		; Page 1 -> page 0 visible.
-		; Sólo ventana central X=8..247.
-
-		dw		#0008,#0100+ROTATIVO_Y_PRESENTACION
-		dw		#0008,#0000+ROTATIVO_Y_PRESENTACION
-		dw		#00F0,#0008
-		db		#00,#00,10010000b
-
 ; Editar estas lineas al sacar una version nueva.
 ; Regla del porcentaje: cada fase vale 2, cada enemigo y bloque auxiliar vale 1.
 ; EN TOTAL HAY 
@@ -440,7 +554,7 @@ DATOS_COPY_ROTATIVO_PAGE_1_A_VISIBLE:
 
 TEXTO_ROTATIVO_PRESENTACION:
 
-		db		"BLUE WARRIOR II - Beta version 4.3.3 - 14/5/2026 - 93% - (C) Digital Moai - TECLAS 1 - 5 PARA IR DIRECTO A FASE",0
+		db		"BLUE WARRIOR II - Beta version 4.3.8 - 15/5/2026 - 93% - (C) Digital Moai - TECLAS 1 - 5 PARA IR DIRECTO A FASE",0
 
 TEXTO_ROTATIVO_PRESENTACION_FIN:
 
