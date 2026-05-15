@@ -86,6 +86,39 @@ ERRECENYX_MOVIMIENTO_BORRA_ANCHO_BOSS_4:		equ	6
 ERRECENYX_MOVIMIENTO_BORRA_ALTO_BOSS_4:		equ	62
 ERRECENYX_MOVIMIENTO_BORRA_COLOR_BOSS_4:		equ	#66
 
+CARGA_SPRITES_BARRO_BOSS_4:
+		
+		call	PAGE_32_A_SEGMENT_2
+
+		ld		hl,SPRITE_BARRO
+		ld		de,PATRONES_SPRITES_VRAM_BOSS_4+BARRO_PATRON_INICIAL_BOSS_4*8
+		ld		bc,8*4*BARRO_CANTIDAD_BOSS_4
+		call	PON_COLOR_2.sin_bc_impuesta
+
+		ld		de,SPRITES_COLOR_VRAM_BOSS_4+BARRO_COLOR_INICIAL_BOSS_4*16
+		ld		b,BARRO_CANTIDAD_BOSS_4
+
+.BUCLE_COLOR_BARRO_BOSS_4:
+
+		push	bc
+		push	de
+		ld		hl,COLOR_BARRO
+		ld		bc,16
+		call	PON_COLOR_2.sin_bc_impuesta
+		pop		de
+		ld		a,e
+		add		16
+		ld		e,a
+		jr		nc,.SIN_ACARREO_COLOR_BARRO_BOSS_4
+		inc		d
+
+.SIN_ACARREO_COLOR_BARRO_BOSS_4:
+
+		pop		bc
+		djnz	.BUCLE_COLOR_BARRO_BOSS_4
+
+		jp		PAGE_10_A_SEGMENT_2
+
 RUTINA_BOSS_4:
 
 		call	stpmus
@@ -390,46 +423,6 @@ RUTINA_BOSS_4:
         add     iy,de
         djnz    .BUCLE_PINTA_DATAS_1
         ret
-
-
-; -----------------------------------------------------------------------------
-; Carga de patrones y colores del barro.
-; OJO: debe ir DESPUES de RUTINA_BOSS_4 para que la entrada del banco
-; siga empezando en RUTINA_BOSS_4. Si se coloca antes, el boss puede entrar
-; por esta rutina y colgarse antes de iniciar el flujo normal.
-; -----------------------------------------------------------------------------
-CARGA_SPRITES_BARRO_BOSS_4:
-		
-		call	PAGE_32_A_SEGMENT_2
-
-		ld		hl,SPRITE_BARRO
-		ld		de,PATRONES_SPRITES_VRAM_BOSS_4+BARRO_PATRON_INICIAL_BOSS_4*8
-		ld		bc,8*4*BARRO_CANTIDAD_BOSS_4
-		call	PON_COLOR_2.sin_bc_impuesta
-
-		ld		de,SPRITES_COLOR_VRAM_BOSS_4+BARRO_COLOR_INICIAL_BOSS_4*16
-		ld		b,BARRO_CANTIDAD_BOSS_4
-
-.BUCLE_COLOR_BARRO_BOSS_4:
-
-		push	bc
-		push	de
-		ld		hl,COLOR_BARRO
-		ld		bc,16
-		call	PON_COLOR_2.sin_bc_impuesta
-		pop		de
-		ld		a,e
-		add		16
-		ld		e,a
-		jr		nc,.SIN_ACARREO_COLOR_BARRO_BOSS_4
-		inc		d
-
-.SIN_ACARREO_COLOR_BARRO_BOSS_4:
-
-		pop		bc
-		djnz	.BUCLE_COLOR_BARRO_BOSS_4
-
-		jp		PAGE_10_A_SEGMENT_2
 
 BUCLE_PELEA_BOSS_4:
 
