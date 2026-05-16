@@ -1,4 +1,4 @@
-VIDA_INICIAL_ERRECENYX_BOSS_4:				equ	80
+VIDA_INICIAL_ERRECENYX_BOSS_4:				equ	160
 VIDA_TOTAL_INICIAL_BOSS_4:					equ	VIDA_INICIAL_ERRECENYX_BOSS_4
 VIDA_ANCHO_BARRA_BOSS_4:					equ	99
 
@@ -18,6 +18,25 @@ BARRO_PATRON_DERECHA_BOSS_4:					equ	BARRO_PATRON_INICIAL_BOSS_4
 BARRO_PATRON_IZQUIERDA_BOSS_4:				equ	BARRO_PATRON_INICIAL_BOSS_4+4
 BARRO_COLOR_INICIAL_BOSS_4:					equ	BARRO_PATRON_INICIAL_BOSS_4/4
 BARRO_CANTIDAD_BOSS_4:						equ	4
+COVID_EXPLOSION_PATRON_INICIAL_BOSS_4:		equ	BARRO_PATRON_INICIAL_BOSS_4-8
+COVID_EXPLOSION_PATRON_FINAL_BOSS_4:		equ	BARRO_PATRON_INICIAL_BOSS_4
+COVID_PATRON_INICIAL_BOSS_4:				equ	BARRO_PATRON_INICIAL_BOSS_4+BARRO_CANTIDAD_BOSS_4*4
+COVID_PATRON_CANT_BOSS_4:					equ	2
+
+BUBBLES_PATRON_INICIAL_BOSS_4:              equ COVID_PATRON_INICIAL_BOSS_4+COVID_PATRON_CANT_BOSS_4*4
+BUBBLES_PATRON_CANT_BOSS_4:                 equ 2
+BUBBLES_BOSS_4_SPRITE_INICIAL:              equ PROYECTIL_BOSS_4_SPRITE_FINAL
+BUBBLES_BOSS_4_CANTIDAD:                    equ 2
+BUBBLES_COLOR_VRAM_BOSS_4:                  equ SPRITES_COLOR_VRAM_BOSS_4+BUBBLES_BOSS_4_SPRITE_INICIAL*16
+
+COVID_BOSS_4_CADA_CICLOS:					equ	10
+COVID_BOSS_4_CANTIDAD:						equ	4
+COVID_BOSS_4_X_INICIAL:						equ	0
+COVID_BOSS_4_Y_INICIAL:						equ	0
+COVID_BOSS_4_Y_OCULTO:						equ	217
+COVID_BOSS_4_Y_MUERTE:						equ	217
+COVID_BOSS_4_PASO_Y:						equ	1
+COVID_BOSS_4_TABLA_X_LONGITUD:				equ	128
 BARROS_MUERTE_CANTIDAD_BOSS_4:				equ	8
 BARROS_MUERTE_SPRITE_INICIAL_BOSS_4:			equ	10
 BARROS_MUERTE_ATRIBUTOS_VRAM_BOSS_4:			equ	SPRITES_ATRIBUTOS_VRAM_BOSS_4+BARROS_MUERTE_SPRITE_INICIAL_BOSS_4*4
@@ -41,6 +60,10 @@ PROYECTIL_BOSS_4_Y_OCULTO:					equ	217
 PROYECTIL_BOSS_4_SPRITES_ACTIVOS_OFS:		equ	12
 PROYECTIL_BOSS_4_ATRIBUTOS_VRAM:			equ	SPRITES_ATRIBUTOS_VRAM_BOSS_4+PROYECTIL_BOSS_4_SPRITE_INICIAL*4
 PROYECTIL_BOSS_4_COLOR_VRAM:				equ	SPRITES_COLOR_VRAM_BOSS_4+PROYECTIL_BOSS_4_SPRITE_INICIAL*16
+COVID_BOSS_4_SPRITE_INICIAL:					equ	PROYECTIL_BOSS_4_SPRITE_INICIAL-COVID_BOSS_4_CANTIDAD
+COVID_BOSS_4_SPRITE_FINAL:					equ	PROYECTIL_BOSS_4_SPRITE_INICIAL
+COVID_BOSS_4_ATRIBUTOS_VRAM:					equ	SPRITES_ATRIBUTOS_VRAM_BOSS_4+COVID_BOSS_4_SPRITE_INICIAL*4
+COVID_COLOR_VRAM_BOSS_4:					equ	SPRITES_COLOR_VRAM_BOSS_4+COVID_BOSS_4_SPRITE_INICIAL*16
 PROYECTIL_BOSS_4_PATRON_SPRITE:				equ	BARRO_PATRON_INICIAL_BOSS_4
 PROYECTIL_BOSS_4_OFFSET_DER_X:				equ	98-8
 PROYECTIL_BOSS_4_OFFSET_IZQ_X:				equ	29-8
@@ -55,21 +78,25 @@ COLOR_ALEATORIO_SIN_CAMBIOS_BOSS_4:			equ	1
 ERRECENYX_PAUSA_BOCA_BOSS_4:					equ	100
 ERRECENYX_LIMPIA_SPRITE_INICIAL_BOSS_4:		equ	10
 ERRECENYX_LIMPIA_SPRITES_CANT_BOSS_4:			equ	20
-ERRECENYX_MUERTE_Y_LIMITE_VISIBLE_BOSS_4:		equ	162
+
+ERRECENYX_MUERTE_SX_BOSS_4:					equ	0
+ERRECENYX_MUERTE_SY_BOSS_4:					equ	ERRECENYX_MOVIMIENTO_Y_BOSS_4
+ERRECENYX_MUERTE_DX_BOSS_4:					equ	0
+ERRECENYX_MUERTE_DY_BOSS_4:					equ	ERRECENYX_MOVIMIENTO_Y_BOSS_4+1
+ERRECENYX_MUERTE_ANCHO_BOSS_4:					equ	ERRECENYX_MOVIMIENTO_ANCHO_BOSS_4
+ERRECENYX_MUERTE_ALTO_BOSS_4:					equ	ERRECENYX_MOVIMIENTO_ALTO_BOSS_4
+ERRECENYX_MUERTE_Y_LIMITE_VISIBLE_BOSS_4:		equ	ERRECENYX_MUERTE_DY_BOSS_4+ERRECENYX_MUERTE_ALTO_BOSS_4
 ERRECENYX_MUERTE_BUCLES_BOSS_4:				equ	ERRECENYX_MUERTE_Y_LIMITE_VISIBLE_BOSS_4-ERRECENYX_MUERTE_DY_BOSS_4
 ERRECENYX_MUERTE_FX_BOSS_4:					equ	31
 ERRECENYX_MUERTE_FX_CANAL_BOSS_4:				equ	0
 ERRECENYX_MUERTE_PAUSA_BOSS_4:					equ	8
-
-ERRECENYX_MUERTE_SX_BOSS_4:					equ	0
-ERRECENYX_MUERTE_SY_BOSS_4:					equ	108
-ERRECENYX_MUERTE_DX_BOSS_4:					equ	0
-ERRECENYX_MUERTE_DY_BOSS_4:					equ	109
-ERRECENYX_MUERTE_ANCHO_BOSS_4:					equ	130
-ERRECENYX_MUERTE_ALTO_BOSS_4:					equ	48
 BARROS_MUERTE_Y_BOSS_4:						equ	ERRECENYX_MUERTE_DY_BOSS_4+ERRECENYX_MUERTE_ALTO_BOSS_4-16
 BARROS_MUERTE_X_MIN_OFFSET_BOSS_4:			equ	20
 BARROS_MUERTE_X_MAX_OFFSET_BOSS_4:			equ	ERRECENYX_MUERTE_ANCHO_BOSS_4-20
+BUBBLES_MUERTE_Y_OBJETIVO_BOSS_4:			equ	ERRECENYX_MOVIMIENTO_Y_BOSS_4
+BUBBLES_MUERTE_PATRON_1_BOSS_4:				equ	BUBBLES_PATRON_INICIAL_BOSS_4
+BUBBLES_MUERTE_PATRON_2_BOSS_4:				equ	BUBBLES_PATRON_INICIAL_BOSS_4+4
+BUBBLES_MUERTE_VELOCIDAD_MAX_BOSS_4:			equ	5
 ERRECENYX_BUFFER_X_BOSS_4:						equ	0
 ERRECENYX_BUFFER_Y_BOSS_4:						equ	0
 
@@ -99,6 +126,7 @@ ERRECENYX_MOVIMIENTO_MEDIO_ANCHO_BOSS_4:		equ	48
 ERRECENYX_MOVIMIENTO_BORRA_ANCHO_BOSS_4:		equ	6
 ERRECENYX_MOVIMIENTO_BORRA_ALTO_BOSS_4:		equ	62
 ERRECENYX_MOVIMIENTO_BORRA_COLOR_BOSS_4:		equ	#66
+
 
 RUTINA_BOSS_4:
 
@@ -159,6 +187,7 @@ RUTINA_BOSS_4:
 		ld		a,PROYECTIL_BOSS_4_Y_OCULTO
 		ld		(PROYECTIL_BOSS_4_Y),a
 		call	INICIALIZA_POOL_PROYECTILES_BOSS_4
+		call	INICIALIZA_POOL_COVID_BOSS_4
 
         ; Variables a reiniciar
 
@@ -418,10 +447,28 @@ CARGA_SPRITES_BARRO_BOSS_4:
 		
 		call	PAGE_32_A_SEGMENT_2
 
+		; Los dos patrones anteriores al barro quedan reservados para la
+		; explosion de impacto: 92 y 96. NO se cargan aqui: ya estan
+		; en VRAM en el sitio adecuado.
+		; Barro empieza en 100: 100,104,108,112.
 		ld		hl,SPRITE_BARRO
 		ld		de,PATRONES_SPRITES_VRAM_BOSS_4+BARRO_PATRON_INICIAL_BOSS_4*8
 		ld		bc,8*4*BARRO_CANTIDAD_BOSS_4
 		call	PON_COLOR_2.sin_bc_impuesta
+
+		; Los COVIDs se cargan despues de los cuatro patrones de barro:
+		; COVID queda en 116 y 120.
+		ld		hl,SPRITES_COVID
+		ld		de,PATRONES_SPRITES_VRAM_BOSS_4+COVID_PATRON_INICIAL_BOSS_4*8
+		ld		bc,8*4*COVID_PATRON_CANT_BOSS_4
+		call	PON_COLOR_2.sin_bc_impuesta
+
+        ; Los BUBBLES se cargan despues de los COVIDs:
+        ; BUBBLES queda en 124 y 128.
+        ld      hl,SPRITE_BUBBLES
+        ld      de,PATRONES_SPRITES_VRAM_BOSS_4+BUBBLES_PATRON_INICIAL_BOSS_4*8
+        ld      bc,8*4*BUBBLES_PATRON_CANT_BOSS_4
+        call    PON_COLOR_2.sin_bc_impuesta
 
 		; El color de sprites en SCREEN 7 va por NUMERO DE SPRITE,
 		; no por patron. Los proyectiles usan los sprites 22-29,
@@ -448,7 +495,57 @@ CARGA_SPRITES_BARRO_BOSS_4:
 		pop		bc
 		djnz	.BUCLE_COLOR_BARRO_BOSS_4
 
-		jp		PAGE_10_A_SEGMENT_2
+		; Volvemos a la pagina del boss para copiar la tabla local
+		; de color COVID (#0B), independiente del color COVID general.
+		call	PAGE_10_A_SEGMENT_2
+
+		ld		de,COVID_COLOR_VRAM_BOSS_4
+		ld		b,COVID_BOSS_4_CANTIDAD
+
+.BUCLE_COLOR_COVID_BOSS_4:
+
+		push	bc
+		push	de
+		ld		hl,COLOR_COVID_BOSS_4
+		ld		bc,16
+		call	PON_COLOR_2.sin_bc_impuesta
+		pop		de
+		ld		a,e
+		add		16
+		ld		e,a
+		jr		nc,.SIN_ACARREO_COLOR_COVID_BOSS_4
+		inc		d
+
+.SIN_ACARREO_COLOR_COVID_BOSS_4:
+
+		pop		bc
+		djnz	.BUCLE_COLOR_COVID_BOSS_4
+
+		call    PAGE_32_A_SEGMENT_2
+        ld      de,BUBBLES_COLOR_VRAM_BOSS_4
+        ld      b,BUBBLES_BOSS_4_CANTIDAD
+
+.BUCLE_COLOR_BUBBLES_BOSS_4:
+
+        push    bc
+        push    de
+        ld      hl,COLOR_BUBBLES
+        ld      bc,16
+        call    PON_COLOR_2.sin_bc_impuesta
+        pop     de
+        ld      a,e
+        add     16
+        ld      e,a
+        jr      nc,.SIN_ACARREO_COLOR_BUBBLES_BOSS_4
+        inc     d
+
+.SIN_ACARREO_COLOR_BUBBLES_BOSS_4:
+
+        pop     bc
+        djnz    .BUCLE_COLOR_BUBBLES_BOSS_4
+
+        call    PAGE_10_A_SEGMENT_2
+		ret
 
 BUCLE_PELEA_BOSS_4:
 
@@ -464,6 +561,7 @@ BUCLE_PELEA_BOSS_4:
 		call	PINTA_PROYECTILES_DE_DEPH_EN_BOSS_4
         call    REVISAMOS_COLISION_CON_ERRECENYX_Y_DEPH
 		call	ON_SPRITE_GLOBAL_BOSS_4
+		call	REVISAMOS_COLISION_CON_COVIDS_Y_PROYECTILES_DEPH
 		call	REVISAMOS_COLISION_CON_ERRECENYX_Y_PROYECTILES_DEPH
 		call	MUEVE_ERRECENYX_BOSS_4
 		call	PINTA_EXPLOSION_ERRECENYX_BOSS_4
@@ -488,6 +586,7 @@ NUCLEO_DE_LA_PELEA_BOSS_4:
 		call	CONTROL_DISPARO_ERRECENYX_BOSS_4
 		call	SECUENCIA_PROYECTIL_BOSS_4						; doble velocidad
 		call	SECUENCIA_PROYECTIL_BOSS_4						; doble velocidad
+		call	CONTROL_COVID_BOSS_4
 		ret
 
 CONTROL_DISPARO_ERRECENYX_BOSS_4:
@@ -546,6 +645,435 @@ CONTROLA_INMUNIDAD_DEPH_BOSS_4:
 		ret		z
 		dec		a
 		ld		(INMUNE),a
+		ret
+
+; -----------------------------------------------------------------------------
+; COVIDS Boss 4
+; Cada COVID usa una ruta segun su indice.
+; Hay cuatro rutas: 0,0 / 250,191 / 255,0 / 0,191.
+; Las rutas con Y inicial alta van en recorrido vertical inverso.
+; La X recorre de punta a punta con frenada por tabla compartida/variantes.
+; -----------------------------------------------------------------------------
+INICIALIZA_POOL_COVID_BOSS_4:
+
+		xor		a
+		ld		(COVID_BOSS_4_SIGUIENTE),a
+		ld		(COVID_BOSS_4_INDICE_ACTUAL),a
+		ld		(COVID_BOSS_4_ANIMACION),a
+		ld		a,COVID_BOSS_4_CADA_CICLOS
+		ld		(COVID_BOSS_4_CONTADOR),a
+
+		xor		a
+		ld		hl,COVID_BOSS_4_ACTIVO
+		ld		b,COVID_BOSS_4_CANTIDAD
+
+.INICIALIZA_ACTIVOS_COVID_BOSS_4:
+
+		ld		(hl),a
+		inc		hl
+		djnz	.INICIALIZA_ACTIVOS_COVID_BOSS_4
+
+		ld		hl,COVID_BOSS_4_X
+		ld		b,COVID_BOSS_4_CANTIDAD
+
+.INICIALIZA_X_COVID_BOSS_4:
+
+		ld		(hl),a
+		inc		hl
+		djnz	.INICIALIZA_X_COVID_BOSS_4
+
+		ld		hl,COVID_BOSS_4_PASO_TABLA_X
+		ld		b,COVID_BOSS_4_CANTIDAD
+
+.INICIALIZA_PASO_X_COVID_BOSS_4:
+
+		ld		(hl),a
+		inc		hl
+		djnz	.INICIALIZA_PASO_X_COVID_BOSS_4
+
+		ld		a,COVID_BOSS_4_Y_OCULTO
+		ld		hl,COVID_BOSS_4_Y
+		ld		b,COVID_BOSS_4_CANTIDAD
+
+.INICIALIZA_Y_COVID_BOSS_4:
+
+		ld		(hl),a
+		inc		hl
+		djnz	.INICIALIZA_Y_COVID_BOSS_4
+
+		xor		a
+		ld		(COVID_BOSS_4_INDICE_ACTUAL),a
+		ld		b,COVID_BOSS_4_CANTIDAD
+
+.OCULTA_SPRITES_COVID_INICIALES_BOSS_4:
+
+		push	bc
+		call	OCULTA_COVID_BOSS_4_EN_VRAM
+		ld		a,(COVID_BOSS_4_INDICE_ACTUAL)
+		inc		a
+		ld		(COVID_BOSS_4_INDICE_ACTUAL),a
+		pop		bc
+		djnz	.OCULTA_SPRITES_COVID_INICIALES_BOSS_4
+		ret
+
+CONTROL_COVID_BOSS_4:
+
+		; Semaforo: los COVIDs solo se actualizan 1 de cada 4 ciclos.
+		; Usamos COVID_BOSS_4_ANIMACION como contador 0..3 para no
+		; a�adir otra variable mutable en RAM.
+		ld		a,(COVID_BOSS_4_ANIMACION)
+		inc		a
+		and		00000011b
+		ld		(COVID_BOSS_4_ANIMACION),a
+		ret		nz
+
+		call	GENERA_COVID_BOSS_4
+		call	MUEVE_COVIDS_BOSS_4
+		jp		PINTA_COVIDS_BOSS_4
+
+GENERA_COVID_BOSS_4:
+
+		ld		a,(COVID_BOSS_4_CONTADOR)
+		dec		a
+		ld		(COVID_BOSS_4_CONTADOR),a
+		ret		nz
+		ld		a,COVID_BOSS_4_CADA_CICLOS
+		ld		(COVID_BOSS_4_CONTADOR),a
+		jp		ACTIVA_COVID_BOSS_4
+
+ACTIVA_COVID_BOSS_4:
+
+		call	RESERVA_SIGUIENTE_COVID_LIBRE_BOSS_4
+		ret		z
+		call	OBTIENE_PUNTERO_ACTIVO_COVID_BOSS_4_ACTUAL
+		ld		a,1
+		ld		(hl),a
+		call	INICIA_POSICION_COVID_BOSS_4_ACTUAL
+		ret
+
+INICIA_POSICION_COVID_BOSS_4_ACTUAL:
+
+		call	OBTIENE_RUTA_COVID_BOSS_4_ACTUAL
+		ld		e,a
+		ld		d,0
+		ld		hl,TABLA_X_INICIAL_COVID_BOSS_4
+		add		hl,de
+		ld		c,(hl)
+		call	OBTIENE_PUNTERO_X_COVID_BOSS_4_ACTUAL
+		ld		(hl),c
+
+		call	OBTIENE_RUTA_COVID_BOSS_4_ACTUAL
+		ld		e,a
+		ld		d,0
+		ld		hl,TABLA_Y_INICIAL_COVID_BOSS_4
+		add		hl,de
+		ld		c,(hl)
+		call	OBTIENE_PUNTERO_Y_COVID_BOSS_4_ACTUAL
+		ld		(hl),c
+
+		call	OBTIENE_PUNTERO_PASO_X_COVID_BOSS_4_ACTUAL
+		xor		a
+		ld		(hl),a
+		ret
+
+RESERVA_SIGUIENTE_COVID_LIBRE_BOSS_4:
+
+		ld		a,(COVID_BOSS_4_SIGUIENTE)
+		ld		b,COVID_BOSS_4_CANTIDAD
+
+.BUSCA_COVID_LIBRE_BOSS_4:
+
+		ld		c,a
+		ld		e,a
+		ld		d,0
+		ld		hl,COVID_BOSS_4_ACTIVO
+		add		hl,de
+		ld		a,(hl)
+		or		a
+		jr		z,.RESERVA_COVID_LIBRE_BOSS_4
+		ld		a,c
+		inc		a
+		cp		COVID_BOSS_4_CANTIDAD
+		jr		c,.SIGUE_BUSQUEDA_COVID_BOSS_4
+		xor		a
+
+.SIGUE_BUSQUEDA_COVID_BOSS_4:
+
+		djnz	.BUSCA_COVID_LIBRE_BOSS_4
+		xor		a
+		ret
+
+.RESERVA_COVID_LIBRE_BOSS_4:
+
+		ld		a,c
+		ld		(COVID_BOSS_4_INDICE_ACTUAL),a
+		inc		a
+		cp		COVID_BOSS_4_CANTIDAD
+		jr		c,.GUARDA_SIGUIENTE_COVID_BOSS_4
+		xor		a
+
+.GUARDA_SIGUIENTE_COVID_BOSS_4:
+
+		ld		(COVID_BOSS_4_SIGUIENTE),a
+		ld		a,1
+		or		a
+		ret
+
+MUEVE_COVIDS_BOSS_4:
+
+		ld		b,COVID_BOSS_4_CANTIDAD
+		xor		a
+		ld		(COVID_BOSS_4_INDICE_ACTUAL),a
+
+.BUCLE_MUEVE_COVIDS_BOSS_4:
+
+		push	bc
+		call	OBTIENE_PUNTERO_ACTIVO_COVID_BOSS_4_ACTUAL
+		ld		a,(hl)
+		or		a
+		jr		z,.SIGUIENTE_COVID_MOVIMIENTO_BOSS_4
+		call	MUEVE_UN_COVID_BOSS_4
+
+.SIGUIENTE_COVID_MOVIMIENTO_BOSS_4:
+
+		ld		a,(COVID_BOSS_4_INDICE_ACTUAL)
+		inc		a
+		ld		(COVID_BOSS_4_INDICE_ACTUAL),a
+		pop		bc
+		djnz	.BUCLE_MUEVE_COVIDS_BOSS_4
+		ret
+
+MUEVE_UN_COVID_BOSS_4:
+
+		call	OBTIENE_PUNTERO_Y_COVID_BOSS_4_ACTUAL
+		push	hl
+		call	OBTIENE_RUTA_COVID_BOSS_4_ACTUAL
+		ld		e,a
+		ld		d,0
+		ld		hl,TABLA_PASO_Y_COVID_BOSS_4
+		add		hl,de
+		ld		c,(hl)
+		pop		hl
+		ld		a,(hl)
+		add		c
+		ld		(hl),a
+		ld		a,c
+		cp		255				; -1: ruta vertical hacia arriba
+		jr		z,.COMPRUEBA_MUERTE_COVID_SUBE_BOSS_4
+
+		ld		a,(hl)
+		cp		COVID_BOSS_4_Y_MUERTE
+		jp		nc,DESACTIVA_COVID_BOSS_4
+		jr		.MUEVE_X_COVID_BOSS_4
+
+.COMPRUEBA_MUERTE_COVID_SUBE_BOSS_4:
+
+		ld		a,(hl)
+		or		a
+		jp		z,DESACTIVA_COVID_BOSS_4
+		cp		COVID_BOSS_4_Y_MUERTE		; seguridad por si hay underflow a 255
+		jp		nc,DESACTIVA_COVID_BOSS_4
+
+.MUEVE_X_COVID_BOSS_4:
+
+		call	OBTIENE_PUNTERO_PASO_X_COVID_BOSS_4_ACTUAL
+		ld		a,(hl)
+		ld		c,a
+		inc		a
+		cp		COVID_BOSS_4_TABLA_X_LONGITUD
+		jr		c,.GUARDA_PASO_X_COVID_BOSS_4
+		xor		a
+
+.GUARDA_PASO_X_COVID_BOSS_4:
+
+		ld		(hl),a
+		ld		e,c
+		ld		d,0
+		call	OBTIENE_TABLA_MOVIMIENTO_X_COVID_BOSS_4_ACTUAL
+		add		hl,de
+		ld		a,(hl)
+		ld		c,a
+		call	OBTIENE_PUNTERO_X_COVID_BOSS_4_ACTUAL
+		ld		a,(hl)
+		add		c
+		ld		(hl),a
+		ret
+
+DESACTIVA_COVID_BOSS_4:
+
+		call	OBTIENE_PUNTERO_ACTIVO_COVID_BOSS_4_ACTUAL
+		xor		a
+		ld		(hl),a
+		call	OBTIENE_PUNTERO_X_COVID_BOSS_4_ACTUAL
+		ld		(hl),a
+		call	OBTIENE_PUNTERO_PASO_X_COVID_BOSS_4_ACTUAL
+		ld		(hl),a
+		call	OBTIENE_PUNTERO_Y_COVID_BOSS_4_ACTUAL
+		ld		a,COVID_BOSS_4_Y_OCULTO
+		ld		(hl),a
+		jp		OCULTA_COVID_BOSS_4_EN_VRAM
+
+PINTA_COVIDS_BOSS_4:
+
+		ld		b,COVID_BOSS_4_CANTIDAD
+		xor		a
+		ld		(COVID_BOSS_4_INDICE_ACTUAL),a
+
+.BUCLE_PINTA_COVIDS_BOSS_4:
+
+		push	bc
+		call	OBTIENE_PUNTERO_ACTIVO_COVID_BOSS_4_ACTUAL
+		ld		a,(hl)
+		or		a
+		jr		z,.PINTA_COVID_OCULTO_BOSS_4
+		call	PINTA_UN_COVID_BOSS_4
+		jr		.SIGUIENTE_COVID_PINTA_BOSS_4
+
+.PINTA_COVID_OCULTO_BOSS_4:
+
+		call	OCULTA_COVID_BOSS_4_EN_VRAM
+
+.SIGUIENTE_COVID_PINTA_BOSS_4:
+
+		ld		a,(COVID_BOSS_4_INDICE_ACTUAL)
+		inc		a
+		ld		(COVID_BOSS_4_INDICE_ACTUAL),a
+		pop		bc
+		djnz	.BUCLE_PINTA_COVIDS_BOSS_4
+		ret
+
+PINTA_UN_COVID_BOSS_4:
+
+		ld		hl,PROPIEDADES_PATRON_SPRITE
+		call	OBTIENE_PUNTERO_Y_COVID_BOSS_4_ACTUAL
+		ld		a,(hl)
+		ld		hl,PROPIEDADES_PATRON_SPRITE
+		ld		(hl),a
+		inc		hl
+		call	OBTIENE_PUNTERO_X_COVID_BOSS_4_ACTUAL
+		ld		a,(hl)
+		ld		hl,PROPIEDADES_PATRON_SPRITE+1
+		ld		(hl),a
+		inc		hl
+		; Alternamos el fotograma del COVID con el paso de su propia tabla X.
+		; El semaforo global 0..3 queda reservado para controlar la velocidad.
+		call	OBTIENE_PUNTERO_PASO_X_COVID_BOSS_4_ACTUAL
+		ld		a,(hl)
+		and		00000001b
+		jr		z,.PATRON_COVID_BOSS_4
+		push	hl
+		ld		a,9
+		ld		c,0
+		call	TIRA_FX_BOSS_4
+		pop		hl
+
+.PATRON_COVID_BOSS_4:
+
+		ld		a,(hl)
+		and		00000001b
+		add		a,a
+		add		a,a
+		add		a,COVID_PATRON_INICIAL_BOSS_4
+		ld		(PROPIEDADES_PATRON_SPRITE+2),a
+		call	OBTIENE_DIRECCION_ATRIBUTOS_COVID_BOSS_4
+		ld		hl,PROPIEDADES_PATRON_SPRITE
+		ld		bc,3
+		jp		PON_COLOR_2.sin_bc_impuesta
+
+OCULTA_COVID_BOSS_4_EN_VRAM:
+
+		ld		hl,PROPIEDADES_PATRON_SPRITE
+		ld		a,COVID_BOSS_4_Y_OCULTO
+		ld		(hl),a
+		inc		hl
+		xor		a
+		ld		(hl),a
+		inc		hl
+		ld		(hl),a
+		call	OBTIENE_DIRECCION_ATRIBUTOS_COVID_BOSS_4
+		ld		hl,PROPIEDADES_PATRON_SPRITE
+		ld		bc,3
+		jp		PON_COLOR_2.sin_bc_impuesta
+
+OBTIENE_OFFSET_COVID_BOSS_4_ACTUAL:
+
+		ld		a,(COVID_BOSS_4_INDICE_ACTUAL)
+		ld		e,a
+		ld		d,0
+		ret
+
+OBTIENE_PUNTERO_ACTIVO_COVID_BOSS_4_ACTUAL:
+
+		call	OBTIENE_OFFSET_COVID_BOSS_4_ACTUAL
+		ld		hl,COVID_BOSS_4_ACTIVO
+		add		hl,de
+		ret
+
+OBTIENE_PUNTERO_X_COVID_BOSS_4_ACTUAL:
+
+		call	OBTIENE_OFFSET_COVID_BOSS_4_ACTUAL
+		ld		hl,COVID_BOSS_4_X
+		add		hl,de
+		ret
+
+OBTIENE_PUNTERO_Y_COVID_BOSS_4_ACTUAL:
+
+		call	OBTIENE_OFFSET_COVID_BOSS_4_ACTUAL
+		ld		hl,COVID_BOSS_4_Y
+		add		hl,de
+		ret
+
+OBTIENE_PUNTERO_PASO_X_COVID_BOSS_4_ACTUAL:
+
+		call	OBTIENE_OFFSET_COVID_BOSS_4_ACTUAL
+		ld		hl,COVID_BOSS_4_PASO_TABLA_X
+		add		hl,de
+		ret
+
+OBTIENE_RUTA_COVID_BOSS_4_ACTUAL:
+
+		ld		a,(COVID_BOSS_4_INDICE_ACTUAL)
+		and		00000011b
+		ret
+
+OBTIENE_TABLA_MOVIMIENTO_X_COVID_BOSS_4_ACTUAL:
+
+		call	OBTIENE_RUTA_COVID_BOSS_4_ACTUAL
+		or		a
+		jr		z,.TABLA_COVID_0_BOSS_4
+		cp		1
+		jr		z,.TABLA_COVID_1_BOSS_4
+		cp		2
+		jr		z,.TABLA_COVID_2_BOSS_4
+		ld		hl,TABLA_MOVIMIENTO_X_COVID_BOSS_4_3
+		ret
+
+.TABLA_COVID_0_BOSS_4:
+
+		ld		hl,TABLA_MOVIMIENTO_X_COVID_BOSS_4
+		ret
+
+.TABLA_COVID_1_BOSS_4:
+
+		ld		hl,TABLA_MOVIMIENTO_X_COVID_BOSS_4_1
+		ret
+
+.TABLA_COVID_2_BOSS_4:
+
+		ld		hl,TABLA_MOVIMIENTO_X_COVID_BOSS_4_2
+		ret
+
+OBTIENE_DIRECCION_ATRIBUTOS_COVID_BOSS_4:
+
+		call	OBTIENE_OFFSET_COVID_BOSS_4_ACTUAL
+		ld		a,e
+		add		a,a
+		add		a,a
+		ld		e,a
+		ld		d,0
+		ld		hl,COVID_BOSS_4_ATRIBUTOS_VRAM
+		add		hl,de
+		ex		de,hl
 		ret
 
 INICIALIZA_POOL_PROYECTILES_BOSS_4:
@@ -1552,7 +2080,8 @@ PINTA_PROYECTILES_DE_DEPH_EN_BOSS_4:
 
 ON_SPRITE_GLOBAL_BOSS_4:
 
-	jp	BUCLE_REVISION_TODOS_LOS_PROYECTILES_OJO_BOSS_4
+	call	BUCLE_REVISION_TODOS_LOS_PROYECTILES_OJO_BOSS_4
+	jp		REVISAMOS_COLISION_CON_DEPH_Y_COVIDS_BOSS_4
 
 PINTA_MARCADORES_VIDA_FINAL_BOSS_4:
 
@@ -1752,6 +2281,163 @@ MUERTE_DEPH_EN_BOSS_4:
 	call	PREPARA_VRAM_PARA_MUERTE_DEPH_EN_BOSS
 	jp		MUERTE_POR_TOQUES_DESDE_BOSS
 
+REVISAMOS_COLISION_CON_DEPH_Y_COVIDS_BOSS_4:
+
+		ld		b,COVID_BOSS_4_CANTIDAD
+		xor		a
+		ld		(COVID_BOSS_4_INDICE_ACTUAL),a
+
+.BUCLE_COLISION_DEPH_COVIDS_BOSS_4:
+
+		push	bc
+		call	OBTIENE_PUNTERO_ACTIVO_COVID_BOSS_4_ACTUAL
+		ld		a,(hl)
+		or		a
+		jr		z,.SIGUIENTE_COLISION_DEPH_COVID_BOSS_4
+
+		; Caja aproximada Deph/COVID: Deph +20 contra COVID 16 px.
+		call	OBTIENE_PUNTERO_X_COVID_BOSS_4_ACTUAL
+		ld		c,(hl)
+		ld		a,(X_DEPH)
+		add		20
+		sub		c
+		cp		36
+		jr		nc,.SIGUIENTE_COLISION_DEPH_COVID_BOSS_4
+
+		call	OBTIENE_PUNTERO_Y_COVID_BOSS_4_ACTUAL
+		ld		c,(hl)
+		ld		a,(Y_DEPH)
+		add		20
+		sub		c
+		cp		36
+		jr		nc,.SIGUIENTE_COLISION_DEPH_COVID_BOSS_4
+
+		; Si Deph toca un COVID, recibe da�o y el COVID desaparece
+		; para evitar da�o continuo cada frame.
+		call	MATA_COVID_BOSS_4_ACTUAL_CON_EXPLOSION
+		call	DANO_DEPH_EN_BOSS_4
+		pop		bc
+		ret
+
+.SIGUIENTE_COLISION_DEPH_COVID_BOSS_4:
+
+		ld		a,(COVID_BOSS_4_INDICE_ACTUAL)
+		inc		a
+		ld		(COVID_BOSS_4_INDICE_ACTUAL),a
+		pop		bc
+		djnz	.BUCLE_COLISION_DEPH_COVIDS_BOSS_4
+		ret
+
+REVISAMOS_COLISION_CON_COVIDS_Y_PROYECTILES_DEPH:
+
+		ld		iy,PROYECTILES
+		ld		b,6
+
+.BUCLE_PROYECTILES_DEPH_COVIDS_BOSS_4:
+
+		push	bc
+		ld		a,(iy+2)
+		cp		#FF
+		jr		z,.SIGUIENTE_PROYECTIL_DEPH_COVID_BOSS_4
+
+		xor		a
+		ld		(COVID_BOSS_4_INDICE_ACTUAL),a
+		ld		b,COVID_BOSS_4_CANTIDAD
+
+.BUCLE_COVIDS_CON_PROYECTIL_DEPH_BOSS_4:
+
+		push	bc
+		call	OBTIENE_PUNTERO_ACTIVO_COVID_BOSS_4_ACTUAL
+		ld		a,(hl)
+		or		a
+		jr		z,.SIGUIENTE_COVID_CON_PROYECTIL_DEPH_BOSS_4
+
+		; X: centro aproximado del proyectil contra caja COVID.
+		call	OBTIENE_PUNTERO_X_COVID_BOSS_4_ACTUAL
+		ld		c,(hl)
+		ld		a,(iy)
+		add		8
+		sub		c
+		cp		24
+		jr		nc,.SIGUIENTE_COVID_CON_PROYECTIL_DEPH_BOSS_4
+
+		; Y: centro aproximado del proyectil contra caja COVID.
+		call	OBTIENE_PUNTERO_Y_COVID_BOSS_4_ACTUAL
+		ld		c,(hl)
+		ld		a,(iy+1)
+		add		8
+		sub		c
+		cp		24
+		jr		nc,.SIGUIENTE_COVID_CON_PROYECTIL_DEPH_BOSS_4
+
+		call	MATA_COVID_BOSS_4_ACTUAL_CON_EXPLOSION
+		call	LIMPIA_PROYECTIL_DEPH_TRAS_IMPACTO_COVID_BOSS_4
+		pop		bc
+		pop		bc
+		ret
+
+.SIGUIENTE_COVID_CON_PROYECTIL_DEPH_BOSS_4:
+
+		ld		a,(COVID_BOSS_4_INDICE_ACTUAL)
+		inc		a
+		ld		(COVID_BOSS_4_INDICE_ACTUAL),a
+		pop		bc
+		djnz	.BUCLE_COVIDS_CON_PROYECTIL_DEPH_BOSS_4
+
+.SIGUIENTE_PROYECTIL_DEPH_COVID_BOSS_4:
+
+		ld		de,16
+		add		iy,de
+		pop		bc
+		djnz	.BUCLE_PROYECTILES_DEPH_COVIDS_BOSS_4
+		ret
+
+MATA_COVID_BOSS_4_ACTUAL_CON_EXPLOSION:
+
+		call	OBTIENE_PUNTERO_X_COVID_BOSS_4_ACTUAL
+		ld		c,(hl)
+		call	OBTIENE_PUNTERO_Y_COVID_BOSS_4_ACTUAL
+		ld		b,(hl)
+
+		ld		ix,VALORES_EXPLOSION_CON_ROCK
+		ld		a,b
+		ld		(ix),a
+		ld		a,c
+		ld		(ix+1),a
+		ld		a,COVID_EXPLOSION_PATRON_INICIAL_BOSS_4
+		ld		(ix+2),a
+
+		jp		DESACTIVA_COVID_BOSS_4
+
+LIMPIA_PROYECTIL_DEPH_TRAS_IMPACTO_COVID_BOSS_4:
+
+		ld		a,5
+		ld		c,0
+		call	TIRA_FX_BOSS_4
+
+		ld		a,(iy+12)
+		ld		e,a
+		ld		d,0
+		ld		hl,#4A00
+		add		hl,de
+		ex		de,hl
+		ld		hl,.SPRITE_OCULTO_TRAS_IMPACTO_COVID_BOSS_4
+		ld		bc,3
+		call	PON_COLOR_2.sin_bc_impuesta
+
+		xor		a
+		ld		(iy+8),a
+		dec		a
+		ld		(iy+2),a
+		ld		(iy),a
+		ld		a,(iy+12)
+		call	SECUENCIA_PROYECTILES_PROPIOS_EN_BOSS_4.DEJA_LIBRE_SPRITE_EN_RAM
+		ret
+
+.SPRITE_OCULTO_TRAS_IMPACTO_COVID_BOSS_4:
+
+		db		217,255,0
+
 REVISAMOS_COLISION_CON_ERRECENYX_Y_PROYECTILES_DEPH:
 
 		ld		iy,PROYECTILES
@@ -1838,7 +2524,7 @@ REVISAMOS_COLISION_CON_ERRECENYX_Y_PROYECTILES_DEPH:
 		ld		a,(iy+1)
 		sub		8
 		ld		(ix),a
-		ld		a,23*4
+		ld		a,COVID_EXPLOSION_PATRON_INICIAL_BOSS_4
 		ld		(ix+2),a
 
 		ld		a,(iy+12)
@@ -1883,17 +2569,17 @@ CALCULA_DANO_PROYECTIL_ERRECENYX_BOSS_4:
 
 .DANO_FLECHA_ERRECENYX_BOSS_4:
 
-		ld		a,8
+		ld		a,1
 		ret
 
 .DANO_HACHA_ERRECENYX_BOSS_4:
 
-		ld		a,2
+		ld		a,1
 		ret
 
 .DANO_FUEGO_ERRECENYX_BOSS_4:
 
-		ld		a,1
+		ld		a,8
 		ret
 
 PINTA_EXPLOSION_ERRECENYX_BOSS_4:
@@ -1902,7 +2588,7 @@ PINTA_EXPLOSION_ERRECENYX_BOSS_4:
 		ld		a,(ix+2)
 		or		a
 		ret		z
-		cp		25*4
+		cp		COVID_EXPLOSION_PATRON_FINAL_BOSS_4
 		jr		nz,.PINTAMOS_EXPLOSION_ERRECENYX_BOSS_4
 
 		xor		a
@@ -1926,6 +2612,192 @@ PINTA_EXPLOSION_ERRECENYX_BOSS_4:
 		add		4
 		ld		(ix+2),a
 		ret
+
+INICIALIZA_BUBBLES_MUERTE_ERRECENYX_BOSS_4:
+
+		call	PAGE_32_A_SEGMENT_2
+		ld		de,BARROS_MUERTE_COLOR_VRAM_BOSS_4
+		ld		b,BARROS_MUERTE_CANTIDAD_BOSS_4
+
+.BUCLE_COLOR_BUBBLES_MUERTE_ERRECENYX_BOSS_4:
+
+		push	bc
+		push	de
+		ld		hl,COLOR_BUBBLES
+		ld		bc,16
+		call	PON_COLOR_2.sin_bc_impuesta
+		pop		de
+		ld		a,e
+		add		16
+		ld		e,a
+		jr		nc,.SIN_ACARREO_COLOR_BUBBLES_MUERTE_ERRECENYX_BOSS_4
+		inc		d
+
+.SIN_ACARREO_COLOR_BUBBLES_MUERTE_ERRECENYX_BOSS_4:
+
+		pop		bc
+		djnz	.BUCLE_COLOR_BUBBLES_MUERTE_ERRECENYX_BOSS_4
+		call	PAGE_10_A_SEGMENT_2
+
+		ld		a,ERRECENYX_MOVIMIENTO_Y_BOSS_4+ERRECENYX_MUERTE_ALTO_BOSS_4
+		ld		(VARIABLE_UN_USO3),a
+		ld		ix,BARROS_MUERTE_ERRECENYX_X
+		ld		iy,BARROS_MUERTE_ERRECENYX_ESPERA
+		ld		hl,BARROS_MUERTE_ERRECENYX_ACTIVA
+		ld		b,BARROS_MUERTE_CANTIDAD_BOSS_4
+
+.BUCLE_INICIALIZA_BUBBLES_MUERTE_ERRECENYX_BOSS_4:
+
+		call	RENACE_BUBBLE_MUERTE_ERRECENYX_BOSS_4
+		inc		ix
+		inc		iy
+		inc		hl
+		djnz	.BUCLE_INICIALIZA_BUBBLES_MUERTE_ERRECENYX_BOSS_4
+		xor		a
+		ld		(BARROS_MUERTE_ERRECENYX_CONTADOR),a
+		ret
+
+RENACE_BUBBLE_MUERTE_ERRECENYX_BOSS_4:
+
+		push	bc
+		push	de
+
+		ld		a,r
+		and		01111111b
+		cp		ERRECENYX_MOVIMIENTO_ANCHO_BOSS_4
+		jr		c,.X_RANDOM_BUBBLE_MUERTE_OK_BOSS_4
+		sub		32
+
+.X_RANDOM_BUBBLE_MUERTE_OK_BOSS_4:
+
+		ld		b,a
+		ld		a,(ERRECENYX_BOSS_4_X)
+		add		b
+		ld		(ix),a
+
+		ld		a,(VARIABLE_UN_USO3)
+		ld		(iy),a
+
+		ld		a,r
+		and		00000111b
+		cp		BUBBLES_MUERTE_VELOCIDAD_MAX_BOSS_4
+		jr		c,.VELOCIDAD_RANDOM_BUBBLE_MUERTE_OK_BOSS_4
+		sub		BUBBLES_MUERTE_VELOCIDAD_MAX_BOSS_4
+
+.VELOCIDAD_RANDOM_BUBBLE_MUERTE_OK_BOSS_4:
+
+		inc		a
+		ld		(hl),a
+
+		pop		de
+		pop		bc
+		ret
+
+MUEVE_BUBBLES_MUERTE_ERRECENYX_BOSS_4:
+
+		ld		a,32
+		ld		c,0
+		call	TIRA_FX_BOSS_4
+		xor		a
+		ld		(VARIABLE_UN_USO),a
+		ld		ix,BARROS_MUERTE_ERRECENYX_X
+		ld		iy,BARROS_MUERTE_ERRECENYX_ESPERA
+		ld		hl,BARROS_MUERTE_ERRECENYX_ACTIVA
+		ld		de,BARROS_MUERTE_ERRECENYX_ATRIBUTOS
+		ld		b,BARROS_MUERTE_CANTIDAD_BOSS_4
+
+.BUCLE_MUEVE_BUBBLES_MUERTE_ERRECENYX_BOSS_4:
+
+		ld		a,(hl)
+		or		a
+		jr		z,.PINTA_BUBBLE_OCULTA_MUERTE_ERRECENYX_BOSS_4
+
+		ld		c,a
+		ld		a,(iy)
+		sub		c
+		cp		BUBBLES_MUERTE_Y_OBJETIVO_BOSS_4+1
+		jr		c,.MATA_O_RENACE_BUBBLE_MUERTE_ERRECENYX_BOSS_4
+		ld		(iy),a
+		jr		.PINTA_BUBBLE_ACTIVA_MUERTE_ERRECENYX_BOSS_4
+
+.MATA_O_RENACE_BUBBLE_MUERTE_ERRECENYX_BOSS_4:
+
+		ld		a,(VARIABLE_UN_USO2)
+		or		a
+		jr		z,.MATA_BUBBLE_MUERTE_ERRECENYX_BOSS_4
+		call	RENACE_BUBBLE_MUERTE_ERRECENYX_BOSS_4
+		jr		.PINTA_BUBBLE_ACTIVA_MUERTE_ERRECENYX_BOSS_4
+
+.MATA_BUBBLE_MUERTE_ERRECENYX_BOSS_4:
+
+		xor		a
+		ld		(hl),a
+		jr		.PINTA_BUBBLE_OCULTA_MUERTE_ERRECENYX_BOSS_4
+
+.PINTA_BUBBLE_ACTIVA_MUERTE_ERRECENYX_BOSS_4:
+
+		ld		a,(VARIABLE_UN_USO)
+		inc		a
+		ld		(VARIABLE_UN_USO),a
+		ld		a,(iy)
+		ld		(de),a
+		inc		de
+		ld		a,(ix)
+		ld		(de),a
+		inc		de
+		ld		a,(BARROS_MUERTE_ERRECENYX_CONTADOR)
+		and		00000001b
+		ld		a,BUBBLES_MUERTE_PATRON_1_BOSS_4
+		jr		z,.GUARDA_PATRON_BUBBLE_MUERTE_ERRECENYX_BOSS_4
+		ld		a,BUBBLES_MUERTE_PATRON_2_BOSS_4
+		jr		.GUARDA_PATRON_BUBBLE_MUERTE_ERRECENYX_BOSS_4
+
+.PINTA_BUBBLE_OCULTA_MUERTE_ERRECENYX_BOSS_4:
+
+		ld		a,BARROS_MUERTE_Y_OCULTA_BOSS_4
+		ld		(de),a
+		inc		de
+		ld		a,BARROS_MUERTE_X_OCULTA_BOSS_4
+		ld		(de),a
+		inc		de
+		xor		a
+
+.GUARDA_PATRON_BUBBLE_MUERTE_ERRECENYX_BOSS_4:
+
+		ld		(de),a
+		inc		de
+		xor		a
+		ld		(de),a
+		inc		de
+		inc		ix
+		inc		iy
+		inc		hl
+		djnz	.BUCLE_MUEVE_BUBBLES_MUERTE_ERRECENYX_BOSS_4
+
+		ld		hl,BARROS_MUERTE_ERRECENYX_ATRIBUTOS
+		ld		de,BARROS_MUERTE_ATRIBUTOS_VRAM_BOSS_4
+		ld		bc,BARROS_MUERTE_CANTIDAD_BOSS_4*4
+		call	PON_COLOR_2.sin_bc_impuesta
+
+		ld		a,(BARROS_MUERTE_ERRECENYX_CONTADOR)
+		xor		00000001b
+		ld		(BARROS_MUERTE_ERRECENYX_CONTADOR),a
+		ld		a,(VARIABLE_UN_USO)
+		ret
+
+ESPERA_FIN_BUBBLES_MUERTE_ERRECENYX_BOSS_4:
+
+		xor		a
+		ld		(VARIABLE_UN_USO2),a
+
+.BUCLE_ESPERA_FIN_BUBBLES_MUERTE_ERRECENYX_BOSS_4:
+
+		call	MUEVE_BUBBLES_MUERTE_ERRECENYX_BOSS_4
+		or		a
+		ret		z
+		ld		a,1
+		call	BUCLE_PINTA_TILES.rutina_de_pausa
+		jr		.BUCLE_ESPERA_FIN_BUBBLES_MUERTE_ERRECENYX_BOSS_4
 
 INICIALIZA_BARROS_MUERTE_ERRECENYX_BOSS_4:
 
@@ -2408,8 +3280,7 @@ MUERTE_DE_ERRECENYX_BOSS_4:
 		ld		hl,SPRITES_ATRIBUTOS_VRAM_BOSS_4+ERRECENYX_LIMPIA_SPRITE_INICIAL_BOSS_4*4
 		ld		bc,ERRECENYX_LIMPIA_SPRITES_CANT_BOSS_4*4
 		call	FILVRM_RAM
-		call	INICIALIZA_BARROS_MUERTE_ERRECENYX_BOSS_4
-		call	ENTRAN_BARROS_MUERTE_ERRECENYX_BOSS_4
+		call	INICIALIZA_BUBBLES_MUERTE_ERRECENYX_BOSS_4
 
 
 ; animamos la muerte de AGONIX		
@@ -2418,13 +3289,6 @@ MUERTE_DE_ERRECENYX_BOSS_4:
 .BUCLE_ANIMA_MUERTE_ERRECENYX_BOSS_4:
 
 		push	bc
-		
-; audio de terremoto
-		ld		a,ERRECENYX_MUERTE_FX_BOSS_4
-		ld		c,ERRECENYX_MUERTE_FX_CANAL_BOSS_4
-        call    PAGE_31_A_SEGMENT_2
-		call	ayFX_INIT
-        call   	PAGE_10_A_SEGMENT_2
 
 		ld		ix,COPY_ANIMA_MUERTE_ERRECENYX_A_BUFFER_BOSS_4
 		ld		iy,DATAS_COPY_RECUP_SCROLL
@@ -2449,12 +3313,23 @@ MUERTE_DE_ERRECENYX_BOSS_4:
 		call	DOCOPY
 		call	VDPREADY
 
+		ld		a,1
+		pop		bc
+		push	bc
+		dec		b
+		jr		nz,.RESPAWN_BUBBLES_MUERTE_ERRECENYX_BOSS_4
+		xor		a
+
+.RESPAWN_BUBBLES_MUERTE_ERRECENYX_BOSS_4:
+
+		ld		(VARIABLE_UN_USO2),a
+
 		ld		b,BARROS_MUERTE_PASOS_ENTRE_COPY_BOSS_4
 
 .BUCLE_BARROS_ENTRE_COPY_MUERTE_ERRECENYX_BOSS_4:
 
 		push	bc
-		call	MUEVE_BARROS_MUERTE_ERRECENYX_BOSS_4
+		call	MUEVE_BUBBLES_MUERTE_ERRECENYX_BOSS_4
 		pop		bc
 		djnz	.BUCLE_BARROS_ENTRE_COPY_MUERTE_ERRECENYX_BOSS_4
 
@@ -2463,7 +3338,7 @@ MUERTE_DE_ERRECENYX_BOSS_4:
 		pop		bc
 		djnz	.BUCLE_ANIMA_MUERTE_ERRECENYX_BOSS_4
 
-		call	ESCAPA_BARROS_MUERTE_ERRECENYX_BOSS_4
+		call	ESPERA_FIN_BUBBLES_MUERTE_ERRECENYX_BOSS_4
 		call	PREPARA_VRAM_PARA_MUERTE_DEPH_EN_BOSS
 
 TERMINANDO_LA_BATALLA_b4:
@@ -2494,14 +3369,72 @@ VOLVEMOS_b4:
 
 		jp		CARGA_SLOT_REGRESO_A_JUEGO
 
-DEPH_LODO_ESTADO_BOSS_4:
+; Rutas iniciales de los COVIDs Boss 4.
+; Ruta 0: X=0,   Y=0   -> baja y empieza hacia la derecha.
+; Ruta 1: X=250, Y=191 -> sube y empieza hacia la izquierda.
+; Ruta 2: X=255, Y=0   -> baja y empieza hacia la izquierda.
+; Ruta 3: X=0,   Y=191 -> sube y empieza hacia la derecha.
+TABLA_X_INICIAL_COVID_BOSS_4:
 
-		db		0
+		db		0,250,255,0
 
-DEPH_LODO_ESPERA_BOSS_4:
+TABLA_Y_INICIAL_COVID_BOSS_4:
 
-		db		0
+		db		0,191,0,191
 
+TABLA_PASO_Y_COVID_BOSS_4:
+
+		db		1,255,1,255			; 255 = -1
+
+; Tabla 0: avance horizontal normal.
+; Suma total derecha: 240 px. Suma total izquierda: -240 px.
+; Maximo desplazamiento: 4 px por ciclo.
+TABLA_MOVIMIENTO_X_COVID_BOSS_4:
+
+		db		1,2,3
+[57]	db		4
+		db		3,2,1,0
+		db		255,254,253			; -1,-2,-3
+[57]	db		252				; -4
+		db		253,254,255,0		; -3,-2,-1,0
+
+; Tabla 1: recorrido inverso horizontal.
+TABLA_MOVIMIENTO_X_COVID_BOSS_4_1:
+
+		db		255,254,253			; -1,-2,-3
+[57]	db		252				; -4
+		db		253,254,255,0		; -3,-2,-1,0
+		db		1,2,3
+[57]	db		4
+		db		3,2,1,0
+
+; Tabla 2: recorrido inverso horizontal, para salida desde X=255,Y=0.
+TABLA_MOVIMIENTO_X_COVID_BOSS_4_2:
+
+		db		255,254,253			; -1,-2,-3
+[57]	db		252				; -4
+		db		253,254,255,0		; -3,-2,-1,0
+		db		1,2,3
+[57]	db		4
+		db		3,2,1,0
+
+; Tabla 3: avance horizontal normal, para salida desde X=0,Y=191.
+TABLA_MOVIMIENTO_X_COVID_BOSS_4_3:
+
+		db		1,2,3
+[57]	db		4
+		db		3,2,1,0
+		db		255,254,253			; -1,-2,-3
+[57]	db		252				; -4
+		db		253,254,255,0		; -3,-2,-1,0
+
+; Color local para COVIDs del Boss 4.
+; Independiente del color COVID general.
+COLOR_COVID_BOSS_4:
+
+[16]	db		#0B
+
+; Variables COVID/LODO Boss 4 movidas a VARIABLES BOSSES.asm (RAM).
 
 
 	include	"BOSS 4 DATA.asm"

@@ -555,7 +555,7 @@ DATOS_NEGRO_ROTATIVO_EN_PAGE_1:
 TEXTO_ROTATIVO_PRESENTACION:
 
 		db		"BLUE WARRIOR II - Beta version 4.4.02 - 15/5/2026 - 61% - (C) Digital Moai - TECLAS 1 - 5 PARA IR DIRECTO A FASE",0
-		db		"A Digital Moai Production - Project Direction, Phase Design, Pixel Art & Music Composition: Manuel Dópico - Programming, Sprites & Pixel Art Corrections: Benjamín Miguel - Lead Beta Tester: Xavier Sorinas - (c) Digital Moai 2026",0
+		db		"A Digital Moai Production - Project Direction, Phase Design, Story, Script, Level Design, Pixel Art and Music Composition: Manuel Dopico - Programming, Sprites, Pixel Art Corrections and Sound Effects: Benjamin Miguel - Graphics: Lucas Sera Piao - Lead Beta Tester and Quality Control: Xavi Sorinas - Packaging: XXX - Cover Illustration: XXX - Digital Moai sincerely thanks the following entities for helping keep the MSX alive: AAMSX (Spain), MSX Boixos Club (Spain), MSX.org (Holland) - (c) Digital Moai 2026",0
 
 TEXTO_ROTATIVO_PRESENTACION_FIN:
 
