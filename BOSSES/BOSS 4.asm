@@ -45,6 +45,9 @@ PROYECTIL_BOSS_4_PATRON_SPRITE:				equ	BARRO_PATRON_INICIAL_BOSS_4
 PROYECTIL_BOSS_4_OFFSET_DER_X:				equ	98-8
 PROYECTIL_BOSS_4_OFFSET_IZQ_X:				equ	29-8
 PROYECTIL_BOSS_4_OFFSET_Y:					equ	25-8
+PROYECTIL_BOSS_4_OFFSET_BOCA_X:				equ	9
+PROYECTIL_BOSS_4_OFFSET_BOCA_Y:				equ	33
+PROYECTIL_BOSS_4_FOTOGRAMA_DISPARO:			equ	3
 PROYECTIL_BOSS_4_DIRECCION_MIN:				equ	1
 PROYECTIL_BOSS_4_DIRECCION_MAX:				equ	11
 ; Salida y muerte de Agonix
@@ -72,6 +75,17 @@ ERRECENYX_BUFFER_Y_BOSS_4:						equ	0
 
 DEPH_SALIDA_SPRITES_INICIO_BOSS_4:			equ	1
 DEPH_SALIDA_SPRITES_CANT_BOSS_4:			equ	45
+
+DEPH_LODO_LIMITE_Y_BOSS_4:				equ	85
+DEPH_LODO_ESTADO_NORMAL_BOSS_4:			equ	0
+DEPH_LODO_ESTADO_ACTIVO_BOSS_4:			equ	1
+DEPH_LODO_PATRON_INICIO_BOSS_4:			equ	5
+DEPH_LODO_PATRON_CANT_BOSS_4:			equ	18
+DEPH_LODO_COLOR_INICIO_BOSS_4:			equ	4
+DEPH_LODO_COLOR_CANT_BOSS_4:			equ	6
+DEPH_LODO_SPRITES_VRAM_BOSS_4:			equ	PATRONES_SPRITES_VRAM_BOSS_4+DEPH_LODO_PATRON_INICIO_BOSS_4*8*4
+DEPH_LODO_SPRITES_NORMAL_OFFSET_BOSS_4:	equ	(DEPH_LODO_PATRON_INICIO_BOSS_4-DEPH_SALIDA_SPRITES_INICIO_BOSS_4)*8*4
+DEPH_LODO_COLOR_VRAM_BOSS_4:				equ	SPRITES_COLOR_VRAM_BOSS_4+DEPH_LODO_COLOR_INICIO_BOSS_4*16
 
 ERRECENYX_MOVIMIENTO_Y_BOSS_4:					equ	28
 ERRECENYX_MOVIMIENTO_PASO_X_BOSS_4:			equ	6
@@ -138,6 +152,8 @@ RUTINA_BOSS_4:
 		ld		(ERRECENYX_BOSS_4_DIRECCION),a
 		ld		(ERRECENYX_BOSS_4_FOTOGRAMA),a
 		ld		(ERRECENYX_BOSS_4_MODO),a
+		ld		(DEPH_LODO_ESTADO_BOSS_4),a
+		ld		(DEPH_LODO_ESPERA_BOSS_4),a
 		ld		a,ERRECENYX_MOVIMIENTO_ESPERA_BOSS_4
 		ld		(ERRECENYX_BOSS_4_ESPERA_MOVIMIENTO),a
 		ld		a,PROYECTIL_BOSS_4_Y_OCULTO
@@ -407,8 +423,11 @@ CARGA_SPRITES_BARRO_BOSS_4:
 		ld		bc,8*4*BARRO_CANTIDAD_BOSS_4
 		call	PON_COLOR_2.sin_bc_impuesta
 
-		ld		de,SPRITES_COLOR_VRAM_BOSS_4+BARRO_COLOR_INICIAL_BOSS_4*16
-		ld		b,BARRO_CANTIDAD_BOSS_4
+		; El color de sprites en SCREEN 7 va por NUMERO DE SPRITE,
+		; no por patron. Los proyectiles usan los sprites 22-29,
+		; asi que sus colores deben arrancar en #4800 + 22*16 = #4960.
+		ld		de,PROYECTIL_BOSS_4_COLOR_VRAM
+		ld		b,PROYECTILES_BOSS_4_CANTIDAD
 
 .BUCLE_COLOR_BARRO_BOSS_4:
 
@@ -440,7 +459,7 @@ BUCLE_PELEA_BOSS_4:
 		call	NUCLEO_DE_LA_PELEA_BOSS_4
 		call	CONTROLA_INMUNIDAD_DEPH_BOSS_4
 		
-		call	MOVIMIENTO_DEPH_EN_BOSS_4
+		call	CONTROL_LODO_Y_MOVIMIENTO_DEPH_BOSS_4
 		call	SECUENCIA_PROYECTILES_PROPIOS_EN_BOSS_4
 		call	PINTA_PROYECTILES_DE_DEPH_EN_BOSS_4
         call    REVISAMOS_COLISION_CON_ERRECENYX_Y_DEPH
@@ -466,6 +485,58 @@ BUCLE_PELEA_BOSS_4:
 
 NUCLEO_DE_LA_PELEA_BOSS_4:
 
+		call	CONTROL_DISPARO_ERRECENYX_BOSS_4
+		call	SECUENCIA_PROYECTIL_BOSS_4						; doble velocidad
+		call	SECUENCIA_PROYECTIL_BOSS_4						; doble velocidad
+		ret
+
+CONTROL_DISPARO_ERRECENYX_BOSS_4:
+
+		ld		a,(PROYECTIL_BOSS_4_ESPERA)
+		or		a
+		jr		z,.INTENTA_DISPARAR_PROYECTIL_ERRECENYX_BOSS_4
+		dec		a
+		ld		(PROYECTIL_BOSS_4_ESPERA),a
+		ret		nz
+
+.INTENTA_DISPARAR_PROYECTIL_ERRECENYX_BOSS_4:
+
+		call	COMPRUEBA_MOMENTO_DISPARO_ERRECENYX_BOSS_4
+		or		a
+		ret		z
+		ld		a,PROYECTIL_BOSS_4_ESPERA_INICIAL
+		ld		(PROYECTIL_BOSS_4_ESPERA),a
+		jp		ACTIVA_PROYECTIL_BOSS_4
+
+COMPRUEBA_MOMENTO_DISPARO_ERRECENYX_BOSS_4:
+
+		ld		a,(ERRECENYX_BOSS_4_FOTOGRAMA)
+		cp		PROYECTIL_BOSS_4_FOTOGRAMA_DISPARO
+		jr		nz,.NO_DISPARA_ERRECENYX_BOSS_4
+
+		; Solo disparamos en el mismo bucle en que se va a pintar
+		; el fotograma 3, que es el de la boca abierta.
+		ld		a,(ERRECENYX_BOSS_4_ESPERA_MOVIMIENTO)
+		cp		1
+		jr		nz,.NO_DISPARA_ERRECENYX_BOSS_4
+
+		call	CALCULA_RECORTE_ERRECENYX_BOSS_4
+		ld		a,(VARIABLE_UN_USO2)			; ancho visible copiado
+		cp		PROYECTIL_BOSS_4_OFFSET_BOCA_X+1
+		jr		c,.NO_DISPARA_ERRECENYX_BOSS_4
+		ld		a,(VARIABLE_UN_USO)			; recorte de origen por la izquierda
+		cp		PROYECTIL_BOSS_4_OFFSET_BOCA_X+1
+		jr		nc,.NO_DISPARA_ERRECENYX_BOSS_4
+		ld		a,(VARIABLE_UN_USO3)			; X real donde se copia Errecenyx
+		add		PROYECTIL_BOSS_4_OFFSET_BOCA_X
+		jr		c,.NO_DISPARA_ERRECENYX_BOSS_4
+
+		ld		a,1
+		ret
+
+.NO_DISPARA_ERRECENYX_BOSS_4:
+
+		xor		a
 		ret
 
 CONTROLA_INMUNIDAD_DEPH_BOSS_4:
@@ -533,50 +604,24 @@ INICIALIZA_POOL_PROYECTILES_BOSS_4:
 
 ACTIVA_PROYECTIL_BOSS_4:
 
-		call	RESERVA_SIGUIENTE_SPRITE_LIBRE_PROYECTIL_BOSS_4
-		ret		z
-		ld		a,(ERRECENYX_BOSS_4_DIRECCION)
-		or		a
-		ld		a,(ERRECENYX_BOSS_4_X)
-		jr		nz,.EMISOR_IZQ_PROYECTIL_BOSS_4
-		add		PROYECTIL_BOSS_4_OFFSET_DER_X
-		jr		.GUARDA_X_EMISOR_PROYECTIL_BOSS_4
+		call	CALCULA_RECORTE_ERRECENYX_BOSS_4
+		ld		a,(VARIABLE_UN_USO2)			; si la boca no esta dentro
+		cp		PROYECTIL_BOSS_4_OFFSET_BOCA_X+1	; de la parte visible, no dispara
+		ret		c
+		ld		a,(VARIABLE_UN_USO)
+		cp		PROYECTIL_BOSS_4_OFFSET_BOCA_X+1
+		ret		nc
 
-.EMISOR_IZQ_PROYECTIL_BOSS_4:
-
-		add		PROYECTIL_BOSS_4_OFFSET_IZQ_X
-
-.GUARDA_X_EMISOR_PROYECTIL_BOSS_4:
-
+		ld		a,(VARIABLE_UN_USO3)			; X donde se esta copiando Errecenyx
+		add		PROYECTIL_BOSS_4_OFFSET_BOCA_X
+		ret		c
 		ld		b,a
 		ld		(PROYECTIL_BOSS_4_X),a
-		ld		a,ERRECENYX_MOVIMIENTO_Y_BOSS_4+PROYECTIL_BOSS_4_OFFSET_Y
+		ld		a,ERRECENYX_MOVIMIENTO_Y_BOSS_4+PROYECTIL_BOSS_4_OFFSET_BOCA_Y
 		ld		c,a
 		ld		(PROYECTIL_BOSS_4_Y),a
-		ld		a,(PROYECTIL_BOSS_4_X)
-		ld		b,a
-		call	CALCULA_DIRECCION_BASE_PROYECTIL_BOSS_4
-		ld		(PROYECTIL_BOSS_4_PASO_TABLA),a
-		call	CREA_PROYECTIL_ERRECENYX_BOSS_4
-		ld		a,(PROYECTIL_BOSS_4_PASO_TABLA)
-		dec		a
-		cp		PROYECTIL_BOSS_4_DIRECCION_MIN
-		jr		nc,.CREA_PROYECTIL_ANTERIOR_ERRECENYX
-		ld		a,PROYECTIL_BOSS_4_DIRECCION_MAX
-
-.CREA_PROYECTIL_ANTERIOR_ERRECENYX:
-
-		call	CREA_PROYECTIL_ERRECENYX_BOSS_4
-		ld		a,(PROYECTIL_BOSS_4_PASO_TABLA)
-		inc		a
-		cp		PROYECTIL_BOSS_4_DIRECCION_MAX+1
-		jr		c,.CREA_PROYECTIL_POSTERIOR_ERRECENYX
-		ld		a,PROYECTIL_BOSS_4_DIRECCION_MIN
-
-.CREA_PROYECTIL_POSTERIOR_ERRECENYX:
-
-		call	CREA_PROYECTIL_ERRECENYX_BOSS_4
-		ret
+		call	CALCULA_DIRECCION_BASE_PROYECTIL_BOSS_4		; A = direccion hacia Deph
+		jp		CREA_PROYECTIL_ERRECENYX_BOSS_4
 
 CREA_PROYECTIL_ERRECENYX_BOSS_4:
 
@@ -717,6 +762,11 @@ DESACTIVA_PROYECTIL_BOSS_4:
 
 PINTA_PROYECTIL_BOSS_4:
 
+		ld		a,(PROYECTIL_BOSS_4_PASO_TABLA)				; contador global de animacion barro
+		inc		a
+		and		00000011b						; 0,1,2,3 = barro 1,2,3,4
+		ld		(PROYECTIL_BOSS_4_PASO_TABLA),a
+
 		ld		b,PROYECTILES_BOSS_4_CANTIDAD
 		xor		a
 		ld		(PROYECTIL_BOSS_4_INDICE_ACTUAL),a
@@ -762,15 +812,20 @@ CARGA_ATRIBUTOS_PROYECTIL_BOSS_4:
 		ld		hl,PROPIEDADES_PATRON_SPRITE+1
 		ld		(hl),a
 		inc		hl
-		ld		a,PROYECTIL_BOSS_4_PATRON_SPRITE
+		ld		a,(PROYECTIL_BOSS_4_PASO_TABLA)
+		and		00000011b
+		add		a,a
+		add		a,a
+		add		a,BARRO_PATRON_INICIAL_BOSS_4
 		jr		PINTA_PROYECTIL_BOSS_4_1
 
 CARGA_COLOR_PROYECTIL_BOSS_4_ACTUAL:
 
-		call	OBTIENE_DIRECCION_COLOR_PROYECTIL_BOSS_4
-		ld		hl,TABLA_COLOR_SPRITE_CENTRAL_BOSS_4
-		ld		bc,16
-		call	PON_COLOR_2.sin_bc_impuesta
+		; El color del barro ya queda precargado al entrar en el boss
+		; para todos los slots de proyectil 22-29.
+		; No lo copiamos aqui porque durante la pelea COLOR_BARRO
+		; no tiene por que estar paginado en RAM. Si lo leemos aqui,
+		; podemos sobreescribir el color bueno con basura o ceros.
 		ret
 
 OCULTA_SPRITE_PROYECTIL_BOSS_4_EN_VRAM:
@@ -945,11 +1000,13 @@ RESERVA_SIGUIENTE_SPRITE_LIBRE_PROYECTIL_BOSS_4:
 		or		a
 		ret
 CALCULA_DIRECCION_BASE_PROYECTIL_BOSS_4:
+		push	bc									; conserva B=x emisor y C=y emisor
 		ld      a,11
 		ld		c,0
 		call 	PAGE_31_A_SEGMENT_2
 		call	ayFX_INIT
 		call	PAGE_10_A_SEGMENT_2
+		pop		bc
 
 		ld		a,(X_DEPH)
 		ld		e,a
@@ -1082,6 +1139,98 @@ LEE_DIRECCION_TABLA_PROYECTIL_BOSS_4:
 
 		xor		a
 		ret
+
+
+; -----------------------------------------------------------------------------
+; Control del lodo en Boss 4 por coordenada Y.
+; Si Y_DEPH < 85: sprites normales y movimiento normal.
+; Si Y_DEPH >= 85: sprites de pies en lodo.
+;
+; IMPORTANTE:
+; La rutina comun de movimiento debe ejecutarse SIEMPRE.
+; Las pruebas anteriores que saltaban MOVIMIENTO_DEPH_EN_BOSS_4 o restauraban X/Y
+; dejaban a Deph bloqueado o descolocaban sus limites internos.
+; Aqui no tocamos coordenadas, no restauramos posiciones y no cortamos el flujo.
+; -----------------------------------------------------------------------------
+CONTROL_LODO_Y_MOVIMIENTO_DEPH_BOSS_4:
+
+		ld		a,(Y_DEPH)
+		cp		DEPH_LODO_LIMITE_Y_BOSS_4
+		jr		nc,.DEPH_EN_LODO_BOSS_4
+
+.DEPH_EN_SUELO_NORMAL_BOSS_4:
+
+		call	ACTIVA_SPRITES_DEPH_NORMAL_BOSS_4
+		jp		MOVIMIENTO_DEPH_EN_BOSS_4
+
+.DEPH_EN_LODO_BOSS_4:
+
+		call	ACTIVA_SPRITES_DEPH_LODO_BOSS_4
+		call	MOVIMIENTO_DEPH_EN_BOSS_4
+		; La rutina comun puede reponer colores normales al pintar a Deph.
+		; Por eso, en lodo los colores de pies se vuelcan despues del movimiento.
+		call	CARGA_COLORES_DEPH_LODO_BOSS_4
+		ret
+
+ACTIVA_SPRITES_DEPH_LODO_BOSS_4:
+
+		ld		a,(DEPH_LODO_ESTADO_BOSS_4)
+		cp		DEPH_LODO_ESTADO_ACTIVO_BOSS_4
+		ret		z
+		ld		a,DEPH_LODO_ESTADO_ACTIVO_BOSS_4
+		ld		(DEPH_LODO_ESTADO_BOSS_4),a
+		call	CARGA_SPRITES_DEPH_LODO_BOSS_4
+		call	CARGA_COLORES_DEPH_LODO_BOSS_4
+		ret
+
+ACTIVA_SPRITES_DEPH_NORMAL_BOSS_4:
+
+		ld		a,(DEPH_LODO_ESTADO_BOSS_4)
+		or		a
+		ret		z
+		xor		a
+		ld		(DEPH_LODO_ESTADO_BOSS_4),a
+		ld		(DEPH_LODO_ESPERA_BOSS_4),a
+		call	CARGA_SPRITES_DEPH_NORMAL_BOSS_4
+		call	VUELCA_DATOS_COLORES_DEPH_A_VRAM
+		ret
+
+CARGA_SPRITES_DEPH_LODO_BOSS_4:
+
+		di
+		call	PAGE_32_A_SEGMENT_2
+		ld		hl,SPRITES_BARRO_DEPH
+		ld		de,DEPH_LODO_SPRITES_VRAM_BOSS_4
+		ld		bc,DEPH_LODO_PATRON_CANT_BOSS_4*8*4
+		call	PON_COLOR_2.sin_bc_impuesta
+		call	PAGE_10_A_SEGMENT_2
+		ei
+		ret
+
+CARGA_SPRITES_DEPH_NORMAL_BOSS_4:
+
+		di
+		call	PAGE_32_A_SEGMENT_2
+		ld		hl,TODOS_LOS_SPRITES+DEPH_LODO_SPRITES_NORMAL_OFFSET_BOSS_4
+		ld		de,DEPH_LODO_SPRITES_VRAM_BOSS_4
+		ld		bc,DEPH_LODO_PATRON_CANT_BOSS_4*8*4
+		call	PON_COLOR_2.sin_bc_impuesta
+		call	PAGE_10_A_SEGMENT_2
+		ei
+		ret
+
+CARGA_COLORES_DEPH_LODO_BOSS_4:
+
+		di
+		call	PAGE_32_A_SEGMENT_2
+		ld		hl,COLOR_PIES_EN_LODO
+		ld		de,DEPH_LODO_COLOR_VRAM_BOSS_4
+		ld		bc,DEPH_LODO_COLOR_CANT_BOSS_4*16
+		call	PON_COLOR_2.sin_bc_impuesta
+		call	PAGE_10_A_SEGMENT_2
+		ei
+		ret
+
 
 MOVIMIENTO_DEPH_EN_BOSS_4:
 
@@ -2344,5 +2493,15 @@ ULTIMO_DESPLAZAMIENTO_b4:
 VOLVEMOS_b4:
 
 		jp		CARGA_SLOT_REGRESO_A_JUEGO
+
+DEPH_LODO_ESTADO_BOSS_4:
+
+		db		0
+
+DEPH_LODO_ESPERA_BOSS_4:
+
+		db		0
+
+
 
 	include	"BOSS 4 DATA.asm"
