@@ -2480,54 +2480,60 @@ CALCULA_DANO_MAGIA_BOSS_4:
 
 		org		#4000
 
-RUTINA_BOSS_5:
+		include	"BOSSES/BOSS 5.asm"
 
-		include	"AUDIOS/INICIA MUSICA_BOSS.asm"
-
-; todo el codigo de enfrentamiento
-PULSA_UNA_TECLA_PARA_SEGUIR_b5:
-
-		xor		a
-		call	GTTRIG_RAM
-		or		a
-		jp		z,PULSA_UNA_TECLA_PARA_SEGUIR_b5
-TERMINANDO_LA_BATALLA_b5:
-
-		include	"AUDIOS/INICIA MUSICA_WIN.asm"
-
-CAMINITO_A_PUERTA_b5:
-
-		include	"ANIMACIONES/PASEITO HASTA PUERTA.asm"		
-SALUDO_b5:
-
-		include	"ANIMACIONES/SALUDO_GANA_FASE.asm"		
-
-FADE_DEPH_b5:
-
-;		ld		hl,FADE_DEPH_A_NEGRO_b5
-;		include	"ANIMACIONES/FADE DEPH SALIENDO DE ESCENA.asm"
-
-ULTIMO_DESPLAZAMIENTO_b5:
-
-		include	"ANIMACIONES/PASEITO DENTRO DE PUERTA.asm"	
-VOLVEMOS_b5:
-
-		jp		CARGA_SLOT_REGRESO_A_JUEGO
-
-FADE_DEPH_A_NEGRO_b5:
-
-		incbin	"PALETAS/BOSSES/BOSS5 DEPH.FADEOUT"
-
-FADE_FASE_1_3_A_NEGRO_b5:
-
-		incbin	"PALETAS/BOSSES/BOSS5.fadeout"
-
-        ds      #8000-$-#2200                                           ; Colocamos el resto del programa siempre en el mismo sitio    
+        ds      #5E00-$                                                 ; Colocamos el resto del programa siempre en el mismo sitio    
 
 		include "BASICOS/RUTINAS CERRADAS (sin etiquetas).asm"				            ; Incluímos las referencias a la BIOS
 		include "AUDIOS/LANZADOR EFECTOS PSG (sin etiquetas).asm"
         include "PALETAS/PALETAS (sin etiquetas).asm"
 		include "AUDIOS/LANZADOR FMPACK Y MUSIC MODULE (sin etiquetas).asm"        
+
+DANO_MAGIA_EN_IDIUS_BOSS_5:
+
+		ld		a,(VIDA_IDIUS_BOSS_5)
+		or		a
+		ret		z
+		call	CALCULA_DANO_MAGIA_BOSS_5
+		ld		c,a
+		ld		a,(VIDA_IDIUS_BOSS_5)
+		cp		c
+		jr		nc,.RESTA_DANO_MAGIA_IDIUS_BOSS_5
+		xor		a
+		jr		.GUARDA_VIDA_MAGIA_IDIUS_BOSS_5
+
+.RESTA_DANO_MAGIA_IDIUS_BOSS_5:
+
+		sub		c
+
+.GUARDA_VIDA_MAGIA_IDIUS_BOSS_5:
+
+		ld		(VIDA_IDIUS_BOSS_5),a
+		push	af
+		call	PINTA_MARCADORES_VIDA_FINAL_BOSS_5
+		pop		af
+		or		a								; Z activo si Idus ha muerto
+		ret
+
+CALCULA_DANO_MAGIA_BOSS_5:
+
+		ld		a,(ARMA_USANDO)
+		cp		3
+		jr		c,.DANO_MAGIA_FLECHA_BOSS_5
+		cp		6
+		jr		c,.DANO_MAGIA_FUEGO_BOSS_5
+		ld		a,6
+		ret
+
+.DANO_MAGIA_FLECHA_BOSS_5:
+
+		ld		a,24
+		ret
+
+.DANO_MAGIA_FUEGO_BOSS_5:
+
+		ld		a,3
+		ret
 
         ds		#8000-$
 
@@ -3439,7 +3445,6 @@ STATUS_BOSS_3:
 		incbin "GRAFICOS/STATUS/STATUS BOSS 1.DAT"
 STATUS_BOSS_4:
        	incbin  "GRAFICOS/STATUS/STATUS BOSS 4.DAT"
-
         ds		#C000-$
 
 /**********************
@@ -3447,3 +3452,17 @@ STATUS_BOSS_4:
  ******   END    ******
  **********************/
 
+   /**********************
+ ****** PAGINA 59 ******
+ ****** SLOT   2 ******     graficos status
+ **********************/
+
+		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
+STATUS_BOSS_5:
+       	incbin  "GRAFICOS/STATUS/STATUS BOSS 5.DAT"
+        ds		#C000-$
+
+/**********************
+ ****** PAGINA 59 ******
+ ******   END    ******
+ **********************/
