@@ -25,53 +25,6 @@ TRAS_GAME_OVER_JUEGO_AQUI:
 
         jp      CARGA_SLOT_MENU
 
-INICIA_MUSICA_MENU_DESDE_LOGO:
-
-		call	stpmus
-
-		ld		a,1
-		ld		(MUSICA_BEST_ON),a
-
-        ld      a,39
-        call    CHANGE_BANK_2
-
-		ld		hl,M_MENU
-		ld		(MUSIC_ON),hl
-
-		call	INICIAMOS_MUSICA
-
-		di
-		call	strmus
-		call	INSTALA_INTERRUPCION_MUSICA_MENU_LOGO
-		ei
-
-		call	PAGE_10_A_SEGMENT_2
-
-		ret
-
-INSTALA_INTERRUPCION_MUSICA_MENU_LOGO:
-
-		ld		a,#C3
-		ld		(HTIMI),a
-		ld		hl,INTERRUPCION_MUSICA_MENU_LOGO
-		ld		(HTIMI+1),hl
-		ret
-
-
-INTERRUPCION_MUSICA_MENU_LOGO:
-
-		ld		a,(DIRPA2)
-		push	af
-		ld		a,39
-		ld		(DIRPA2),a
-
-		call	musint
-
-		pop		af
-		ld		(DIRPA2),a
-
-		ret
-
 CARGA_LOGO_EN_VRAM:
 
         ld      a,7                                                     ; Modo gráfico G6
@@ -121,7 +74,6 @@ RECOLOCAMOS_GRAFICOS_Y_LIMPIEZA:
         call	DOCOPY
         ld      b,28
         call    BLOQUE_PAUSA
-        call    INICIA_MUSICA_MENU_DESDE_LOGO
         call    ENASCR_RAM                                              ; Conectamos la pantalla
 
 CARGAMOS_PALETA:

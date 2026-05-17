@@ -1,6 +1,6 @@
 ACPAGE		equ		#FAF6
 
-MENU_FUENTE_Y_ORIGEN			equ		#0200+213
+MENU_FUENTE_Y_ORIGEN			equ		#0300+213
 MENU_LETRA_ANCHO				equ		6
 MENU_LETRA_ALTO					equ		6
 MENU_LETRA_ESPECIAL_BASE		equ		26
@@ -10,12 +10,15 @@ MENU_FUENTE_CARACTERES			equ		MENU_LETRA_ESPACIO+1
 MENU_FUENTE_ANCHO				equ		MENU_LETRA_ANCHO*MENU_FUENTE_CARACTERES
 PUSH_SPACE_KEY_X				equ		86
 PUSH_SPACE_KEY_Y				equ		181
+CINEMATICA_TEXTO_X				equ		12
+CINEMATICA_TEXTO_Y_1				equ		154
+CINEMATICA_TEXTO_Y_2				equ		164
+CINEMATICA_TEXTO_Y_3				equ		174
+CINEMATICA_TEXTO_Y_4				equ		184
+CINEMATICA_PAUSA_LETRA			equ		4
+CINEMATICA_PAUSA_FINAL			equ		250
 
 COMIENZA_MENU:
-
-		; La música viene arrancada desde el logo.
-		; Reinstalamos aquí la interrupción musical del menú,
-		; porque la rutina anterior vivía en la página del logo.
 
 		di
 		ld		a,#C9
@@ -53,8 +56,11 @@ MUESTRA_PRESENTACION_PROVISIONAL:
 
 		; 1 - Cargamos los gráficos de presentación en page 1, no visible.
 
-		call	CARGA_GRAFICOS_PRESENTACION_EN_PAGE_1
-		call	PREPARA_FUENTE_MENU_EN_PAGE_2
+		call	CARGA_GRAFICOS_MENU_Y_CINEMATICA
+		call	INICIA_MUSICA_MENU_PRESENTACION
+		call	CINEMATICA
+
+TITULO:
 
 		; 2 - Ponemos la primera paleta del fade in.
 
@@ -62,7 +68,11 @@ MUESTRA_PRESENTACION_PROVISIONAL:
 
 		; 3 - Copiamos la imagen de page 1 a page visible 0.
 
-		ld		hl,DATOS_COPY_PRESENTACION_PAGE_1_A_PAGE_0
+		ld		hl,DATOS_COPY_PRESENTACION_PAGE_3_A_PAGE_0
+		call	DOCOPY
+		call	VDPREADY
+
+		ld		hl,DATOS_COPY_PRESENTACION_PAGE_3_A_PAGE_1
 		call	DOCOPY
 		call	VDPREADY
 
@@ -70,10 +80,6 @@ MUESTRA_PRESENTACION_PROVISIONAL:
 
 		call	ENASCR_RAM
 		call	FADE_IN_PRESENTACION
-
-		di
-		call	INSTALA_INTERRUPCION_MUSICA_MENU
-		ei
 
 		; 5 - Pintamos texto de aviso.
 
@@ -233,13 +239,227 @@ TABLA_ESPECIALES_MENU:
 
 PINTA_TEXTO_MENU_FORMA_3:
 
+		ld		a,(ix+0)
+		or		a
+		ret		z
+
+		push	de
+		push	hl
+		push	ix
+		call	PINTA_LETRA_MENU_EN_DESTINO
+		pop		ix
+		pop		hl
+		pop		de
+
+		call	ESPERA_LETRA_CINEMATICA
+		ret		c
+
+		ld		bc,MENU_LETRA_ANCHO
+		add		hl,bc
+		inc		ix
+		jp		PINTA_TEXTO_MENU_FORMA_3
+
+CINEMATICA:
+
+		xor		a
+		call	SETPAGE
+
+		ld		hl,DATOS_COPY_CINEMATICA_1
+		ld		ix,TEXTO_CINEMATICA_1
+		call	EJECUTA_BLOQUE_CINEMATICA
+		jp		c,SALIDA_FORZADA_CINEMATICA
+
+		ld		hl,DATOS_COPY_CINEMATICA_2
+		ld		ix,TEXTO_CINEMATICA_2
+		call	EJECUTA_BLOQUE_CINEMATICA
+		jp		c,SALIDA_FORZADA_CINEMATICA
+
+		ld		hl,DATOS_COPY_CINEMATICA_3
+		ld		ix,TEXTO_CINEMATICA_3
+		call	EJECUTA_BLOQUE_CINEMATICA
+		jp		c,SALIDA_FORZADA_CINEMATICA
+
+		ld		hl,DATOS_COPY_CINEMATICA_4
+		ld		ix,TEXTO_CINEMATICA_4
+		call	EJECUTA_BLOQUE_CINEMATICA
+		ret		nc
+
+SALIDA_FORZADA_CINEMATICA:
+
+		call	FADE_OUT_CINEMATICA
+		jp		FADE_OUT_MUSICA_CINEMATICA
+
+EJECUTA_BLOQUE_CINEMATICA:
+
+		push	hl
+		push	ix
+
+		call	PONE_PRIMERA_PALETA_CINEMATICA
+		call	LIMPIA_PAGE_0_CINEMATICA
+
+		pop		ix
+		pop		hl
+
+		push	ix
+		call	DOCOPY
+		call	VDPREADY
+		call	ENASCR_RAM
+
+		call	FADE_IN_CINEMATICA
+		jr		c,.FIN_BLOQUE_CINEMATICA
+
+		call	PONE_PALETA_FINAL_CINEMATICA
+
+		pop		ix
+		push	ix
+		call	PINTA_CUATRO_FRASES_CINEMATICA
+		jr		c,.FIN_BLOQUE_CINEMATICA
+
+		ld		b,CINEMATICA_PAUSA_FINAL
+		call	ESPERA_CINEMATICA_B
+		jr		c,.FIN_BLOQUE_CINEMATICA
+
+		call	FADE_OUT_CINEMATICA
+
+.FIN_BLOQUE_CINEMATICA:
+
+		pop		ix
 		ret
 
-PREPARA_FUENTE_MENU_EN_PAGE_2:
+PONE_PRIMERA_PALETA_CINEMATICA:
 
-		ld		hl,DATOS_COPY_FUENTE_MENU_A_PAGE_2
+		ld		hl,FADE_IN_CINEMATICA_1_2
+		jp		SETPALETE_CINEMATICA
+
+PONE_PALETA_FINAL_CINEMATICA:
+
+		ld		hl,PALETA_CINEMATICA_1_2
+		jp		SETPALETE_CINEMATICA
+
+FADE_IN_CINEMATICA:
+
+		ld		hl,FADE_IN_CINEMATICA_1_2+32
+		ld		e,6
+		jp		BUCLE_FADE_CINEMATICA
+
+FADE_OUT_CINEMATICA:
+
+		ld		hl,FADE_OUT_CINEMATICA_1_2
+		ld		e,7
+
+BUCLE_FADE_CINEMATICA:
+
+		call	SETPALETE_CINEMATICA
+		push	hl
+		push	de
+		ld		b,6
+		call	ESPERA_CINEMATICA_B
+		pop		de
+		pop		hl
+		ret		c
+		dec		e
+		jp		nz,BUCLE_FADE_CINEMATICA
+		or		a
+		ret
+
+SETPALETE_CINEMATICA:
+
+		xor		a
+		di
+		out		(#99),a
+		ld		a,16+128
+		out		(#99),a
+		ld		c,#9A
+[32]	outi
+		ei
+		ret
+
+PINTA_CUATRO_FRASES_CINEMATICA:
+
+		push	ix
+		pop		hl
+
+		ld		de,CINEMATICA_TEXTO_Y_1
+		call	PINTA_FRASE_CINEMATICA_DESDE_TABLA
+		ret		c
+
+		ld		de,CINEMATICA_TEXTO_Y_2
+		call	PINTA_FRASE_CINEMATICA_DESDE_TABLA
+		ret		c
+
+		ld		de,CINEMATICA_TEXTO_Y_3
+		call	PINTA_FRASE_CINEMATICA_DESDE_TABLA
+		ret		c
+
+		ld		de,CINEMATICA_TEXTO_Y_4
+		jp		PINTA_FRASE_CINEMATICA_DESDE_TABLA
+
+PINTA_FRASE_CINEMATICA_DESDE_TABLA:
+
+		ld		c,(hl)
+		inc		hl
+		ld		b,(hl)
+		inc		hl
+		push	hl
+		push	bc
+		pop		ix
+		ld		hl,CINEMATICA_TEXTO_X
+		call	PINTA_TEXTO_MENU_FORMA_3
+		pop		hl
+		ret
+
+LIMPIA_PAGE_0_CINEMATICA:
+
+		ld		hl,DATOS_NEGRO_PAGE_0_CINEMATICA
 		call	DOCOPY
 		jp		VDPREADY
+
+ESPERA_LETRA_CINEMATICA:
+
+		ld		b,CINEMATICA_PAUSA_LETRA
+
+ESPERA_CINEMATICA_B:
+
+		halt
+		call	COMPRUEBA_SPACE_CINEMATICA
+		ret		c
+		djnz	ESPERA_CINEMATICA_B
+		or		a
+		ret
+
+COMPRUEBA_SPACE_CINEMATICA:
+
+		ld		a,8
+		call	SNSMAT_RAM
+		bit		0,a
+		jr		z,.SPACE_PULSADO
+		or		a
+		ret
+
+.SPACE_PULSADO:
+
+		scf
+		ret
+
+FADE_OUT_MUSICA_CINEMATICA:
+
+		ld		b,20
+		call	ESPERA_CINEMATICA_B
+		jp		PARA_MUSICA_MENU_PRESENTACION
+
+CARGA_GRAFICOS_MENU_Y_CINEMATICA:
+
+		call	CARGA_GRAFICOS_PRESENTACION_EN_PAGE_1
+		ld		hl,DATOS_COPY_PRESENTACION_PAGE_1_A_PAGE_3
+		call	DOCOPY
+		call	VDPREADY
+
+		call	CARGA_GRAFICOS_CINEMATICA_3_4_EN_PAGE_1
+		ld		hl,DATOS_COPY_PRESENTACION_PAGE_1_A_PAGE_2
+		call	DOCOPY
+		call	VDPREADY
+
+		jp		CARGA_GRAFICOS_CINEMATICA_1_2_EN_PAGE_1
 
 CARGA_GRAFICOS_PRESENTACION_EN_PAGE_1:
 
@@ -263,7 +483,51 @@ CARGA_GRAFICOS_PRESENTACION_EN_PAGE_1:
 
 		ld		hl,PANTALLA_DE_PRESENTACION_2
 		ld		de,#C000
-		ld		bc,PALETA_PRESENTACION_FIJA-PANTALLA_DE_PRESENTACION_2
+		ld		bc,#4000
+		call	PON_COLOR_2.sin_bc_impuesta
+
+		ei
+		ret
+
+CARGA_GRAFICOS_CINEMATICA_1_2_EN_PAGE_1:
+
+		di
+		ld		a,60
+		ld		(DIRPA2),a
+
+		ld		hl,CINEMATICA_1_2_1
+		ld		de,#8000
+		ld		bc,#4000
+		call	PON_COLOR_2.sin_bc_impuesta
+
+		ld		a,61
+		ld		(DIRPA2),a
+
+		ld		hl,CINEMATICA_1_2_2
+		ld		de,#C000
+		ld		bc,#4000
+		call	PON_COLOR_2.sin_bc_impuesta
+
+		ei
+		ret
+
+CARGA_GRAFICOS_CINEMATICA_3_4_EN_PAGE_1:
+
+		di
+		ld		a,62
+		ld		(DIRPA2),a
+
+		ld		hl,CINEMATICA_3_4_1
+		ld		de,#8000
+		ld		bc,#4000
+		call	PON_COLOR_2.sin_bc_impuesta
+
+		ld		a,63
+		ld		(DIRPA2),a
+
+		ld		hl,CINEMATICA_3_4_2
+		ld		de,#C000
+		ld		bc,#4000
 		call	PON_COLOR_2.sin_bc_impuesta
 
 		ei
@@ -272,11 +536,8 @@ CARGA_GRAFICOS_PRESENTACION_EN_PAGE_1:
 
 PONE_PRIMERA_PALETA_PRESENTACION:
 
-		ld		a,5
-		call	CHANGE_BANK_2
-
-		ld		hl,PALETA_PRESENTACION_FADE_IN
-		jp		SETPALETE
+		ld		hl,PALETA_MENU_LOCAL_FADE_IN
+		jp		SETPALETE_CINEMATICA
 
 INICIA_MUSICA_MENU_PRESENTACION:
 
@@ -342,65 +603,178 @@ PARA_MUSICA_MENU_PRESENTACION:
 
 FADE_IN_PRESENTACION:
 
-		ld		a,5
-		call	CHANGE_BANK_2
-
 		; La primera paleta ya se ha puesto antes.
 		; Empezamos en la segunda.
 
-		ld		hl,PALETA_PRESENTACION_FADE_IN+32
-		ld		e,7
+		ld		hl,PALETA_MENU_LOCAL_FADE_IN+32
+		ld		e,6
 
 .BUCLE_FADE_IN_PRESENTACION:
 
-		call	SETPALETE
+		call	SETPALETE_CINEMATICA
 
+		push	hl
+		push	de
 		ld		a,6
 		call	BUCLE_PINTA_TILES.rutina_de_pausa
+		pop		de
+		pop		hl
 
 		dec		e
 		jp		nz,.BUCLE_FADE_IN_PRESENTACION
 
 		; Dejamos la paleta final fija por seguridad.
 
-		ld		a,5
-		call	CHANGE_BANK_2
-		ld		hl,PALETA_PRESENTACION_FIJA
-		jp		SETPALETE
+		ld		hl,PALETA_MENU_LOCAL_FIJA
+		jp		SETPALETE_CINEMATICA
 
 FADE_OUT_PRESENTACION:
 
-		ld		a,5
-		call	CHANGE_BANK_2
-
-		ld		hl,PALETA_PRESENTACION_FADE_OUT
-		ld		e,8
+		ld		hl,PALETA_MENU_LOCAL_FADE_OUT
+		ld		e,7
 
 .BUCLE_FADE_OUT_PRESENTACION:
 
-		call	SETPALETE
+		call	SETPALETE_CINEMATICA
 
+		push	hl
+		push	de
 		ld		a,6
 		call	BUCLE_PINTA_TILES.rutina_de_pausa
+		pop		de
+		pop		hl
 
 		dec		e
 		jp		nz,.BUCLE_FADE_OUT_PRESENTACION
 
 		ret
 
-DATOS_COPY_PRESENTACION_PAGE_1_A_PAGE_0:
+DATOS_COPY_PRESENTACION_PAGE_1_A_PAGE_3:
 
-		dw		#0000,#0100		; origen  x=0, y=page 1
-		dw		#0000,#0000		; destino x=0, y=page 0 visible
-		dw		#0100,#0100		; ancho 256, alto 256
+		dw		#0000,#0100
+		dw		#0000,#0300
+		dw		#0100,#0100
 		db		#00,#00,10010000b
 
-DATOS_COPY_FUENTE_MENU_A_PAGE_2:
+DATOS_COPY_PRESENTACION_PAGE_1_A_PAGE_2:
 
-		dw		#0000,#0100+213
-		dw		#0000,#0200+213
-		dw		MENU_FUENTE_ANCHO,MENU_LETRA_ALTO
+		dw		#0000,#0100
+		dw		#0000,#0200
+		dw		#0100,#0100
 		db		#00,#00,10010000b
+
+DATOS_COPY_PRESENTACION_PAGE_3_A_PAGE_0:
+
+		dw		#0000,#0300
+		dw		#0000,#0000
+		dw		#0100,#0100
+		db		#00,#00,10010000b
+
+DATOS_COPY_PRESENTACION_PAGE_3_A_PAGE_1:
+
+		dw		#0000,#0300
+		dw		#0000,#0100
+		dw		#0100,#0100
+		db		#00,#00,10010000b
+
+DATOS_NEGRO_PAGE_0_CINEMATICA:
+
+		dw		#0000,#0000
+		dw		#0000,#0000
+		dw		#0100,#0100
+		db		#00,#00,11000000b
+
+DATOS_COPY_CINEMATICA_1:
+
+		dw		#0000,#0100
+		dw		#0000,#0000
+		dw		#00FF,#008C
+		db		#00,#00,10010000b
+
+DATOS_COPY_CINEMATICA_2:
+
+		dw		#0000,#0100+141
+		dw		#0000,#0000
+		dw		#00FF,#0073
+		db		#00,#00,10010000b
+
+DATOS_COPY_CINEMATICA_3:
+
+		dw		#0000,#0200
+		dw		#0000,#0000
+		dw		#00FF,#008C
+		db		#00,#00,10010000b
+
+DATOS_COPY_CINEMATICA_4:
+
+		dw		#0000,#0200+141
+		dw		#0000,#0000
+		dw		#00FF,#0073
+		db		#00,#00,10010000b
+
+TEXTO_CINEMATICA_1:
+
+		dw		TEXTO_CINEMATICA_1_1
+		dw		TEXTO_CINEMATICA_1_2
+		dw		TEXTO_CINEMATICA_1_3
+		dw		TEXTO_CINEMATICA_1_4
+
+TEXTO_CINEMATICA_2:
+
+		dw		TEXTO_CINEMATICA_2_1
+		dw		TEXTO_CINEMATICA_2_2
+		dw		TEXTO_CINEMATICA_2_3
+		dw		TEXTO_CINEMATICA_2_4
+
+TEXTO_CINEMATICA_3:
+
+		dw		TEXTO_CINEMATICA_3_1
+		dw		TEXTO_CINEMATICA_3_2
+		dw		TEXTO_CINEMATICA_3_3
+		dw		TEXTO_CINEMATICA_3_4
+
+TEXTO_CINEMATICA_4:
+
+		dw		TEXTO_CINEMATICA_4_1
+		dw		TEXTO_CINEMATICA_4_2
+		dw		TEXTO_CINEMATICA_4_3
+		dw		TEXTO_CINEMATICA_4_4
+
+TEXTO_CINEMATICA_1_1:
+		db		"Mientras amanece y todos se duchan",0
+TEXTO_CINEMATICA_1_2:
+		db		"Benja, el desarrollador es un poco trucha.",0
+TEXTO_CINEMATICA_1_3:
+		db		"El sol lo hinunda todo de norte a sur",0
+TEXTO_CINEMATICA_1_4:
+		db		"por eso no pienso volar con wintertour.",0
+
+TEXTO_CINEMATICA_2_1:
+		db		"El chumino se decuelga",0
+TEXTO_CINEMATICA_2_2:
+		db		"vamos todos a la huelga.",0
+TEXTO_CINEMATICA_2_3:
+		db		"tulitulitulitu",0
+TEXTO_CINEMATICA_2_4:
+		db		"visteme con canesu.",0
+
+TEXTO_CINEMATICA_3_1:
+		db		"si llego a saber que me dices eso",0
+TEXTO_CINEMATICA_3_2:
+		db		"te doy con la polla en los sesos.",0
+TEXTO_CINEMATICA_3_3:
+		db		"si me vas a contestar",0
+TEXTO_CINEMATICA_3_4:
+		db		"pues te doy en el paladar.",0
+
+TEXTO_CINEMATICA_4_1:
+		db		"Ya no se me ocurren mas rimas",0
+TEXTO_CINEMATICA_4_2:
+		db		"por eso he llamado a mi prima.",0
+TEXTO_CINEMATICA_4_3:
+		db		"esta es la ultima frase",0
+TEXTO_CINEMATICA_4_4:
+		db		"el pan me pide que lo amase.",0
 
 ROTATIVO_X_PRESENTACION				equ		VARIABLE_UN_USO
 ROTATIVO_CONTADOR_PRESENTACION		equ		VARIABLE_UN_USO2
@@ -665,7 +1039,7 @@ DATOS_NEGRO_ROTATIVO_EN_PAGE_1:
 
 TEXTO_ROTATIVO_PRESENTACION:
 
-		db		"BLUE WARRIOR II - Beta version 4.4.09 - 17/5/2026 - 61% - (C) Digital Moai - TECLAS 1 - 5 PARA IR DIRECTO A FASE",0
+		db		"BLUE WARRIOR II - Beta version 4.5.03 - 17/5/2026 - 61% - (C) Digital Moai - TECLAS 1 - 5 PARA IR DIRECTO A FASE",0
 		;db		"A Digital Moai Production - Project Direction, Phase Design, Story, Script, Level Design, Pixel Art and Music Composition: Manuel Dopico - Programming, Sprites, Pixel Art Corrections and Sound Effects: Benjamin Miguel - Graphics: Lucas Sera Piao - Lead Beta Tester and Quality Control: Xavi Sorinas - Packaging: XXX - Cover Illustration: XXX - Digital Moai sincerely thanks the following entities for helping keep the MSX alive: AAMSX (Spain), MSX Boixos Club (Spain), MSX.org (Holland) - (c) Digital Moai 2026",0
 
 TEXTO_ROTATIVO_PRESENTACION_FIN:
@@ -793,3 +1167,18 @@ NOS_VAMOS_AL_JUEGO:
 		ld		a,8
 		ld      (DIRPA2),a										    ; Banco 1, pagina 3 del MEGAROM
 		jp		CARGA_SLOT_JUEGO
+
+PALETA_CINEMATICA_1_2:
+       	incbin  "../PALETAS/PRESENTACION/CINEMATICA12.palete"
+FADE_IN_CINEMATICA_1_2:
+		incbin  "../PALETAS/PRESENTACION/CINEMATICA12.fadein"
+FADE_OUT_CINEMATICA_1_2:
+		incbin  "../PALETAS/PRESENTACION/CINEMATICA12.fadeout"
+PALETA_MENU_LOCAL_FIJA:
+		incbin  "../PALETAS/PRESENTACION/MENUIMAG.palete"
+
+PALETA_MENU_LOCAL_FADE_IN:
+		incbin  "../PALETAS/PRESENTACION/MENUIMAG.fadein"
+
+PALETA_MENU_LOCAL_FADE_OUT:
+		incbin  "../PALETAS/PRESENTACION/MENUIMAG.fadeout"

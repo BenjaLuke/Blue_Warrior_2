@@ -266,16 +266,6 @@ PANTALLA_DE_PRESENTACION_2:
 
 		incbin  "GRAFICOS/PRESENTACIONES/DIBUJO_MENU2.DAT"
 
-PALETA_PRESENTACION_FIJA:
-		incbin  "PALETAS/PRESENTACION/MENUIMAG.palete"
-
-PALETA_PRESENTACION_FADE_IN:
-		incbin  "PALETAS/PRESENTACION/MENUIMAG.fadein"
-
-PALETA_PRESENTACION_FADE_OUT:
-		incbin  "PALETAS/PRESENTACION/MENUIMAG.fadeout"
-
-
         ds		#C000-$
 
 /**********************
@@ -3521,24 +3511,5 @@ CINEMATICA_3_4_2:
 
 /**********************
  ****** PAGINA 63 ******
- ******   END    ******
- **********************/
-
- /**********************
- ****** PAGINA 64 ******
- ****** SLOT   2 ******     paletas cinematica
- **********************/
-
-		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
-PALETA_CINEMATICA_1_2:
-       	incbin  "PALETAS/PRESENTACION/CINEMATICA12.palete"
-FADE_IN_CINEMATICA_1_2:
-		incbin  "PALETAS/PRESENTACION/CINEMATICA12.fadein"
-FADE_OUT_CINEMATICA_1_2:
-		incbin  "PALETAS/PRESENTACION/CINEMATICA12.fadeout"
-        ds		#C000-$
-
-/**********************
- ****** PAGINA 64 ******
  ******   END    ******
  **********************/
