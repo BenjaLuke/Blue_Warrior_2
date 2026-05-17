@@ -1,7 +1,12 @@
-GRPPRT		equ		#008D
-GRPACX		equ		#FCB7
-GRPACY		equ		#FCB9
 ACPAGE		equ		#FAF6
+
+MENU_FUENTE_Y_ORIGEN			equ		#0200+213
+MENU_LETRA_ANCHO				equ		6
+MENU_LETRA_ALTO					equ		6
+MENU_LETRA_ESPACIO				equ		26
+MENU_FUENTE_ANCHO				equ		MENU_LETRA_ANCHO*(MENU_LETRA_ESPACIO+1)
+PUSH_SPACE_KEY_X				equ		86
+PUSH_SPACE_KEY_Y				equ		181
 
 COMIENZA_MENU:
 
@@ -46,6 +51,7 @@ MUESTRA_PRESENTACION_PROVISIONAL:
 		; 1 - Cargamos los gráficos de presentación en page 1, no visible.
 
 		call	CARGA_GRAFICOS_PRESENTACION_EN_PAGE_1
+		call	PREPARA_FUENTE_MENU_EN_PAGE_2
 
 		; 2 - Ponemos la primera paleta del fade in.
 
@@ -78,22 +84,9 @@ MUESTRA_PRESENTACION_PROVISIONAL:
 
 PINTA_TEXTO_PUSH_SPACE_KEY:
 
-		; SCREEN 5: texto gráfico.
-		; "PUSH SPACE KEY" = 14 letras.
-		; 14 * 8 = 112 px.
-		; (256 - 112) / 2 = 72.
-		; Y = 160 deja margen inferior.
-
-		ld		a,15
-		ld		(FORCLR),a
-
-		ld		hl,72
-		ld		(GRPACX),hl
-
-		ld		hl,181
-		ld		(GRPACY),hl
-
-		ld		hl,TEXTO_PUSH_SPACE_KEY
+		call	OBTIENE_DESTINO_Y_PUSH_SPACE_KEY
+		ld		hl,PUSH_SPACE_KEY_X
+		ld		ix,TEXTO_PUSH_SPACE_KEY
 		jp		BUCLE_PINTA_TEXTO_PUSH_SPACE_KEY
 
 
@@ -113,21 +106,113 @@ PINTA_TEXTO_PUSH_SPACE_KEY_EN_DOS_PAGES:
 
 BUCLE_PINTA_TEXTO_PUSH_SPACE_KEY:
 
-		ld		a,(hl)
+		ld		a,(ix+0)
 		or		a
 		ret		z
 
+		push	de
 		push	hl
-		call	GRPPRT
+		push	ix
+		call	PINTA_LETRA_MENU_EN_DESTINO
+		pop		ix
 		pop		hl
+		pop		de
 
-		inc		hl
+		ld		bc,MENU_LETRA_ANCHO
+		add		hl,bc
+		inc		ix
 		jp		BUCLE_PINTA_TEXTO_PUSH_SPACE_KEY
 
 
 TEXTO_PUSH_SPACE_KEY:
 
 		db		"PUSH SPACE KEY",0
+
+OBTIENE_DESTINO_Y_PUSH_SPACE_KEY:
+
+		ld		a,(ACPAGE)
+		or		a
+		ld		de,PUSH_SPACE_KEY_Y
+		ret		z
+		ld		de,#0100+PUSH_SPACE_KEY_Y
+		ret
+
+OBTIENE_DESTINO_Y_ROTATIVO_DESDE_A:
+
+		or		a
+		ld		de,ROTATIVO_Y_PRESENTACION
+		ret		z
+		ld		de,#0100+ROTATIVO_Y_PRESENTACION
+		ret
+
+PINTA_LETRA_MENU_EN_DESTINO:
+
+		push	hl
+		push	de
+		call	CALCULA_ORIGEN_X_LETRA_MENU
+		ld		ix,DATOS_DEL_TILE_PARA_COPY
+		ld		(ix),l
+		ld		(ix+1),h
+		ld		hl,MENU_FUENTE_Y_ORIGEN
+		ld		(ix+2),l
+		ld		(ix+3),h
+		pop		hl
+		ld		(ix+6),l
+		ld		(ix+7),h
+		pop		hl
+		ld		(ix+4),l
+		ld		(ix+5),h
+		ld		(ix+8),MENU_LETRA_ANCHO
+		ld		(ix+9),0
+		ld		(ix+10),MENU_LETRA_ALTO
+		ld		(ix+11),0
+		ld		(ix+12),#00
+		ld		(ix+13),#00
+		ld		(ix+14),11010000b
+		call	HL_DATOS_DEL_COPY
+		jp		VDPREADY
+
+CALCULA_ORIGEN_X_LETRA_MENU:
+
+		cp		97
+		jr		c,.MIRA_MAYUSCULAS
+		cp		123
+		jr		nc,.MIRA_MAYUSCULAS
+		sub		32
+
+.MIRA_MAYUSCULAS:
+
+		cp		65
+		jr		c,.ES_ESPACIO
+		cp		91
+		jr		nc,.ES_ESPACIO
+		sub		65
+		jr		.MULTIPLICA
+
+.ES_ESPACIO:
+
+		ld		a,MENU_LETRA_ESPACIO
+
+.MULTIPLICA:
+
+		ld		e,a
+		ld		d,0
+		ld		h,d
+		ld		l,e
+		add		hl,hl
+		add		hl,de
+		add		hl,hl
+		ret
+
+PINTA_TEXTO_MENU_FORMA_3:
+
+		ret
+
+PREPARA_FUENTE_MENU_EN_PAGE_2:
+
+		ld		hl,DATOS_COPY_FUENTE_MENU_A_PAGE_2
+		call	DOCOPY
+		jp		VDPREADY
 
 CARGA_GRAFICOS_PRESENTACION_EN_PAGE_1:
 
@@ -283,6 +368,13 @@ DATOS_COPY_PRESENTACION_PAGE_1_A_PAGE_0:
 		dw		#0100,#0100		; ancho 256, alto 256
 		db		#00,#00,10010000b
 
+DATOS_COPY_FUENTE_MENU_A_PAGE_2:
+
+		dw		#0000,#0100+213
+		dw		#0000,#0200+213
+		dw		MENU_FUENTE_ANCHO,MENU_LETRA_ALTO
+		db		#00,#00,10010000b
+
 ROTATIVO_X_PRESENTACION				equ		VARIABLE_UN_USO
 ROTATIVO_CONTADOR_PRESENTACION		equ		VARIABLE_UN_USO2
 ROTATIVO_PAGINA_VISIBLE_PRESENTACION	equ		VARIABLE_UN_USO3
@@ -297,7 +389,7 @@ ROTATIVO_VELOCIDAD_PRESENTACION		equ		1
 ; 1 = suave, 2 = más rápido, 3 = más rápido pero menos fino.
 ROTATIVO_PIXELES_POR_PASO_PRESENTACION	equ		3
 
-ROTATIVO_LIMITE_PRESENTACION		equ		65536-((TEXTO_ROTATIVO_PRESENTACION_FIN-TEXTO_ROTATIVO_PRESENTACION-1)*8)
+ROTATIVO_LIMITE_PRESENTACION		equ		65536-((TEXTO_ROTATIVO_PRESENTACION_FIN-TEXTO_ROTATIVO_PRESENTACION-1)*MENU_LETRA_ANCHO)
 
 
 INICIALIZA_ROTATIVO_PRESENTACION:
@@ -407,14 +499,9 @@ MUESTRA_PAGE_OCULTA_ROTATIVO:
 
 PINTA_ROTATIVO_PRESENTACION_EN_PAGE_OCULTA:
 
-		; GRPPRT dibuja en ACPAGE.
-		; Ponemos como activa la page que ahora no se ve.
-
 		call	OBTIENE_PAGE_OCULTA_ROTATIVO
 		ld		(ACPAGE),a
-
-		ld		a,15
-		ld		(FORCLR),a
+		call	OBTIENE_DESTINO_Y_ROTATIVO_DESDE_A
 
 		ld		ix,TEXTO_ROTATIVO_PRESENTACION
 		ld		hl,(ROTATIVO_X_PRESENTACION)
@@ -434,28 +521,25 @@ PINTA_ROTATIVO_PRESENTACION_EN_PAGE_OCULTA:
 		jr		nz,.SALTA_CARACTER_ROTATIVO_PRESENTACION
 
 		ld		a,l
-		cp		248
+		cp		251
 		jr		nc,.SALTA_CARACTER_ROTATIVO_PRESENTACION
 
+		push	de
 		push	hl
 		push	ix
 
-		ld		(GRPACX),hl
-
-		ld		hl,ROTATIVO_Y_PRESENTACION
-		ld		(GRPACY),hl
-
 		ld		a,(ix+0)
-		call	GRPPRT
+		call	PINTA_LETRA_MENU_EN_DESTINO
 
 		pop		ix
 		pop		hl
+		pop		de
 
 
 .SALTA_CARACTER_ROTATIVO_PRESENTACION:
 
-		ld		de,8
-		add		hl,de
+		ld		bc,MENU_LETRA_ANCHO
+		add		hl,bc
 
 		inc		ix
 		jp		.BUCLE_PINTA_ROTATIVO_PRESENTACION
@@ -555,7 +639,7 @@ DATOS_NEGRO_ROTATIVO_EN_PAGE_1:
 TEXTO_ROTATIVO_PRESENTACION:
 
 		db		"BLUE WARRIOR II - Beta version 4.4.02 - 15/5/2026 - 61% - (C) Digital Moai - TECLAS 1 - 5 PARA IR DIRECTO A FASE",0
-		db		"A Digital Moai Production - Project Direction, Phase Design, Story, Script, Level Design, Pixel Art and Music Composition: Manuel Dopico - Programming, Sprites, Pixel Art Corrections and Sound Effects: Benjamin Miguel - Graphics: Lucas Sera Piao - Lead Beta Tester and Quality Control: Xavi Sorinas - Packaging: XXX - Cover Illustration: XXX - Digital Moai sincerely thanks the following entities for helping keep the MSX alive: AAMSX (Spain), MSX Boixos Club (Spain), MSX.org (Holland) - (c) Digital Moai 2026",0
+		;db		"A Digital Moai Production - Project Direction, Phase Design, Story, Script, Level Design, Pixel Art and Music Composition: Manuel Dopico - Programming, Sprites, Pixel Art Corrections and Sound Effects: Benjamin Miguel - Graphics: Lucas Sera Piao - Lead Beta Tester and Quality Control: Xavi Sorinas - Packaging: XXX - Cover Illustration: XXX - Digital Moai sincerely thanks the following entities for helping keep the MSX alive: AAMSX (Spain), MSX Boixos Club (Spain), MSX.org (Holland) - (c) Digital Moai 2026",0
 
 TEXTO_ROTATIVO_PRESENTACION_FIN:
 

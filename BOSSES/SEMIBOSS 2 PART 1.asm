@@ -468,7 +468,12 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK:
         ex      af,af'
         ld      a,(PAUSA_TOQUE_ROCA_HACHA)
         or      a
-        jp      nz,.SIGUIENTE_EN_EL_BUCLE
+        jp      z,.SIN_PAUSA_TOQUE_ROCA_HACHA
+        ex      af,af'
+        jp      .SIGUIENTE_EN_EL_BUCLE
+
+.SIN_PAUSA_TOQUE_ROCA_HACHA:
+
         ex      af,af'        
 
 	ld	ix,VALORES_SPRITES_PIEDRAS
