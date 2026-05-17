@@ -3466,3 +3466,79 @@ STATUS_BOSS_5:
  ****** PAGINA 59 ******
  ******   END    ******
  **********************/
+    /**********************
+ ****** PAGINA 60 ******
+ ****** SLOT   2 ******     graficos cinematica
+ **********************/
+
+		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
+CINEMATICA_1_2_1:
+       	incbin  "GRAFICOS/PRESENTACIONES/CINEMATICA1Y2-1.DAT"
+        ds		#C000-$
+
+/**********************
+ ****** PAGINA 60 ******
+ ******   END    ******
+ **********************/
+    /**********************
+ ****** PAGINA 61 ******
+ ****** SLOT   2 ******     graficos cinematica
+ **********************/
+
+		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
+CINEMATICA_1_2_2:
+       	incbin  "GRAFICOS/PRESENTACIONES/CINEMATICA1Y2-2.DAT"
+        ds		#C000-$
+
+/**********************
+ ****** PAGINA 61 ******
+ ******   END    ******
+ **********************/
+    /**********************
+ ****** PAGINA 62 ******
+ ****** SLOT   2 ******     graficos cinematica
+ **********************/
+
+		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
+CINEMATICA_3_4_1:
+       	incbin  "GRAFICOS/PRESENTACIONES/CINEMATICA3Y4-1.DAT"
+        ds		#C000-$
+
+/**********************
+ ****** PAGINA 62 ******
+ ******   END    ******
+ **********************/
+
+/**********************
+ ****** PAGINA 63 ******
+ ****** SLOT   2 ******     graficos cinematica
+ **********************/
+
+		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
+CINEMATICA_3_4_2:
+       	incbin  "GRAFICOS/PRESENTACIONES/CINEMATICA3Y4-2.DAT"
+        ds		#C000-$
+
+/**********************
+ ****** PAGINA 63 ******
+ ******   END    ******
+ **********************/
+
+ /**********************
+ ****** PAGINA 64 ******
+ ****** SLOT   2 ******     paletas cinematica
+ **********************/
+
+		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
+PALETA_CINEMATICA_1_2:
+       	incbin  "PALETAS/PRESENTACION/CINEMATICA12.palete"
+FADE_IN_CINEMATICA_1_2:
+		incbin  "PALETAS/PRESENTACION/CINEMATICA12.fadein"
+FADE_OUT_CINEMATICA_1_2:
+		incbin  "PALETAS/PRESENTACION/CINEMATICA12.fadeout"
+        ds		#C000-$
+
+/**********************
+ ****** PAGINA 64 ******
+ ******   END    ******
+ **********************/

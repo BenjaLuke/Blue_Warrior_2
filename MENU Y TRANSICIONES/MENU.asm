@@ -3,8 +3,11 @@ ACPAGE		equ		#FAF6
 MENU_FUENTE_Y_ORIGEN			equ		#0200+213
 MENU_LETRA_ANCHO				equ		6
 MENU_LETRA_ALTO					equ		6
-MENU_LETRA_ESPACIO				equ		26
-MENU_FUENTE_ANCHO				equ		MENU_LETRA_ANCHO*(MENU_LETRA_ESPACIO+1)
+MENU_LETRA_ESPECIAL_BASE		equ		26
+MENU_LETRA_ESPECIALES_CANT		equ		16
+MENU_LETRA_ESPACIO				equ		MENU_LETRA_ESPECIAL_BASE+MENU_LETRA_ESPECIALES_CANT
+MENU_FUENTE_CARACTERES			equ		MENU_LETRA_ESPACIO+1
+MENU_FUENTE_ANCHO				equ		MENU_LETRA_ANCHO*MENU_FUENTE_CARACTERES
 PUSH_SPACE_KEY_X				equ		86
 PUSH_SPACE_KEY_Y				equ		181
 
@@ -183,10 +186,30 @@ CALCULA_ORIGEN_X_LETRA_MENU:
 .MIRA_MAYUSCULAS:
 
 		cp		65
-		jr		c,.ES_ESPACIO
+		jr		c,.MIRA_ESPECIALES
 		cp		91
-		jr		nc,.ES_ESPACIO
+		jr		nc,.MIRA_ESPECIALES
 		sub		65
+		jr		.MULTIPLICA
+
+.MIRA_ESPECIALES:
+
+		ld		hl,TABLA_ESPECIALES_MENU
+		ld		b,MENU_FUENTE_CARACTERES-MENU_LETRA_ESPECIAL_BASE
+		ld		c,MENU_LETRA_ESPECIAL_BASE
+
+.BUCLE_ESPECIALES:
+
+		cp		(hl)
+		jr		z,.ES_ESPECIAL
+		inc		hl
+		inc		c
+		djnz	.BUCLE_ESPECIALES
+		jr		.ES_ESPACIO
+
+.ES_ESPECIAL:
+
+		ld		a,c
 		jr		.MULTIPLICA
 
 .ES_ESPACIO:
@@ -203,6 +226,10 @@ CALCULA_ORIGEN_X_LETRA_MENU:
 		add		hl,de
 		add		hl,hl
 		ret
+
+TABLA_ESPECIALES_MENU:
+
+		db		"-/()1234567890%."
 
 PINTA_TEXTO_MENU_FORMA_3:
 
@@ -638,7 +665,7 @@ DATOS_NEGRO_ROTATIVO_EN_PAGE_1:
 
 TEXTO_ROTATIVO_PRESENTACION:
 
-		db		"BLUE WARRIOR II - Beta version 4.4.02 - 15/5/2026 - 61% - (C) Digital Moai - TECLAS 1 - 5 PARA IR DIRECTO A FASE",0
+		db		"BLUE WARRIOR II - Beta version 4.4.09 - 17/5/2026 - 61% - (C) Digital Moai - TECLAS 1 - 5 PARA IR DIRECTO A FASE",0
 		;db		"A Digital Moai Production - Project Direction, Phase Design, Story, Script, Level Design, Pixel Art and Music Composition: Manuel Dopico - Programming, Sprites, Pixel Art Corrections and Sound Effects: Benjamin Miguel - Graphics: Lucas Sera Piao - Lead Beta Tester and Quality Control: Xavi Sorinas - Packaging: XXX - Cover Illustration: XXX - Digital Moai sincerely thanks the following entities for helping keep the MSX alive: AAMSX (Spain), MSX Boixos Club (Spain), MSX.org (Holland) - (c) Digital Moai 2026",0
 
 TEXTO_ROTATIVO_PRESENTACION_FIN:
