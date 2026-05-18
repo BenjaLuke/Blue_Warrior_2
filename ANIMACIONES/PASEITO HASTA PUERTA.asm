@@ -23,7 +23,7 @@
 .CONTROLA_Y:
 
 		ld		a,(PUNTO_DEL_SCROLL)
-		add		85
+		add		45
 		ld		b,a
 		ld		a,(Y_DEPH)
 		cp		b
