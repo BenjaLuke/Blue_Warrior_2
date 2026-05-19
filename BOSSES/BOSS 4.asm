@@ -1,4 +1,4 @@
-VIDA_INICIAL_ERRECENYX_BOSS_4:				equ	1
+VIDA_INICIAL_ERRECENYX_BOSS_4:				equ	80
 VIDA_TOTAL_INICIAL_BOSS_4:					equ	VIDA_INICIAL_ERRECENYX_BOSS_4
 VIDA_ANCHO_BARRA_BOSS_4:					equ	99
 
@@ -2239,36 +2239,70 @@ DESACTIVA_PROYECTIL_OJO_BOSS_4_ACTUAL:
 
 REVISAMOS_COLISION_CON_ERRECENYX_Y_DEPH:
 
+		; Hitbox Errecenyx/Herrecenix reducido 20 px por cada lado.
+		; Deph se sigue tratando como caja aproximada de 20x20.
+		;
+		; X original visible:
+		;   izquierda = VARIABLE_UN_USO3
+		;   ancho     = VARIABLE_UN_USO2
+		;
+		; X reducido:
+		;   izquierda = VARIABLE_UN_USO3 + 20
+		;   derecha   = VARIABLE_UN_USO3 + VARIABLE_UN_USO2 - 20
+		;
+		; Y original:
+		;   arriba = ERRECENYX_MOVIMIENTO_Y_BOSS_4
+		;   alto   = ERRECENYX_MOVIMIENTO_ALTO_BOSS_4
+		;
+		; Y reducido:
+		;   arriba = ERRECENYX_MOVIMIENTO_Y_BOSS_4 + 20
+		;   abajo  = ERRECENYX_MOVIMIENTO_Y_BOSS_4 + ERRECENYX_MOVIMIENTO_ALTO_BOSS_4 - 20
+
 		call	CALCULA_RECORTE_ERRECENYX_BOSS_4
+
+		; Si el ancho visible es 40 o menos, al meter 20 por cada lado
+		; no queda hitbox real.
 		ld		a,(VARIABLE_UN_USO2)
-		or		a
-		ret		z
+		cp		41
+		ret		c
+
+		; Comprueba borde izquierdo reducido:
+		; Deph derecha >= Errecenyx izquierda + 20
 		ld		a,(VARIABLE_UN_USO3)
+		add		20
 		ld		c,a
 		ld		a,(X_DEPH)
 		add		20
 		cp		c
 		ret		c
 
+		; Comprueba borde derecho reducido:
+		; Deph izquierda < Errecenyx derecha - 20
 		ld		a,(VARIABLE_UN_USO3)
 		ld		c,a
 		ld		a,(VARIABLE_UN_USO2)
 		add		c
+		sub		20
 		ld		c,a
 		ld		a,(X_DEPH)
 		cp		c
 		ret		nc
 
+		; Comprueba borde superior reducido:
+		; Deph abajo >= Errecenyx arriba + 20
 		ld		a,(Y_DEPH)
 		add		20
-		cp		ERRECENYX_MOVIMIENTO_Y_BOSS_4
+		cp		ERRECENYX_MOVIMIENTO_Y_BOSS_4+20
 		ret		c
+
+		; Comprueba borde inferior reducido:
+		; Deph arriba < Errecenyx abajo - 20
 		ld		a,(Y_DEPH)
-		cp		ERRECENYX_MOVIMIENTO_Y_BOSS_4+ERRECENYX_MOVIMIENTO_ALTO_BOSS_4
+		cp		ERRECENYX_MOVIMIENTO_Y_BOSS_4+ERRECENYX_MOVIMIENTO_ALTO_BOSS_4-20
 		ret		nc
 
 		call	DANO_DEPH_EN_BOSS_4
-	ret
+		ret
 
 DANO_DEPH_EN_BOSS_4:
 
@@ -2295,21 +2329,28 @@ REVISAMOS_COLISION_CON_DEPH_Y_COVIDS_BOSS_4:
 		or		a
 		jr		z,.SIGUIENTE_COLISION_DEPH_COVID_BOSS_4
 
-		; Caja aproximada Deph/COVID: Deph +20 contra COVID 16 px.
+		; Caja Deph/COVID ajustada:
+		; Deph aprox. 20x20 contra COVID hitbox 8x4 centrado en sprite 16x16.
+		; COVID hitbox: X+4, Y+6, ancho 8, alto 4.
+
 		call	OBTIENE_PUNTERO_X_COVID_BOSS_4_ACTUAL
-		ld		c,(hl)
+		ld		a,(hl)
+		add		4
+		ld		c,a
 		ld		a,(X_DEPH)
 		add		20
 		sub		c
-		cp		36
+		cp		28
 		jr		nc,.SIGUIENTE_COLISION_DEPH_COVID_BOSS_4
 
 		call	OBTIENE_PUNTERO_Y_COVID_BOSS_4_ACTUAL
-		ld		c,(hl)
+		ld		a,(hl)
+		add		6
+		ld		c,a
 		ld		a,(Y_DEPH)
 		add		20
 		sub		c
-		cp		36
+		cp		24
 		jr		nc,.SIGUIENTE_COLISION_DEPH_COVID_BOSS_4
 
 		; Si Deph toca un COVID, recibe da�o y el COVID desaparece

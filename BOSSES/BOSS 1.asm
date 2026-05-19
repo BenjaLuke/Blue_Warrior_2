@@ -1699,7 +1699,23 @@ DESACTIVA_PROYECTIL_OJO_BOSS_1_ACTUAL:
 
 REVISAMOS_COLISION_CON_AGONIX_Y_DEPH:
 
+		; Hitbox Agonix reducido 20 px por cada lado.
+		; Deph se sigue tratando como caja aproximada de 20x20.
+		;
+		; Agonix original:
+		; X = AGONIX_BOSS_1_X
+		; W = AGONIX_MOVIMIENTO_ANCHO_BOSS_1
+		; Y = AGONIX_MOVIMIENTO_Y_BOSS_1
+		; H = AGONIX_MOVIMIENTO_ALTO_BOSS_1
+		;
+		; Agonix reducido:
+		; X izquierda = X + 20
+		; X derecha   = X + ancho - 20
+		; Y arriba    = Y + 20
+		; Y abajo     = Y + alto - 20
+
 		ld		a,(AGONIX_BOSS_1_X)
+		add		20
 		ld		c,a
 		ld		a,(X_DEPH)
 		add		20
@@ -1707,25 +1723,23 @@ REVISAMOS_COLISION_CON_AGONIX_Y_DEPH:
 		ret		c
 
 		ld		a,(AGONIX_BOSS_1_X)
-		add		AGONIX_MOVIMIENTO_ANCHO_BOSS_1
-		jr		c,.COMPRUEBA_Y_COLISION_AGONIX_DEPH
+		add		AGONIX_MOVIMIENTO_ANCHO_BOSS_1-20
 		ld		c,a
 		ld		a,(X_DEPH)
 		cp		c
 		ret		nc
 
-.COMPRUEBA_Y_COLISION_AGONIX_DEPH:
-
 		ld		a,(Y_DEPH)
 		add		20
-		cp		AGONIX_MOVIMIENTO_Y_BOSS_1
+		cp		AGONIX_MOVIMIENTO_Y_BOSS_1+20
 		ret		c
+
 		ld		a,(Y_DEPH)
-		cp		AGONIX_MOVIMIENTO_Y_BOSS_1+AGONIX_MOVIMIENTO_ALTO_BOSS_1
+		cp		AGONIX_MOVIMIENTO_Y_BOSS_1+AGONIX_MOVIMIENTO_ALTO_BOSS_1-20
 		ret		nc
 
 		call	DANO_DEPH_EN_BOSS_1
-	ret
+		ret
 
 DANO_DEPH_EN_BOSS_1:
 

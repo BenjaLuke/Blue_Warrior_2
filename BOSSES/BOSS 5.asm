@@ -2310,22 +2310,29 @@ REVISAMOS_COLISION_CON_DEPH_Y_COVIDS_BOSS_5:
 		or		a
 		jr		z,.SIGUIENTE_COLISION_DEPH_COVID_BOSS_5
 
-		; Caja aproximada Deph/COVID: Deph +20 contra COVID 16 px.
-		call	OBTIENE_PUNTERO_X_COVID_BOSS_5_ACTUAL
-		ld		c,(hl)
-		ld		a,(X_DEPH)
-		add		20
-		sub		c
-		cp		36
-		jr		nc,.SIGUIENTE_COLISION_DEPH_COVID_BOSS_5
+            ; Caja Deph/COVID ajustada:
+            ; Deph aprox. 20x20 contra COVID hitbox 8x4 centrado en sprite 16x16.
+            ; COVID hitbox: X+4, Y+6, ancho 8, alto 4.
 
-		call	OBTIENE_PUNTERO_Y_COVID_BOSS_5_ACTUAL
-		ld		c,(hl)
-		ld		a,(Y_DEPH)
-		add		20
-		sub		c
-		cp		36
-		jr		nc,.SIGUIENTE_COLISION_DEPH_COVID_BOSS_5
+            call    OBTIENE_PUNTERO_X_COVID_BOSS_5_ACTUAL
+            ld      a,(hl)
+            add     4
+            ld      c,a
+            ld      a,(X_DEPH)
+            add     20
+            sub     c
+            cp      28
+            jr      nc,.SIGUIENTE_COLISION_DEPH_COVID_BOSS_5
+
+            call    OBTIENE_PUNTERO_Y_COVID_BOSS_5_ACTUAL
+            ld      a,(hl)
+            add     6
+            ld      c,a
+            ld      a,(Y_DEPH)
+            add     20
+            sub     c
+            cp      24
+            jr      nc,.SIGUIENTE_COLISION_DEPH_COVID_BOSS_5
 
 		; Si Deph toca un COVID, recibe da�o y el COVID desaparece
 		; para evitar da�o continuo cada frame.
