@@ -943,6 +943,10 @@ ECTO_PALLERS:
 		ld		a,(ix+1)
 		add		68
 		ld		(ix+14),a
+		ld		a,2
+		ld		(ix+10),a
+		ld		a,24
+		ld		(ix+11),a
 		ld		hl,COLORES_ECTO_PALLERS_1
         call    TROZOS_COMUNES_7
 
@@ -1120,14 +1124,16 @@ ECTO_PALLERS:
 
 .PASEANDO:
 
+		call	.ACTUALIZA_VELOCIDAD_ECTO_HUEVOS
 		ld		a,(ix+5)
 		or		a
 		jp		z,.A_LA_DERECHA
 
 .A_LA_IZQUIERDA:
 
+		ld		b,(ix+10)
 		ld		a,(ix)
-		sub		2
+		sub		b
 		ld		(ix),a
 		cp		16
 		jp		nc,.DIBUJAMOS_IZ
@@ -1142,8 +1148,9 @@ ECTO_PALLERS:
 
 .A_LA_DERECHA:
 
+		ld		b,(ix+10)
 		ld		a,(ix)
-		add		2
+		add		b
 		ld		(ix),a
 		cp		14*16
 		jp		c,.DIBUJAMOS_DE
@@ -1154,6 +1161,25 @@ ECTO_PALLERS:
 .DIBUJAMOS_DE:
 
         call    TROZOS_COMUNES_17
+		jp		.MANTIENE_EN_LINEA
+
+.ACTUALIZA_VELOCIDAD_ECTO_HUEVOS:
+
+		ld		a,(ix+11)
+		dec		a
+		ld		(ix+11),a
+		ret		nz
+
+		ld		a,r
+		and		00000011b
+		inc		a
+		ld		(ix+10),a
+
+		ld		a,r
+		and		00011111b
+		add		16
+		ld		(ix+11),a
+		ret
 
 .MANTIENE_EN_LINEA:
 
@@ -1180,6 +1206,8 @@ ECTO_PALLERS:
 
 		ld		d,0
 		ld		e,a
+		cp		1
+		call	z,.FX_ECTO_PUNTO_1
 		add		ix,de
 		ld		a,(ix)
 		pop		ix
@@ -1190,7 +1218,17 @@ ECTO_PALLERS:
 
 		ld		a,(ix+14)
 		inc		a
-		and		00111111b
+		ld		b,01111111b
+		ld		c,a
+		ld		a,(ix+9)
+		or		a
+		jp		z,.aplica_mascara_ecto_huevos
+		ld		b,00111111b
+
+.aplica_mascara_ecto_huevos:
+
+		ld		a,c
+		and		b
 		ld		(ix+14),a
 			
 .ECTO_HUEVOS_CONTINUA:
@@ -1212,6 +1250,15 @@ ECTO_PALLERS:
 .SALIENDO_ECTO_HUEVOS:
 
 		jp      SECUENCIA_PROYECTILES_Y_ENEMIGOS.PASAMOS_A_LA_SIGUIENTE_POSICION
+
+.FX_ECTO_PUNTO_1:
+
+		push	de
+		ld		a,33
+		ld		c,2
+		call	A_31_DESDE_10
+		pop		de
+		ret
 FIREWORKS:
 
 .DEFINE_FIREWORKS:

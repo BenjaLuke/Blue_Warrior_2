@@ -2407,6 +2407,11 @@ MATA_COVID_BOSS_4_ACTUAL_CON_EXPLOSION:
 		ld		a,COVID_EXPLOSION_PATRON_INICIAL_BOSS_4
 		ld		(ix+2),a
 
+		ld		de,#4800+17*16
+		ld		hl,BOSS_4_COLOR_EXPLOSION_ERRECENYX
+		ld		bc,16
+		call	PON_COLOR_2.sin_bc_impuesta
+
 		jp		DESACTIVA_COVID_BOSS_4
 
 LIMPIA_PROYECTIL_DEPH_TRAS_IMPACTO_COVID_BOSS_4:
@@ -2527,6 +2532,11 @@ REVISAMOS_COLISION_CON_ERRECENYX_Y_PROYECTILES_DEPH:
 		ld		a,COVID_EXPLOSION_PATRON_INICIAL_BOSS_4
 		ld		(ix+2),a
 
+		ld		de,#4800+17*16
+		ld		hl,BOSS_4_COLOR_EXPLOSION_ERRECENYX
+		ld		bc,16
+		call	PON_COLOR_2.sin_bc_impuesta
+
 		ld		a,(iy+12)
 		ld		e,a
 		ld		d,0
@@ -2599,11 +2609,6 @@ PINTA_EXPLOSION_ERRECENYX_BOSS_4:
 		ld		de,#4A00+17*4
 		ld		hl,VALORES_EXPLOSION_CON_ROCK
 		ld		bc,3
-		call	PON_COLOR_2.sin_bc_impuesta
-
-		ld		de,#4800+17*16
-		ld		hl,BOSS_4_COLOR_EXPLOSION_ERRECENYX
-		ld		bc,16
 		call	PON_COLOR_2.sin_bc_impuesta
 
 		ld		a,(ix+2)

@@ -1656,18 +1656,20 @@ BUCLE_REVISION_TODOS_LOS_PROYECTILES_OJO_BOSS_1:
         or      a
         jr      z,.SIGUIENTE_PROYECTIL_OJO_BOSS_1
 
-        ; --- Comprobar X ---
+        ; --- Comprobar X: zona central 2 px del proyectil ---
         ld      a,(X_DEPH)
         add     a,20
-        sub     (ix+0)          ; A = X_DEPH + 20 - X_PROYECTIL
-        cp      36              ; 20 + 16
+        sub     (ix+0)
+        sub     a,7
+        cp      2
         jr      nc,.SIGUIENTE_PROYECTIL_OJO_BOSS_1
 
-        ; --- Comprobar Y ---
+        ; --- Comprobar Y: zona central 4 px del proyectil ---
         ld      a,(Y_DEPH)
         add     a,20
-        sub     (iy+0)          ; A = Y_DEPH + 20 - Y_PROYECTIL
-        cp      36              ; 20 + 16
+        sub     (iy+0)
+        sub     a,6
+        cp      4
         jr      nc,.SIGUIENTE_PROYECTIL_OJO_BOSS_1
 
         ; Si llega aquí, hay colisión
@@ -1834,6 +1836,11 @@ REVISAMOS_COLISION_CON_AGONIX_Y_PROYECTILES_DEPH:
 		ld		a,23*4
 		ld		(ix+2),a
 
+		ld		de,#4800+17*16
+		ld		hl,BOSS_1_COLOR_EXPLOSION_AGONIX
+		ld		bc,16
+		call	PON_COLOR_2.sin_bc_impuesta
+
 		ld		a,(iy+12)
 		ld		e,a
 		ld		d,0
@@ -1906,11 +1913,6 @@ PINTA_EXPLOSION_AGONIX_BOSS_1:
 		ld		de,#4A00+17*4
 		ld		hl,VALORES_EXPLOSION_CON_ROCK
 		ld		bc,3
-		call	PON_COLOR_2.sin_bc_impuesta
-
-		ld		de,#4800+17*16
-		ld		hl,BOSS_1_COLOR_EXPLOSION_AGONIX
-		ld		bc,16
 		call	PON_COLOR_2.sin_bc_impuesta
 
 		ld		a,(ix+2)

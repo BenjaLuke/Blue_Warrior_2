@@ -1319,9 +1319,8 @@ BUCLE_REVISION_4_PIEDRAS_BOSS_2:
 	cp	c
 	jp	nc,.SIGUIENTE_EN_EL_BUCLE
 	
-	call	DANO_DEPH_EN_BOSS_2
 	pop		bc
-	ret
+	jp	DANO_DEPH_EN_BOSS_2
 
 .SIGUIENTE_EN_EL_BUCLE:
 
@@ -1464,25 +1463,26 @@ BUCLE_REVISION_TODOS_LOS_PROYECTILES_OJO_BOSS_2:
         or      a
         jr      z,.SIGUIENTE_PROYECTIL_OJO_BOSS_2
 
-        ; --- Comprobar X ---
+        ; --- Comprobar X: zona central 2 px del proyectil ---
         ld      a,(X_DEPH)
         add     a,20
-        sub     (ix+0)          ; A = X_DEPH + 20 - X_PROYECTIL
-        cp      36              ; 20 + 16
+        sub     (ix+0)
+        sub     a,7
+        cp      2
         jr      nc,.SIGUIENTE_PROYECTIL_OJO_BOSS_2
 
-        ; --- Comprobar Y ---
+        ; --- Comprobar Y: zona central 4 px del proyectil ---
         ld      a,(Y_DEPH)
         add     a,20
-        sub     (iy+0)          ; A = Y_DEPH + 20 - Y_PROYECTIL
-        cp      36              ; 20 + 16
+        sub     (iy+0)
+        sub     a,6
+        cp      4
         jr      nc,.SIGUIENTE_PROYECTIL_OJO_BOSS_2
 
         ; Si llega aquí, hay colisión
 
 		call	DESACTIVA_PROYECTIL_OJO_BOSS_2_ACTUAL
-		call	DANO_DEPH_EN_BOSS_2
-		ret
+		jp	DANO_DEPH_EN_BOSS_2
 
 .SIGUIENTE_PROYECTIL_OJO_BOSS_2:
 
@@ -1620,8 +1620,7 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH_ROCK_BOSS_2:
 
 .recibe_un_toque:
 
-	call	DANO_DEPH_EN_BOSS_2
-	ret
+	jp	DANO_DEPH_EN_BOSS_2
 
 REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK_BOSS_2:
 
@@ -1637,7 +1636,7 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK_BOSS_2:
 
 		ld		a,(ROCKAGER_MUERTO)
 		or		a
-		jr		nz,.REVISA_IMPACTO_DAVEANIX_BOSS_2
+		jp		nz,.REVISA_IMPACTO_DAVEANIX_BOSS_2
 
 		ld		ix,BOSS_2_DATAS_REVISIONES_ROCK_BOSS_2
 		ld		de,4
@@ -1704,6 +1703,11 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK_BOSS_2:
 		ld		(ix),a
 		ld		a,23*4
 		ld		(ix+2),a
+
+		ld		de,#4800+17*16
+		ld		hl,BOSS_2_COLOR_EXPLOSION_ROCK
+		ld		bc,16
+		call	PON_COLOR_2.sin_bc_impuesta
 		ret
 
 .SIGUIENTE_REVISION_ROCK_BOSS_2:
@@ -1760,8 +1764,8 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK_BOSS_2:
         call    PINTA_MARCADORES_VIDA_FINAL_BOSS_2
         pop     af
         or      a
-        jr      z,.SOBRE_EL_PROYECTIL_MUERTE_DAVEANIX_BOSS_2
-        jr      .SOBRE_EL_PROYECTIL_ROCK_BOSS_2
+        jp      z,.SOBRE_EL_PROYECTIL_MUERTE_DAVEANIX_BOSS_2
+        jp      .SOBRE_EL_PROYECTIL_ROCK_BOSS_2
 
 .SIGUIENTE_REVISION_DAVEANIX_BOSS_2:
 
@@ -1796,11 +1800,6 @@ PINTA_EXPLOSION_ROCK_BOSS_2:
 		ld		bc,3
 		call	PON_COLOR_2.sin_bc_impuesta
 
-		ld		de,#4800+17*16
-		ld		hl,.COLOR_EXPLOSION_ROCK_BOSS_2
-		ld		bc,16
-		call	PON_COLOR_2.sin_bc_impuesta
-
 		ld		a,(ix+2)
 		or		a
 		ret		z
@@ -1808,7 +1807,7 @@ PINTA_EXPLOSION_ROCK_BOSS_2:
 		ld		(ix+2),a
 		ret
 
-.COLOR_EXPLOSION_ROCK_BOSS_2:
+BOSS_2_COLOR_EXPLOSION_ROCK:
 
 		DB      $03,$03,$03,$03,$03,$03,$03,$03
 		DB      $03,$03,$03,$03,$03,$03,$03,$03

@@ -19,6 +19,11 @@ BARRO_PATRON_DERECHA_BOSS_5:					equ	BARRO_PATRON_INICIAL_BOSS_5
 BARRO_PATRON_IZQUIERDA_BOSS_5:				equ	BARRO_PATRON_INICIAL_BOSS_5+4
 BARRO_COLOR_INICIAL_BOSS_5:					equ	BARRO_PATRON_INICIAL_BOSS_5/4
 BARRO_CANTIDAD_BOSS_5:						equ	4
+SUPER_DISPARO_CANTIDAD_BOSS_5:				equ	3
+COVID_EXPLOSION_PATRON_INICIAL_BOSS_5:		equ	BARRO_PATRON_INICIAL_BOSS_5-8
+COVID_EXPLOSION_PATRON_FINAL_BOSS_5:		equ	BARRO_PATRON_INICIAL_BOSS_5
+COVID_PATRON_INICIAL_BOSS_5:				equ	BARRO_PATRON_INICIAL_BOSS_5+24
+COVID_PATRON_CANT_BOSS_5:					equ	2
 
 BUBBLES_PATRON_INICIAL_BOSS_5:              equ BARRO_PATRON_INICIAL_BOSS_5+BARRO_CANTIDAD_BOSS_5*4
 BUBBLES_PATRON_CANT_BOSS_5:                 equ 2
@@ -49,9 +54,19 @@ PROYECTIL_BOSS_5_Y_OCULTO:					equ	217
 PROYECTIL_BOSS_5_SPRITES_ACTIVOS_OFS:		equ	12
 PROYECTIL_BOSS_5_ATRIBUTOS_VRAM:			equ	SPRITES_ATRIBUTOS_VRAM_BOSS_5+PROYECTIL_BOSS_5_SPRITE_INICIAL*4
 PROYECTIL_BOSS_5_COLOR_VRAM:				equ	SPRITES_COLOR_VRAM_BOSS_5+PROYECTIL_BOSS_5_SPRITE_INICIAL*16
+COVID_BOSS_5_CADA_CICLOS:					equ	10
+COVID_BOSS_5_CANTIDAD:						equ	4
+COVID_BOSS_5_Y_OCULTO:						equ	217
+COVID_BOSS_5_Y_MUERTE:						equ	217
+COVID_BOSS_5_TABLA_X_LONGITUD:				equ	128
+COVID_BOSS_5_SPRITE_INICIAL:				equ	PROYECTIL_BOSS_5_SPRITE_INICIAL-COVID_BOSS_5_CANTIDAD
+COVID_BOSS_5_SPRITE_FINAL:					equ	PROYECTIL_BOSS_5_SPRITE_INICIAL
+COVID_BOSS_5_ATRIBUTOS_VRAM:				equ	SPRITES_ATRIBUTOS_VRAM_BOSS_5+COVID_BOSS_5_SPRITE_INICIAL*4
+COVID_COLOR_VRAM_BOSS_5:					equ	SPRITES_COLOR_VRAM_BOSS_5+COVID_BOSS_5_SPRITE_INICIAL*16
 IDIUS_EXPLOSION_PATRON_INICIAL_BOSS_5:		equ	BARRO_PATRON_INICIAL_BOSS_5-8
 IDIUS_EXPLOSION_PATRON_FINAL_BOSS_5:		equ	BARRO_PATRON_INICIAL_BOSS_5
-PROYECTIL_BOSS_5_PATRON_SPRITE:				equ	BARRO_PATRON_INICIAL_BOSS_5
+PROYECTIL_BOSS_5_PATRON_SPRITE:				equ	160
+PROYECTIL_BOSS_5_PATRON_SUPER:				equ	BARRO_PATRON_INICIAL_BOSS_5
 PROYECTIL_BOSS_5_OFFSET_DER_X:				equ	98-8
 PROYECTIL_BOSS_5_OFFSET_IZQ_X:				equ	29-8
 PROYECTIL_BOSS_5_OFFSET_Y:					equ	25-8
@@ -60,6 +75,9 @@ PROYECTIL_BOSS_5_OFFSET_BOCA_Y:				equ	33
 PROYECTIL_BOSS_5_FOTOGRAMA_DISPARO:			equ	3
 PROYECTIL_BOSS_5_DIRECCION_MIN:				equ	1
 PROYECTIL_BOSS_5_DIRECCION_MAX:				equ	11
+PROYECTIL_BOSS_5_DIRECCION_SUPER:			equ	12
+PROYECTIL_BOSS_5_OFFSET_SUPER_X:			equ	26
+PROYECTIL_BOSS_5_OFFSET_SUPER_Y:			equ	10
 ; Salida y muerte de Agonix
 COLOR_ALEATORIO_SIN_CAMBIOS_BOSS_5:			equ	1
 IDIUS_PAUSA_BOCA_BOSS_5:					equ	100
@@ -102,6 +120,11 @@ IDIUS_MOVIMIENTO_PAUSA_OCULTO_BOSS_5:		equ	40
 IDIUS_MOVIMIENTO_BORRA_ANCHO_BOSS_5:		equ	6
 IDIUS_MOVIMIENTO_BORRA_ALTO_BOSS_5:		equ	74
 IDIUS_MOVIMIENTO_BORRA_COLOR_BOSS_5:		equ	#66
+IDIUS_SECUENCIA_TRAMO_ESPECIAL_BOSS_5:		equ	TABLA_SECUENCIA_IDIUS_BOSS_5_TRAMO_ESPECIAL-TABLA_SECUENCIA_IDIUS_BOSS_5
+IDIUS_SECUENCIA_TRAS_TRAMO_BOSS_5:			equ	TABLA_SECUENCIA_IDIUS_BOSS_5_TRAS_TRAMO_ESPECIAL-TABLA_SECUENCIA_IDIUS_BOSS_5
+IDIUS_SECUENCIA_FIN_NORMAL_BOSS_5:			equ	TABLA_SECUENCIA_IDIUS_BOSS_5_FIN_NORMAL-TABLA_SECUENCIA_IDIUS_BOSS_5
+IDIUS_SECUENCIA_ALTERNATIVA_BOSS_5:			equ	TABLA_SECUENCIA_IDIUS_BOSS_5_ALTERNATIVA-TABLA_SECUENCIA_IDIUS_BOSS_5
+IDIUS_SECUENCIA_FIN_TOTAL_BOSS_5:			equ	TABLA_SECUENCIA_IDIUS_BOSS_5_FIN-TABLA_SECUENCIA_IDIUS_BOSS_5
 
 
 RUTINA_BOSS_5:
@@ -159,12 +182,14 @@ RUTINA_BOSS_5:
 		ld		(IDIUS_BOSS_5_MODO),a
 		inc		a
 		ld		(IDIUS_BOSS_5_TIEMPO_MODO),a
+		call	PROGRAMA_SIGUIENTE_TRAMO_ESPECIAL_IDIUS_BOSS_5
 		xor		a
 		ld		a,IDIUS_MOVIMIENTO_ESPERA_BOSS_5
 		ld		(IDIUS_BOSS_5_ESPERA_MOVIMIENTO),a
 		ld		a,PROYECTIL_BOSS_5_Y_OCULTO
 		ld		(PROYECTIL_BOSS_5_Y),a
 		call	INICIALIZA_POOL_PROYECTILES_BOSS_5
+		call	INICIALIZA_POOL_COVID_BOSS_5
 
         ; Variables a reiniciar
 
@@ -424,13 +449,13 @@ CARGA_SPRITES_BARRO_BOSS_5:
 		
 		call	PAGE_32_A_SEGMENT_2
 
-		; Los dos patrones anteriores al barro quedan reservados para la
+		; Los dos patrones anteriores al super disparo quedan reservados para la
 		; explosion de impacto: 92 y 96. NO se cargan aqui: ya estan
 		; en VRAM en el sitio adecuado.
-		; Barro empieza en 100: 100,104,108,112.
-		ld		hl,SPRITE_BARRO
+		; El super disparo empieza en los patrones del barro: 100,104,108.
+		ld		hl,SUPER_DISPARO
 		ld		de,PATRONES_SPRITES_VRAM_BOSS_5+BARRO_PATRON_INICIAL_BOSS_5*8
-		ld		bc,8*4*BARRO_CANTIDAD_BOSS_5
+		ld		bc,8*4*SUPER_DISPARO_CANTIDAD_BOSS_5
 		call	PON_COLOR_2.sin_bc_impuesta
 
         ; Los BUBBLES quedan despues del barro.
@@ -439,30 +464,35 @@ CARGA_SPRITES_BARRO_BOSS_5:
         ld      bc,8*4*BUBBLES_PATRON_CANT_BOSS_5
         call    PON_COLOR_2.sin_bc_impuesta
 
+		ld		hl,SPRITES_COVID
+		ld		de,PATRONES_SPRITES_VRAM_BOSS_5+COVID_PATRON_INICIAL_BOSS_5*8
+		ld		bc,8*4*COVID_PATRON_CANT_BOSS_5
+		call	PON_COLOR_2.sin_bc_impuesta
+
 		; El color de sprites en SCREEN 7 va por NUMERO DE SPRITE,
 		; no por patron. Los proyectiles usan los sprites 22-29,
 		; asi que sus colores deben arrancar en #4800 + 22*16 = #4960.
 		ld		de,PROYECTIL_BOSS_5_COLOR_VRAM
 		ld		b,PROYECTILES_BOSS_5_CANTIDAD
 
-.BUCLE_COLOR_BARRO_BOSS_5:
+.BUCLE_COLOR_SUPER_DISPARO_BOSS_5:
 
 		push	bc
 		push	de
-		ld		hl,COLOR_BARRO
+		ld		hl,COLOR_SUPERDISPARO
 		ld		bc,16
 		call	PON_COLOR_2.sin_bc_impuesta
 		pop		de
 		ld		a,e
 		add		16
 		ld		e,a
-		jr		nc,.SIN_ACARREO_COLOR_BARRO_BOSS_5
+		jr		nc,.SIN_ACARREO_COLOR_SUPER_DISPARO_BOSS_5
 		inc		d
 
-.SIN_ACARREO_COLOR_BARRO_BOSS_5:
+.SIN_ACARREO_COLOR_SUPER_DISPARO_BOSS_5:
 
 		pop		bc
-		djnz	.BUCLE_COLOR_BARRO_BOSS_5
+		djnz	.BUCLE_COLOR_SUPER_DISPARO_BOSS_5
 
 		call    PAGE_32_A_SEGMENT_2
         ld      de,BUBBLES_COLOR_VRAM_BOSS_5
@@ -487,6 +517,28 @@ CARGA_SPRITES_BARRO_BOSS_5:
         pop     bc
         djnz    .BUCLE_COLOR_BUBBLES_BOSS_5
 
+		ld		de,COVID_COLOR_VRAM_BOSS_5
+		ld		b,COVID_BOSS_5_CANTIDAD
+
+.BUCLE_COLOR_COVID_BOSS_5:
+
+		push	bc
+		push	de
+		ld		hl,COLOR_COVID_BOSS_5
+		ld		bc,16
+		call	PON_COLOR_2.sin_bc_impuesta
+		pop		de
+		ld		a,e
+		add		16
+		ld		e,a
+		jr		nc,.SIN_ACARREO_COLOR_COVID_BOSS_5
+		inc		d
+
+.SIN_ACARREO_COLOR_COVID_BOSS_5:
+
+		pop		bc
+		djnz	.BUCLE_COLOR_COVID_BOSS_5
+
         call    PAGE_10_A_SEGMENT_2
 		ret
 
@@ -502,7 +554,9 @@ BUCLE_PELEA_BOSS_5:
 		call	CONTROL_LODO_Y_MOVIMIENTO_DEPH_BOSS_5
 		call	SECUENCIA_PROYECTILES_PROPIOS_EN_BOSS_5
 		call	PINTA_PROYECTILES_DE_DEPH_EN_BOSS_5
+		call	CONTROL_COVID_IDIUS_BOSS_5
         call    REVISAMOS_COLISION_CON_IDIUS_Y_DEPH
+		call	BUCLE_REVISION_TODOS_LOS_PROYECTILES_OJO_BOSS_5
 		call	ON_SPRITE_GLOBAL_BOSS_5
 		call	REVISAMOS_COLISION_CON_IDIUS_Y_PROYECTILES_DEPH
 		call	MUEVE_IDIUS_BOSS_5
@@ -589,6 +643,434 @@ CONTROLA_INMUNIDAD_DEPH_BOSS_5:
 		ld		(INMUNE),a
 		ret
 
+; COVIDS Boss 5
+; Cada COVID usa una ruta segun su indice.
+; Hay cuatro rutas: 0,0 / 250,191 / 255,0 / 0,191.
+; Las rutas con Y inicial alta van en recorrido vertical inverso.
+; La X recorre de punta a punta con frenada por tabla compartida/variantes.
+; -----------------------------------------------------------------------------
+INICIALIZA_POOL_COVID_BOSS_5:
+
+		xor		a
+		ld		(COVID_BOSS_5_SIGUIENTE),a
+		ld		(COVID_BOSS_5_INDICE_ACTUAL),a
+		ld		(COVID_BOSS_5_ANIMACION),a
+		ld		a,COVID_BOSS_5_CADA_CICLOS
+		ld		(COVID_BOSS_5_CONTADOR),a
+
+		xor		a
+		ld		hl,COVID_BOSS_5_ACTIVO
+		ld		b,COVID_BOSS_5_CANTIDAD
+
+.INICIALIZA_ACTIVOS_COVID_BOSS_5:
+
+		ld		(hl),a
+		inc		hl
+		djnz	.INICIALIZA_ACTIVOS_COVID_BOSS_5
+
+		ld		hl,COVID_BOSS_5_X
+		ld		b,COVID_BOSS_5_CANTIDAD
+
+.INICIALIZA_X_COVID_BOSS_5:
+
+		ld		(hl),a
+		inc		hl
+		djnz	.INICIALIZA_X_COVID_BOSS_5
+
+		ld		hl,COVID_BOSS_5_PASO_TABLA_X
+		ld		b,COVID_BOSS_5_CANTIDAD
+
+.INICIALIZA_PASO_X_COVID_BOSS_5:
+
+		ld		(hl),a
+		inc		hl
+		djnz	.INICIALIZA_PASO_X_COVID_BOSS_5
+
+		ld		a,COVID_BOSS_5_Y_OCULTO
+		ld		hl,COVID_BOSS_5_Y
+		ld		b,COVID_BOSS_5_CANTIDAD
+
+.INICIALIZA_Y_COVID_BOSS_5:
+
+		ld		(hl),a
+		inc		hl
+		djnz	.INICIALIZA_Y_COVID_BOSS_5
+
+		xor		a
+		ld		(COVID_BOSS_5_INDICE_ACTUAL),a
+		ld		b,COVID_BOSS_5_CANTIDAD
+
+.OCULTA_SPRITES_COVID_INICIALES_BOSS_5:
+
+		push	bc
+		call	OCULTA_COVID_BOSS_5_EN_VRAM
+		ld		a,(COVID_BOSS_5_INDICE_ACTUAL)
+		inc		a
+		ld		(COVID_BOSS_5_INDICE_ACTUAL),a
+		pop		bc
+		djnz	.OCULTA_SPRITES_COVID_INICIALES_BOSS_5
+		ret
+
+CONTROL_COVID_BOSS_5:
+
+		; Semaforo: los COVIDs solo se actualizan 1 de cada 4 ciclos.
+		; Usamos COVID_BOSS_5_ANIMACION como contador 0..3 para no
+		; a�adir otra variable mutable en RAM.
+		ld		a,(COVID_BOSS_5_ANIMACION)
+		inc		a
+		and		00000011b
+		ld		(COVID_BOSS_5_ANIMACION),a
+		ret		nz
+
+		call	GENERA_COVID_BOSS_5
+		call	MUEVE_COVIDS_BOSS_5
+		jp		PINTA_COVIDS_BOSS_5
+
+GENERA_COVID_BOSS_5:
+
+		ld		a,(COVID_BOSS_5_CONTADOR)
+		dec		a
+		ld		(COVID_BOSS_5_CONTADOR),a
+		ret		nz
+		ld		a,COVID_BOSS_5_CADA_CICLOS
+		ld		(COVID_BOSS_5_CONTADOR),a
+		jp		ACTIVA_COVID_BOSS_5
+
+ACTIVA_COVID_BOSS_5:
+
+		call	RESERVA_SIGUIENTE_COVID_LIBRE_BOSS_5
+		ret		z
+		call	OBTIENE_PUNTERO_ACTIVO_COVID_BOSS_5_ACTUAL
+		ld		a,1
+		ld		(hl),a
+		call	INICIA_POSICION_COVID_BOSS_5_ACTUAL
+		ret
+
+INICIA_POSICION_COVID_BOSS_5_ACTUAL:
+
+		call	OBTIENE_RUTA_COVID_BOSS_5_ACTUAL
+		ld		e,a
+		ld		d,0
+		ld		hl,TABLA_X_INICIAL_COVID_BOSS_5
+		add		hl,de
+		ld		c,(hl)
+		call	OBTIENE_PUNTERO_X_COVID_BOSS_5_ACTUAL
+		ld		(hl),c
+
+		call	OBTIENE_RUTA_COVID_BOSS_5_ACTUAL
+		ld		e,a
+		ld		d,0
+		ld		hl,TABLA_Y_INICIAL_COVID_BOSS_5
+		add		hl,de
+		ld		c,(hl)
+		call	OBTIENE_PUNTERO_Y_COVID_BOSS_5_ACTUAL
+		ld		(hl),c
+
+		call	OBTIENE_PUNTERO_PASO_X_COVID_BOSS_5_ACTUAL
+		xor		a
+		ld		(hl),a
+		ret
+
+RESERVA_SIGUIENTE_COVID_LIBRE_BOSS_5:
+
+		ld		a,(COVID_BOSS_5_SIGUIENTE)
+		ld		b,COVID_BOSS_5_CANTIDAD
+
+.BUSCA_COVID_LIBRE_BOSS_5:
+
+		ld		c,a
+		ld		e,a
+		ld		d,0
+		ld		hl,COVID_BOSS_5_ACTIVO
+		add		hl,de
+		ld		a,(hl)
+		or		a
+		jr		z,.RESERVA_COVID_LIBRE_BOSS_5
+		ld		a,c
+		inc		a
+		cp		COVID_BOSS_5_CANTIDAD
+		jr		c,.SIGUE_BUSQUEDA_COVID_BOSS_5
+		xor		a
+
+.SIGUE_BUSQUEDA_COVID_BOSS_5:
+
+		djnz	.BUSCA_COVID_LIBRE_BOSS_5
+		xor		a
+		ret
+
+.RESERVA_COVID_LIBRE_BOSS_5:
+
+		ld		a,c
+		ld		(COVID_BOSS_5_INDICE_ACTUAL),a
+		inc		a
+		cp		COVID_BOSS_5_CANTIDAD
+		jr		c,.GUARDA_SIGUIENTE_COVID_BOSS_5
+		xor		a
+
+.GUARDA_SIGUIENTE_COVID_BOSS_5:
+
+		ld		(COVID_BOSS_5_SIGUIENTE),a
+		ld		a,1
+		or		a
+		ret
+
+MUEVE_COVIDS_BOSS_5:
+
+		ld		b,COVID_BOSS_5_CANTIDAD
+		xor		a
+		ld		(COVID_BOSS_5_INDICE_ACTUAL),a
+
+.BUCLE_MUEVE_COVIDS_BOSS_5:
+
+		push	bc
+		call	OBTIENE_PUNTERO_ACTIVO_COVID_BOSS_5_ACTUAL
+		ld		a,(hl)
+		or		a
+		jr		z,.SIGUIENTE_COVID_MOVIMIENTO_BOSS_5
+		call	MUEVE_UN_COVID_BOSS_5
+
+.SIGUIENTE_COVID_MOVIMIENTO_BOSS_5:
+
+		ld		a,(COVID_BOSS_5_INDICE_ACTUAL)
+		inc		a
+		ld		(COVID_BOSS_5_INDICE_ACTUAL),a
+		pop		bc
+		djnz	.BUCLE_MUEVE_COVIDS_BOSS_5
+		ret
+
+MUEVE_UN_COVID_BOSS_5:
+
+		call	OBTIENE_PUNTERO_Y_COVID_BOSS_5_ACTUAL
+		push	hl
+		call	OBTIENE_RUTA_COVID_BOSS_5_ACTUAL
+		ld		e,a
+		ld		d,0
+		ld		hl,TABLA_PASO_Y_COVID_BOSS_5
+		add		hl,de
+		ld		c,(hl)
+		pop		hl
+		ld		a,(hl)
+		add		c
+		ld		(hl),a
+		ld		a,c
+		cp		255				; -1: ruta vertical hacia arriba
+		jr		z,.COMPRUEBA_MUERTE_COVID_SUBE_BOSS_5
+
+		ld		a,(hl)
+		cp		COVID_BOSS_5_Y_MUERTE
+		jp		nc,DESACTIVA_COVID_BOSS_5
+		jr		.MUEVE_X_COVID_BOSS_5
+
+.COMPRUEBA_MUERTE_COVID_SUBE_BOSS_5:
+
+		ld		a,(hl)
+		or		a
+		jp		z,DESACTIVA_COVID_BOSS_5
+		cp		COVID_BOSS_5_Y_MUERTE		; seguridad por si hay underflow a 255
+		jp		nc,DESACTIVA_COVID_BOSS_5
+
+.MUEVE_X_COVID_BOSS_5:
+
+		call	OBTIENE_PUNTERO_PASO_X_COVID_BOSS_5_ACTUAL
+		ld		a,(hl)
+		ld		c,a
+		inc		a
+		cp		COVID_BOSS_5_TABLA_X_LONGITUD
+		jr		c,.GUARDA_PASO_X_COVID_BOSS_5
+		xor		a
+
+.GUARDA_PASO_X_COVID_BOSS_5:
+
+		ld		(hl),a
+		ld		e,c
+		ld		d,0
+		call	OBTIENE_TABLA_MOVIMIENTO_X_COVID_BOSS_5_ACTUAL
+		add		hl,de
+		ld		a,(hl)
+		ld		c,a
+		call	OBTIENE_PUNTERO_X_COVID_BOSS_5_ACTUAL
+		ld		a,(hl)
+		add		c
+		ld		(hl),a
+		ret
+
+DESACTIVA_COVID_BOSS_5:
+
+		call	OBTIENE_PUNTERO_ACTIVO_COVID_BOSS_5_ACTUAL
+		xor		a
+		ld		(hl),a
+		call	OBTIENE_PUNTERO_X_COVID_BOSS_5_ACTUAL
+		ld		(hl),a
+		call	OBTIENE_PUNTERO_PASO_X_COVID_BOSS_5_ACTUAL
+		ld		(hl),a
+		call	OBTIENE_PUNTERO_Y_COVID_BOSS_5_ACTUAL
+		ld		a,COVID_BOSS_5_Y_OCULTO
+		ld		(hl),a
+		jp		OCULTA_COVID_BOSS_5_EN_VRAM
+
+PINTA_COVIDS_BOSS_5:
+
+		ld		b,COVID_BOSS_5_CANTIDAD
+		xor		a
+		ld		(COVID_BOSS_5_INDICE_ACTUAL),a
+
+.BUCLE_PINTA_COVIDS_BOSS_5:
+
+		push	bc
+		call	OBTIENE_PUNTERO_ACTIVO_COVID_BOSS_5_ACTUAL
+		ld		a,(hl)
+		or		a
+		jr		z,.PINTA_COVID_OCULTO_BOSS_5
+		call	PINTA_UN_COVID_BOSS_5
+		jr		.SIGUIENTE_COVID_PINTA_BOSS_5
+
+.PINTA_COVID_OCULTO_BOSS_5:
+
+		call	OCULTA_COVID_BOSS_5_EN_VRAM
+
+.SIGUIENTE_COVID_PINTA_BOSS_5:
+
+		ld		a,(COVID_BOSS_5_INDICE_ACTUAL)
+		inc		a
+		ld		(COVID_BOSS_5_INDICE_ACTUAL),a
+		pop		bc
+		djnz	.BUCLE_PINTA_COVIDS_BOSS_5
+		ret
+
+PINTA_UN_COVID_BOSS_5:
+
+		ld		hl,PROPIEDADES_PATRON_SPRITE
+		call	OBTIENE_PUNTERO_Y_COVID_BOSS_5_ACTUAL
+		ld		a,(hl)
+		ld		hl,PROPIEDADES_PATRON_SPRITE
+		ld		(hl),a
+		inc		hl
+		call	OBTIENE_PUNTERO_X_COVID_BOSS_5_ACTUAL
+		ld		a,(hl)
+		ld		hl,PROPIEDADES_PATRON_SPRITE+1
+		ld		(hl),a
+		inc		hl
+		; Alternamos el fotograma del COVID con el paso de su propia tabla X.
+		; El semaforo global 0..3 queda reservado para controlar la velocidad.
+		call	OBTIENE_PUNTERO_PASO_X_COVID_BOSS_5_ACTUAL
+		ld		a,(hl)
+		and		00000001b
+		jr		z,.PATRON_COVID_BOSS_5
+		push	hl
+		ld		a,9
+		ld		c,0
+		call	TIRA_FX_BOSS_5
+		pop		hl
+
+.PATRON_COVID_BOSS_5:
+
+		ld		a,(hl)
+		and		00000001b
+		add		a,a
+		add		a,a
+		add		a,COVID_PATRON_INICIAL_BOSS_5
+		ld		(PROPIEDADES_PATRON_SPRITE+2),a
+		call	OBTIENE_DIRECCION_ATRIBUTOS_COVID_BOSS_5
+		ld		hl,PROPIEDADES_PATRON_SPRITE
+		ld		bc,3
+		jp		PON_COLOR_2.sin_bc_impuesta
+
+OCULTA_COVID_BOSS_5_EN_VRAM:
+
+		ld		hl,PROPIEDADES_PATRON_SPRITE
+		ld		a,COVID_BOSS_5_Y_OCULTO
+		ld		(hl),a
+		inc		hl
+		xor		a
+		ld		(hl),a
+		inc		hl
+		ld		(hl),a
+		call	OBTIENE_DIRECCION_ATRIBUTOS_COVID_BOSS_5
+		ld		hl,PROPIEDADES_PATRON_SPRITE
+		ld		bc,3
+		jp		PON_COLOR_2.sin_bc_impuesta
+
+OBTIENE_OFFSET_COVID_BOSS_5_ACTUAL:
+
+		ld		a,(COVID_BOSS_5_INDICE_ACTUAL)
+		ld		e,a
+		ld		d,0
+		ret
+
+OBTIENE_PUNTERO_ACTIVO_COVID_BOSS_5_ACTUAL:
+
+		call	OBTIENE_OFFSET_COVID_BOSS_5_ACTUAL
+		ld		hl,COVID_BOSS_5_ACTIVO
+		add		hl,de
+		ret
+
+OBTIENE_PUNTERO_X_COVID_BOSS_5_ACTUAL:
+
+		call	OBTIENE_OFFSET_COVID_BOSS_5_ACTUAL
+		ld		hl,COVID_BOSS_5_X
+		add		hl,de
+		ret
+
+OBTIENE_PUNTERO_Y_COVID_BOSS_5_ACTUAL:
+
+		call	OBTIENE_OFFSET_COVID_BOSS_5_ACTUAL
+		ld		hl,COVID_BOSS_5_Y
+		add		hl,de
+		ret
+
+OBTIENE_PUNTERO_PASO_X_COVID_BOSS_5_ACTUAL:
+
+		call	OBTIENE_OFFSET_COVID_BOSS_5_ACTUAL
+		ld		hl,COVID_BOSS_5_PASO_TABLA_X
+		add		hl,de
+		ret
+
+OBTIENE_RUTA_COVID_BOSS_5_ACTUAL:
+
+		ld		a,(COVID_BOSS_5_INDICE_ACTUAL)
+		and		00000011b
+		ret
+
+OBTIENE_TABLA_MOVIMIENTO_X_COVID_BOSS_5_ACTUAL:
+
+		call	OBTIENE_RUTA_COVID_BOSS_5_ACTUAL
+		or		a
+		jr		z,.TABLA_COVID_0_BOSS_5
+		cp		1
+		jr		z,.TABLA_COVID_1_BOSS_5
+		cp		2
+		jr		z,.TABLA_COVID_2_BOSS_5
+		ld		hl,TABLA_MOVIMIENTO_X_COVID_BOSS_5_3
+		ret
+
+.TABLA_COVID_0_BOSS_5:
+
+		ld		hl,TABLA_MOVIMIENTO_X_COVID_BOSS_5
+		ret
+
+.TABLA_COVID_1_BOSS_5:
+
+		ld		hl,TABLA_MOVIMIENTO_X_COVID_BOSS_5_1
+		ret
+
+.TABLA_COVID_2_BOSS_5:
+
+		ld		hl,TABLA_MOVIMIENTO_X_COVID_BOSS_5_2
+		ret
+
+OBTIENE_DIRECCION_ATRIBUTOS_COVID_BOSS_5:
+
+		call	OBTIENE_OFFSET_COVID_BOSS_5_ACTUAL
+		ld		a,e
+		add		a,a
+		add		a,a
+		ld		e,a
+		ld		d,0
+		ld		hl,COVID_BOSS_5_ATRIBUTOS_VRAM
+		add		hl,de
+		ex		de,hl
+		ret
+
 INICIALIZA_POOL_PROYECTILES_BOSS_5:
 
 		xor		a
@@ -664,6 +1146,21 @@ ACTIVA_PROYECTIL_BOSS_5:
 		call	CALCULA_DIRECCION_BASE_PROYECTIL_BOSS_5		; A = direccion hacia Deph
 		jp		CREA_PROYECTIL_IDIUS_BOSS_5
 
+ACTIVA_SUPER_PROYECTIL_IDIUS_BOSS_5:
+
+		ld		a,10
+		ld		c,0
+		call	TIRA_FX_BOSS_5
+		ld		a,(IDIUS_BOSS_5_X)
+		add		PROYECTIL_BOSS_5_OFFSET_SUPER_X
+		ret		c
+		ld		(PROYECTIL_BOSS_5_X),a
+		ld		a,(IDIUS_BOSS_5_Y)
+		add		PROYECTIL_BOSS_5_OFFSET_SUPER_Y
+		ld		(PROYECTIL_BOSS_5_Y),a
+		ld		a,PROYECTIL_BOSS_5_DIRECCION_SUPER
+		jp		CREA_PROYECTIL_IDIUS_BOSS_5
+
 CREA_PROYECTIL_IDIUS_BOSS_5:
 
 		ld		(PROYECTIL_BOSS_5_DIRECCION),a
@@ -692,6 +1189,10 @@ SECUENCIA_PROYECTIL_BOSS_5:
 .BUCLE_SECUENCIA_PROYECTIL_BOSS_5:
 
 		push	bc
+		call	OBTIENE_PUNTERO_DIRECCION_PROYECTIL_BOSS_5_ACTUAL
+		ld		a,(hl)
+		cp		PROYECTIL_BOSS_5_DIRECCION_SUPER
+		jr		z,.PROYECTIL_SUPER
 		call	LEE_DIRECCION_TABLA_PROYECTIL_BOSS_5
 		or		a
 		jr		z,.SIGUIENTE_PROYECTIL_BOSS_5
@@ -763,12 +1264,79 @@ SECUENCIA_PROYECTIL_BOSS_5:
 		call	COMPRUEBA_LIMITES_PROYECTIL_BOSS_5
 		jr		.SIGUIENTE_PROYECTIL_BOSS_5
 
+.PROYECTIL_SUPER:
+
+		call	DEC_Y_PROYECTIL_BOSS_5_ACTUAL
+		jr		z,.DESACTIVA_SUPER_PROYECTIL_BOSS_5
+		jr		.SIGUIENTE_PROYECTIL_BOSS_5
+
+.DESACTIVA_SUPER_PROYECTIL_BOSS_5:
+
+		call	EXPLOTA_SUPER_PROYECTIL_BOSS_5
+		jr		.SIGUIENTE_PROYECTIL_BOSS_5
+
+EXPLOTA_SUPER_PROYECTIL_BOSS_5:
+
+		ld		a,20
+		ld		c,0
+		call	TIRA_FX_BOSS_5
+		ld		a,(PROYECTIL_BOSS_5_INDICE_ACTUAL)
+		push	af
+		call	OBTIENE_PUNTERO_X_PROYECTIL_BOSS_5_ACTUAL
+		ld		a,(hl)
+		ld		(PROYECTIL_BOSS_5_X),a
+		call	OBTIENE_PUNTERO_Y_PROYECTIL_BOSS_5_ACTUAL
+		ld		a,(hl)
+		ld		(PROYECTIL_BOSS_5_Y),a
+		call	DESACTIVA_PROYECTIL_BOSS_5
+		ld		a,(PROYECTIL_BOSS_5_X)
+		ld		b,a
+		ld		a,(PROYECTIL_BOSS_5_Y)
+		ld		c,a
+		call	CALCULA_DIRECCION_BASE_PROYECTIL_BOSS_5
+		call	CALCULA_DIRECCION_INICIAL_ABANICO_BOSS_5
+		ld		(PROYECTIL_BOSS_5_ABANICO_DIRECCION),a
+		ld		a,5
+		ld		(PROYECTIL_BOSS_5_ABANICO_CONTADOR),a
+
+.BUCLE_ABANICO_SUPER_PROYECTIL_BOSS_5:
+
+		ld		a,(PROYECTIL_BOSS_5_ABANICO_DIRECCION)
+		call	CREA_PROYECTIL_IDIUS_BOSS_5
+		ld		a,(PROYECTIL_BOSS_5_ABANICO_DIRECCION)
+		inc		a
+		ld		(PROYECTIL_BOSS_5_ABANICO_DIRECCION),a
+		ld		a,(PROYECTIL_BOSS_5_ABANICO_CONTADOR)
+		dec		a
+		ld		(PROYECTIL_BOSS_5_ABANICO_CONTADOR),a
+		jr		nz,.BUCLE_ABANICO_SUPER_PROYECTIL_BOSS_5
+		pop		af
+		ld		(PROYECTIL_BOSS_5_INDICE_ACTUAL),a
+		ret
+
+CALCULA_DIRECCION_INICIAL_ABANICO_BOSS_5:
+
+		cp		3
+		jr		c,.ABANICO_DESDE_MINIMO_BOSS_5
+		cp		9
+		jr		nc,.ABANICO_DESDE_MAXIMO_BOSS_5
+		sub		2
+		ret
+
+.ABANICO_DESDE_MINIMO_BOSS_5:
+
+		ld		a,PROYECTIL_BOSS_5_DIRECCION_MIN
+		ret
+
+.ABANICO_DESDE_MAXIMO_BOSS_5:
+
+		ld		a,PROYECTIL_BOSS_5_DIRECCION_MAX-4
+		ret
+
 COMPRUEBA_LIMITES_PROYECTIL_BOSS_5:
 
 		call	OBTIENE_PUNTERO_Y_PROYECTIL_BOSS_5_ACTUAL
 		ld		a,(hl)
-		cp		5
-		jp		c,DESACTIVA_PROYECTIL_BOSS_5
 		cp		192
 		jp		nc,DESACTIVA_PROYECTIL_BOSS_5
 		call	OBTIENE_PUNTERO_X_PROYECTIL_BOSS_5_ACTUAL
@@ -803,9 +1371,14 @@ DESACTIVA_PROYECTIL_BOSS_5:
 
 PINTA_PROYECTIL_BOSS_5:
 
-		ld		a,(PROYECTIL_BOSS_5_PASO_TABLA)				; contador global de animacion barro
+		ld		a,(PROYECTIL_BOSS_5_PASO_TABLA)				; contador global de animacion superdisparo
 		inc		a
-		and		00000011b						; 0,1,2,3 = barro 1,2,3,4
+		cp		SUPER_DISPARO_CANTIDAD_BOSS_5
+		jr		c,.GUARDA_PASO_SUPER_DISPARO_BOSS_5
+		xor		a
+
+.GUARDA_PASO_SUPER_DISPARO_BOSS_5:
+
 		ld		(PROYECTIL_BOSS_5_PASO_TABLA),a
 
 		ld		b,PROYECTILES_BOSS_5_CANTIDAD
@@ -853,18 +1426,33 @@ CARGA_ATRIBUTOS_PROYECTIL_BOSS_5:
 		ld		hl,PROPIEDADES_PATRON_SPRITE+1
 		ld		(hl),a
 		inc		hl
+		call	OBTIENE_PUNTERO_DIRECCION_PROYECTIL_BOSS_5_ACTUAL
+		ld		a,(hl)
+		ld		hl,PROPIEDADES_PATRON_SPRITE+2
+		cp		PROYECTIL_BOSS_5_DIRECCION_SUPER
+		jr		z,.PATRON_SUPER_DISPARO_BOSS_5
+		ld		a,PROYECTIL_BOSS_5_PATRON_SPRITE
+		jr		PINTA_PROYECTIL_BOSS_5_1
+
+.PATRON_SUPER_DISPARO_BOSS_5:
+
 		ld		a,(PROYECTIL_BOSS_5_PASO_TABLA)
-		and		00000011b
+		cp		SUPER_DISPARO_CANTIDAD_BOSS_5
+		jr		c,.PATRON_SUPER_DISPARO_OK_BOSS_5
+		xor		a
+
+.PATRON_SUPER_DISPARO_OK_BOSS_5:
+
 		add		a,a
 		add		a,a
-		add		a,BARRO_PATRON_INICIAL_BOSS_5
+		add		a,PROYECTIL_BOSS_5_PATRON_SUPER
 		jr		PINTA_PROYECTIL_BOSS_5_1
 
 CARGA_COLOR_PROYECTIL_BOSS_5_ACTUAL:
 
-		; El color del barro ya queda precargado al entrar en el boss
+		; El color del superdisparo ya queda precargado al entrar en el boss
 		; para todos los slots de proyectil 22-29.
-		; No lo copiamos aqui porque durante la pelea COLOR_BARRO
+		; No lo copiamos aqui porque durante la pelea COLOR_SUPERDISPARO
 		; no tiene por que estar paginado en RAM. Si lo leemos aqui,
 		; podemos sobreescribir el color bueno con basura o ceros.
 		ret
@@ -946,6 +1534,14 @@ INC_Y_PROYECTIL_BOSS_5_ACTUAL:
 
 		call	OBTIENE_PUNTERO_Y_PROYECTIL_BOSS_5_ACTUAL
 		inc		(hl)
+		ret
+
+DEC_Y_PROYECTIL_BOSS_5_ACTUAL:
+
+		call	OBTIENE_PUNTERO_Y_PROYECTIL_BOSS_5_ACTUAL
+		dec		(hl)
+		ld		a,(hl)
+		or		a
 		ret
 
 SUB_2_Y_PROYECTIL_BOSS_5_ACTUAL:
@@ -1219,6 +1815,7 @@ MUEVE_IDIUS_BOSS_5:
 
 .SIGUE_SECUENCIA_IDIUS:
 
+		call	ELIGE_TRAMO_ANIMACION_IDIUS_BOSS_5
 		ld		a,(IDIUS_BOSS_5_MODO)
 		ld		c,a
 		ld		b,0
@@ -1234,18 +1831,29 @@ MUEVE_IDIUS_BOSS_5:
 
 		ld		a,(hl)
 		ld		(IDIUS_BOSS_5_FOTOGRAMA),a
+		cp		6
+		push	af
 		call	PINTA_IDIUS_BOSS_5
+		pop		af
+		call	z,ACTIVA_SUPER_PROYECTIL_IDIUS_BOSS_5
 
 .AVANZA_SECUENCIA_IDIUS:
 
 		ld		a,(IDIUS_BOSS_5_MODO)
 		inc		a
-		cp		TABLA_SECUENCIA_IDIUS_BOSS_5_FIN-TABLA_SECUENCIA_IDIUS_BOSS_5
+		cp		IDIUS_SECUENCIA_FIN_NORMAL_BOSS_5
+		jr		z,.FIN_CICLO_SECUENCIA_IDIUS
 		jr		c,.GUARDA_PASO_SECUENCIA_IDIUS
+		cp		IDIUS_SECUENCIA_FIN_TOTAL_BOSS_5
+		jr		c,.GUARDA_PASO_SECUENCIA_IDIUS
+		ld		a,IDIUS_SECUENCIA_TRAS_TRAMO_BOSS_5
+		jr		.GUARDA_PASO_SECUENCIA_IDIUS
+
+.FIN_CICLO_SECUENCIA_IDIUS:
+
 		call	RESTAURA_FONDO_IDIUS_BOSS_5
+		call	COLOCA_IDIUS_EN_POSICION_RANDOM_BOSS_5
 		xor		a
-		ld		(IDIUS_BOSS_5_MODO),a
-		ld		a,IDIUS_MOVIMIENTO_PAUSA_OCULTO_BOSS_5
 		ld		(IDIUS_BOSS_5_TIEMPO_MODO),a
 		jr		.FIN_MOVIMIENTO_IDIUS
 
@@ -1261,6 +1869,46 @@ MUEVE_IDIUS_BOSS_5:
 		pop		de
 		pop		bc
 		pop		af
+		ret
+
+ELIGE_TRAMO_ANIMACION_IDIUS_BOSS_5:
+
+		ld		a,(IDIUS_BOSS_5_MODO)
+		cp		IDIUS_SECUENCIA_TRAMO_ESPECIAL_BOSS_5
+		ret		nz
+		ld		a,(VIDA_IDIUS_BOSS_5)
+		cp		10
+		ret		c
+
+		ld		a,(IDIUS_BOSS_5_DIRECCION)
+		or		a
+		jr		z,.TOCA_TRAMO_ESPECIAL_IDIUS_BOSS_5
+		dec		a
+		ld		(IDIUS_BOSS_5_DIRECCION),a
+
+		ld		a,IDIUS_SECUENCIA_ALTERNATIVA_BOSS_5
+		ld		(IDIUS_BOSS_5_MODO),a
+		ret
+
+.TOCA_TRAMO_ESPECIAL_IDIUS_BOSS_5:
+
+		jp		PROGRAMA_SIGUIENTE_TRAMO_ESPECIAL_IDIUS_BOSS_5
+
+PROGRAMA_SIGUIENTE_TRAMO_ESPECIAL_IDIUS_BOSS_5:
+
+		ld		a,r
+		and		00001111b
+
+.AJUSTA_RANDOM_TRAMO_IDIUS_BOSS_5:
+
+		cp		3
+		jr		c,.RANDOM_TRAMO_IDIUS_OK_BOSS_5
+		sub		3
+		jr		.AJUSTA_RANDOM_TRAMO_IDIUS_BOSS_5
+
+.RANDOM_TRAMO_IDIUS_OK_BOSS_5:
+
+		ld		(IDIUS_BOSS_5_DIRECCION),a
 		ret
 
 COLOCA_IDIUS_EN_POSICION_RANDOM_BOSS_5:
@@ -1587,7 +2235,6 @@ CONVIERTE_VIDA_FINAL_A_BARRA_BOSS_5:
 
 BUCLE_REVISION_TODOS_LOS_PROYECTILES_OJO_BOSS_5:
 
-		ret
 		ld		hl,PROYECTILES_BOSS_5_DIRECCION
 		ld		ix,PROYECTILES_BOSS_5_X
 		ld		iy,PROYECTILES_BOSS_5_Y
@@ -1599,24 +2246,26 @@ BUCLE_REVISION_TODOS_LOS_PROYECTILES_OJO_BOSS_5:
         or      a
         jr      z,.SIGUIENTE_PROYECTIL_OJO_BOSS_5
 
-        ; --- Comprobar X ---
+        ; --- Comprobar X: zona central 2 px del proyectil ---
         ld      a,(X_DEPH)
         add     a,20
-        sub     (ix+0)          ; A = X_DEPH + 20 - X_PROYECTIL
-        cp      36              ; 20 + 16
+        sub     (ix+0)
+        sub     a,7
+        cp      2
         jr      nc,.SIGUIENTE_PROYECTIL_OJO_BOSS_5
 
-        ; --- Comprobar Y ---
+        ; --- Comprobar Y: zona central 4 px del proyectil ---
         ld      a,(Y_DEPH)
         add     a,20
-        sub     (iy+0)          ; A = Y_DEPH + 20 - Y_PROYECTIL
-        cp      36              ; 20 + 16
+        sub     (iy+0)
+        sub     a,6
+        cp      4
         jr      nc,.SIGUIENTE_PROYECTIL_OJO_BOSS_5
 
         ; Si llega aquí, hay colisión
 
 		call	DESACTIVA_PROYECTIL_OJO_BOSS_5_ACTUAL
-		call	DANO_DEPH_EN_BOSS_5
+		call	MATA_DEPH_EN_BOSS_5
 		ret
 
 .SIGUIENTE_PROYECTIL_OJO_BOSS_5:
@@ -1638,14 +2287,190 @@ DESACTIVA_PROYECTIL_OJO_BOSS_5_ACTUAL:
 		pop		hl
 		jp		DESACTIVA_PROYECTIL_BOSS_5
 
+CONTROL_COVID_IDIUS_BOSS_5:
+
+		ld		a,(VIDA_IDIUS_BOSS_5)
+		cp		30
+		ret		nc
+		call	REVISAMOS_COLISION_CON_DEPH_Y_COVIDS_BOSS_5
+		call	REVISAMOS_COLISION_CON_COVIDS_Y_PROYECTILES_DEPH_BOSS_5
+		jp		CONTROL_COVID_BOSS_5
+
+REVISAMOS_COLISION_CON_DEPH_Y_COVIDS_BOSS_5:
+
+		ld		b,COVID_BOSS_5_CANTIDAD
+		xor		a
+		ld		(COVID_BOSS_5_INDICE_ACTUAL),a
+
+.BUCLE_COLISION_DEPH_COVIDS_BOSS_5:
+
+		push	bc
+		call	OBTIENE_PUNTERO_ACTIVO_COVID_BOSS_5_ACTUAL
+		ld		a,(hl)
+		or		a
+		jr		z,.SIGUIENTE_COLISION_DEPH_COVID_BOSS_5
+
+		; Caja aproximada Deph/COVID: Deph +20 contra COVID 16 px.
+		call	OBTIENE_PUNTERO_X_COVID_BOSS_5_ACTUAL
+		ld		c,(hl)
+		ld		a,(X_DEPH)
+		add		20
+		sub		c
+		cp		36
+		jr		nc,.SIGUIENTE_COLISION_DEPH_COVID_BOSS_5
+
+		call	OBTIENE_PUNTERO_Y_COVID_BOSS_5_ACTUAL
+		ld		c,(hl)
+		ld		a,(Y_DEPH)
+		add		20
+		sub		c
+		cp		36
+		jr		nc,.SIGUIENTE_COLISION_DEPH_COVID_BOSS_5
+
+		; Si Deph toca un COVID, recibe da�o y el COVID desaparece
+		; para evitar da�o continuo cada frame.
+		call	MATA_COVID_BOSS_5_ACTUAL_CON_EXPLOSION
+		call	DANO_DEPH_EN_BOSS_5
+		pop		bc
+		ret
+
+.SIGUIENTE_COLISION_DEPH_COVID_BOSS_5:
+
+		ld		a,(COVID_BOSS_5_INDICE_ACTUAL)
+		inc		a
+		ld		(COVID_BOSS_5_INDICE_ACTUAL),a
+		pop		bc
+		djnz	.BUCLE_COLISION_DEPH_COVIDS_BOSS_5
+		ret
+
+REVISAMOS_COLISION_CON_COVIDS_Y_PROYECTILES_DEPH_BOSS_5:
+
+		ld		iy,PROYECTILES
+		ld		b,6
+
+.BUCLE_PROYECTILES_DEPH_COVIDS_BOSS_5:
+
+		push	bc
+		ld		a,(iy+2)
+		cp		#FF
+		jr		z,.SIGUIENTE_PROYECTIL_DEPH_COVID_BOSS_5
+
+		xor		a
+		ld		(COVID_BOSS_5_INDICE_ACTUAL),a
+		ld		b,COVID_BOSS_5_CANTIDAD
+
+.BUCLE_COVIDS_CON_PROYECTIL_DEPH_BOSS_5:
+
+		push	bc
+		call	OBTIENE_PUNTERO_ACTIVO_COVID_BOSS_5_ACTUAL
+		ld		a,(hl)
+		or		a
+		jr		z,.SIGUIENTE_COVID_CON_PROYECTIL_DEPH_BOSS_5
+
+		; X: centro aproximado del proyectil contra caja COVID.
+		call	OBTIENE_PUNTERO_X_COVID_BOSS_5_ACTUAL
+		ld		c,(hl)
+		ld		a,(iy)
+		add		8
+		sub		c
+		cp		24
+		jr		nc,.SIGUIENTE_COVID_CON_PROYECTIL_DEPH_BOSS_5
+
+		; Y: centro aproximado del proyectil contra caja COVID.
+		call	OBTIENE_PUNTERO_Y_COVID_BOSS_5_ACTUAL
+		ld		c,(hl)
+		ld		a,(iy+1)
+		add		8
+		sub		c
+		cp		24
+		jr		nc,.SIGUIENTE_COVID_CON_PROYECTIL_DEPH_BOSS_5
+
+		call	MATA_COVID_BOSS_5_ACTUAL_CON_EXPLOSION
+		call	LIMPIA_PROYECTIL_DEPH_TRAS_IMPACTO_COVID_BOSS_5
+		pop		bc
+		pop		bc
+		ret
+
+.SIGUIENTE_COVID_CON_PROYECTIL_DEPH_BOSS_5:
+
+		ld		a,(COVID_BOSS_5_INDICE_ACTUAL)
+		inc		a
+		ld		(COVID_BOSS_5_INDICE_ACTUAL),a
+		pop		bc
+		djnz	.BUCLE_COVIDS_CON_PROYECTIL_DEPH_BOSS_5
+
+.SIGUIENTE_PROYECTIL_DEPH_COVID_BOSS_5:
+
+		ld		de,16
+		add		iy,de
+		pop		bc
+		djnz	.BUCLE_PROYECTILES_DEPH_COVIDS_BOSS_5
+		ret
+
+MATA_COVID_BOSS_5_ACTUAL_CON_EXPLOSION:
+
+		call	OBTIENE_PUNTERO_X_COVID_BOSS_5_ACTUAL
+		ld		c,(hl)
+		call	OBTIENE_PUNTERO_Y_COVID_BOSS_5_ACTUAL
+		ld		b,(hl)
+
+		ld		ix,VALORES_EXPLOSION_CON_ROCK
+		ld		a,b
+		ld		(ix),a
+		ld		a,c
+		ld		(ix+1),a
+		ld		a,COVID_EXPLOSION_PATRON_INICIAL_BOSS_5
+		ld		(ix+2),a
+
+		ld		de,#4800+17*16
+		ld		hl,BOSS_5_COLOR_EXPLOSION_IDIUS
+		ld		bc,16
+		call	PON_COLOR_2.sin_bc_impuesta
+
+		jp		DESACTIVA_COVID_BOSS_5
+
+LIMPIA_PROYECTIL_DEPH_TRAS_IMPACTO_COVID_BOSS_5:
+
+		ld		a,5
+		ld		c,0
+		call	TIRA_FX_BOSS_5
+
+		ld		a,(iy+12)
+		ld		e,a
+		ld		d,0
+		ld		hl,#4A00
+		add		hl,de
+		ex		de,hl
+		ld		hl,.SPRITE_OCULTO_TRAS_IMPACTO_COVID_BOSS_5
+		ld		bc,3
+		call	PON_COLOR_2.sin_bc_impuesta
+
+		xor		a
+		ld		(iy+8),a
+		dec		a
+		ld		(iy+2),a
+		ld		(iy),a
+		ld		a,(iy+12)
+		call	SECUENCIA_PROYECTILES_PROPIOS_EN_BOSS_5.DEJA_LIBRE_SPRITE_EN_RAM
+		ret
+
+.SPRITE_OCULTO_TRAS_IMPACTO_COVID_BOSS_5:
+
+		db		217,255,0
+
 REVISAMOS_COLISION_CON_IDIUS_Y_DEPH:
 
-		ret
-		call	CALCULA_RECORTE_IDIUS_BOSS_5
-		ld		a,(VARIABLE_UN_USO2)
+		ld		a,(IDIUS_BOSS_5_FOTOGRAMA)
+		cp		7
+		ret		nc
 		or		a
 		ret		z
+		call	CALCULA_RECORTE_IDIUS_BOSS_5
+		ld		a,(VARIABLE_UN_USO2)
+		cp		41
+		ret		c
 		ld		a,(VARIABLE_UN_USO3)
+		add		20
 		ld		c,a
 		ld		a,(X_DEPH)
 		add		20
@@ -1656,25 +2481,39 @@ REVISAMOS_COLISION_CON_IDIUS_Y_DEPH:
 		ld		c,a
 		ld		a,(VARIABLE_UN_USO2)
 		add		c
+		sub		20
 		ld		c,a
 		ld		a,(X_DEPH)
 		cp		c
 		ret		nc
 
+		ld		a,(IDIUS_BOSS_5_Y)
+		add		20
+		ld		c,a
 		ld		a,(Y_DEPH)
 		add		20
-		cp		IDIUS_MOVIMIENTO_Y_BOSS_5
+		cp		c
 		ret		c
+		ld		a,c
+		add		IDIUS_MOVIMIENTO_ALTO_BOSS_5-40
+		ld		c,a
 		ld		a,(Y_DEPH)
-		cp		IDIUS_MOVIMIENTO_Y_BOSS_5+IDIUS_MOVIMIENTO_ALTO_BOSS_5
+		cp		c
 		ret		nc
 
-		call	DANO_DEPH_EN_BOSS_5
+		call	MATA_DEPH_EN_BOSS_5
 	ret
 
 DANO_DEPH_EN_BOSS_5:
 
 	call	DANO_DEPH_EN_BOSS_COMUN
+	call	RUTINA_BOSS_5.PINTA_CORAZONES_VIDA_DEPH_ADECUADOS
+	ret
+
+MATA_DEPH_EN_BOSS_5:
+
+	xor		a
+	ld		(CORAZONES),a
 	call	RUTINA_BOSS_5.PINTA_CORAZONES_VIDA_DEPH_ADECUADOS
 	ret
 
@@ -1685,7 +2524,11 @@ MUERTE_DEPH_EN_BOSS_5:
 
 REVISAMOS_COLISION_CON_IDIUS_Y_PROYECTILES_DEPH:
 
-		ret
+		ld		a,(IDIUS_BOSS_5_FOTOGRAMA)
+		cp		7
+		ret		nc
+		or		a
+		ret		z
 		ld		iy,PROYECTILES
 		ld		b,6
 
@@ -1700,26 +2543,49 @@ REVISAMOS_COLISION_CON_IDIUS_Y_PROYECTILES_DEPH:
 		ld		a,(VARIABLE_UN_USO2)
 		or		a
 		jp		z,.SIGUIENTE_PROYECTIL_DEPH_IDIUS_BOSS_5
-		ld		d,a
-		ld		a,(VARIABLE_UN_USO3)
+		ld		a,(VARIABLE_UN_USO2)
+		cp		34
+		jp		c,.SIGUIENTE_PROYECTIL_DEPH_IDIUS_BOSS_5
+		ld		a,(VARIABLE_UN_USO)
+		cp		47
+		jp		nc,.SIGUIENTE_PROYECTIL_DEPH_IDIUS_BOSS_5
+		ld		a,(IDIUS_BOSS_5_X)
+		add		33
 		ld		c,a
 
 .REVISA_X_IMPACTO_IDIUS_BOSS_5:
 
 		ld		a,(iy)
+		add		15
+		jr		c,.PROYECTIL_SOLAPA_X_BOCA_IDIUS_BOSS_5
 		cp		c
 		jp		c,.SIGUIENTE_PROYECTIL_DEPH_IDIUS_BOSS_5
-		sub		c
+
+.PROYECTIL_SOLAPA_X_BOCA_IDIUS_BOSS_5:
+
+		ld		a,c
+		add		14
+		ld		d,a
+		ld		a,(iy)
 		cp		d
 		jp		nc,.SIGUIENTE_PROYECTIL_DEPH_IDIUS_BOSS_5
 
-		ld		a,IDIUS_MOVIMIENTO_Y_BOSS_5
+		ld		a,(IDIUS_BOSS_5_Y)
+		add		27
 		ld		c,a
 		ld		a,(iy+1)
+		add		15
+		jr		c,.PROYECTIL_SOLAPA_Y_BOCA_IDIUS_BOSS_5
 		cp		c
 		jp		c,.SIGUIENTE_PROYECTIL_DEPH_IDIUS_BOSS_5
-		sub		c
-		cp		IDIUS_MOVIMIENTO_ALTO_BOSS_5
+
+.PROYECTIL_SOLAPA_Y_BOCA_IDIUS_BOSS_5:
+
+		ld		a,c
+		add		6
+		ld		d,a
+		ld		a,(iy+1)
+		cp		d
 		jp		nc,.SIGUIENTE_PROYECTIL_DEPH_IDIUS_BOSS_5
 
 		ld		a,(VIDA_IDIUS_BOSS_5)
@@ -1773,6 +2639,11 @@ REVISAMOS_COLISION_CON_IDIUS_Y_PROYECTILES_DEPH:
 		ld		a,IDIUS_EXPLOSION_PATRON_INICIAL_BOSS_5
 		ld		(ix+2),a
 
+		ld		de,#4800+17*16
+		ld		hl,BOSS_5_COLOR_EXPLOSION_IDIUS
+		ld		bc,16
+		call	PON_COLOR_2.sin_bc_impuesta
+
 		ld		a,(iy+12)
 		ld		e,a
 		ld		d,0
@@ -1807,25 +2678,7 @@ REVISAMOS_COLISION_CON_IDIUS_Y_PROYECTILES_DEPH:
 
 CALCULA_DANO_PROYECTIL_IDIUS_BOSS_5:
 
-		ld		a,(iy+4)
-		cp		2
-		jr		z,.DANO_HACHA_IDIUS_BOSS_5
-		cp		1
-		jr		z,.DANO_FUEGO_IDIUS_BOSS_5
-
-.DANO_FLECHA_IDIUS_BOSS_5:
-
 		ld		a,1
-		ret
-
-.DANO_HACHA_IDIUS_BOSS_5:
-
-		ld		a,1
-		ret
-
-.DANO_FUEGO_IDIUS_BOSS_5:
-
-		ld		a,8
 		ret
 
 PINTA_EXPLOSION_IDIUS_BOSS_5:
@@ -1845,11 +2698,6 @@ PINTA_EXPLOSION_IDIUS_BOSS_5:
 		ld		de,#4A00+17*4
 		ld		hl,VALORES_EXPLOSION_CON_ROCK
 		ld		bc,3
-		call	PON_COLOR_2.sin_bc_impuesta
-
-		ld		de,#4800+17*16
-		ld		hl,BOSS_5_COLOR_EXPLOSION_IDIUS
-		ld		bc,16
 		call	PON_COLOR_2.sin_bc_impuesta
 
 		ld		a,(ix+2)
@@ -2500,6 +3348,72 @@ MUEVE_BARROS_SALIDA_IDIUS_BOSS_5:
 		ld		de,BARROS_MUERTE_ATRIBUTOS_VRAM_BOSS_5
 		ld		bc,BARROS_MUERTE_CANTIDAD_BOSS_5*4
 		jp		PON_COLOR_2.sin_bc_impuesta
+
+; Rutas iniciales de los COVIDs Boss 5.
+; Ruta 0: X=0,   Y=0   -> baja y empieza hacia la derecha.
+; Ruta 1: X=250, Y=191 -> sube y empieza hacia la izquierda.
+; Ruta 2: X=255, Y=0   -> baja y empieza hacia la izquierda.
+; Ruta 3: X=0,   Y=191 -> sube y empieza hacia la derecha.
+TABLA_X_INICIAL_COVID_BOSS_5:
+
+		db		0,250,255,0
+
+TABLA_Y_INICIAL_COVID_BOSS_5:
+
+		db		0,191,0,191
+
+TABLA_PASO_Y_COVID_BOSS_5:
+
+		db		1,255,1,255			; 255 = -1
+
+; Tabla 0: avance horizontal normal.
+; Suma total derecha: 240 px. Suma total izquierda: -240 px.
+; Maximo desplazamiento: 4 px por ciclo.
+TABLA_MOVIMIENTO_X_COVID_BOSS_5:
+
+		db		1,2,3
+[57]	db		4
+		db		3,2,1,0
+		db		255,254,253			; -1,-2,-3
+[57]	db		252				; -4
+		db		253,254,255,0		; -3,-2,-1,0
+
+; Tabla 1: recorrido inverso horizontal.
+TABLA_MOVIMIENTO_X_COVID_BOSS_5_1:
+
+		db		255,254,253			; -1,-2,-3
+[57]	db		252				; -4
+		db		253,254,255,0		; -3,-2,-1,0
+		db		1,2,3
+[57]	db		4
+		db		3,2,1,0
+
+; Tabla 2: recorrido inverso horizontal, para salida desde X=255,Y=0.
+TABLA_MOVIMIENTO_X_COVID_BOSS_5_2:
+
+		db		255,254,253			; -1,-2,-3
+[57]	db		252				; -4
+		db		253,254,255,0		; -3,-2,-1,0
+		db		1,2,3
+[57]	db		4
+		db		3,2,1,0
+
+; Tabla 3: avance horizontal normal, para salida desde X=0,Y=191.
+TABLA_MOVIMIENTO_X_COVID_BOSS_5_3:
+
+		db		1,2,3
+[57]	db		4
+		db		3,2,1,0
+		db		255,254,253			; -1,-2,-3
+[57]	db		252				; -4
+		db		253,254,255,0		; -3,-2,-1,0
+
+; Color local para COVIDs del Boss 5.
+; Independiente del color COVID general.
+COLOR_COVID_BOSS_5:
+
+[16]	db		#0B
+
 
 TIRA_FX_BOSS_5:
 

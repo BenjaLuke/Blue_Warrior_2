@@ -2247,13 +2247,13 @@ DATOS_NEGRO_ROTATIVO_EN_PAGE_1:
 ; Regla del porcentaje: cada fase vale 2, cada enemigo y bloque auxiliar vale 1.
 ; EN TOTAL HAY 
 ; 5 PUNTOS DE 2(FASES) 4 HECHOS
-; 6 PUNTOS DE 2(ENEMIGOS) 3 HECHOS
+; 6 PUNTOS DE 2(ENEMIGOS) 4 HECHOS
 ; 4 PUNTOS DE 1(LOGO, MENU, ANIMACION PRESENTACION Y ANIMACION CIERRE) 3 HECHO
-; PUNTOS ACTUALES = (4+3)*2 + 3*1 = 17, PORCENTAJE ACTUAL = 17/26 = 65% APROXIMADAMENTE
+; PUNTOS ACTUALES = (4+4)*2 + 3*1 = 19, PORCENTAJE ACTUAL = 19/26 = 73% APROXIMADAMENTE
 
 TEXTO_ROTATIVO_PRESENTACION:
 
-		db		"BLUE WARRIOR II - Beta version 4.5.17 - 19/5/2026 - 65% - (C) Digital Moai - TECLAS 1 - 5 PARA IR DIRECTO A FASE",0
+		db		"BLUE WARRIOR II - Beta version 4.6.09 - 19/5/2026 - 73% - (C) Digital Moai - TECLAS 1 - 5 PARA IR DIRECTO A FASE",0
 		;db		"A Digital Moai Production - Project Direction, Phase Design, Story, Script, Level Design, Pixel Art and Music Composition: Manuel Dopico - Programming, Sprites, Pixel Art Corrections and Sound Effects: Benjamin Miguel - Graphics: Lucas Sera Piao - Lead Beta Tester and Quality Control: Xavi Sorinas - Packaging: XXX - Cover Illustration: XXX - Digital Moai sincerely thanks the following entities for helping keep the MSX alive: AAMSX (Spain), MSX Boixos Club (Spain), MSX.org (Holland) - (c) Digital Moai 2026",0
 
 TEXTO_ROTATIVO_PRESENTACION_FIN:
