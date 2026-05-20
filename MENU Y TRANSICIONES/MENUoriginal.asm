@@ -538,20 +538,45 @@ SETPALETE_CINEMATICA:
 		ld		c,#9A
 [32]	outi
 		call	FUERZA_COLOR_5_CINEMATICA_4
-		; Eliminado: no forzamos el color 0 en la foto 1.
-		; La paleta/fade debe usar los valores cargados desde los ficheros .palete/.fadein/.fadeout.
-		; call	FUERZA_COLOR_0_CINEMATICA_1
+		call	FUERZA_COLOR_0_CINEMATICA_1
 		ei
 		ret
 
 PREPARA_COLOR_0_PRIMERA_PALETA_CINEMATICA:
+
+		ld		a,(CINEMATICA_BLOQUE_ACTUAL)
+		cp		1
+		jr		nz,COLOR_0_NORMAL_CINEMATICA
+		ld		a,CINEMATICA_COLOR_0_NEGRO
+		ld		(CINEMATICA_COLOR_0_MODO),a
+		ret
+
 PREPARA_COLOR_0_PALETA_FINAL_CINEMATICA:
+
+		ld		a,(CINEMATICA_BLOQUE_ACTUAL)
+		cp		1
+		jr		nz,COLOR_0_NORMAL_CINEMATICA
+		ld		a,CINEMATICA_COLOR_0_FINAL
+		ld		(CINEMATICA_COLOR_0_MODO),a
+		ret
+
 PREPARA_COLOR_0_FADE_IN_CINEMATICA:
+
+		ld		a,(CINEMATICA_BLOQUE_ACTUAL)
+		cp		1
+		jr		nz,COLOR_0_NORMAL_CINEMATICA
+		ld		a,CINEMATICA_COLOR_0_FADEIN
+		ld		(CINEMATICA_COLOR_0_MODO),a
+		ret
+
 PREPARA_COLOR_0_FADE_OUT_CINEMATICA:
 
-		; Color 0 liberado: ya no hay tratamiento especial para la foto 1.
-		; Todas las fases usan el color 0 que venga cargado en la paleta correspondiente.
-		jp		COLOR_0_NORMAL_CINEMATICA
+		ld		a,(CINEMATICA_BLOQUE_ACTUAL)
+		cp		1
+		jr		nz,COLOR_0_NORMAL_CINEMATICA
+		ld		a,CINEMATICA_COLOR_0_FADEOUT
+		ld		(CINEMATICA_COLOR_0_MODO),a
+		ret
 
 COLOR_0_NORMAL_CINEMATICA:
 
@@ -561,8 +586,50 @@ COLOR_0_NORMAL_CINEMATICA:
 
 FUERZA_COLOR_0_CINEMATICA_1:
 
-		; Rutina anulada. Se conserva la etiqueta por compatibilidad,
-		; pero no reescribe el color 0 en VDP.
+		ld		a,(CINEMATICA_COLOR_0_MODO)
+		or		a
+		ret		z
+		cp		CINEMATICA_COLOR_0_NEGRO
+		jr		z,.COLOR_0_NEGRO_CINEMATICA
+		cp		CINEMATICA_COLOR_0_FINAL
+		jr		z,.COLOR_0_FINAL_CINEMATICA
+		cp		CINEMATICA_COLOR_0_FADEIN
+		jr		z,.COLOR_0_FADEIN_CINEMATICA
+
+.COLOR_0_FADEOUT_CINEMATICA:
+
+		ld		a,e
+		cp		1
+		jr		nz,.ESCRIBE_COLOR_0_CINEMATICA
+		xor		a
+		jr		.ESCRIBE_COLOR_0_CINEMATICA
+
+.COLOR_0_FADEIN_CINEMATICA:
+
+		ld		a,7
+		sub		e
+		jr		.ESCRIBE_COLOR_0_CINEMATICA
+
+.COLOR_0_FINAL_CINEMATICA:
+
+		ld		a,7
+		jr		.ESCRIBE_COLOR_0_CINEMATICA
+
+.COLOR_0_NEGRO_CINEMATICA:
+
+		xor		a
+
+.ESCRIBE_COLOR_0_CINEMATICA:
+
+		ld		b,a
+		ld		a,0
+		out		(#99),a
+		ld		a,16+128
+		out		(#99),a
+		ld		a,b
+		out		(#9A),a
+		xor		a
+		out		(#9A),a
 		ret
 
 FUERZA_COLOR_5_CINEMATICA_4:

@@ -19,17 +19,17 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH:
         ld      a,(ix)
         ld      c,a
         ld      a,(X_DEPH)
-        add     14
+        add     16
         sub     c
-        cp      24
+        cp      20
         jp      nc,.NO_HAY_COLISION
 
         ld      a,(ix+1)                                                    ; Y enemigo
         ld      c,a
         ld      a,(Y_DEPH)                                                 ; Y prota
-        add     30                                                          ; Corrección para que ajusten
+        add     32                                                          ; Corrección para que ajusten
         sub     c                                                           ; Se restan
-        cp      36                                                          ; El margen para que colapsen en este caso es 36
+        cp      32                                                          ; El margen para que colapsen en este caso es 32
         jp      nc,.NO_HAY_COLISION
 
         jp      .EXCEPCIONES_1

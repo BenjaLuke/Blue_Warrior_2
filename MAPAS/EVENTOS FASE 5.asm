@@ -394,6 +394,62 @@ TABLA_SUCESOS_FASE_5:
 		dw		RETORNO
 		dw		RETORNO
 		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO		
+		dw		RETORNO
+		dw		RETORNO
 		dw		CARGA_1_A_45
 		dw		RETORNO
 		dw		RETORNO
@@ -406,62 +462,6 @@ TABLA_SUCESOS_FASE_5:
 		dw		RETORNO
 		dw		BUCLE_PINTA_TILES.PRE_VELOCIDAD_DE_FASE_TROTE
 		dw		BUCLE_PINTA_TILES.PINTA_FADE_IN_1
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
 		dw		RETORNO
 		dw		RETORNO
 		dw		RETORNO
