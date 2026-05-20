@@ -1,4 +1,4 @@
-TABLA_SUCESOS_FASE_3:
+TABLA_SUCESOS_FASE_3_0:
 
 		dw		BUCLE_PINTA_TILES.AVISAMO_FINAL_SCROLL
 		dw		REVISA_LETRAS_DE_LA_FASE
@@ -366,100 +366,100 @@ TABLA_SUCESOS_FASE_3:
 		dw		RETORNO
 		dw		RETORNO
 		dw		RETORNO
-		dw		BUCLE_PINTA_TILES.VELOCIDAD_DE_FASE_TROTE
-		dw		BUCLE_PINTA_TILES.musica_mas_velocidad_mas_limites
-		dw		RETORNO
-		dw		NUEVO_COVID_1
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		NUEVO_COVID_1
 		dw		RETORNO
 		dw		RETORNO
 		dw		RETORNO
 		dw		RETORNO
-		dw		NUEVO_COVID_1
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		CARGA_1_A_45
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
 		dw		RETORNO
 		dw		RETORNO
 		dw		BUCLE_PINTA_TILES.AVISO_FASE
+		dw		SHOW_STATUS_COMP
+		dw		RETORNO
+		dw		RETORNO
+		dw		BUCLE_PINTA_TILES.PRE_VELOCIDAD_DE_FASE_TROTE
+		dw		BUCLE_PINTA_TILES.PINTA_PALETA_1
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
 		dw		RETORNO
 		dw		CHECK_POINT
-		dw		BUCLE_PINTA_TILES.PINTA_FADE_IN_1
-		dw		BUCLE_PINTA_TILES.PRE_VELOCIDAD_DE_FASE_TROTE
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO		
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
 		dw		RETORNO
 		dw		RETORNO
 		dw		RETORNO

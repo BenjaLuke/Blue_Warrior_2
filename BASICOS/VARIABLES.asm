@@ -317,3 +317,6 @@ CINEMATICA_NUBE_4_X:	#1
 CINEMATICA_NUBE_4_CONTADOR:	#1
 CINEMATICA_NUBE_4_ATRIBUTOS:	#16
 CINEMATICA_COLOR_0_MODO:	#1
+
+TRAMO_FASE_3:					#1										; 0,1,2 para las tres paginas de datos de la fase 3
+PAGE_DATOS_FASE:				#1										; Pagina ROM de constantes, eventos y paletas de fase

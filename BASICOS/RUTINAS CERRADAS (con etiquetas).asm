@@ -341,7 +341,16 @@ BUCLE_PINTA_TILES:
 		ld		(LINEA_A_LEER),hl										; Comprovaciones sobre la posición del mapa
 		ld		a,h														; Paso H a A 
 		or		l														; Al hacer el OR con L se quedará a 0 si L y H son 0 y Z será 0
-		jp		z,.AVISAMO_FINAL_SCROLL									; Si se ha llegado al final se parará
+		jr		nz,.SUCESOS
+		ld		a,(TRAMO_FASE_3)
+		cp		2
+		jp		nc,.AVISAMO_FINAL_SCROLL
+		inc		a
+		ld		(TRAMO_FASE_3),a
+		add		63
+		ld		(PAGE_DATOS_FASE),a
+		ld		hl,469
+		ld		(LINEA_A_LEER),hl
 
 .SUCESOS:
 
@@ -352,8 +361,7 @@ BUCLE_PINTA_TILES:
 		ld		de,TABLA_SUCESOS_FASE_1									; DE hacer referencia a la tabla en sí
 
 		push	af
-		ld		a,(FASE)
-		add		32
+		ld		a,(PAGE_DATOS_FASE)
 		call	CHANGE_BANK_2
 		pop		af
 		call	SITUAMOS_PUNTERO_EN_TABLA_DESDE_HL_YA_MARCADA			; Vamos a ver el suceso que le toca a esa linea
@@ -849,8 +857,7 @@ COLOCA_IX_EN_EL_LUGAR_ADECUADO_PARA_LEER_TILES:
 		add		ix,de
 
 		push	af
-		ld		a,(FASE)
-		add		32
+		ld		a,(PAGE_DATOS_FASE)
 		call	CHANGE_BANK_2
 		pop		af
 		ld		a,(ix)
@@ -1491,7 +1498,7 @@ PALETA_ESCOGIDA:
 
 		call	.COMUN_PALETAS_1												; Cambiamos la página del bloque 2	
 		ld		hl,PALETA_STAGE_1_1
-		jp		.COMUN_PALETAS_1
+		jp		.COMUN_PALETAS_2
 
 .A_PALETA_2:
 
@@ -1644,9 +1651,8 @@ PALETA_ESCOGIDA:
 
 .COMUN_PALETAS_1:
 
-		ld		a,(FASE)
-		add		32
-		ld		[DIRPA2],a	
+		ld		a,(PAGE_DATOS_FASE)
+        ld      [DIRPA2],a
 		ret
 
 .COMUN_PALETAS_2:
@@ -1847,8 +1853,7 @@ RESCATA_ENTORNO:
 		push	ix														; Salvamos IX
 		
 		push	af
-		ld		a,(FASE)
-		add		32
+		ld		a,(PAGE_DATOS_FASE)
 		call	CHANGE_BANK_2
 		pop		af
 
