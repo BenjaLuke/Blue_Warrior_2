@@ -857,6 +857,10 @@ CONTROL:
 	
 .teclado:
 
+			ld		a,(SUMA_CAMINO)
+			cp		2
+			call	z,APLICA_SPRITES_DEPH_VAGON
+
 			ld		a,(NO_SE_MUEVE)
 			or		a
 			jp		z,.pre_sigue_comun
@@ -944,10 +948,12 @@ CONTROL:
 		
 .resta_comun_y:
 		
+			ld		c,6
 			ld		a,(TILE_N)
 			call	CONTROL_FASE3_TILE_145
 			jp		nc,.pre_sigue_comun
 
+			ld		c,14
 			ld		a,(TILE_N2)
 			call	CONTROL_FASE3_TILE_145
 			jp		nc,.pre_sigue_comun
@@ -1002,10 +1008,12 @@ CONTROL:
 
 .suma_comun_y:
 
+			ld		c,6
 			ld		a,(TILE_S)
 			call	CONTROL_FASE3_TILE_145
 			jp		nc,.pre_sigue_comun
 
+			ld		c,14
 			ld		a,(TILE_S2)
 			call	CONTROL_FASE3_TILE_145
 			jp		nc,.pre_sigue_comun
@@ -1144,7 +1152,7 @@ CONTROL:
 			call	nz,CAMBIAMOS_LA_INTERRUPCION_DE_LINEA_PARA_DESAPARECER
 
 			halt
-			call	PINTA_SPRITE_DEPH
+			call	PINTA_SPRITE_DEPH_VAGON_AJUSTADO
 
 .MIRA_SI_CAMBIA_VELOCIDAD:
 			call	SECUENCIA_PROYECTILES_Y_ENEMIGOS		
@@ -1228,6 +1236,7 @@ CARGA_1_A_45:
 
 			ld		hl,TODOS_LOS_SPRITES										; Depositamos los sprites en vram	
 			call	CARGA_COMUN_45
+			call	MARCA_REAPLICA_VAGON_RET
 			ld		a,(ARMA_USANDO)
 			cp		2
 			jp		z,CARGA_FLECHA_DOBLE
@@ -1468,11 +1477,20 @@ DESCONECTA_PUPA:
 CONTROL_FASE3_TILE_145:
 
 		ld		b,a
+		ld		a,(SUMA_CAMINO)
+		or		a
+		jr		nz,.mira_si_pisable
+		ld		a,b
 		cp		145
 		jr		nz,.mira_si_pisable
 		ld		a,(FASE)
 		cp		3
 		jr		nz,.mira_si_pisable
+		ld		a,(X_DEPH)
+		add		c
+		and		11110000b
+		sub		3 ; RECOLOCA SPRITES DE VAGÓN PARA CUADRAR CON DEPH
+		ld		(X_DEPH),a
 		call	CONTROL_VELOCIDAD_FASE_VAGON
 		or		a
 		ret
@@ -1485,9 +1503,124 @@ CONTROL_FASE3_TILE_145:
 
 CONTROL_VELOCIDAD_FASE_VAGON:
 
+		ld		a,2
+		ld		(SUMA_CAMINO),a
+		call	BUCLE_PINTA_TILES.VELOCIDAD_DE_FASE_GALOPE
+		jp		APLICA_SPRITES_DEPH_VAGON
+
+PINTA_SPRITE_DEPH_VAGON_AJUSTADO:
+
+		call	PINTA_SPRITE_DEPH
+		ld		a,(SUMA_CAMINO)
+		or		a
+		ret		z
+		ld		hl,ATRIBUTOS_DEPH_VARIABLES+17
+		ld		de,#4A00+17
+		call	RECOLOCA_X_IZQ_VAGON
+		ld		hl,ATRIBUTOS_DEPH_VARIABLES+21
+		ld		de,#4A00+21
+		call	RECOLOCA_X_IZQ_VAGON
+		ld		hl,ATRIBUTOS_DEPH_VARIABLES+25
+		ld		de,#4A00+25
+		call	RECOLOCA_X_IZQ_VAGON
+		ld		hl,ATRIBUTOS_DEPH_VARIABLES+29
+		ld		de,#4A00+29
+		call	RECOLOCA_X_IZQ_VAGON
+		ld		hl,ATRIBUTOS_DEPH_VARIABLES+33
+		ld		de,#4A00+33
+		call	RECOLOCA_X_IZQ_VAGON
+		ld		hl,ATRIBUTOS_DEPH_VARIABLES+37
+		ld		de,#4A00+37
+
+RECOLOCA_X_IZQ_VAGON:
+
+		ld		a,(hl)
+		sub		5 ; RECOLOCA SOLO LOS SPRITES IZQUIERDOS DEL VAGON
+		ld		(hl),a
+		ex		de,hl
+		ld		bc,1
+		jp		FILVRM_RAM
+
+MARCA_REAPLICA_VAGON_RET:
+
+		ld		a,(SUMA_CAMINO)
+		or		a
+		ret		z
+		ld		a,2
+		ld		(SUMA_CAMINO),a
+		ret
+
+APLICA_SPRITES_DEPH_VAGON:
+
+		call	PAGE_32_A_SEGMENT_2
+		ld		hl,SPRITE_VAGON
+		ld		de,#4000+20*8
+		call	PINTA_PATRON_VAGON_IZQ_EN_DE
+		ld		de,#4000+44*8
+		call	PINTA_PATRON_VAGON_IZQ_EN_DE
+		ld		de,#4000+68*8
+		call	PINTA_PATRON_VAGON_IZQ_EN_DE
+		ld		hl,SPRITE_VAGON+64
+		ld		de,#4000+32*8
+		call	PINTA_PATRON_VAGON_IZQ_EN_DE
+		ld		de,#4000+56*8
+		call	PINTA_PATRON_VAGON_IZQ_EN_DE
+		ld		de,#4000+80*8
+		call	PINTA_PATRON_VAGON_IZQ_EN_DE
+
+		ld		hl,#4000+28*8
+		call	LIMPIA_PATRON_VAGON
+		ld		hl,#4000+40*8
+		call	LIMPIA_PATRON_VAGON
+		ld		hl,#4000+52*8
+		call	LIMPIA_PATRON_VAGON
+		ld		hl,#4000+64*8
+		call	LIMPIA_PATRON_VAGON
+		ld		hl,#4000+76*8
+		call	LIMPIA_PATRON_VAGON
+		ld		hl,#4000+88*8
+		call	LIMPIA_PATRON_VAGON
+
+		call	PINTA_COLORES_SPRITE_VAGON
+
 		ld		a,1
 		ld		(SUMA_CAMINO),a
-		jp		BUCLE_PINTA_TILES.VELOCIDAD_DE_FASE_GALOPE
+		jp		PAGE_10_A_SEGMENT_2
+
+PINTA_PATRON_VAGON_IZQ_EN_DE:
+
+		push	hl
+		ld		bc,64
+		call	PON_COLOR_2.sin_bc_impuesta
+		pop		hl
+		ret
+
+LIMPIA_PATRON_VAGON:
+
+		xor		a
+		ld		bc,32
+		jp		FILVRM_RAM
+
+PINTA_COLORES_SPRITE_VAGON:
+
+		ld		hl,COLOR_SPRITE_VAGON
+		ld		de,#4840
+		call	PINTA_COLOR_VAGON_16
+		ld		de,#4850
+		call	PINTA_COLOR_VAGON_16
+		ld		de,#4870
+		call	PINTA_COLOR_VAGON_16
+		ld		de,#4880
+
+PINTA_COLOR_VAGON_16:
+
+		push	hl
+		ld		bc,16
+		call	PON_COLOR_2.sin_bc_impuesta
+		pop		hl
+		ld		bc,16
+		add		hl,bc
+		ret
 
 CONTROL_BUCLES:
 
