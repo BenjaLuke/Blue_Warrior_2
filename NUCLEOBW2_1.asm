@@ -849,10 +849,6 @@ CONTROL:
 
 .miramos_si_puede_moverse:
 
-			ld		a,(SUMA_CAMINO)
-			or		a
-			jp		nz,.pre_sigue_comun
-
 			jp	SE_PUEDE_MOVER_Y_EFES_VARIOS
 	
 .teclado:
@@ -1085,6 +1081,10 @@ CONTROL:
 		
 .PULSA_ESPACIO:
 
+			ld		a,(SUMA_CAMINO)
+			or		a
+			jp		nz,.PULSA_M
+
 			ld		a,(BLOQUE_DE_SPRITES_VARIABLE)
 			cp		5
 			jp		z,.FIN_RUTINA_GLOBAL
@@ -1233,6 +1233,10 @@ CONTROL:
 			jp		DEPH_PARALIZADO_2
 
 CARGA_1_A_45:
+
+			ld		a,(SUMA_CAMINO)
+			or		a
+			jp		nz,MARCA_REAPLICA_VAGON_RET
 
 			ld		hl,TODOS_LOS_SPRITES										; Depositamos los sprites en vram	
 			call	CARGA_COMUN_45
@@ -1514,6 +1518,7 @@ PINTA_SPRITE_DEPH_VAGON_AJUSTADO:
 		ld		a,(SUMA_CAMINO)
 		or		a
 		ret		z
+		call	PINTA_COLORES_SPRITE_VAGON
 		ld		hl,ATRIBUTOS_DEPH_VARIABLES+17
 		ld		de,#4A00+17
 		call	RECOLOCA_X_IZQ_VAGON
@@ -1603,6 +1608,7 @@ LIMPIA_PATRON_VAGON:
 
 PINTA_COLORES_SPRITE_VAGON:
 
+		call	PAGE_32_A_SEGMENT_2
 		ld		hl,COLOR_SPRITE_VAGON
 		ld		de,#4840
 		call	PINTA_COLOR_VAGON_16
@@ -1611,6 +1617,8 @@ PINTA_COLORES_SPRITE_VAGON:
 		ld		de,#4870
 		call	PINTA_COLOR_VAGON_16
 		ld		de,#4880
+		call	PINTA_COLOR_VAGON_16
+		jp		PAGE_10_A_SEGMENT_2
 
 PINTA_COLOR_VAGON_16:
 

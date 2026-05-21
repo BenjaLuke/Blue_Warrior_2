@@ -338,9 +338,9 @@ SE_PUEDE_MOVER_Y_EFES_VARIOS:
 			bit		6,a												; Si pulsa f2 quitamos o ponemos el marcador
 			jp		z,HIDE_STATUS
 			bit		5,a												; Si pulsa f1 pausamos
-			jp		z,PAUSE	
+			jp		z,.PAUSE_VAGON
 			bit		7,a												; Si pulsa f3 paramos la música
-			jp		z,MUSIC_ON_OFF	
+			jp		z,.MUSIC_ON_OFF_VAGON
 			ld		a,7
 			call	SNSMAT_RAM
 			bit		0,a
@@ -349,7 +349,20 @@ SE_PUEDE_MOVER_Y_EFES_VARIOS:
 			jp		z,AGILIZA_MAPA									; Si pulsa f5 avanza 20 lineas en el mapa			
 			xor		a
 			ld		(MARCADOR_PULSADO),a
+			ld		a,(SUMA_CAMINO)
+			or		a
+			jp		nz,CONTROL.pre_sigue_comun
 			jp		CONTROL.teclado
+
+.PAUSE_VAGON:
+
+			call	MARCA_REAPLICA_VAGON_RET
+			jp		PAUSE
+
+.MUSIC_ON_OFF_VAGON:
+
+			call	MARCA_REAPLICA_VAGON_RET
+			jp		MUSIC_ON_OFF
 
 COVIDS:
 
