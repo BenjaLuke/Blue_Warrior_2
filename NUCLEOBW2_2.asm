@@ -351,18 +351,88 @@ SE_PUEDE_MOVER_Y_EFES_VARIOS:
 			ld		(MARCADOR_PULSADO),a
 			ld		a,(SUMA_CAMINO)
 			or		a
-			jp		nz,CONTROL.pre_sigue_comun
-			jp		CONTROL.teclado
+			jp		z,CONTROL.teclado
+			call	LLAMA_RUTINA_ESPECIAL_FASE_3
+			jp		CONTROL.pre_sigue_comun
 
 .PAUSE_VAGON:
 
+			ld		a,(SUMA_CAMINO)
+			or		a
+			jp		z,PAUSE
+
 			call	MARCA_REAPLICA_VAGON_RET
-			jp		PAUSE
+
+			ld		a,(MARCADOR_PULSADO)
+			or		a
+			jp		nz,CONTROL.teclado
+
+			ld		a,(PAUSA_BLOQUEADA)
+			or		a
+			jp		nz,CONTROL.teclado
+
+			ld		a,8
+			ld		c,0
+			call	A_31_DESDE_10
+
+			di
+			call	hltmus
+			ei
+			call	GICINI
+
+			ld		a,1
+			ld		(MARCADOR_PULSADO),a
+
+			ld		a,(TIEMPO_DE_ADJUST)
+			ld		(VARIABLE_UN_USO),a
+			xor		a
+			ld		(TIEMPO_DE_ADJUST),a
+
+			call	LLAMA_PAUSE_VAGON_FASE_3
+
+			ld		a,(VARIABLE_UN_USO)
+			ld		(TIEMPO_DE_ADJUST),a
+
+			call	MARCA_REAPLICA_VAGON_RET
+
+			ld		a,(MUSICA_ON_OFF)
+			or		a
+			jp		z,CONTROL.teclado
+
+			ld      a,(FASE)
+			add     20
+			call    CHANGE_BANK_2
+			call	cntmus
+			call	PAGE_10_A_SEGMENT_2
+			jp		CONTROL.teclado
 
 .MUSIC_ON_OFF_VAGON:
 
 			call	MARCA_REAPLICA_VAGON_RET
 			jp		MUSIC_ON_OFF
+
+LLAMA_RUTINA_ESPECIAL_FASE_3:
+
+			push	af
+			ld		a,66
+			di
+			ld		(DIRPA2),a
+.CONTINUACION_PAGE_66:
+			db		0,0,0,0,0,0,0,0,0
+			pop		af
+			ret
+
+LLAMA_PAUSE_VAGON_FASE_3:
+
+			push	af
+			ld		a,66
+			di
+			ld		(DIRPA2),a
+.CONTINUACION_PAGE_66:
+			db		0,0,0,0,0,0,0,0,0,0,0,0,0,0
+			db		0,0,0,0,0,0,0,0,0,0,0,0,0,0
+			pop		af
+			ret
 
 COVIDS:
 

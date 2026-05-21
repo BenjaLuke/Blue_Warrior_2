@@ -1739,6 +1739,7 @@ RECUPERA_SPRITES:
 
         include "BASICOS/PROYECTILES.asm"
         include "BASICOS/ENEMIGOS.asm"
+		
 ENEMIGO_FINAL:
 
 		pop		af										; Sacamos de la pila el ret anterior
@@ -3876,5 +3877,22 @@ PALETA_BLANCO_NEGRO_3_2:
 
 /**********************
  ****** PAGINA 65******
+ ******   END    ******
+ **********************/
+
+ /**********************
+ ****** PAGINA 65******
+ ****** SLOT   2 ******     Motor del juego 3
+ **********************/
+
+		org		#8000
+
+		include "NUCLEOBW2_3.asm"
+
+
+        ds		#C000-$
+
+/**********************
+ ****** PAGINA 66******
  ******   END    ******
  **********************/
