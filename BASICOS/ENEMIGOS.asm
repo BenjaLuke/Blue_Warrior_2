@@ -48,8 +48,7 @@ UN_NUEVO_ENEMIGO:
         ld      e,(ix+3)
 	ld	d,0
         ld	hl,#4A00		                                                        ; Depositamos los sprites en vram	
-	or	a
-	adc	hl,de
+	add	hl,de
 	ex	de,hl
 	ld	hl,PROPIEDADES_PATRON_SPRITE
         push    ix
@@ -163,8 +162,7 @@ UN_NUEVO_ENEMIGO:
 
 .COMUN_LETRAS_PREMIO:
 
-        push    bc
-        pop     af
+        ld      a,b
 
 .COMPARTIDO_CON_LETRAS_AVISO:
 
@@ -194,9 +192,7 @@ UN_NUEVO_ENEMIGO:
         ld      (MIRAMOS_SEGUNDO_SPRITE),a
         call    MIRAMOS_SI_ESTA_LIBRE_ESE_SPRITE
 
- 	ld	a,(SPRITE_QUE_TOCA)	
- [2]	rlc	a
-	ld	(ix+3),a
+ 	call	STANDAR_DA_EL_VALOR_SPRITE_QUE_TOCA_IX3
         jp      TROZOS_COMUNES_3
 
 .DEFINE_CORAZON_CONTENEDOR:
@@ -318,9 +314,7 @@ UN_NUEVO_ENEMIGO:
         ld      (MIRAMOS_SEGUNDO_SPRITE),a
         call    MIRAMOS_SI_ESTA_LIBRE_ESE_SPRITE
 
- 	ld	a,(SPRITE_QUE_TOCA)	
- [2]	rlc	a
-	ld	(ix+3),a
+ 	call	STANDAR_DA_EL_VALOR_SPRITE_QUE_TOCA_IX3
         call    TROZOS_COMUNES_3
 	ld	hl,COLOR_CHECK_POINT_2
 	call    TROZOS_COMUNES_11
@@ -346,9 +340,7 @@ UN_NUEVO_ENEMIGO:
         ld      (MIRAMOS_SEGUNDO_SPRITE),a
         call    MIRAMOS_SI_ESTA_LIBRE_ESE_SPRITE
 
- 	ld	a,(SPRITE_QUE_TOCA)	
- [2]	rlc	a
-	ld	(ix+3),a
+ 	call	STANDAR_DA_EL_VALOR_SPRITE_QUE_TOCA_IX3
         call    TROZOS_COMUNES_3
 	ld	hl,COLOR_SKRULLEX_QUE_DA_COSAS_1_2						; Damos color al sprite en la posición de sprite que le toca	
 	jp      TROZOS_COMUNES_9
@@ -358,10 +350,6 @@ UN_NUEVO_ENEMIGO:
         ld      a,22
         ld      c,1
         call    A_31_DESDE_10 
-
-        ld      a,(INMUNE)
-        or      a
-        jp      nz,.define_inmunidad_continua
 
 .define_inmunidad_continua:
 
@@ -504,9 +492,7 @@ UN_NUEVO_ENEMIGO:
         ld      (MIRAMOS_SEGUNDO_SPRITE),a
         call    MIRAMOS_SI_ESTA_LIBRE_ESE_SPRITE
 
- 	ld	a,(SPRITE_QUE_TOCA)	
- [2]	rlc	a
-	ld	(ix+3),a
+ 	call	STANDAR_DA_EL_VALOR_SPRITE_QUE_TOCA_IX3
         call    TROZOS_COMUNES_3
 	ld	hl,COLOR_MEGADEATH_BODY_2						; Damos color al sprite en la posición de sprite que le toca	
 	JP      TROZOS_COMUNES_9
@@ -536,9 +522,7 @@ UN_NUEVO_ENEMIGO:
         ld      (MIRAMOS_SEGUNDO_SPRITE),a
         call    MIRAMOS_SI_ESTA_LIBRE_ESE_SPRITE
 
- 	ld	a,(SPRITE_QUE_TOCA)	
- [2]	rlc	a
-	ld	(ix+3),a
+ 	call	STANDAR_DA_EL_VALOR_SPRITE_QUE_TOCA_IX3
         call    TROZOS_COMUNES_3
 	ld	hl,COLOR_MEGADEATH_HEAT_2						; Damos color al sprite en la posición de sprite que le toca	
 	jp      TROZOS_COMUNES_9
@@ -609,9 +593,7 @@ UN_NUEVO_ENEMIGO:
         ld      (MIRAMOS_SEGUNDO_SPRITE),a
         call    MIRAMOS_SI_ESTA_LIBRE_ESE_SPRITE
 
- 	ld	a,(SPRITE_QUE_TOCA)	
- [2]	rlc	a
-	ld	(ix+3),a
+ 	call	STANDAR_DA_EL_VALOR_SPRITE_QUE_TOCA_IX3
         call    TROZOS_COMUNES_3
 	ld	hl,COLOR_GUSANO_1_2						; Damos color al sprite en la posición de sprite que le toca	
 	jp      TROZOS_COMUNES_9
@@ -818,7 +800,6 @@ SECUENCIAS_DE_LOS_ENEMIGOS:
         ld      a,(ix+2)
         dec     a
         ld      (ix+2),a
-        or      a
         jp      nz,SECUENCIA_PROYECTILES_Y_ENEMIGOS.PASAMOS_A_LA_SIGUIENTE_POSICION
 
 .seguimos_con_la_letra_2:
@@ -879,7 +860,6 @@ SECUENCIAS_DE_LOS_ENEMIGOS:
         inc     a
         and     00011111B
         ld      (ix+2),a
-        or      a
         cp      00001111B
         jp      c,.desaparece_check
 
@@ -912,7 +892,6 @@ SECUENCIAS_DE_LOS_ENEMIGOS:
         inc     a
         and     01111111B
         ld      (ix+4),a
-        or      a
         jp      z,.muere_check
 
 .check_point_continua:
@@ -946,7 +925,6 @@ SECUENCIAS_DE_LOS_ENEMIGOS:
 
         ld      a,(ix+10)
         and     00000011B
-        or      a
         jp      nz,.FIN_SECUENCIA_SKRULLEX
 
 .SECUENCIA_SKRULLEX_3
@@ -1069,7 +1047,6 @@ SECUENCIAS_DE_LOS_ENEMIGOS:
 
         ld      a,(ix+10)
         and     00000001B
-        or      a
         jp      nz,.FIN_SECUENCIA_ALFONSERRYX
 
 .SECUENCIA_ALFONSERRYX_3
@@ -1255,7 +1232,6 @@ SECUENCIAS_DE_LOS_ENEMIGOS:
         jp      nz,.FIN_SECUENCIA_MEGADEATH_CABEZA
         ld      a,(ix+10)
         and     00000001b
-        or      a
         jp      z,.SECUENCIA_MEGADEATH_7_CABEZA
         ld      a,(ix+13)
         or      a
@@ -1298,14 +1274,12 @@ PON_COLOR_1:
 		
 	ld	e,a
 	ld	d,0
-        push    de
-        pop     hl
-        or      a
-    [3] adc     hl,de
+        ld      h,d
+        ld      l,e
+    [3] add     hl,de
         ex      de,hl
 	ld	hl,#4800
-	or	a
-	adc	hl,de
+	add	hl,de
 	ex	de,hl
 
         ret
@@ -1344,6 +1318,14 @@ STANDAR_DA_EL_VALOR_SPRITE_QUE_TOCA:
         ld	a,(SPRITE_QUE_TOCA)	
  [2]	rlc	a
 	ld	(ix+12),a
+
+        ret
+
+STANDAR_DA_EL_VALOR_SPRITE_QUE_TOCA_IX3:
+
+        ld	a,(SPRITE_QUE_TOCA)	
+ [2]	rlc	a
+	ld	(ix+3),a
 
         ret
 
@@ -1465,7 +1447,6 @@ TROZOS_COMUNES_20:
 
         ld      a,(ix+10)
         and     00000011B
-        or      a
         ret
 
 TROZOS_COMUNES_21:
@@ -1528,7 +1509,6 @@ TROZOS_COMUNES_26:
         ld      a,(ix+11)
         inc     a
         and     00000001b
-        or      a
         ret
 
 TROZOS_COMUNES_27:

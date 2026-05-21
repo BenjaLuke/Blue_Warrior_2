@@ -13,35 +13,103 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH:
 .BUCLE_10_ENEMIGOS:
 
         ld      a,(ix+2)
-        cp      #FF
+        inc     a
         jp      z,.NO_HAY_COLISION
 
-        ld      a,(ix)
-        ld      c,a
+        ld      c,(ix+0)
         ld      a,(X_DEPH)
         add     16
         sub     c
         cp      20
         jp      nc,.NO_HAY_COLISION
 
-        ld      a,(ix+1)                                                    ; Y enemigo
-        ld      c,a
+        ld      c,(ix+1)                                                    ; Y enemigo
         ld      a,(Y_DEPH)                                                 ; Y prota
-        add     32                                                          ; CorrecciÃ³n para que ajusten
+        add     32                                                          ; Corrección para que ajusten
         sub     c                                                           ; Se restan
         cp      32                                                          ; El margen para que colapsen en este caso es 32
         jp      nc,.NO_HAY_COLISION
 
         jp      .EXCEPCIONES_1
 
+.NO_HAY_COLISION:
+
+        ld      de,16
+        add     ix,de
+        djnz    .BUCLE_10_ENEMIGOS
+
+.SALIMOS:
+
+        pop     iy
+        pop     ix
+
+        ret
+
+.EXCEPCIONES_1:
+
+; ¿ES CORAZON?
+
+        ld      a,(ix+8)
+
+        cp      35*4
+        jp      nz,.EXCEPCIONES_2
+
+; ¿ES AMPLIADO?
+
+        ld      a,(CORAZON_ACTIVO)
+        or      a
+        jp      z,.DAMOS_UN_CORAZON_AMPLIADO
+        jp      .DAMOS_UN_CORAZON
+
+.EXCEPCIONES_2:
+
+; ¿ES LETRA?
+
+        cp      27*4
+        jp      z,.CARGA_LA_D
+        cp      28*4
+        jp      z,.CARGA_LA_E
+        cp      29*4
+        jp      z,.CARGA_LA_P
+        cp      30*4
+        jp      z,.CARGA_LA_H
+
+; ¿ES UN PROYECTIL?
+
+        cp      40*4
+        jp      z,.SI_QUE_HAY_COLISION
+
+; ¿ES > 43*4?
+
+        cp      43*4
+        jp      c,.NO_HAY_COLISION
+
+; ¿ES UN PREMIO?
+
+        jp      z,.ES_FLECHA
+        cp      44*4
+        jp      z,.ES_FUEGO
+        cp      45*4
+        jp      z,.ES_HACHA
+
+; ESTA MEGADEATH ACTIVO Y ES CABEZA?
+
+        cp      54*4
+        jp      nz,.SI_QUE_HAY_COLISION
+
+        ld      a,(MEGADEATH_ACTIVO)
+        or      a
+        jp      z,.SI_QUE_HAY_COLISION
+        jp      .NO_HAY_COLISION
+
 .SI_QUE_HAY_COLISION:
-; Â¿ES INMUNE?
+; ¿ES INMUNE?
 
         ld      a,(INMUNE)
         or      a
         jp      nz,.SALIMOS
 
-; Â¿NO TIENE CORAZONES?
+; ¿NO TIENE CORAZONES?
 
         ld      a,(CORAZONES)
         or      a
@@ -62,94 +130,28 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH:
         ld      (TIEMPO_DE_ADJUST),a
         jp      .SALIMOS
 
-.NO_HAY_COLISION:
-
-        ld      de,16
-        add     ix,de
-        djnz    .BUCLE_10_ENEMIGOS
-        jp      .SALIMOS
-
-.EXCEPCIONES_1:
-
-; Â¿ES CORAZON?
-
-        ld      a,(ix+8)
-
-        cp      35*4
-        jp      nz,.EXCEPCIONES_2
-
-; Â¿ES AMPLIADO?
-
-        ld      a,(CORAZON_ACTIVO)
-        or      a
-        jp      z,.DAMOS_UN_CORAZON_AMPLIADO
-        jp      .DAMOS_UN_CORAZON
-
-.EXCEPCIONES_2:
-
-; Â¿ES LETRA?
-
-        cp      27*4
-        jp      z,.CARGA_LA_D
-        cp      28*4
-        jp      z,.CARGA_LA_E
-        cp      29*4
-        jp      z,.CARGA_LA_P
-        cp      30*4
-        jp      z,.CARGA_LA_H
-
-; Â¿ES UN PROYECTIL?
-
-        cp      40*4
-        jp      z,.SI_QUE_HAY_COLISION
-
-; Â¿ES > 43*4?
-
-        cp      43*4
-        jp      c,.NO_HAY_COLISION
-
-; Â¿ES UN PREMIO?
-
-        cp      43*4
-        jp      z,.ES_FLECHA
-        cp      44*4
-        jp      z,.ES_FUEGO
-        cp      45*4
-        jp      z,.ES_HACHA
-
-; ESTA MEGADEATH ACTIVO Y ES CABEZA?
-
-        cp      54*4
-        jp      nz,.SI_QUE_HAY_COLISION
-
-        ld      a,(MEGADEATH_ACTIVO)
-        or      a
-        jp      z,.SI_QUE_HAY_COLISION
-        jp      .NO_HAY_COLISION
-
 .CARGA_LA_D:
 
-        ld     a,1
-        ld     (TENEMOS_D),a
-        jp      .COMUN_CARGA_LETRAS
-
+        ld      hl,TENEMOS_D
+        jp      .MARCA_LETRA_RECOGIDA
 
 .CARGA_LA_E:
 
-        ld     a,1
-        ld      (TENEMOS_E),a
-        jp      .COMUN_CARGA_LETRAS
+        ld      hl,TENEMOS_E
+        jp      .MARCA_LETRA_RECOGIDA
 
 .CARGA_LA_P:
 
-        ld     a,1
-        ld      (TENEMOS_P),a
-        jp      .COMUN_CARGA_LETRAS
+        ld      hl,TENEMOS_P
+        jp      .MARCA_LETRA_RECOGIDA
 
 .CARGA_LA_H:
 
-        ld     a,1
-        ld      (TENEMOS_H),a
+        ld      hl,TENEMOS_H
+
+.MARCA_LETRA_RECOGIDA:
+
+        ld      (hl),1
 
 .COMUN_CARGA_LETRAS:
 
@@ -166,21 +168,12 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH:
         push    iy
         jp      .SI_QUE_HAY_COLISION
         
-.SALIMOS:
-
-        pop     iy
-        pop     ix
-
-        ret
 
 .AUDIO_PREMIO:
 
-        push    af
         ld      a,7
         ld      c,1
-        call    A_31_DESDE_10       
-        pop     af
-        ret
+        jp      A_31_DESDE_10       
 
 .ES_FLECHA:
 
@@ -197,7 +190,7 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH:
         cp      2
         jp      z,.FINAL_DE_ENTREGA_DE_PREMIO
 
-        ld      a,0
+        xor     a
         ld      (ARMA_USANDO),a
 
         ld     hl,10

@@ -340,17 +340,17 @@ CARGA_SLOT_JUEGO:
 COMIENZA_JUEGO:
 
 		ld		a,(FASE)
-		cp		1
+		dec		a
 		jp		nz,.limpia_solo_sprites
 
-        ld	    a,0							                            ; a     = el valor que vamos a poner
+        xor	    a							                            ; a     = el valor que vamos a poner
         ld	    bc,#ffff						                        ; bc	= longitud del area a rellenar con el dato A
         ld	    hl,#0000						                        ; hl	= dirección en la que empieza a pintar
         call	FILVRM_RAM						                        ; Limpiamos toda esta zona de la VRAM 
 
 .limpia_solo_sprites:
 
-        ld	    a,0							                            ; a     = el valor que vamos a poner
+        xor	    a							                            ; a     = el valor que vamos a poner
         ld	    bc,#1980						                        ; bc	= longitud del area a rellenar con el dato A
         ld	    hl,#3B00						                        ; hl	= dirección en la que empieza a pintar
         call	FILVRM_RAM						                        ; Limpiamos toda esta zona de la VRAM 
@@ -383,24 +383,17 @@ COMIENZA_JUEGO:
         ld		de,#c000
 
 		ld		a,(FASE)
-		cp		1
-		jp		nz,.carga_pequena
+		dec		a
+		jp		nz,.fin_de_carga
 
 		push	hl
 		ld		hl,0
 		ld		(SCORE_REAL),hl
 		pop		hl
-
-.carga_grande:
-
-        ld		bc,16384
-		jp		.fin_de_carga
-
-.carga_pequena:
-
-		ld		bc,16384
 		
 .fin_de_carga:		
+
+        ld		bc,16384
 
         call	PON_COLOR_2.sin_bc_impuesta
 
@@ -438,9 +431,7 @@ PREPARACION_SPRITES:
 		ld		c,8
 		call	WRTVDP_EN_RAM		
 				
-		ld 		a,(RG5SAV)												; Colocamos los punteros de atributos en #4A00 (los colores serán #800 antes que este)
-		or		10010111B
-		and		10010111b
+		ld 		a,10010111b												; Colocamos los punteros de atributos en #4A00 (los colores serán #800 antes que este)
 		ld 		(RG5SAV),a			
 		ld		b,a
 		ld		c,5
@@ -453,9 +444,7 @@ PREPARACION_SPRITES:
 		ld		c,11
 		call	WRTVDP_EN_RAM	
 				
-		ld 		A,(RG6SAV)												; Colocamos el puntero de patrones en #4000
-		or  	00001000B
-		and		00001000b
+		ld 		a,00001000b										; Colocamos el puntero de patrones en #4000
 		ld 		(RG6SAV),a			
 		ld		b,a
 		ld		c,6
@@ -518,9 +507,7 @@ VARIABLES_PARA_EMPEZAR_LA_PARTIDA:
 		or		l
 		jp		z,VARIABLES_PARA_EMPEZAR_LA_PARTIDA_1
 		ld		(SCORE_A_SUMAR),hl
-		ld		de,1
-		or		a
-		sbc		hl,de
+		dec		hl
 		ld		(MAX_SCORE),hl
 
 		call	SUMA_SCORE
@@ -706,30 +693,27 @@ INICIA_SCROLL:
 .entorno_a_1:
 
 		ld		a,1
-		ld		ix,TILE_N
-		ld		de,1
-		ld		b,4
-
-.bucle_entorno_a_1:
-
-		ld		(ix),a
-		add		ix,de
-		djnz	.bucle_entorno_a_1
+		ld		(TILE_N),a
+		ld		(TILE_N+1),a
+		ld		(TILE_N+2),a
+		ld		(TILE_N+3),a
 					
 		call	BORRA_SPRITES_ACTIVOS
 
 .pinta_proyectiles_y_enemigos:
 
 		ld		b,16
-		ld		ix,ENEMIGOS
-		ld		a,0
+		ld		hl,ENEMIGOS+6
+		ld		de,14
+		xor		a
 		
 .bucle_para_pintar_proyectiles_y_enemigos:
 		
-		ld		(ix+8),a												; #FF Significa que no debe seguir buscnado porque no hay más proyectiles
-		ld		(ix+6),a
-		ld		de,16
-		add		ix,de
+		ld		(hl),a												; #FF Significa que no debe seguir buscnado porque no hay más proyectiles
+		inc		hl
+		inc		hl
+		ld		(hl),a
+		add		hl,de
 		djnz	.bucle_para_pintar_proyectiles_y_enemigos
 						
 		ld		hl,PALETA_FASE_1_1_FADE_IN								; Primera paleta de colores
@@ -1072,7 +1056,6 @@ CONTROL:
 			ld		a,(CAMBIO_POSE)
 			sub		2
 			ld		(CAMBIO_POSE),a
-			cp		0
 			jp		z,.corrige_y_sigue
 			cp		255
 			jp		nz,.sigue
@@ -1099,8 +1082,8 @@ CONTROL:
 			jp		z,.FIN_RUTINA_GLOBAL
 
 			ld		hl,(TIME_PARALIZA)
-			ld		de,0
-			call	DCOMPR_RAM
+			ld		a,h
+			or		l
 			jp		nz,.FIN_RUTINA_GLOBAL
 
 			xor		a
@@ -1189,7 +1172,7 @@ CONTROL:
 			jp		nz,.MIRAMOS_SI_HAY_AGUJERO
 			
 			ld		a,(SEMAFORO_PUENTE)
-			cp		0
+			or		a
 			jp		nz,.MIRAMOS_SI_HAY_AGUJERO
 			inc		a
 			ld		(SEMAFORO_PUENTE),a
@@ -1513,9 +1496,7 @@ CONTROL_BUCLES:
 		xor		a
 		ld		(SUMA_BUCLE),a
 		ld		hl,(LINEA_A_LEER)
-		ld		de,1
-		or		a
-		adc		hl,de
+		inc		hl
 		ld		(LINEA_DE_REGRESO_BUCLE),hl
 		ret
 

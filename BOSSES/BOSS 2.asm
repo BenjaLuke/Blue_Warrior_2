@@ -84,29 +84,19 @@ RUTINA_BOSS_2:
 		ld		(PROYECTIL_BOSS_2_SPRITE_ACTUAL),a
 		ld		(PROYECTIL_BOSS_2_SIGUIENTE_SPRITE),a
 		ld		hl,SPRITES_ACTIVOS+PROYECTIL_BOSS_2_SPRITES_ACTIVOS_OFS
-		ld		a,l
-		ld		(PROYECTIL_BOSS_2_PUNTERO_SPRITES_ACTIVOS),a
-		ld		a,h
-		ld		(PROYECTIL_BOSS_2_PUNTERO_SPRITES_ACTIVOS+1),a
+		ld		(PROYECTIL_BOSS_2_PUNTERO_SPRITES_ACTIVOS),hl
 		ld		hl,PROYECTIL_BOSS_2_ATRIBUTOS_VRAM
-		ld		a,l
-		ld		(PROYECTIL_BOSS_2_DIRECCION_VRAM_ATRIBUTOS),a
-		ld		a,h
-		ld		(PROYECTIL_BOSS_2_DIRECCION_VRAM_ATRIBUTOS+1),a
+		ld		(PROYECTIL_BOSS_2_DIRECCION_VRAM_ATRIBUTOS),hl
 		ld		hl,PROYECTIL_BOSS_2_COLOR_VRAM
-		ld		a,l
-		ld		(PROYECTIL_BOSS_2_DIRECCION_VRAM_COLOR),a
-		ld		a,h
-		ld		(PROYECTIL_BOSS_2_DIRECCION_VRAM_COLOR+1),a
+		ld		(PROYECTIL_BOSS_2_DIRECCION_VRAM_COLOR),hl
 		xor		a
 		ld		(ROCKAGER_MUERTO),a
 		ld		(PAUSA_EN_ANIMACION_ROCKAGER),a
 		ld		(POSICION_DERRUMBE_ROCKAGER),a
 		ld		(FOTOGRAMA_SECUENCIA_ROCKAGER_2),a
-		ld		(VALORES_EXPLOSION_CON_ROCK),a
-		ld		(VALORES_EXPLOSION_CON_ROCK+1),a
-		ld		(VALORES_EXPLOSION_CON_ROCK+2),a
-		ld		(VALORES_EXPLOSION_CON_ROCK+3),a
+		ld		hl,#0000
+		ld		(VALORES_EXPLOSION_CON_ROCK),hl
+		ld		(VALORES_EXPLOSION_CON_ROCK+2),hl
 		ld		a,VIDA_INICIAL_ROCKAGER_BOSS_2
 		ld		(VIDA_ROCKAGER_BOSS_2),a
 		ld		a,VIDA_INICIAL_DAVEANIX_BOSS_2
@@ -134,7 +124,7 @@ RUTINA_BOSS_2:
 
         ld      (iy+2),a
         ld      b,a
-        ld      a,0
+        xor     a
         sub     b
         ld      (iy+10),a
         push    af
@@ -153,7 +143,7 @@ RUTINA_BOSS_2:
         ld      iy,DATAS_COPY_RECUP_SCROLL
         ld      a,(PUNTO_DEL_SCROLL)
         ld      b,a
-        ld      a,0
+        xor     a
         sub     b
         ld      (iy+6),a
         pop     af
@@ -198,7 +188,7 @@ RUTINA_BOSS_2:
 
 .PUNTO_DE_SCROLL_RETOCADO:
 
-        ld      a,0
+        xor     a
         ld      (PUNTO_DEL_SCROLL),a
 
 .COLOCA_SPRITES_DEPH_EN_SU_SITIO:

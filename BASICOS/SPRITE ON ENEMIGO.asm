@@ -9,7 +9,7 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES:
 .BUCLE_6_PROYECTILES:
 
         ld      a,(iy+2)
-        cp      #FF
+        inc     a
         jp      z,.PASAMOS_AL_SIGUIENTE_PROYECTIL
         
         ld      ix,ENEMIGOS   
@@ -20,38 +20,22 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES:
 .BUCLE_10_ENEMIGOS:
 
         ld      a,(ix+2)
-        cp      #FF
+        inc     a
         jp      z,.NO_HAY_COLISION
 
-        ld      l,(ix)
-        ld      h,0
-        ld      a,(iy)
-        ld      e,a
-        ld      d,0
-
-.COMPARA_DISTANCIA_X:
-
-        xor     a
-        sbc     hl,de
+        ld      a,(ix+0)
+        ld      e,(iy+0)
+        sub     e
         jp      nc,.DISTANCIA_X_LISTA
-
-        ld      l,(ix)
-        ld      h,0
-        ex      de,hl
-        xor     a
-        sbc     hl,de
+        cpl
+        inc     a
 
 .DISTANCIA_X_LISTA:
 
-        ld      a,h
-        or      a
-        jp      nz,.NO_HAY_COLISION
-        ld      a,l
         cp      16
         jp      nc,.NO_HAY_COLISION
 
-        ld      a,(ix+1)                                                    ; Y enemigo
-        ld      c,a
+        ld      c,(ix+1)                                                    ; Y enemigo
         ld      a,(iy+1)                                                    ; Y prota
         add     30                                                          ; Corrección para que ajusten
         sub     c                                                           ; Se restan
@@ -136,8 +120,7 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES:
 
 .sobre_el_enemigo:
 
-        ld      a,(iy+4)
-        ld      c,a
+        ld      c,(iy+4)
         ld      a,(ix+4)
         cp      c
         
@@ -145,16 +128,15 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES:
 
 .restamos_mucho:
 
-        ld      a,(iy+3)
+        ld      c,(iy+3)
         jp      .restamos_vida_al_enemigo
 
 .restamos_poco:
 
-        ld      a,(iy+2)
+        ld      c,(iy+2)
 
 .restamos_vida_al_enemigo:
 
-        ld      c,a
         ld      a,(ix+2)
         sub     c
         ld      (ix+2),a
@@ -177,8 +159,7 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES:
         call    A_31_DESDE_10       
     
 
-        ld      a,(ix+14)
-        ld      l,a
+        ld      l,(ix+14)
         ld      h,0
         ld      (SCORE_A_SUMAR),hl
       
@@ -198,8 +179,7 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES:
 
 .GENERAMOS_PREMIO:
 
-        ld      a,(ix+2)
-        ld      b,a
+        ld      b,(ix+2)
         ld      a,(iy+2)
         cp      b
         jp      c,.sobre_el_enemigo
@@ -225,7 +205,7 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES:
         ld      a,(ECTOPALLERS_ACTIVO)
         or      a
         jp      z,.sobre_el_enemigo
-        cp      1
+        dec     a
         jp      z,.FIN_DE_LAS_REPERCUSIONES_DE_LA_COLISION
 
         ld      a,(ARMA_USANDO)

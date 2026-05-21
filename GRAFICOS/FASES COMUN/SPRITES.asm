@@ -1690,7 +1690,7 @@ SUPER_DISPARO:
 	DB $B3,$7B,$7A,$32,$04,$18,$F0,$C0
 
 SPRITE_VAGON:
-	; --- bagon_left
+	; --- vagon_left
 	; color 1
 	DB $7F,$80,$80,$7F,$28,$2E,$2D,$2D
 	DB $10,$11,$0E,$03,$03,$02,$01,$01
@@ -1702,7 +1702,7 @@ SPRITE_VAGON:
 	DB $00,$FF,$FF,$C0,$FF,$01,$AA,$00
 	DB $FF,$01,$50,$29,$00,$00,$00,$00
 	;
-	; --- bagon_right
+	; --- vagon_right
 	; color 1
 	DB $FF,$00,$00,$FC,$00,$7F,$AA,$FF
 	DB $00,$7F,$F5,$6B,$FF,$81,$03,$03
