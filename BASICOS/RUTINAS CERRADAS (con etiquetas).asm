@@ -392,6 +392,10 @@ BUCLE_PINTA_TILES:
 		ld		a,(DONDE_VA_LA_INTERRUPCION_LINEAL)
 		dec		a
 		ld		(DONDE_VA_LA_INTERRUPCION_LINEAL),a
+
+		ld		a,(SUMA_CAMINO)
+		or		a
+		jp		nz,.RECTIFICA_Y_POR_SCROLL
 						
 		ld		a,(TILE_N)
 		cp		79

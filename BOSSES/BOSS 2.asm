@@ -66,7 +66,7 @@ RUTINA_BOSS_2:
 
 		call	stpmus
 
-		ld      a,0
+		xor     a
 		ld      hl,SPRITES_ATRIBUTOS_VRAM_BOSS_2+SPRITES_LIMPIA_INICIAL_BOSS_2*4
 		ld      bc,SPRITES_LIMPIA_CANT_INICIAL_BOSS_2*4
 		call    FILVRM_RAM
@@ -103,7 +103,6 @@ RUTINA_BOSS_2:
 		ld		(PAUSA_EN_ANIMACION_ROCKAGER),a
 		ld		(POSICION_DERRUMBE_ROCKAGER),a
 		ld		(FOTOGRAMA_SECUENCIA_ROCKAGER_2),a
-		ld		(SPRITES_ACTIVOS+PROYECTIL_BOSS_2_SPRITES_ACTIVOS_OFS),a
 		ld		(VALORES_EXPLOSION_CON_ROCK),a
 		ld		(VALORES_EXPLOSION_CON_ROCK+1),a
 		ld		(VALORES_EXPLOSION_CON_ROCK+2),a
@@ -322,22 +321,22 @@ RUTINA_BOSS_2:
 
 .PIEDRAS_A_INICIO:
 
-    ld		ix,VALORES_SPRITES_PIEDRAS
+    ld		hl,VALORES_SPRITES_PIEDRAS+3
     ld      a,25
     ld      de,4        
     ld      b,6
 
 .BUCLE_TRANQUILIZA_PIEDRAS:
 
-    ld      (ix+3),a
-    add     ix,de
+    ld      (hl),a
+    add     hl,de
     djnz    .BUCLE_TRANQUILIZA_PIEDRAS
 
 .VOLCAMOS_LOS_NUEVOS_SPRITES_DE_PIEDRA:
 
-	ld		hl,SPRITE_OJOS_ROCKAGER
-	ld		de,#4000+56*8*4
-	ld		bc,8*8*4
+	ld		hl,SPRITES_PIEDRA
+	ld		de,#4000+60*8*4
+	ld		bc,4*8*4
     call    PAGE_32_A_SEGMENT_2
 	call	PON_COLOR_2.sin_bc_impuesta
     call    PAGE_10_A_SEGMENT_2
@@ -1690,10 +1689,9 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK_BOSS_2:
 		ld		c,0
 		call	TIRA_FX_BOSS_2
 
-		xor		a
-		ld		(iy+8),a
-		ld		a,(iy+12)
-		call	SECUENCIA_PROYECTILES_PROPIOS_EN_BOSS_2.DEJA_LIBRE_SPRITE_EN_RAM
+		push	iy
+		pop		ix
+		call	SECUENCIA_PROYECTILES_PROPIOS_EN_BOSS_2.OCULTA_Y_MATA_SPRITE
 
 		ld		ix,VALORES_EXPLOSION_CON_ROCK
 		ld		a,(iy)

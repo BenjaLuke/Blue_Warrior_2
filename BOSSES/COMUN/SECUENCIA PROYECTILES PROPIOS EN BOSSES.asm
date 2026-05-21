@@ -68,21 +68,21 @@
 
 	ld		a,(ARMA_USANDO)
 	cp		7
-	jp		z,.carga_parabola_2
+	jr		z,.carga_parabola_2
 	cp		8
-	jp      z,.carga_parabola_3
+	jr      z,.carga_parabola_3
 
 .carga_parabola_1:
 
 	ld		a,(ix+10)
 	ld		ix,TABLA_PARABOLA_HACHA_1
-	jp		.seguimos_cargando
+	jr		.seguimos_cargando
 
 .carga_parabola_2:
 
 	ld		a,(ix+10)
 	ld		ix,TABLA_PARABOLA_HACHA_2
-	jp		.seguimos_cargando
+	jr		.seguimos_cargando
 
 .carga_parabola_3:
 
@@ -102,13 +102,13 @@
 	pop		ix
 	ld		a,(ARMA_USANDO)
 	cp		8
-	jp		z,.rectifica_x_hacha_3
+	jr		z,.rectifica_x_hacha_3
 
 .rectifica_x_hacha_1:
 
 	ld		a,(X_DEPH)
 	sub		30
-	jp		.termina_rectificacion_x
+	jr		.termina_rectificacion_x
 
 .rectifica_x_hacha_3:
 
@@ -123,13 +123,13 @@
 	ld		(ix),a
 	ld		a,(ARMA_USANDO)
 	cp		7
-	jp		nc,.rectifica_y_hacha_3
+	jr		nc,.rectifica_y_hacha_3
 
 .rectifica_y_hacha_1:
 
 	ld		a,(Y_DEPH)
 	sub		34
-	jp		.termina_rectificacion_y
+	jr		.termina_rectificacion_y
 
 .rectifica_y_hacha_3:
 
@@ -148,13 +148,13 @@
 
 	LD	a,(ix+9)
 	cp	8
-	jp	nc,.SEGUNDO_FOTOGRAMA
+	jr	nc,.SEGUNDO_FOTOGRAMA
 		
 .PRIMER_FOTOGRAMA:
 
 	ld	a,164
 	ld	(ix+8),a
-	jp	.MIRAMOS_SI_ESTA_FUERA_DE_LIMITES
+	jr	.MIRAMOS_SI_ESTA_FUERA_DE_LIMITES
 				
 .SEGUNDO_FOTOGRAMA:
 
@@ -165,7 +165,7 @@
 
 	ld	a,(ix+10)
 	cp	45
-	jp	c,.cuidado_con_la_derecha
+	jr	c,.cuidado_con_la_derecha
 
 .cuidado_con_la_izquierda:
 
@@ -173,13 +173,13 @@
 	cp	250
 	jp	c,.MIRAMOS_SI_DESAPARECE_EL_HACHA
 
-	jp	.DESAPARECE
+	jr	.DESAPARECE
 
 .cuidado_con_la_derecha:
 
 	ld	a,(ix)
 	cp	2
-	jp	c,.DESAPARECE
+	jr	c,.DESAPARECE
 				
 .MIRAMOS_SI_DESAPARECE_EL_HACHA:
 
@@ -189,11 +189,11 @@
 	ld	(ix+9),a
 	ld	a,(ix+10)
 	cp	90
-	jp	nz,.PASAMOS_A_LA_SIGUIENTE_POSICION
+	jr	nz,.PASAMOS_A_LA_SIGUIENTE_POSICION
 
 .DESAPARECE:
 		
-       call     .STANDARD_DEJA_LIBRE_EL_SPRITE
+       call     .OCULTA_Y_MATA_SPRITE
 						
 .PASAMOS_A_LA_SIGUIENTE_POSICION:
 
@@ -227,29 +227,29 @@
 .TROZOS_COMUNES_28:
 
         call    .TROZOS_COMUNES_31
-        jp      nc,.partido
+        jr      nc,.partido
 
 .entero:
 
         cp      c
-        jp      nc,.PASAMOS_A_LA_SIGUIENTE_POSICION
+        jr      nc,.PASAMOS_A_LA_SIGUIENTE_POSICION
 
         ld      a,b
         cp      c
-        jp      nc,.TROZOS_COMUNES_29
-        jp      .PASAMOS_A_LA_SIGUIENTE_POSICION
+        jr      nc,.TROZOS_COMUNES_29
+        jr      .PASAMOS_A_LA_SIGUIENTE_POSICION
 
 .partido:
 
         cp      c
-        jp      c,.TROZOS_COMUNES_29
+        jr      c,.TROZOS_COMUNES_29
         ld      a,b
         cp      c
-        jp      c,.PASAMOS_A_LA_SIGUIENTE_POSICION
+        jr      c,.PASAMOS_A_LA_SIGUIENTE_POSICION
 
         ld      a,(ix+8)
         cp      35*4
-        jp      nz,TROZOS_COMUNES_29
+        jr      nz,.TROZOS_COMUNES_29
 
         xor     a
         ld      (CORAZON_ACTIVO),a
@@ -266,7 +266,7 @@
         ld      (ix+8),a
         ld      a,255
         ld      (ix),a
-        jp      .PASAMOS_A_LA_SIGUIENTE_POSICION
+        jr      .PASAMOS_A_LA_SIGUIENTE_POSICION
 
 .TROZOS_COMUNES_31:
 
@@ -300,6 +300,21 @@
 	pop	ix
 	
 	ret
+
+.OCULTA_Y_MATA_SPRITE:
+
+        xor     a
+        ld      e,(ix+12)
+        ld      d,a
+        ld      hl,#4A00
+        add     hl,de
+        ld      bc,3
+        call    FILVRM_RAM
+        ld      a,(ix+12)
+        call    .DEJA_LIBRE_SPRITE_EN_RAM
+        ld      a,$FF
+        ld      (ix+2),a
+        ret
 
 .STANDARD_DEJA_LIBRE_EL_SPRITE:
 

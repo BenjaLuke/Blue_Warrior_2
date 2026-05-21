@@ -647,6 +647,7 @@ INICIA_SCROLL:
 		ld		(ECTOPALLERS_NUEVO_NECESARIO),a
 		ld		(SEMAFORO_PUENTE),a
 		ld		(MUSICA_BEST_ON),a
+		ld		(SUMA_CAMINO),a
 
 		inc		a
 		ld		(FINAL_DEL_SCROLL),a									; Activamos el scroll
@@ -864,6 +865,10 @@ CONTROL:
 
 .miramos_si_puede_moverse:
 
+			ld		a,(SUMA_CAMINO)
+			or		a
+			jp		nz,.pre_sigue_comun
+
 			jp	SE_PUEDE_MOVER_Y_EFES_VARIOS
 	
 .teclado:
@@ -956,11 +961,11 @@ CONTROL:
 .resta_comun_y:
 		
 			ld		a,(TILE_N)
-			cp		79
+			call	CONTROL_FASE3_TILE_145
 			jp		nc,.pre_sigue_comun
 
 			ld		a,(TILE_N2)
-			cp		79
+			call	CONTROL_FASE3_TILE_145
 			jp		nc,.pre_sigue_comun
 
 			ld		a,(AVANCE_BLOQUEADO)
@@ -1014,11 +1019,11 @@ CONTROL:
 .suma_comun_y:
 
 			ld		a,(TILE_S)
-			cp		79
+			call	CONTROL_FASE3_TILE_145
 			jp		nc,.pre_sigue_comun
 
 			ld		a,(TILE_S2)
-			cp		79
+			call	CONTROL_FASE3_TILE_145
 			jp		nc,.pre_sigue_comun
 
 			ld		a,(LIM_Y_INF)
@@ -1476,6 +1481,31 @@ DESCONECTA_PUPA:
 		ld		a,1
 		ld		(DESACTIVA_PUPA),a
 		ret
+
+CONTROL_FASE3_TILE_145:
+
+		ld		b,a
+		cp		145
+		jr		nz,.mira_si_pisable
+		ld		a,(FASE)
+		cp		3
+		jr		nz,.mira_si_pisable
+		call	CONTROL_VELOCIDAD_FASE_VAGON
+		or		a
+		ret
+
+.mira_si_pisable:
+
+		ld		a,b
+		cp		79
+		ret
+
+CONTROL_VELOCIDAD_FASE_VAGON:
+
+		ld		a,1
+		ld		(SUMA_CAMINO),a
+		jp		BUCLE_PINTA_TILES.VELOCIDAD_DE_FASE_GALOPE
+
 CONTROL_BUCLES:
 
 .INICIO_BUCLE:
