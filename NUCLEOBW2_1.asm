@@ -636,13 +636,16 @@ CONTROL:
 
 
 .hay_que_restar:
-		
-			ld		a,(CONTROL_Y)
-			dec		a
-			ld		(CONTROL_Y),a
+
+			call    CONTROL_RETENCION_Y_DEPH_POST_RECTIFICA_UP
+			jp      c,.pre_sigue_comun
 			
-			ld		a,(Y_DEPH)
-			dec		a
+			ld      a,(CONTROL_Y)
+			dec     a
+			ld      (CONTROL_Y),a
+				
+			ld      a,(Y_DEPH)
+			dec     a
 		
 .pre_sigue_up:
 
@@ -654,14 +657,16 @@ CONTROL:
 				
 .rectifica_up:
 	
-			dec		a
-			ld		(Y_DEPH),a
+			dec     a
+			ld      (Y_DEPH),a
 
-			ld		a,(CONTROL_Y)
-			dec		a
-			ld		(CONTROL_Y),a
+			ld      a,(CONTROL_Y)
+			dec     a
+			ld      (CONTROL_Y),a
+
+			call    SUMA_RETENCION_Y_DEPH_POST_RECTIFICA_UP
 					
-			jp		.pre_sigue_comun
+        jp      .pre_sigue_comun
 
 .suma_comun_y:
 
