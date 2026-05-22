@@ -395,15 +395,7 @@ SE_PUEDE_MOVER_Y_EFES_VARIOS:
 
 			call	MARCA_REAPLICA_VAGON_RET
 
-			ld		a,(MUSICA_ON_OFF)
-			or		a
-			jp		z,CONTROL.teclado
-
-			ld      a,(FASE)
-			add     20
-			call    CHANGE_BANK_2
-			call	cntmus
-			call	PAGE_10_A_SEGMENT_2
+			call	REANUDA_MUSICA_DESDE_SLOT1
 			jp		CONTROL.teclado
 
 .MUSIC_ON_OFF_VAGON:
@@ -413,24 +405,32 @@ SE_PUEDE_MOVER_Y_EFES_VARIOS:
 
 LLAMA_RUTINA_ESPECIAL_FASE_3:
 
-			push	af
-			ld		a,66
-			di
-			ld		(DIRPA2),a
-.CONTINUACION_PAGE_66:
-			db		0,0,0,0,0,0,0,0,0
-			pop		af
+; Antes esta llamada saltaba a la pagina 66 mediante DIRPA2.
+; Actualmente RUTINA_ESPECIAL_FASE_3 no hacia nada real, asi que evitamos
+; cambiar la pagina del segmento 2 y eliminamos el riesgo con interrupciones/SNSMAT_RAM.
+
+RUTINA_ESPECIAL_FASE_3:
+
 			ret
 
 LLAMA_PAUSE_VAGON_FASE_3:
 
 			push	af
-			ld		a,66
-			di
-			ld		(DIRPA2),a
-.CONTINUACION_PAGE_66:
-			db		0,0,0,0,0,0,0,0,0,0,0,0,0,0
-			db		0,0,0,0,0,0,0,0,0,0,0,0,0,0
+
+.ESPERA_SUELTA_F1:
+
+			ld		a,6
+			call	SNSMAT_RAM
+			bit		5,a
+			jp		z,.ESPERA_SUELTA_F1
+
+.ESPERA_PULSA_F1:
+
+			ld		a,6
+			call	SNSMAT_RAM
+			bit		5,a
+			jp		nz,.ESPERA_PULSA_F1
+
 			pop		af
 			ret
 

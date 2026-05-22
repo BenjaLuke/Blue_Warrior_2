@@ -1755,6 +1755,21 @@ PASAMOS_A_LA_SIGUIENTE_FASE:
         include "PALETAS/PALETAS (sin etiquetas).asm"
 		include "AUDIOS/LANZADOR FMPACK Y MUSIC MODULE (sin etiquetas).asm"        
 
+REANUDA_MUSICA_DESDE_SLOT1:
+
+            ld      a,(MUSICA_ON_OFF)
+            or      a
+            ret     z
+
+            di
+            ld      a,(FASE)
+            add     20
+            call    CHANGE_BANK_2
+            call    cntmus
+            call    PAGE_10_A_SEGMENT_2
+            ei
+            ret
+			
         ds		#8000-$
 
 /**********************
