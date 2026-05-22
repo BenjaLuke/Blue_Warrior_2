@@ -2,7 +2,7 @@
 setlocal
 
 pushd "%~dp0"
-"C:\Users\benja\Dropbox\BENJA\MSX\CARAMBALAN STUDIOS\DESARROLLO\CODIGO ASM DE RECURSO\sjasm.exe" -s NUCLEOBW2_1.asm
+"C:\Users\benja\Dropbox\BENJA\MSX\CARAMBALAN STUDIOS\DESARROLLO\CODIGO ASM DE RECURSO\sjasm.exe" -s NUCLEOBW2.asm
 set "EXITCODE=%ERRORLEVEL%"
 popd
 

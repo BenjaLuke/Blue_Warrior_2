@@ -1,4 +1,0 @@
-RUTINA_CONTINUACION:
-        ret
-
-

@@ -912,6 +912,10 @@ COLOR_SPRITE_VAGON:
 		DB $01,$01,$01,$01,$01,$01,$01,$01
 
 		; attr 1
+		DB $0A,$0A,$0A,$0A,$0A,$0A,$0A,$0A
+		DB $0A,$0A,$0A,$0A,$0A,$0A,$0A,$0A
+
+		; attr 2
 		DB $0E,$0E,$0E,$0E,$0E,$0E,$0E,$0E
 		DB $0E,$0E,$0E,$0E,$0E,$0E,$0E,$0E
 
@@ -920,5 +924,9 @@ COLOR_SPRITE_VAGON:
 		DB $01,$01,$01,$01,$01,$01,$01,$01
 
 		; attr 1
+		DB $0A,$0A,$0A,$0A,$0A,$0A,$0A,$0A
+		DB $0A,$0A,$0A,$0A,$0A,$0A,$0A,$0A
+
+		; attr 2
 		DB $0E,$0E,$0E,$0E,$0E,$0E,$0E,$0E
 		DB $0E,$0E,$0E,$0E,$0E,$0E,$0E,$0E
