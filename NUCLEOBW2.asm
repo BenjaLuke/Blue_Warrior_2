@@ -169,11 +169,11 @@ MARCA:
  ****** SLOT   2 ******     
  **********************/
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
-; RESUMEN: 1 - gráficos de marca
+; RESUMEN: 1 - gráficos de marca parte 1
 
 GRAFICOS_MOAI_1:
 
-        incbin  "GRAFICOS/PRESENTACIONES/SOLOTITULO1.DAT" ;incbin  "GRAFICOS/DIGITAL MOAI 1.DAT"
+        incbin  "GRAFICOS/PRESENTACIONES/SOLOTITULO1.DAT"
 
         ds		#C000-$
 
@@ -1905,7 +1905,7 @@ M_SEMIBOSS_2:
  **********************/
 
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
-; RESUMEN: 40 - Gráficos de marca parte 1
+; RESUMEN: 40 - Gráficos de marca parte 2
 GRAFICOS_MOAI_2:
 
         incbin  "GRAFICOS/PRESENTACIONES/SOLOTITULO2.DAT"
@@ -1918,11 +1918,11 @@ GRAFICOS_MOAI_2:
  **********************/
  /**********************
   ****** PAGINA 41 *****
-  ****** SLOT   2 ******     gráficos de marca parte 2
+  ****** SLOT   2 ******     gráficos de marca parte 3
   **********************/
 
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
-; RESUMEN: 41 - Gráficos de marca parte 2
+; RESUMEN: 41 - Gráficos de marca parte 3
 GRAFICOS_MOAI_3:
 
         incbin  "GRAFICOS/PRESENTACIONES/SOLOTITULO3.DAT"

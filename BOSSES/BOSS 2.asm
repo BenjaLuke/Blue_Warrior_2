@@ -1452,20 +1452,37 @@ BUCLE_REVISION_TODOS_LOS_PROYECTILES_OJO_BOSS_2:
         or      a
         jr      z,.SIGUIENTE_PROYECTIL_OJO_BOSS_2
 
-        ; --- Comprobar X: zona central 2 px del proyectil ---
+        ; --- Comprobar X ---
+        ; Miramos si el centro dañino del proyectil entra dentro
+        ; de la caja aproximada de Deph: X_DEPH .. X_DEPH+19
+
+        ld      a,(ix+0)        ; X proyectil
+        add     a,7             ; centro aproximado del proyectil
+        ld      c,a
+
         ld      a,(X_DEPH)
-        add     a,20
-        sub     (ix+0)
-        sub     a,7
-        cp      2
+        ld      d,a
+
+        ld      a,c
+        sub     d               ; centroX_proyectil - X_DEPH
+        cp      20              ; dentro de caja 20 px
         jr      nc,.SIGUIENTE_PROYECTIL_OJO_BOSS_2
 
-        ; --- Comprobar Y: zona central 4 px del proyectil ---
+
+        ; --- Comprobar Y ---
+        ; Miramos si el centro dañino del proyectil entra dentro
+        ; de la caja aproximada de Deph: Y_DEPH .. Y_DEPH+19
+
+        ld      a,(iy+0)        ; Y proyectil
+        add     a,6             ; centro aproximado del proyectil
+        ld      c,a
+
         ld      a,(Y_DEPH)
-        add     a,20
-        sub     (iy+0)
-        sub     a,6
-        cp      4
+        ld      d,a
+
+        ld      a,c
+        sub     d               ; centroY_proyectil - Y_DEPH
+        cp      20              ; dentro de caja 20 px
         jr      nc,.SIGUIENTE_PROYECTIL_OJO_BOSS_2
 
         ; Si llega aquí, hay colisión

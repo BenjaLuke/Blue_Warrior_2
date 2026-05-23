@@ -556,7 +556,7 @@ BUCLE_PELEA_BOSS_5:
 		call	PINTA_PROYECTILES_DE_DEPH_EN_BOSS_5
 		call	CONTROL_COVID_IDIUS_BOSS_5
         call    REVISAMOS_COLISION_CON_IDIUS_Y_DEPH
-		call	BUCLE_REVISION_TODOS_LOS_PROYECTILES_OJO_BOSS_5
+		call	BUCLE_REVISION_TODOS_LOS_PROYECTILES__BOSS_5
 		call	ON_SPRITE_GLOBAL_BOSS_5
 		call	REVISAMOS_COLISION_CON_IDIUS_Y_PROYECTILES_DEPH
 		call	MUEVE_IDIUS_BOSS_5
@@ -2128,7 +2128,7 @@ PINTA_PROYECTILES_DE_DEPH_EN_BOSS_5:
 ON_SPRITE_GLOBAL_BOSS_5:
 
 	ret
-	call	BUCLE_REVISION_TODOS_LOS_PROYECTILES_OJO_BOSS_5
+	call	BUCLE_REVISION_TODOS_LOS_PROYECTILES__BOSS_5
 	ret
 
 PINTA_MARCADORES_VIDA_FINAL_BOSS_5:
@@ -2233,50 +2233,67 @@ CONVIERTE_VIDA_FINAL_A_BARRA_BOSS_5:
         inc     a
         ret
 
-BUCLE_REVISION_TODOS_LOS_PROYECTILES_OJO_BOSS_5:
+BUCLE_REVISION_TODOS_LOS_PROYECTILES__BOSS_5:
 
 		ld		hl,PROYECTILES_BOSS_5_DIRECCION
 		ld		ix,PROYECTILES_BOSS_5_X
 		ld		iy,PROYECTILES_BOSS_5_Y
 		ld		b,PROYECTILES_BOSS_5_CANTIDAD
 
-.BUCLE_REVISION_PROYECTILES_OJO_BOSS_5:
+.BUCLE_REVISION_PROYECTILES__BOSS_5:
 
         ld      a,(hl)
         or      a
-        jr      z,.SIGUIENTE_PROYECTIL_OJO_BOSS_5
+        jr      z,.SIGUIENTE_PROYECTIL__BOSS_5
 
-        ; --- Comprobar X: zona central 2 px del proyectil ---
+        ; --- Comprobar X ---
+        ; Miramos si el centro dañino del proyectil entra dentro
+        ; de la caja aproximada de Deph: X_DEPH .. X_DEPH+19
+
+        ld      a,(ix+0)        ; X proyectil
+        add     a,7             ; centro aproximado del proyectil
+        ld      c,a
+
         ld      a,(X_DEPH)
-        add     a,20
-        sub     (ix+0)
-        sub     a,7
-        cp      2
-        jr      nc,.SIGUIENTE_PROYECTIL_OJO_BOSS_5
+        ld      d,a
 
-        ; --- Comprobar Y: zona central 4 px del proyectil ---
+        ld      a,c
+        sub     d               ; centroX_proyectil - X_DEPH
+        cp      20              ; dentro de caja 20 px
+        jr      nc,.SIGUIENTE_PROYECTIL__BOSS_5
+
+
+        ; --- Comprobar Y ---
+        ; Miramos si el centro dañino del proyectil entra dentro
+        ; de la caja aproximada de Deph: Y_DEPH .. Y_DEPH+19
+
+        ld      a,(iy+0)        ; Y proyectil
+        add     a,6             ; centro aproximado del proyectil
+        ld      c,a
+
         ld      a,(Y_DEPH)
-        add     a,20
-        sub     (iy+0)
-        sub     a,6
-        cp      4
-        jr      nc,.SIGUIENTE_PROYECTIL_OJO_BOSS_5
+        ld      d,a
+
+        ld      a,c
+        sub     d               ; centroY_proyectil - Y_DEPH
+        cp      20              ; dentro de caja 20 px
+        jr      nc,.SIGUIENTE_PROYECTIL__BOSS_5
 
         ; Si llega aquí, hay colisión
 
-		call	DESACTIVA_PROYECTIL_OJO_BOSS_5_ACTUAL
+		call	DESACTIVA_PROYECTIL__BOSS_5_ACTUAL
 		call	MATA_DEPH_EN_BOSS_5
 		ret
 
-.SIGUIENTE_PROYECTIL_OJO_BOSS_5:
+.SIGUIENTE_PROYECTIL__BOSS_5:
 
 		inc		hl
 		inc		ix
 		inc		iy
-		djnz	.BUCLE_REVISION_PROYECTILES_OJO_BOSS_5
+		djnz	.BUCLE_REVISION_PROYECTILES__BOSS_5
 		ret
 
-DESACTIVA_PROYECTIL_OJO_BOSS_5_ACTUAL:
+DESACTIVA_PROYECTIL__BOSS_5_ACTUAL:
 
 		push	hl
 		or		a
