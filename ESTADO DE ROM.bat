@@ -29,7 +29,7 @@ echo Analizando ROM:
 echo "%ROM_FILE%"
 echo.
 
-python "%ROMAN_PY%" "%ROM_FILE%"
+python "%ROMAN_PY%" -p "%ROM_FILE%"
 
 set "ERRORLEVEL_ROMAN=%ERRORLEVEL%"
 echo.

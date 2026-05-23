@@ -349,7 +349,7 @@
 		ld		(TRAMO_FASE_3),a
 		add		63
 		ld		(PAGE_DATOS_FASE),a
-		ld		hl,469
+		ld		hl,449
 		ld		(LINEA_A_LEER),hl
 
 ;.SUCESOS:

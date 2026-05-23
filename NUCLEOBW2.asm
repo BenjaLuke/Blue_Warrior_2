@@ -11,10 +11,10 @@ VARIABLES:
 
 /**********************
  ****** PAGINA 0 ******
- ****** SLOT   1 ******     preparacion y animación de marca
+ ****** SLOT   1 ******     
  **********************/    
-
 		org		#4000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
+; RESUMEN: 0 - Preparacion y animación de marca
 				
 		db 		"AB"													; Cabecera para indicar que esto será una ROM
 		word 	INICIO													; Etiqueta en la que comienza todo
@@ -166,10 +166,10 @@ MARCA:
 
 /**********************
  ****** PAGINA 1 ******
- ****** SLOT   2 ******     gráficos de marca parte 1
+ ****** SLOT   2 ******     
  **********************/
-
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
+; RESUMEN: 1 - gráficos de marca
 
 GRAFICOS_MOAI_1:
 
@@ -185,14 +185,11 @@ GRAFICOS_MOAI_1:
 
 /**********************
  ****** PAGINA 2 ******
- ****** SLOT   2 ******     Gráficos de marca parte 2 y cambio de page a menú
+ ****** SLOT   2 ******    
  **********************/
-
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
+; RESUMEN: 2 - Cambio de page a menú
 
-GRAFICOS_MOAI_4:
-
-        incbin  "GRAFICOS/PRESENTACIONES/SOLOTITULO4.DAT";incbin  "GRAFICOS/DIGITAL MOAI 2.DAT"
 CARGA_SLOT_MENU:
 
 		ld		a,3
@@ -211,8 +208,8 @@ CARGA_SLOT_MENU:
  ****** PAGINA 3 ******
  ****** SLOT   1 ******     Menú
  **********************/
-
 		org		#4000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
+; RESUMEN: 3 - Cinemáticas y pantalla de push space key 
 
 		include	"MENU Y TRANSICIONES/MENU.asm"
 		; Menu reducido a espera de tecla. Espacio libre reservado para futuras necesidades.
@@ -240,8 +237,8 @@ CARGA_SLOT_MENU:
  ****** PAGINA 4 ******
  ****** SLOT   2 ******     graficos presentación
  **********************/
-
 		org		#8000													
+; RESUMEN: 4 - Gráficos de push space key
 
 PANTALLA_DE_PRESENTACION_1:
 
@@ -259,8 +256,8 @@ PANTALLA_DE_PRESENTACION_1:
  ****** PAGINA 5 ******
  ****** SLOT   2 ******     graficos presentación Y PALETAS DE PRESENTACION
  **********************/
-
 		org		#8000													
+; RESUMEN: 5 - Gráficos de presentación y las paletas
 
 PANTALLA_DE_PRESENTACION_2:
 
@@ -278,8 +275,8 @@ PANTALLA_DE_PRESENTACION_2:
  ****** PAGINA 6 ******
  ****** SLOT   2 ******     libre para necesidades del menu
  **********************/
-
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
+; RESUMEN: 6 - Libre
 
 PAGINA_6_LIBRE_PARA_MENU:
 
@@ -298,8 +295,8 @@ PAGINA_6_LIBRE_PARA_MENU:
  ****** PAGINA 7 ******
  ****** SLOT   2 ******     ?
  **********************/
-
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
+; RESUMEN: 7 - Libre 
 
         ds		#C000-$
 
@@ -313,8 +310,8 @@ PAGINA_6_LIBRE_PARA_MENU:
  ****** PAGINA 8 ******
  ****** SLOT   2 ******     Cambio de page a juego
  **********************/
-
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
+; RESUMEN: 8 - Cambio de page a juego
 
 CARGA_SLOT_JUEGO:
 
@@ -334,8 +331,8 @@ CARGA_SLOT_JUEGO:
  ****** PAGINA 9 ******
  ****** SLOT   1 ******     Motor del juego
  **********************/
-
 		org		#4000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
+; RESUMEN: 9 - Motor del juego 1
 
 		include "NUCLEOBW2_1.asm"				                            ; Incluímos el motor del juego 1
 
@@ -374,8 +371,8 @@ REANUDA_MUSICA_DESDE_SLOT1:
  ****** PAGINA 10******
  ****** SLOT   2 ******     Motor del juego 2
  **********************/
-
 		org		#8000
+; RESUMEN: 10 - Motor del juego 2
 
         include	"BASICOS/MARCADOR.asm"
        	include	"BASICOS/SPRITE ON DEPH.asm"
@@ -481,8 +478,8 @@ VOLVEMOS_TRAS_ROCKAGER:
  ****** PAGINA 11******
  ****** SLOT   2 ******     fase 1-1
  **********************/
-
 		org		#8000
+; RESUMEN: 11 - Gráficos de fase 1 parte 1
 
 GRAFICOS_FASE_1_1:
 
@@ -501,8 +498,8 @@ GRAFICOS_FASE_1_1:
  ****** PAGINA 12******
  ****** SLOT   2 ******     Fase 2-1
  **********************/
-
 		org		#8000
+; RESUMEN: 12 - Gráficos de fase 2 parte 1 
 
 GRAFICOS_FASE_2_1:
 
@@ -521,8 +518,8 @@ GRAFICOS_FASE_2_1:
  ****** PAGINA 13******
  ****** SLOT   2 ******     fase 3-1
  **********************/
-
 		org		#8000
+; RESUMEN: 13 - Gráficos de fase 3 parte 1
 
 GRAFICOS_FASE_3_1:
 
@@ -541,8 +538,8 @@ GRAFICOS_FASE_3_1:
  ****** PAGINA 14******
  ****** SLOT   2 ******     Fase 4-1
  **********************/
-
 		org		#8000
+; RESUMEN: 14 - Gráficos de fase 4 parte 1
 
 GRAFICOS_FASE_4_1:
 
@@ -561,8 +558,8 @@ GRAFICOS_FASE_4_1:
  ****** PAGINA 15******
  ****** SLOT   2 ******     fase 5-1
  **********************/
-
 		org		#8000
+; RESUMEN: 15 - Gráficos de fase 5 parte 1
 
 GRAFICOS_FASE_5_1:
 
@@ -581,8 +578,8 @@ GRAFICOS_FASE_5_1:
  ****** PAGINA 16******
  ****** SLOT   2 ******     Fase 1-2
  **********************/
-
 		org		#8000
+; RESUMEN: 16 - Gráficos de fase 1 parte 2
 
 GRAFICOS_FASE_1_2:
 
@@ -601,8 +598,8 @@ GRAFICOS_FASE_1_2:
  ****** PAGINA 17******
  ****** SLOT   2 ******     fase 2-2
  **********************/
-
 		org		#8000
+; RESUMEN: 17 - Gráficos de fase 2 parte 2
 
 GRAFICOS_FASE_2_2:
 
@@ -621,8 +618,8 @@ GRAFICOS_FASE_2_2:
  ****** PAGINA 18******
  ****** SLOT   2 ******     Fase 3-2
  **********************/
-
 		org		#8000
+; RESUMEN: 18 - Gráficos de fase 3 parte 2
 
 GRAFICOS_FASE_3_2:
 
@@ -641,8 +638,8 @@ GRAFICOS_FASE_3_2:
  ****** PAGINA 19******
  ****** SLOT   2 ******     fase 4-2
  **********************/
-
 		org		#8000
+; RESUMEN: 19 - Gráficos de fase 4 parte 2
 
 GRAFICOS_FASE_4_2:
 
@@ -661,8 +658,8 @@ GRAFICOS_FASE_4_2:
  ****** PAGINA 20******
  ****** SLOT   2 ******     Fase 5-2
  **********************/
-
 		org		#8000
+; RESUMEN: 20 - Gráficos de fase 5 parte 2
 
 GRAFICOS_FASE_5_2:
 
@@ -680,8 +677,8 @@ GRAFICOS_FASE_5_2:
  ****** PAGINA 21******
  ****** SLOT   2 ******     Musica
  **********************/
-
 		org		#8000
+; RESUMEN: 21 - Músicas de la fase 1 
 
 M_STAGE_1:
 
@@ -729,7 +726,7 @@ M_GAME_OVER_1:
  **********************/
 
 		org		#8000
-
+; RESUMEN: 22 - Músicas de la fase 2
 M_STAGE_2:
 
 		incbin 	"AUDIOS/TEMAS/FASE 2/STAGE 2.mbm"
@@ -781,7 +778,7 @@ M_INTRO_BOSS_2:
  **********************/
 
 		org		#8000
-
+; RESUMEN: 23 - Músicas de la fase 3
 M_STAGE_3:
 
 		incbin 	"AUDIOS/TEMAS/FASE 3/STAGE 3.mbm"
@@ -828,7 +825,7 @@ M_GAME_OVER_3:
  **********************/
 
 		org		#8000
-
+; RESUMEN: 24 - Músicas de la fase 4
 M_STAGE_4:
 
 		incbin 	"AUDIOS/TEMAS/FASE 4/STAGE 4.mbm"
@@ -876,7 +873,7 @@ M_GAME_OVER_4:
  **********************/
 
 		org		#8000
-
+; RESUMEN: 25 - Músicas de la fase 5
 M_STAGE_5:
 
 		incbin 	"AUDIOS/TEMAS/FASE 5/STAGE 5.mbm"
@@ -925,7 +922,7 @@ M_GAME_OVER_5:
  **********************/
 
 		org		#4000
-
+; RESUMEN: 26 - Rutinas de Boss 1
 		include	"BOSSES/BOSS 1.asm"
 
 		ds      #5E00-$                                                 ; Colocamos el resto del programa siempre en el mismo sitio
@@ -997,7 +994,7 @@ CALCULA_DANO_MAGIA_BOSS_1:
  **********************/
 
 		org		#4000
-
+; RESUMEN: 27 - Rutinas de Boss 2
 		include	"BOSSES/BOSS 2.asm"
 
         ds      #5E00-$                                                 ; Colocamos el resto del programa siempre en el mismo sitio    
@@ -1108,7 +1105,7 @@ CALCULA_DANO_MAGIA_BOSS_2:
  **********************/
 
 		org		#4000
-
+; RESUMEN: 28 - Rutinas de Boss 3
 RUTINA_BOSS_3:
 
 		include	"AUDIOS/INICIA MUSICA_BOSS.asm"
@@ -1174,7 +1171,7 @@ FADE_FASE_1_3_A_NEGRO_b3:
  **********************/
 
 		org		#4000
-
+; RESUMEN: 29 - Rutinas de Boss 4
 		include	"BOSSES/BOSS 4.asm"
 
         ds      #5E00-$                                                 ; Colocamos el resto del programa siempre en el mismo sitio    
@@ -1245,7 +1242,7 @@ CALCULA_DANO_MAGIA_BOSS_4:
  **********************/
 
 		org		#4000
-
+; RESUMEN: 30 - Rutinas de Boss 5
 		include	"BOSSES/BOSS 5.asm"
 
         ds      #5E00-$                                                 ; Colocamos el resto del programa siempre en el mismo sitio    
@@ -1316,6 +1313,7 @@ CALCULA_DANO_MAGIA_BOSS_5:
  **********************/
 
 		org		#8000
+; RESUMEN: 31 - Efectos de sonido
 EFECTOS_DE_SONIDO:
 
 			incbin	"AUDIOS/FX.afb"
@@ -1335,7 +1333,7 @@ EFECTOS_DE_SONIDO:
  **********************/
 
 		org		#8000
-
+; RESUMEN: 32 - Sprites comunes Y rayos de la magia
 		include	"GRAFICOS/FASES COMUN/SPRITES.asm"
 		include "PALETAS/GLOBALES/COLORES SPRITES.asm"
 RAYOS_EN_PACK:
@@ -1361,7 +1359,7 @@ COPIA_RAYOS_A_VRAM:
  **********************/
 
 		org		#8000
-
+; RESUMEN: 33 - Mapa de la fase 1 y sus paletas
 MAPA_CONSTANTE_FASE_1:	
 
 		include	"MAPAS/CONSTANTE FASE 1.asm"
@@ -1457,7 +1455,7 @@ PALETA_BLANCO_NEGRO_1:
  **********************/
 
 		org		#8000
-
+; RESUMEN: 34 - Mapa de la fase 2 y sus paletas
 MAPA_CONSTANTE_FASE_2:	
 
 		include	"MAPAS/CONSTANTE FASE 2.asm"
@@ -1556,7 +1554,7 @@ PALETA_BLANCO_NEGRO_2:
  **********************/
 
 		org		#8000
-
+; RESUMEN: 35 - Mapa de la fase 3 (parte 1) y sus paletas
 MAPA_CONSTANTE_FASE_3_0:	
 
 		include	"MAPAS/CONSTANTE FASE 3-0.asm"
@@ -1656,7 +1654,7 @@ PALETA_BLANCO_NEGRO_3_0:
  **********************/
 
 		org		#8000
-
+; RESUMEN: 36 - Mapa de la fase 4 y sus paletas
 MAPA_CONSTANTE_FASE_4:	
 
 		include	"MAPAS/CONSTANTE FASE 4.asm"
@@ -1755,7 +1753,7 @@ PALETA_BLANCO_NEGRO_4:
  **********************/
 
 		org		#8000
-
+; RESUMEN: 37 - Mapa de la fase 5 y sus paletas
 MAPA_CONSTANTE_FASE_5:	
 
 		include	"MAPAS/CONSTANTE FASE 5.asm"
@@ -1852,7 +1850,7 @@ PALETA_BLANCO_NEGRO_5:
  **********************/
 
 		org		#4000
-
+; RESUMEN: 38 - Semi Boss de la fase 2 (parte 1)
 		include "BASICOS/GAME OVER 2.asm"
 
 		include	"BOSSES/SEMIBOSS 2 PART 1.asm"
@@ -1877,7 +1875,7 @@ PALETA_BLANCO_NEGRO_5:
  **********************/
 
 		org		#8000
-
+; RESUMEN: 39 - Músicas que no caben en su fase o globales
 M_THE_BEST:
 
 		incbin	"AUDIOS/TEMAS/FASE 5/THE BEST.mbm"
@@ -1907,7 +1905,7 @@ M_SEMIBOSS_2:
  **********************/
 
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
-
+; RESUMEN: 40 - Gráficos de marca parte 1
 GRAFICOS_MOAI_2:
 
         incbin  "GRAFICOS/PRESENTACIONES/SOLOTITULO2.DAT"
@@ -1920,11 +1918,11 @@ GRAFICOS_MOAI_2:
  **********************/
  /**********************
   ****** PAGINA 41 *****
-  ****** SLOT   2 ******     gráficos de marca parte 1
+  ****** SLOT   2 ******     gráficos de marca parte 2
   **********************/
 
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
-
+; RESUMEN: 41 - Gráficos de marca parte 2
 GRAFICOS_MOAI_3:
 
         incbin  "GRAFICOS/PRESENTACIONES/SOLOTITULO3.DAT"
@@ -1942,7 +1940,7 @@ GRAFICOS_MOAI_3:
  **********************/
 
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
-
+; RESUMEN: 42 - Gráficos de Rockager parte 1
         incbin  "GRAFICOS/BOSSES/ROCKAGER1.DAT"
 
         ds		#C000-$
@@ -1958,7 +1956,7 @@ GRAFICOS_MOAI_3:
  **********************/
 
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
-
+; RESUMEN: 43 - Gráficos de Rockager parte 2
         incbin  "GRAFICOS/BOSSES/ROCKAGER2.DAT"
 
         ds		#C000-$
@@ -1974,7 +1972,7 @@ GRAFICOS_MOAI_3:
  **********************/
 
 		org		#4000
-
+; RESUMEN: 44 - Semi Boss de la fase 2 (parte 2)
 		include	"BOSSES/SEMIBOSS 2 PART 2.asm"
 
         ds      #8000-$-#2200                                           ; Colocamos el resto del programa siempre en el mismo sitio    
@@ -1997,6 +1995,7 @@ GRAFICOS_MOAI_3:
  **********************/
 
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
+; RESUMEN: 45 - Gráficos de status durante boss fases 1 y 2
 STATUS_BOSS_1:
 		incbin "GRAFICOS/STATUS/STATUS BOSS 1.DAT"
 STATUS_BOSS_2_AND_SEMIBOSS_2:
@@ -2015,7 +2014,7 @@ STATUS_BOSS_2_AND_SEMIBOSS_2:
   **********************/
 
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
-
+; RESUMEN: 46 - Gráficos de Daveatnix parte 1-1
         incbin  "GRAFICOS/BOSSES/TILES DAVEATNIX 11.DAT"
 
         ds		#C000-$
@@ -2031,7 +2030,7 @@ STATUS_BOSS_2_AND_SEMIBOSS_2:
   **********************/
 
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
-
+; RESUMEN: 47 - Gráficos de Daveatnix parte 1-2
         incbin  "GRAFICOS/BOSSES/TILES DAVEATNIX 12.DAT"
 
         ds		#C000-$
@@ -2047,7 +2046,7 @@ STATUS_BOSS_2_AND_SEMIBOSS_2:
  **********************/
 
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
-
+; RESUMEN: 48 - Gráficos de Daveatnix parte 2-1
         incbin  "GRAFICOS/BOSSES/TILES DAVEATNIX 21.DAT"
 
         ds		#C000-$
@@ -2063,7 +2062,7 @@ STATUS_BOSS_2_AND_SEMIBOSS_2:
  **********************/
 
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
-
+; RESUMEN: 49 - Gráficos de Daveatnix parte 2-2
         incbin  "GRAFICOS/BOSSES/TILES DAVEATNIX 22.DAT"
 
         ds		#C000-$
@@ -2079,7 +2078,7 @@ STATUS_BOSS_2_AND_SEMIBOSS_2:
  **********************/
 
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
-
+; RESUMEN: 50 - Gráficos de Agonix parte 1-1
         incbin  "GRAFICOS/BOSSES/TILES AGONIX 11.DAT"
 
         ds		#C000-$
@@ -2095,7 +2094,7 @@ STATUS_BOSS_2_AND_SEMIBOSS_2:
  **********************/
 
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
-
+; RESUMEN: 51 - Gráficos de Agonix parte 1-2
         incbin  "GRAFICOS/BOSSES/TILES AGONIX 12.DAT"
 
         ds		#C000-$
@@ -2111,7 +2110,7 @@ STATUS_BOSS_2_AND_SEMIBOSS_2:
  **********************/
 
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
-
+; RESUMEN: 52 - Gráficos de Agonix parte 2-1
         incbin  "GRAFICOS/BOSSES/TILES AGONIX 21.DAT"
 
         ds		#C000-$
@@ -2127,7 +2126,7 @@ STATUS_BOSS_2_AND_SEMIBOSS_2:
  **********************/
 
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
-
+; RESUMEN: 53 - Gráficos de Agonix parte 2-2
         incbin  "GRAFICOS/BOSSES/TILES AGONIX 22.DAT"
 
         ds		#C000-$
@@ -2143,7 +2142,7 @@ STATUS_BOSS_2_AND_SEMIBOSS_2:
  **********************/
 
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
-
+; RESUMEN: 54 - Gráficos de Idius parte 1-1
         incbin  "GRAFICOS/BOSSES/TILES IDIUS 11.DAT"
 
         ds		#C000-$
@@ -2159,7 +2158,7 @@ STATUS_BOSS_2_AND_SEMIBOSS_2:
  **********************/
 
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
-
+; RESUMEN: 55 - Gráficos de Idius parte 1-2
         incbin  "GRAFICOS/BOSSES/TILES IDIUS 12.DAT"
 
         ds		#C000-$
@@ -2175,7 +2174,7 @@ STATUS_BOSS_2_AND_SEMIBOSS_2:
  **********************/
 
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
-
+; RESUMEN: 56 - Gráficos de Errecenyx parte 1-1
         incbin  "GRAFICOS/BOSSES/TILES ERRECENYX 11.DAT"
 
         ds		#C000-$
@@ -2191,7 +2190,7 @@ STATUS_BOSS_2_AND_SEMIBOSS_2:
  **********************/
 
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
-
+; RESUMEN: 57 - Gráficos de Errecenyx parte 1-2
         incbin  "GRAFICOS/BOSSES/TILES ERRECENYX 12.DAT"
 
         ds		#C000-$
@@ -2207,6 +2206,7 @@ STATUS_BOSS_2_AND_SEMIBOSS_2:
  **********************/
 
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
+; RESUMEN: 58 - Gráficos de status durante boss fases 3 y 4
 STATUS_BOSS_3:
 		incbin "GRAFICOS/STATUS/STATUS BOSS 1.DAT"
 STATUS_BOSS_4:
@@ -2224,6 +2224,7 @@ STATUS_BOSS_4:
  **********************/
 
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
+; RESUMEN: 59 - Gráficos de status durante boss fase 5
 STATUS_BOSS_5:
        	incbin  "GRAFICOS/STATUS/STATUS BOSS 5.DAT"
         ds		#C000-$
@@ -2238,6 +2239,8 @@ STATUS_BOSS_5:
  **********************/
 
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
+
+; RESUMEN: 60 - Gráficos de cinematica parte 1-1
 CINEMATICA_1_2_1:
        	incbin  "GRAFICOS/PRESENTACIONES/CINEMATICA1Y2-1.DAT"
         ds		#C000-$
@@ -2252,6 +2255,8 @@ CINEMATICA_1_2_1:
  **********************/
 
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
+
+; RESUMEN: 61 - Gráficos de cinematica parte 1-2
 CINEMATICA_1_2_2:
        	incbin  "GRAFICOS/PRESENTACIONES/CINEMATICA1Y2-2.DAT"
         ds		#C000-$
@@ -2266,6 +2271,7 @@ CINEMATICA_1_2_2:
  **********************/
 
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
+; RESUMEN: 62 - Gráficos de cinematica parte 2-1
 CINEMATICA_3_4_1:
        	incbin  "GRAFICOS/PRESENTACIONES/CINEMATICA3Y4-1.DAT"
         ds		#C000-$
@@ -2281,6 +2287,7 @@ CINEMATICA_3_4_1:
  **********************/
 
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
+; RESUMEN: 63 - Gráficos de cinematica parte 2-2
 CINEMATICA_3_4_2:
        	incbin  "GRAFICOS/PRESENTACIONES/CINEMATICA3Y4-2.DAT"
         ds		#C000-$
@@ -2296,6 +2303,7 @@ CINEMATICA_3_4_2:
  **********************/
 
 		org		#8000
+; RESUMEN: 64 - Mapa de la fase 3-1
 
 MAPA_CONSTANTE_FASE_3_1:	
 
@@ -2394,7 +2402,7 @@ PALETA_BLANCO_NEGRO_3_1:
  **********************/
 
 		org		#8000
-
+; RESUMEN: 65 - Mapa de la fase 3-2
 MAPA_CONSTANTE_FASE_3_2:	
 
 		include	"MAPAS/CONSTANTE FASE 3-2.asm"

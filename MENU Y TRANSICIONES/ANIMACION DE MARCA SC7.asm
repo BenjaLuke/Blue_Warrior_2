@@ -55,15 +55,7 @@ CARGA_LOGO_EN_VRAM:
         ld	    de,#8000
         ld	    bc,16384
         call	PON_COLOR_2.sin_bc_impuesta    
-
-	    ld  	a,2
-	    ld      (DIRPA2),a								    ; Banco 2, pagina 2 del MEGAROM        
-
-        ld	    hl,GRAFICOS_MOAI_4					                    ; Carga gráficos Moai
-        ld	    de,#C000
-        ld	    bc,6912
-        call	PON_COLOR_2.sin_bc_impuesta 
-
+     
         ei
 
 RECOLOCAMOS_GRAFICOS_Y_LIMPIEZA:

@@ -1,3 +1,4 @@
+
 ES_FASE3_VAGON_ACTIVO:
 
 			ld		a,(FASE)
@@ -15,7 +16,6 @@ ES_FASE3_VAGON_ACTIVO:
 
 			or		a
 			ret
-
 
 
 SUMA_RETENCION_Y_DEPH_POST_RECTIFICA_UP:
@@ -161,7 +161,6 @@ PINTA_SPRITE_DEPH_SOLO_ATRIBUTOS_VAGON_SECTOR_10:
 		ld		de,#4A00
 		ld		bc,40
 		jp		PON_COLOR_2.sin_bc_impuesta
-
 
 CONTROL_TILES_PUPA:
 
@@ -315,8 +314,8 @@ ESTADO_NORMAL:
 AHORA_SI_EL_AGUJERO:
 
 			ld		hl,(TIME_PARALIZA)
-			ld		a,h
-			or		l
+			ld		de,0
+			call	DCOMPR_RAM
 			jp		nz,DEPH_PARALIZADO_2.CONTROL_TIME_PARALIZA_1
 
 .tile_agujero_1:
@@ -374,12 +373,15 @@ AHORA_SI_EL_AGUJERO:
 .y_divide_16:
 
 			ld		a,(Y_DEPH)
-			and		11110000b
-			ret
+			
+			jp		.B11110000
 
 .x_divide_16:
 
 			ld		a,(X_DEPH)
+
+.B11110000:
+
 			and		11110000b
 			ret
 
@@ -427,7 +429,9 @@ DEPH_PARALIZADO_2:
 
 .CONTROL_TIME_PARALIZA_1:
 
-			dec		hl
+			ld		de,1
+			or		a
+			sbc		hl,de
 			ld		(TIME_PARALIZA),hl
 			ld		de,30
 			call	DCOMPR_RAM
@@ -437,8 +441,8 @@ DEPH_PARALIZADO_2:
 
 .CONTROL_TIME_PARALIZA_2:
 
-			ld		a,h
-			or		l
+			ld		de,0
+			call	DCOMPR_RAM
 			jp		z,CONTROL_TILES_PUPA
 
 			xor		a
@@ -474,8 +478,10 @@ DEPH_PARALIZADO_2:
 			ret		nc
 
 			ld		a,(X_DEPH)
-			or		a
+			cp		0
 			ret		z
+					
+			ld		a,(X_DEPH)
 			dec		a
 			ld		(X_DEPH),a
 			
@@ -490,10 +496,13 @@ DEPH_PARALIZADO_2:
 			ld		a,(X_DEPH)
 			cp		235
 			ret		z
+			
+			ld		a,(X_DEPH)
 			inc		a
 			ld		(X_DEPH),a
 			
 			ret
+
 
 CONTROL_FASE3_TILE_145_SECTOR_10:
 
@@ -550,13 +559,15 @@ SE_PUEDE_MOVER_Y_EFES_VARIOS:
 			or		a
 			jp		nz,CONTROL.pre_sigue_comun	
 
+			call	CORRIGE_Y_DEPH_SOLO_FASE3_VAGON
+
 			ld		a,6	
 			call	SNSMAT_RAM  
-			bit		6,a												; Si pulsa f2 quitamos o ponemos el marcador
+			bit		6,a											; Si pulsa f2 quitamos o ponemos el marcador
 			jp		z,HIDE_STATUS
-			bit		5,a												; Si pulsa f1 pausamos
+			bit		5,a											; Si pulsa f1 pausamos
 			jp		z,.PAUSE_VAGON
-			bit		7,a												; Si pulsa f3 paramos la mÃºsica
+			bit		7,a											; Si pulsa f3 paramos la música
 			jp		z,.MUSIC_ON_OFF_VAGON
 			ld		a,7
 			call	SNSMAT_RAM
@@ -653,36 +664,75 @@ LLAMA_PAUSE_VAGON_FASE_3:
 			pop		af
 			ret
 
+CORRIGE_Y_DEPH_SOLO_FASE3_VAGON:
+
+			call	ES_FASE3_VAGON_ACTIVO
+			ret		nc
+
+			ld		a,(SPRITE_CAIDO)
+			or		a
+			ret		nz
+
+			ld		a,(CONTROL_Y)
+			cp		123
+			jr		c,.SUMA_Y_DEPH_VAGON
+			cp		179
+			ret		c
+
+.RESTA_Y_DEPH_VAGON:
+
+			ld		a,(CONTROL_Y)
+			dec		a
+			ld		(CONTROL_Y),a
+			ld		a,(Y_DEPH)
+			dec		a
+			ld		(Y_DEPH),a
+			ret
+
+.SUMA_Y_DEPH_VAGON:
+
+			ld		a,(CONTROL_Y)
+			inc		a
+			ld		(CONTROL_Y),a
+			ld		a,(Y_DEPH)
+			inc		a
+			ld		(Y_DEPH),a
+			ret
+
 COVIDS:
 
 .DEFINE_COVID_CORTO_DERECHA:
 
+        ld      a,b
         ld		hl,VALORES_BASICOS_COVID_CORTO_DERECHA
         jp      .comun_covids
 
 .DEFINE_COVID_ABAJO_IZQUIERDA:
 
+        ld      a,b
         ld		hl,VALORES_BASICOS_COVID_ABAJO_IZQUIERDA
         jp      .comun_covids
 
 .DEFINE_COVID_CORTO_IZQUIERDA:
 
+        ld      a,b
         ld		hl,VALORES_BASICOS_COVID_CORTO_IZQUIERDA
         jp      .comun_covids
 
 .DEFINE_COVID_CORTO_CENTRO:
 
+        ld      a,b
         ld		hl,VALORES_BASICOS_COVID_CORTO_CENTRO
         jp      .comun_covids
 
 
 .DEFINE_COVID:
 
+        ld      a,b
         ld		hl,VALORES_BASICOS_COVID
 
 .comun_covids:
 
-        ld      a,b
         call    STANDAR_LDIR_ENEMIGOS
 
  
@@ -737,6 +787,7 @@ COVIDS:
 
         ld      a,(ix+10)
         and     00000001B
+        or      a
         jp      nz,.miramos_mas_datos
 
 .realizamos_la_secuencia:
@@ -767,6 +818,7 @@ COVIDS:
 
         ld      a,(ix+10)
         and     00000001B
+        or      a
         jp      nz,.miramos_mas_datos
         
         push    iy
@@ -845,6 +897,7 @@ COVIDS:
         inc     a
         and     00000111B
         ld      (ix+4),a
+        or      a
         jp      nz,.seguimos_la_secuencia_covid
 
         ld      a,(ix+1)
@@ -855,6 +908,7 @@ COVIDS:
 
         ld      a,(ix+10)
         and     00001111B
+        or      a
         jp      nz,.FIN_SECUENCIA_COVID
 
 .suma_posicion:
@@ -902,56 +956,65 @@ SLIMES:
 
 .DEFINE_SLIME_AZUL_BAJANDO:
 
+        ld      a,b
         ld		hl,VALORES_BASICOS_SLIME_AZUL_BAJANDO
         jp      .comun_slimes
 
 .DEFINE_SLIME_BLANCO:
+        ld      a,b
         ld		hl,VALORES_BASICOS_SLIME_BLANCO
         jp      .comun_slimes
 
 .DEFINE_SLIME_AZUL_QUIETO:
 
+        ld      a,b
         ld		hl,VALORES_BASICOS_SLIME_AZUL_QUIETO
         jp      .comun_slimes
 
 .DEFINE_SLIME_AZUL_HACIA_DERECHA:
 
+        ld      a,b
         ld		hl,VALORES_BASICOS_SLIME_AZUL_HACIA_DERECHA
         jp      .comun_slimes
 
 .DEFINE_SLIME_AZUL_HACIA_IZQUIERDA:
 
+        ld      a,b
         ld		hl,VALORES_BASICOS_SLIME_AZUL_HACIA_IZQUIERDA
         jp      .comun_slimes
 
 .DEFINE_SLIME_VERDE_BAJANDO:
 
+        ld      a,b
         ld		hl,VALORES_BASICOS_SLIME_VERDE_BAJANDO        
         jp      .comun_slimes
 
 .DEFINE_SLIME_VERDE_HACIA_IZQUIERDA:
 
+        ld      a,b
         ld		hl,VALORES_BASICOS_SLIME_VERDE_HACIA_IZQUIERDA  
         jp      .comun_slimes
 
 .DEFINE_SLIME_FUEGO_HACIA_IZQUIERDA:
 
+        ld      a,b
         ld		hl,VALORES_BASICOS_SLIME_FUEGO_HACIA_IZQUIERDA  
         jp      .comun_slimes
 
 .DEFINE_SLIME_FUEGO_QUIETO:
 
+        ld      a,b
         ld		hl,VALORES_BASICOS_SLIME_FUEGO_QUIETO
         jp      .comun_slimes
 
 .DEFINE_SLIME_FUEGO_RONDA:
 
+        ld      a,b
         ld		hl,VALORES_BASICOS_SLIME_FUEGO_RONDA
         jp      .comun_slimes
 
 .comun_slimes:
 
-        ld      a,b
         call    STANDAR_LDIR_ENEMIGOS
         ld      (ix),a
 
@@ -1035,6 +1098,7 @@ SLIMES:
         ld      a,(ix+11)
         inc     a
         and     00000001B
+        or      a
         jp      nz,.correccion_del_limite_dos
 
         ld      a,(X_DEPH)
@@ -1062,6 +1126,8 @@ SLIMES:
         inc     a
         and     00000111B
         ld      (ix+11),a
+        or      a
+        jp      nz,.FIN_SECUENCIA_SLIME
         jp      .FIN_SECUENCIA_SLIME
 
 .SECUENCIA_SLIME_ABAJO:
@@ -1070,6 +1136,7 @@ SLIMES:
         inc     a
         and     00000111B
         ld      (ix+11),a
+        or      a
         jp      nz,.FIN_SECUENCIA_SLIME
 
         ld      a,(ix+1)
@@ -1083,6 +1150,7 @@ SLIMES:
         inc     a
         and     00000011B
         ld      (ix+11),a
+        or      a
         jp      nz,.FIN_SECUENCIA_SLIME
 
         ld      a,(ix)
@@ -1096,6 +1164,7 @@ SLIMES:
         inc     a
         and     00000011B
         ld      (ix+11),a
+        or      a
         jp      nz,.FIN_SECUENCIA_SLIME
 
         ld      a,(ix)
@@ -1113,14 +1182,14 @@ SLIMES:
 .RONDA_FASE_1:
 
         ld      a,(ix)
-        inc     a
+        add     1
         ld      (ix),a
         jp      .RONDA_FINAL
 
 .RONDA_FASE_2:
 
         ld      a,(ix)
-        dec     a
+        sub     1
         ld      (ix),a
 
 .RONDA_FINAL:
@@ -1129,6 +1198,7 @@ SLIMES:
         inc     a
         and     00011111b
         ld      (ix+13),a
+        or      a
         jp      nz,.FIN_SECUENCIA_SLIME
         ld      a,(ix+7)
         inc     a
@@ -1298,6 +1368,7 @@ ECTO_PALLERS:
 		inc		a
 		and		00000011b
 		ld		(ix+5),a
+		or		a
 		jp		nz,TROZOS_COMUNES_23
 
 		ld		a,(ix+7)
@@ -1334,6 +1405,7 @@ ECTO_PALLERS:
 		inc		a
 		and		00000001b
 		ld		(ix+4),a
+		or		a
 		jp		nz,.SALIENDO_ECTO_HUEVOS
 
 		ld		a,(ECTO_PARALIZADO)
@@ -1360,6 +1432,7 @@ ECTO_PALLERS:
 		and		00000001B
 		ld		(ix+13),a
 
+		or		a
 		jp		z,.mueve_derecha
 
 .mueve_izquierda:
@@ -1455,6 +1528,8 @@ ECTO_PALLERS:
 		ld		a,(ix+9)
 		or		a
 		jp		z,.paseo_superior
+		cp		1
+		jp		z,.paseo_la_u
 
 .paseo_la_u:
 
@@ -1504,6 +1579,7 @@ ECTO_PALLERS:
 		inc		a
 		and		01111111b
 		ld		(ix+7),a
+		or		a
 		jp      nz,SECUENCIA_PROYECTILES_Y_ENEMIGOS.PASAMOS_A_LA_SIGUIENTE_POSICION
 
 		ld		a,(ix+9)
@@ -1595,6 +1671,7 @@ FIREWORKS:
 		inc		a
 		and		00000111b
 		ld		(ix+13),a
+		or		a
 		jp		nz,TROZOS_COMUNES_28
 		ld		a,(ix+8)
 		add		8
@@ -1607,19 +1684,20 @@ CORVELLINIS:
 
 .DEFINE_CORVELLINI_DERECHA:
 
+        ld      a,b
 		push	bc
         ld      hl,VALORES_BASICOS_CORVELLINI_4_DERECHA
         jp      .UNION_CORV
 
 .DEFINE_CORVELLINI_IZQUIERDA:
 
+        ld      a,b
 		push	bc
         ld      hl,VALORES_BASICOS_CORVELLINI_4_IZQUIERDA
         jp      .UNION_CORV
 
 .UNION_CORV:
 
-        ld      a,b
 		push	af
 		xor		a
 		ld		(MEGADEATH_ACTIVO),a
@@ -1820,6 +1898,7 @@ GARGOLAS:
 		dec		a
 		and		00111111b
 		ld		(ix+5),a
+		or		a
 		jp		nz,.NO_DISPARA
 
 .DISPARA:
@@ -1829,3 +1908,4 @@ GARGOLAS:
 .NO_DISPARA:
 
 		jp		TROZOS_COMUNES_28	
+
