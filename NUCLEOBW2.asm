@@ -389,6 +389,9 @@ CARGA_SLOT_REGRESO_A_JUEGO:
 		inc		a
 		ld		(FASE),a
 
+		cp       6
+		jp    z,MENU;   xxxx hay que crear el enlace a cinemática de cierre
+		
 		ld		a,9
 		ld      (DIRPA1),a											    ; Banco 1, pagina 39 del MEGAROM
         jp      COMIENZA_JUEGO

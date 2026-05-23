@@ -329,3 +329,6 @@ CINEMATICA_COLOR_0_MODO:	#1
 TRAMO_FASE_3:					#1										; 0,1,2 para las tres paginas de datos de la fase 3
 PAGE_DATOS_FASE:				#1										; Pagina ROM de constantes, eventos y paletas de fase
 RETENCION_Y_DEPH_POST_RECTIFICA_UP:     #1
+
+FINAL_FASE_5_VAMOS_A_TERMINAR_DATAS_HMMV:   #15
+FINAL_FASE_5_VAMOS_A_TERMINAR_X_SEED:       #1
