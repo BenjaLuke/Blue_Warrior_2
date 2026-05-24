@@ -188,7 +188,7 @@ GRAFICOS_MOAI_1:
  ****** SLOT   2 ******    
  **********************/
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
-; RESUMEN: 2 - Cambio de page a menú
+; RESUMEN: 2 - Caambio de page a menú
 
 CARGA_SLOT_MENU:
 
@@ -276,12 +276,9 @@ PANTALLA_DE_PRESENTACION_2:
  ****** SLOT   2 ******     libre para necesidades del menu
  **********************/
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
-; RESUMEN: 6 - Libre
-
-PAGINA_6_LIBRE_PARA_MENU:
-
-	; Pagina liberada tras eliminar titulo y montanas del menu.
-	; Se deja rellena completa para conservar el mapa del megarom.
+; RESUMEN: 6 - Gráficos de cinematica parte 7-8 (Parte 1)
+CINEMATICA_7_8_1:
+       	incbin  "GRAFICOS/PRESENTACIONES/CINEMATICA7Y8-1.DAT"
 
         ds		#C000-$
 
@@ -293,10 +290,12 @@ PAGINA_6_LIBRE_PARA_MENU:
 
 /**********************
  ****** PAGINA 7 ******
- ****** SLOT   2 ******     ?
+ ****** SLOT   2 ******     
  **********************/
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
-; RESUMEN: 7 - Libre 
+; RESUMEN: 7 - Gráficos de cinematica parte 5-6 (Parte 1)
+CINEMATICA_5_6_1:
+       	incbin  "GRAFICOS/PRESENTACIONES/CINEMATICA5Y6-1.DAT"
 
         ds		#C000-$
 
@@ -311,8 +310,9 @@ PAGINA_6_LIBRE_PARA_MENU:
  ****** SLOT   2 ******     Cambio de page a juego
  **********************/
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
-; RESUMEN: 8 - Cambio de page a juego
-
+; RESUMEN: 8 - Gráficos de cinematica parte 5-6 (Parte 2) y cambio de page a juego
+CINEMATICA_5_6_2:
+       	incbin  "GRAFICOS/PRESENTACIONES/CINEMATICA5Y6-2.DAT"
 CARGA_SLOT_JUEGO:
 
 		ld		a,9
@@ -390,8 +390,8 @@ CARGA_SLOT_REGRESO_A_JUEGO:
 		ld		(FASE),a
 
 		cp       6
-		jp    z,MENU;   xxxx hay que crear el enlace a cinemática de cierre
-		
+		jp    z,HACIA_CINEMATICAS_FINALES
+
 		ld		a,9
 		ld      (DIRPA1),a											    ; Banco 1, pagina 39 del MEGAROM
         jp      COMIENZA_JUEGO
@@ -433,6 +433,14 @@ AGILIZA_MAPA:
 		ld		hl,40
 		ld		(LINEA_A_LEER),hl
 		jp		CONTROL.teclado
+
+HACIA_CINEMATICAS_FINALES:
+
+		; CAMBIA EL SLOT 1 Y PONE EL SECTOR 67
+		ld		a,67
+		ld      (DIRPA1),a											    ; Banco 1, pagina
+		jp		CINEMATICAS_FINALES
+
 MENU:
 
 		di
@@ -2494,5 +2502,45 @@ PALETA_BLANCO_NEGRO_3_2:
 
 /**********************
  ****** PAGINA 65******
+ ******   END    ******
+ **********************/
+
+/**********************
+ ****** PAGINA 66 ******
+ ****** SLOT   2 ******     
+ **********************/
+		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
+; RESUMEN: 66 - Gráficos de cinematica parte 7-8 (Parte 2)
+CINEMATICA_7_8_2:
+       	incbin  "GRAFICOS/PRESENTACIONES/CINEMATICA7Y8-2.DAT"
+
+        ds		#C000-$
+
+/**********************
+ ****** PAGINA 66 ******
+ ******   END    ******
+ **********************/
+
+ /**********************
+ ****** PAGINA 67 ******
+ ****** SLOT   1 ******    
+ **********************/
+		org		#4000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
+; RESUMEN: 67 - Cinemáticas finales
+
+CINEMATICAS_FINALES:
+
+		include "MENU Y TRANSICIONES/CINEMATICAS FINALES.asm"
+
+        ds      #8000-$-#2200   
+			                                        ; Colocamos el resto del programa siempre en el mismo sitio    
+		include "BASICOS/RUTINAS CERRADAS (sin etiquetas).asm"				            ; Incluímos las referencias a la BIOS
+		include "AUDIOS/LANZADOR EFECTOS PSG (sin etiquetas).asm"
+        include "PALETAS/PALETAS (sin etiquetas).asm"
+		include "AUDIOS/LANZADOR FMPACK Y MUSIC MODULE (sin etiquetas).asm"     
+        ds		#8000-$
+
+/**********************
+ ****** PAGINA 67 ******
  ******   END    ******
  **********************/

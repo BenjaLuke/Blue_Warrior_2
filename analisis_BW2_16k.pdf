@@ -13,7 +13,7 @@ endobj
 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>
 endobj
 5 0 obj
-<< /Length 29283 >>
+<< /Length 29444 >>
 stream
 q
 1 1 1 rg
@@ -60,7 +60,7 @@ BT
 /F1 8 Tf
 0.08 0.10 0.13 rg
 40 724 Td
-(Tamano ROM: 1.081.344 bytes) Tj
+(Tamano ROM: 1.114.112 bytes) Tj
 ET
 BT
 /F1 8 Tf
@@ -72,13 +72,13 @@ BT
 /F1 7.50 Tf
 0.42 0.45 0.48 rg
 40 710 Td
-(LST: NUCLEOBW2.lst \(66 resumenes\)) Tj
+(LST: NUCLEOBW2.lst \(68 resumenes\)) Tj
 ET
 BT
 /F1 7 Tf
 0.42 0.45 0.48 rg
 446.38 738 Td
-(Generado: 2026-05-23 12:38:28) Tj
+(Generado: 2026-05-23 19:45:34) Tj
 ET
 q
 0.09 0.22 0.34 rg
@@ -388,7 +388,7 @@ BT
 /F1 5.65 Tf
 0.10 0.12 0.15 rg
 102 628.20 Td
-(Cambio de page a menú) Tj
+(Caambio de page a menú) Tj
 ET
 BT
 /F1 5.65 Tf
@@ -693,12 +693,17 @@ q
 f
 Q
 q
-0.84 0.92 1 rg
+1 0.96 0.70 rg
+98 561.50 104 15.50 re
+f
+Q
+q
+0.92 0.06 0.06 rg
 487 561.50 39 15.50 re
 f
 Q
 q
-0.84 0.92 1 rg
+0.92 0.06 0.06 rg
 526 561.50 41 15.50 re
 f
 Q
@@ -715,10 +720,10 @@ BT
 (2) Tj
 ET
 BT
-/F1 5.65 Tf
-0.10 0.12 0.15 rg
+/F2 5.65 Tf
+0.38 0.25 0.02 rg
 102 566.20 Td
-(Libre) Tj
+(Gráficos de cinematica part...) Tj
 ET
 BT
 /F1 5.65 Tf
@@ -735,32 +740,32 @@ ET
 BT
 /F1 5.65 Tf
 0.10 0.12 0.15 rg
-365.90 566.20 Td
-(--) Tj
+350.64 566.20 Td
+($01BFFF) Tj
 ET
 BT
 /F1 5.65 Tf
 0.34 0.37 0.40 rg
-396.39 566.20 Td
-($00 x 16.384) Tj
+429.95 566.20 Td
+(-) Tj
 ET
 BT
 /F1 5.65 Tf
 0.10 0.12 0.15 rg
-479.95 566.20 Td
-(0) Tj
-ET
-BT
-/F2 5.65 Tf
-0.02 0.26 0.68 rg
-503.02 566.20 Td
+464.69 566.20 Td
 (16.384) Tj
 ET
 BT
 /F2 5.65 Tf
-0.02 0.26 0.68 rg
+0 0 0 rg
+518.84 566.20 Td
+(0) Tj
+ET
+BT
+/F2 5.65 Tf
+0 0 0 rg
 540.85 566.20 Td
-(100.00%) Tj
+(  0.00%) Tj
 ET
 q
 0.70 0.74 0.77 RG
@@ -773,12 +778,17 @@ q
 f
 Q
 q
-0.84 0.92 1 rg
+1 0.96 0.70 rg
+98 546 104 15.50 re
+f
+Q
+q
+0.92 0.06 0.06 rg
 487 546 39 15.50 re
 f
 Q
 q
-0.84 0.92 1 rg
+0.92 0.06 0.06 rg
 526 546 41 15.50 re
 f
 Q
@@ -795,10 +805,10 @@ BT
 (2) Tj
 ET
 BT
-/F1 5.65 Tf
-0.10 0.12 0.15 rg
+/F2 5.65 Tf
+0.38 0.25 0.02 rg
 102 550.70 Td
-(Libre) Tj
+(Gráficos de cinematica part...) Tj
 ET
 BT
 /F1 5.65 Tf
@@ -815,32 +825,32 @@ ET
 BT
 /F1 5.65 Tf
 0.10 0.12 0.15 rg
-365.90 550.70 Td
-(--) Tj
+350.64 550.70 Td
+($01FFFF) Tj
 ET
 BT
 /F1 5.65 Tf
 0.34 0.37 0.40 rg
-396.39 550.70 Td
-($00 x 16.384) Tj
+429.95 550.70 Td
+(-) Tj
 ET
 BT
 /F1 5.65 Tf
 0.10 0.12 0.15 rg
-479.95 550.70 Td
-(0) Tj
-ET
-BT
-/F2 5.65 Tf
-0.02 0.26 0.68 rg
-503.02 550.70 Td
+464.69 550.70 Td
 (16.384) Tj
 ET
 BT
 /F2 5.65 Tf
-0.02 0.26 0.68 rg
+0 0 0 rg
+518.84 550.70 Td
+(0) Tj
+ET
+BT
+/F2 5.65 Tf
+0 0 0 rg
 540.85 550.70 Td
-(100.00%) Tj
+(  0.00%) Tj
 ET
 q
 0.70 0.74 0.77 RG
@@ -853,12 +863,17 @@ q
 f
 Q
 q
-0.84 0.92 1 rg
+1 0.96 0.70 rg
+98 530.50 104 15.50 re
+f
+Q
+q
+0.89 0.97 0.91 rg
 487 530.50 39 15.50 re
 f
 Q
 q
-0.84 0.92 1 rg
+0.89 0.97 0.91 rg
 526 530.50 41 15.50 re
 f
 Q
@@ -875,10 +890,10 @@ BT
 (2) Tj
 ET
 BT
-/F1 5.65 Tf
-0.10 0.12 0.15 rg
+/F2 5.65 Tf
+0.38 0.25 0.02 rg
 102 535.20 Td
-(Cambio de page a juego) Tj
+(Gráficos de cinematica part...) Tj
 ET
 BT
 /F1 5.65 Tf
@@ -896,31 +911,31 @@ BT
 /F1 5.65 Tf
 0.10 0.12 0.15 rg
 350.64 535.20 Td
-($020007) Tj
+($022A07) Tj
 ET
 BT
 /F1 5.65 Tf
 0.34 0.37 0.40 rg
-396.39 535.20 Td
-($00 x 16.376) Tj
+399.44 535.20 Td
+($00 x 5.624) Tj
 ET
 BT
 /F1 5.65 Tf
 0.10 0.12 0.15 rg
-479.95 535.20 Td
-(8) Tj
+464.69 535.20 Td
+(10.760) Tj
 ET
 BT
 /F2 5.65 Tf
-0.02 0.26 0.68 rg
-503.02 535.20 Td
-(16.376) Tj
+0.08 0.45 0.22 rg
+506.18 535.20 Td
+(5.624) Tj
 ET
 BT
 /F2 5.65 Tf
-0.02 0.26 0.68 rg
+0.08 0.45 0.22 rg
 540.85 535.20 Td
-( 99.95%) Tj
+( 34.33%) Tj
 ET
 q
 0.70 0.74 0.77 RG
@@ -1056,31 +1071,31 @@ BT
 /F1 5.65 Tf
 0.10 0.12 0.15 rg
 350.64 504.20 Td
-($02A35F) Tj
+($02A36C) Tj
 ET
 BT
 /F1 5.65 Tf
 0.34 0.37 0.40 rg
 399.44 504.20 Td
-($00 x 7.328) Tj
+($00 x 7.315) Tj
 ET
 BT
 /F1 5.65 Tf
 0.10 0.12 0.15 rg
 467.75 504.20 Td
-(9.056) Tj
+(9.069) Tj
 ET
 BT
 /F2 5.65 Tf
 0.08 0.45 0.22 rg
 506.18 504.20 Td
-(7.328) Tj
+(7.315) Tj
 ET
 BT
 /F2 5.65 Tf
 0.08 0.45 0.22 rg
 540.85 504.20 Td
-( 44.73%) Tj
+( 44.65%) Tj
 ET
 q
 0.70 0.74 0.77 RG
@@ -2875,7 +2890,7 @@ endobj
 << /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 5 0 R >>
 endobj
 7 0 obj
-<< /Length 32274 >>
+<< /Length 33990 >>
 stream
 q
 1 1 1 rg
@@ -5859,97 +5874,262 @@ q
 28 213 m 567 213 l S
 Q
 q
+1 1 1 rg
+28 197.50 539 15.50 re
+f
+Q
+q
+1 0.96 0.70 rg
+98 197.50 104 15.50 re
+f
+Q
+q
+0.89 0.97 0.91 rg
+487 197.50 39 15.50 re
+f
+Q
+q
+0.89 0.97 0.91 rg
+526 197.50 41 15.50 re
+f
+Q
+BT
+/F2 5.65 Tf
+0 0.39 0.55 rg
+40.25 202.20 Td
+(066) Tj
+ET
+BT
+/F1 5.65 Tf
+0.10 0.12 0.15 rg
+78.47 202.20 Td
+(2) Tj
+ET
+BT
+/F2 5.65 Tf
+0.38 0.25 0.02 rg
+102 202.20 Td
+(Gráficos de cinematica part...) Tj
+ET
+BT
+/F1 5.65 Tf
+0.10 0.12 0.15 rg
+206 202.20 Td
+($108000-$10BFFF) Tj
+ET
+BT
+/F1 5.65 Tf
+0.10 0.12 0.15 rg
+301.69 202.20 Td
+(16.384) Tj
+ET
+BT
+/F1 5.65 Tf
+0.10 0.12 0.15 rg
+350.64 202.20 Td
+($10A9FF) Tj
+ET
+BT
+/F1 5.65 Tf
+0.34 0.37 0.40 rg
+399.44 202.20 Td
+($00 x 5.632) Tj
+ET
+BT
+/F1 5.65 Tf
+0.10 0.12 0.15 rg
+464.69 202.20 Td
+(10.752) Tj
+ET
+BT
+/F2 5.65 Tf
+0.08 0.45 0.22 rg
+506.18 202.20 Td
+(5.632) Tj
+ET
+BT
+/F2 5.65 Tf
+0.08 0.45 0.22 rg
+540.85 202.20 Td
+( 34.38%) Tj
+ET
+q
+0.70 0.74 0.77 RG
+0.35 w
+28 197.50 m 567 197.50 l S
+Q
+q
+0.97 0.98 0.99 rg
+28 182 539 15.50 re
+f
+Q
+q
+1 0.86 0.86 rg
+487 182 39 15.50 re
+f
+Q
+q
+1 0.86 0.86 rg
+526 182 41 15.50 re
+f
+Q
+BT
+/F2 5.65 Tf
+0 0.39 0.55 rg
+40.25 186.70 Td
+(067) Tj
+ET
+BT
+/F1 5.65 Tf
+0.10 0.12 0.15 rg
+78.47 186.70 Td
+(1) Tj
+ET
+BT
+/F1 5.65 Tf
+0.10 0.12 0.15 rg
+102 186.70 Td
+(Cinemáticas finales) Tj
+ET
+BT
+/F1 5.65 Tf
+0.10 0.12 0.15 rg
+206 186.70 Td
+($10C000-$10FFFF) Tj
+ET
+BT
+/F1 5.65 Tf
+0.10 0.12 0.15 rg
+301.69 186.70 Td
+(16.384) Tj
+ET
+BT
+/F1 5.65 Tf
+0.10 0.12 0.15 rg
+350.64 186.70 Td
+($10FF9E) Tj
+ET
+BT
+/F1 5.65 Tf
+0.34 0.37 0.40 rg
+408.59 186.70 Td
+($00 x 97) Tj
+ET
+BT
+/F1 5.65 Tf
+0.10 0.12 0.15 rg
+464.69 186.70 Td
+(16.287) Tj
+ET
+BT
+/F2 5.65 Tf
+0.78 0 0 rg
+515.67 186.70 Td
+(97) Tj
+ET
+BT
+/F2 5.65 Tf
+0.78 0 0 rg
+540.85 186.70 Td
+(  0.59%) Tj
+ET
+q
+0.70 0.74 0.77 RG
+0.35 w
+28 182 m 567 182 l S
+Q
+q
 0.70 0.74 0.77 RG
 0.70 w
-28 213 539 545 re
+28 182 539 576 re
 S
 Q
 q
 0.70 0.74 0.77 RG
 0.35 w
-62 213 m 62 758 l S
+62 182 m 62 758 l S
 Q
 q
 0.70 0.74 0.77 RG
 0.35 w
-98 213 m 98 758 l S
+98 182 m 98 758 l S
 Q
 q
 0.70 0.74 0.77 RG
 0.35 w
-202 213 m 202 758 l S
+202 182 m 202 758 l S
 Q
 q
 0.70 0.74 0.77 RG
 0.35 w
-282 213 m 282 758 l S
+282 182 m 282 758 l S
 Q
 q
 0.70 0.74 0.77 RG
 0.35 w
-324 213 m 324 758 l S
+324 182 m 324 758 l S
 Q
 q
 0.70 0.74 0.77 RG
 0.35 w
-376 213 m 376 758 l S
+376 182 m 376 758 l S
 Q
 q
 0.70 0.74 0.77 RG
 0.35 w
-437 213 m 437 758 l S
+437 182 m 437 758 l S
 Q
 q
 0.70 0.74 0.77 RG
 0.35 w
-487 213 m 487 758 l S
+487 182 m 487 758 l S
 Q
 q
 0.70 0.74 0.77 RG
 0.35 w
-526 213 m 526 758 l S
+526 182 m 526 758 l S
 Q
 q
 0.92 0.97 1 rg
 0.20 0.54 0.72 RG
 0.70 w
-28 113 539 82 re
+28 82 539 82 re
 B
 Q
 BT
 /F2 8.50 Tf
 0.07 0.20 0.28 rg
-38 178 Td
+38 147 Td
 (Resumen del .lst y leyenda) Tj
 ET
 BT
 /F1 6.90 Tf
 0.07 0.20 0.28 rg
-38 162 Td
+38 131 Td
 (LST: si existe un archivo .lst en la carpeta de la ROM, puede completar SLOT y CONTENIDO.) Tj
 ET
 BT
 /F1 6.90 Tf
 0.07 0.20 0.28 rg
-38 150 Td
+38 119 Td
 (Si hay varios .lst, el programa pregunta cual usar; con INTRO se ignoran todos.) Tj
 ET
 BT
 /F1 6.90 Tf
 0.07 0.20 0.28 rg
-38 138 Td
+38 107 Td
 (Formato esperado dentro del sector: ; RESUMEN: N - descripcion, donde N es el sector.) Tj
 ET
 BT
 /F1 6.90 Tf
 0.07 0.20 0.28 rg
-38 126 Td
+38 95 Td
 (Si la descripcion incluye graficos/gráficos, el contenido se marca en amarillo.) Tj
 ET
 BT
 /F1 6.90 Tf
 0.07 0.20 0.28 rg
-38 114 Td
+38 83 Td
 (En esos sectores graficos, los $00 finales podrian ser datos reales y no espacio libre.) Tj
 ET
 
@@ -5966,11 +6146,11 @@ xref
 0000000127 00000 n 
 0000000224 00000 n 
 0000000326 00000 n 
-0000029662 00000 n 
-0000029798 00000 n 
-0000062125 00000 n 
+0000029823 00000 n 
+0000029959 00000 n 
+0000064002 00000 n 
 trailer
 << /Size 9 /Root 1 0 R >>
 startxref
-62261
+64138
 %%EOF
