@@ -567,7 +567,7 @@ SE_PUEDE_MOVER_Y_EFES_VARIOS:
 			jp		z,HIDE_STATUS
 			bit		5,a											; Si pulsa f1 pausamos
 			jp		z,.PAUSE_VAGON
-			bit		7,a											; Si pulsa f3 paramos la música
+			bit		7,a											; Si pulsa f3 paramos la mï¿½sica
 			jp		z,.MUSIC_ON_OFF_VAGON
 			ld		a,7
 			call	SNSMAT_RAM
@@ -580,7 +580,7 @@ SE_PUEDE_MOVER_Y_EFES_VARIOS:
 			ld		a,(SUMA_CAMINO)
 			or		a
 			jp		z,CONTROL.teclado
-			call	LLAMA_RUTINA_ESPECIAL_FASE_3
+			call	RUTINA_ESPECIAL_FASE_3
 			call	ES_FASE3_VAGON_ACTIVO
 			jp		c,CONTROL.FIN_RUTINA_GLOBAL
 			jp		CONTROL.pre_sigue_comun
@@ -632,12 +632,6 @@ SE_PUEDE_MOVER_Y_EFES_VARIOS:
 
 			call	MARCA_REAPLICA_VAGON_RET
 			jp		MUSIC_ON_OFF
-
-LLAMA_RUTINA_ESPECIAL_FASE_3:
-
-; Antes esta llamada saltaba a la pagina 66 mediante DIRPA2.
-; Actualmente RUTINA_ESPECIAL_FASE_3 no hacia nada real, asi que evitamos
-; cambiar la pagina del segmento 2 y eliminamos el riesgo con interrupciones/SNSMAT_RAM.
 
 RUTINA_ESPECIAL_FASE_3:
 

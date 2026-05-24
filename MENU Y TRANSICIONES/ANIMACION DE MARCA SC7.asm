@@ -1,30 +1,6 @@
 
         jp      CARGA_LOGO_EN_VRAM
 
-TRAS_GAME_OVER_JUEGO_AQUI:
-
-        di
-        ld      a,#C9
-        ld      (HTIMI),a
-        ld      (HKEYI),a
-        ei
-
-        ld	    a,2
-        call    CHANGE_BANK_2
-
-        ld 	    a,10101000B
-        ld 	    (RG5SAV),a			
-        ld	    b,a
-        ld	    c,5
-        call	WRTVDP_EN_RAM	
-
-        ld	    a,0							                            ; a     = el valor que vamos a poner
-        ld	    bc,#ffff						                        ; bc	= longitud del area a rellenar con el dato A
-        ld	    hl,#4A00						                        ; hl	= dirección en la que empieza a pintar
-;        call	FILVRM_RAM						                        ; Limpiamos toda esta zona de la VRAM 
-
-        jp      CARGA_SLOT_MENU
-
 CARGA_LOGO_EN_VRAM:
 
         ld      a,7                                                     ; Modo gráfico G6
@@ -186,13 +162,7 @@ BLOQUE_PAUSA:
         halt
         djnz    BLOQUE_PAUSA
         ret
-BLOQUE_COPY_HALT:
 
-        call    DOCOPY
-    [3] halt
-        ret
-
-PALETAS:
 PALETA_MOAI:
 
         incbin  "../PALETAS/PRESENTACION/DIGITAL_MOAI.palete"

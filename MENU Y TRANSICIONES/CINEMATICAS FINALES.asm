@@ -533,25 +533,19 @@ CARGA_GRAFICOS_CINEMATICA_5_6_EN_PAGE_1:
 
 NOS_VAMOS_AL_INICIO_DEL_TODO:
 
-     	di
-		ld		a,#C9
-		ld		(HTIMI),a
-		ld		(HKEYI),a
-        ei
+        call    STOP_MUSICA
+        jp		MENU
 
-		ld		sp,0xE500
-		ld 		a,(RG0SAV)
-		and		11101111B
-		ld		(RG0SAV),a
-		ld		b,a
-		ld		c,0
-		call	WRTVDP_EN_RAM
+STOP_MUSICA:
 
-		ld		a,0
-		ld      (DIRPA1),a
+		call	stpmus
 
-        jp		MARCA
+		xor		a
+		ld		(MUSICA_BEST_ON),a
 
+		call	PAGE_10_A_SEGMENT_2
+
+		ret
 
 DATOS_COPY_CINEMATICA_FINAL_PAGE_1_A_PAGE_2:
 

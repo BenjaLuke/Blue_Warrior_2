@@ -1,5 +1,4 @@
-; PÀLETAS
-		
+; ROMAN: PAR	
 ;PALETA_FASE_1_1_FADE_IN:
 
 		incbin "FASES/FASE1-1.FADIN"

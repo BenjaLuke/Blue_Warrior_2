@@ -1,3 +1,4 @@
+; ROMAN: PAR
 ;SEARCH_SLOT_SET:														; Ampliar a espacios 1 y 2 los usados en la ram del ordenador
 		
 		call 	SEARCH_SLOT
@@ -1204,14 +1205,7 @@
         in      a,(0A9H)
         ei
         ret
-;XOR_NZ_RAM:
 
-		ld		a,l
-		xor		e
-		ret		nz
-		ld		a,h
-		xor		d
-		ret		
 ;XOR_Z_RAM:
 
 		ld		a,l

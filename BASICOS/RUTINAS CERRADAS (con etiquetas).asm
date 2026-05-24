@@ -1,3 +1,4 @@
+; ROMAN: PAR
 SEARCH_SLOT_SET:														; Ampliar a espacios 1 y 2 los usados en la ram del ordenador
 		
 		call 	SEARCH_SLOT
@@ -125,7 +126,7 @@ blk_VRAM_Loop:
 ;Enables the interrupts
 
 SetVdp_Write:
-SETWRT_in_RAM:															; BIOS: 53h
+;SETWRT_in_RAM:															; BIOS: 53h
 	
 		push	af
 		push	hl
@@ -1203,14 +1204,7 @@ SNSMAT_RAM:
         in      a,(0A9H)
         ei
         ret
-XOR_NZ_RAM:
 
-		ld		a,l
-		xor		e
-		ret		nz
-		ld		a,h
-		xor		d
-		ret		
 XOR_Z_RAM:
 
 		ld		a,l

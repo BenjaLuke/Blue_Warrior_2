@@ -1,3 +1,4 @@
+; ROMAN: PAR
 ;INICIAMOS_MUSICA:
 
 		xor		a														;le damos 0 a la posicion de arranque de la música
