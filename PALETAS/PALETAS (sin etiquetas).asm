@@ -1,4 +1,3 @@
-; ROMAN: PAR	
 ;PALETA_FASE_1_1_FADE_IN:
 
 		incbin "FASES/FASE1-1.FADIN"
@@ -11,6 +10,7 @@
 
 		incbin	"GLOBALES/GRISES.FADEOUT"
 
+;TABLA_COLOR_SPRITE_CENTRAL_BOSS_2:
 		db		$03,$03,$03,$03,$03,$03,$03,$03
 		db		$03,$03,$03,$03,$03,$03,$03,$03
 		

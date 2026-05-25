@@ -149,17 +149,6 @@ ACTIVAMOS_INTERRUPCIONES_DE_LINEA:
 		call	WRTVDP_EN_RAM	
 		ei
 		ret
-DESACTIVAMOS_INTERRUPCIONES_DE_LINEA:
-
-		di
-		ld 		a,(RG0SAV)												; Enable Line Interrupt: Set R#0 bit 4
-		and		11011111B
-		ld		(RG0SAV),a				
-		ld		b,a
-		ld		c,0
-		call	WRTVDP_EN_RAM	
-		ei
-		ret			
 
 VARIABLES_PARA_EMPEZAR_LA_PARTIDA:	
 																			; Cuando empieza el juego pero que luego no hay que recuperar si muere.
@@ -925,36 +914,10 @@ CARGA_FLECHA_SIMPLE:
 CARGA_FLECHA_DOBLE:
 			ld		hl,SPRITE_FLECHA_DOBLE
 			jp		CARGA_COMUN_1_FLECHA
-CARGA_EJERCICIO:
-
-			ld		hl,SPRITES_EJERCICIO
-			JP		CARGA_COMUN_26
 CARGA_FRENTE:
 
 			ld		hl,DEPH_DE_FRENTE
 			jp		CARGA_COMUN_26
-CARGA_STAGE:
-
-			ld		hl,SPRITES_STAGE
-			ld		de,#4000+23*8*4
-			jp		CARGA_COMUN_6
-
-CARGA_2:
-
-			ld		hl,SPRITES_2
-			jp		CARGA_COMUN_1
-CARGA_3:
-
-			ld		hl,SPRITES_3
-			jp		CARGA_COMUN_1
-CARGA_4:
-
-			ld		hl,SPRITES_4
-			jp		CARGA_COMUN_1
-CARGA_FINAL:
-
-			ld		hl,SPRITES_FINAL
-			jp		CARGA_COMUN_1
 CARGA_FIREWORKS:
 
 			ld		a,1

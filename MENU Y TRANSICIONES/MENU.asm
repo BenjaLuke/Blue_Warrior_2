@@ -551,9 +551,6 @@ SETPALETE_CINEMATICA:
 		ld		c,#9A
 [32]	outi
 		call	FUERZA_COLOR_5_CINEMATICA_4
-		; Eliminado: no forzamos el color 0 en la foto 1.
-		; La paleta/fade debe usar los valores cargados desde los ficheros .palete/.fadein/.fadeout.
-		; call	FUERZA_COLOR_0_CINEMATICA_1
 		ei
 		ret
 
@@ -570,12 +567,6 @@ COLOR_0_NORMAL_CINEMATICA:
 
 		xor		a
 		ld		(CINEMATICA_COLOR_0_MODO),a
-		ret
-
-FUERZA_COLOR_0_CINEMATICA_1:
-
-		; Rutina anulada. Se conserva la etiqueta por compatibilidad,
-		; pero no reescribe el color 0 en VDP.
 		ret
 
 FUERZA_COLOR_5_CINEMATICA_4:

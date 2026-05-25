@@ -264,6 +264,10 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH:
         call    SUMA_SCORE
 
         ld      a,(ARMA_USANDO)
+        cp      3
+        jp      nc,.FINAL_DE_ENTREGA_DE_PREMIO
+
+        ld      a,(ARMA_USANDO)
         cp      2
         jp      nz,.CARGAMOS_FLECHA_SIMPLE
 

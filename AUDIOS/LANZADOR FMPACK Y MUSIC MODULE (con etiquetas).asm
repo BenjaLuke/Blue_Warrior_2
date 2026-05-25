@@ -1639,7 +1639,7 @@ ph2dat:			db			5,2,6,001h,7,0b7h,14
 psgadr:			dw			pbddat,ps1dat,ps2dat,pb1dat,pb2dat,ph1dat,ph2dat
 ;psgcnt:		db			0
 ;psgvol:		db			0
-
+                                  
 ;--- msx-audio data ---
 
 mmpdt1: 		db    		005h,022h,005h,06ah,005h,0bah,006h,012h,006h,073h,006h,0d3h

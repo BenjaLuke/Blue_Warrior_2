@@ -822,6 +822,16 @@ SECUENCIAS_DE_LOS_ENEMIGOS:
 
 .LETRAS_DE_AVISO_FASE_1:
 
+        ld      a,(CUANDO_RALENTIZAMOS)
+        or      a
+        jp      nz,.LETRAS_DE_AVISO_FASE_1_TROTE
+
+        ld      a,(ix+7)
+        ld      (ix+1),a
+        jp      .COMUN_LETRAS_AVISO_1
+
+.LETRAS_DE_AVISO_FASE_1_TROTE:
+
         ld      a,(ix+1)
         inc     a
         ld      (ix+1),a

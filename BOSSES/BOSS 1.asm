@@ -30,6 +30,11 @@ RATAS_MUERTE_PASO_X_BOSS_1:					equ	3
 COPY_SIN_OFFSET_BOSS_1:						equ	#00
 COPY_LOGICA_NORMAL_BOSS_1:					equ	10010000b
 COPY_LOGICA_RELLENO_BOSS_1:					equ	11000000b
+REJAS_SUBEN_X_BOSS_1:						equ	#76
+REJAS_SUBEN_Y_INICIAL_BOSS_1:				equ	55
+REJAS_SUBEN_Y_FINAL_BOSS_1:					equ	20
+REJAS_SUBEN_BUSCA_ALTO_BOSS_1:				equ	REJAS_SUBEN_Y_INICIAL_BOSS_1-REJAS_SUBEN_Y_FINAL_BOSS_1+1
+REJAS_SUBEN_POINT_BOSS_1:					equ	01000000b
 
 ; Proyectiles del boss
 PROYECTILES_BOSS_1_CANTIDAD:				equ	8
@@ -2565,7 +2570,12 @@ MUERTE_DE_AGONIX_BOSS_1:
         ld      iy,DATAS_COPY_RECUP_SCROLL
         call    RUTINA_BOSS_1.BUCLE_PINTA_DATAS
 
-        ld      a,55
+		call	LOCALIZA_Y_INICIO_REJAS_BOSS_1
+		push	af
+        ld      ix,BOSS_1_COPY_REJAS_SUBEN
+        ld      iy,DATAS_COPY_RECUP_SCROLL
+        call    RUTINA_BOSS_1.BUCLE_PINTA_DATAS
+		pop		af
 
 .BUCLE_REJAS_SUBEN:
 
@@ -2605,6 +2615,59 @@ MUERTE_DE_AGONIX_BOSS_1:
 
         dec     a
         jp      .BUCLE_REJAS_SUBEN
+
+LOCALIZA_Y_INICIO_REJAS_BOSS_1:
+
+		ld		b,REJAS_SUBEN_BUSCA_ALTO_BOSS_1
+		ld		a,REJAS_SUBEN_Y_INICIAL_BOSS_1
+
+.BUSCA_NEGRO_REJAS_BOSS_1:
+
+		push	af
+		push	bc
+		call	LEE_COLOR_REJAS_BOSS_1
+		and		#0F
+		pop		bc
+		or		a
+		pop		af
+		ret		z
+		dec		a
+		djnz	.BUSCA_NEGRO_REJAS_BOSS_1
+
+		ld		a,REJAS_SUBEN_Y_INICIAL_BOSS_1
+		ret
+
+LEE_COLOR_REJAS_BOSS_1:
+
+		call	VDPREADY
+
+		ld		iy,DATAS_COPY_RECUP_SCROLL
+		ld		(iy),REJAS_SUBEN_X_BOSS_1
+		ld		(iy+1),0
+		ld		(iy+2),a
+		ld		(iy+3),PAGE_2_VRAM_Y_BOSS_1 / 256
+		ld		(iy+14),REJAS_SUBEN_POINT_BOSS_1
+
+		ld		hl,DATAS_COPY_RECUP_SCROLL
+		call	DOCOPY
+		call	VDPREADY
+
+LEE_COLOR_POINT_BOSS_1:
+
+		ld		a,7
+		di
+		out		(#99),a
+		ld		a,15+128
+		out		(#99),a
+		in		a,(#99)
+		push	af
+		xor		a
+		out		(#99),a
+		ld		a,15+128
+		out		(#99),a
+		ei
+		pop		af
+		ret
 
 TERMINANDO_LA_BATALLA_b1:
 
