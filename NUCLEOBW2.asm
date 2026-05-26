@@ -310,16 +310,23 @@ CINEMATICA_5_6_1:
  ****** SLOT   2 ******     Cambio de page a juego
  **********************/
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
-; RESUMEN: 8 - Gráficos de cinematica parte 5-6 (Parte 2) y cambio de page a juego
+; RESUMEN: 8 - Gráf. cinemat. p. 5-6 (Part 2) y slot1
 CINEMATICA_5_6_2:
        	incbin  "GRAFICOS/PRESENTACIONES/CINEMATICA5Y6-2.DAT"
+
 CARGA_SLOT_JUEGO:
 
 		ld		a,9
 		ld      (DIRPA1),a											; Banco 1, pagina 3 del MEGAROM
         jp      COMIENZA_JUEGO
 
-        ds		#C000-$
+CARGA_SLOT_MAPA:
+
+		ld		a,68
+		ld      (DIRPA1),a											    ; Banco 1, pagina 39 del MEGAROM
+		jp      MUESTRA_MAPA
+
+		ds		#C000-$
 
 /**********************
  ****** PAGINA 8 ******
@@ -1901,7 +1908,14 @@ M_MENU:
 
 M_SEMIBOSS_2:
 
-		incbin	"AUDIOS/TEMAS/FASE 2/SEMIBOSS.mbm"      
+		incbin	"AUDIOS/TEMAS/FASE 2/SEMIBOSS.mbm"   
+
+M_MAP:
+		incbin	"AUDIOS/TEMAS/OTRAS/MAPA.mbm"  
+
+M_VAGONETA:
+
+		incbin	"AUDIOS/TEMAS/FASE 3/VAGONETA.mbm"
 
         ds		#c000-$
 
@@ -2542,5 +2556,65 @@ CINEMATICAS_FINALES:
 
 /**********************
  ****** PAGINA 67 ******
+ ******   END    ******
+ **********************/
+
+ /**********************
+ ****** PAGINA 68 ******
+ ****** SLOT   1 ******    
+ **********************/
+		org		#4000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
+; RESUMEN: 68 - Muestra mapa antes de fase
+
+MUESTRA_MAPA:
+
+		include "ANIMACIONES/MAPA DE SITUACION.asm"
+
+        ds      #8000-$-#2200   
+			                                        ; Colocamos el resto del programa siempre en el mismo sitio    
+		include "BASICOS/RUTINAS CERRADAS (sin etiquetas).asm"				            ; Incluímos las referencias a la BIOS
+		include "AUDIOS/LANZADOR EFECTOS PSG (sin etiquetas).asm"
+        include "PALETAS/PALETAS (sin etiquetas).asm"
+		include "AUDIOS/LANZADOR FMPACK Y MUSIC MODULE (sin etiquetas).asm"     
+        ds		#8000-$
+
+/**********************
+ ****** PAGINA 68 ******
+ ******   END    ******
+ **********************/
+
+/**********************
+ ****** PAGINA 69 ******
+ ****** SLOT   2 ******    
+ **********************/
+		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
+; RESUMEN: 69 - Gráficos mapa parte 1
+
+GRAFICOS_MAPA_1:
+
+        incbin  "GRAFICOS/PRESENTACIONES/MAP01.DAT"
+
+        ds		#C000-$
+
+/**********************
+ ****** PAGINA 69 ******
+ ******   END    ******
+ **********************/
+
+/**********************
+ ****** PAGINA 70 ******
+ ****** SLOT   2 ******    
+ **********************/
+		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
+; RESUMEN: 70 - Gráficos mapa parte 2
+
+GRAFICOS_MAPA_2:
+
+		incbin  "GRAFICOS/PRESENTACIONES/MAP02.DAT"
+
+        ds		#C000-$
+
+/**********************
+ ****** PAGINA 70 ******
  ******   END    ******
  **********************/

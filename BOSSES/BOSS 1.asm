@@ -2627,14 +2627,24 @@ LOCALIZA_Y_INICIO_REJAS_BOSS_1:
 		push	bc
 		call	LEE_COLOR_REJAS_BOSS_1
 		and		#0F
+		cp		0
+		jr		z,.COLOR_VALIDO_REJAS_BOSS_1
+		cp		1
+		jr		z,.COLOR_VALIDO_REJAS_BOSS_1
+		cp		7
+		jr		z,.COLOR_VALIDO_REJAS_BOSS_1
 		pop		bc
-		or		a
 		pop		af
-		ret		z
 		dec		a
 		djnz	.BUSCA_NEGRO_REJAS_BOSS_1
 
 		ld		a,REJAS_SUBEN_Y_INICIAL_BOSS_1
+		ret
+
+.COLOR_VALIDO_REJAS_BOSS_1:
+
+		pop		bc
+		pop		af
 		ret
 
 LEE_COLOR_REJAS_BOSS_1:

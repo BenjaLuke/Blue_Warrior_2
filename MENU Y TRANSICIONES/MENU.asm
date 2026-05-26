@@ -2415,8 +2415,7 @@ DATOS_NEGRO_ROTATIVO_EN_PAGE_1:
 
 TEXTO_ROTATIVO_PRESENTACION:
 
-		db		"BLUE WARRIOR II - Beta version 4.7.03 - 24/5/2026 - 77% - (C) Digital Moai - TECLAS 1 - 5 PARA IR DIRECTO A FASE",0
-		;db		"A Digital Moai Production - Project Direction, Phase Design, Story, Script, Level Design, Pixel Art and Music Composition: Manuel Dopico - Programming, Sprites, Pixel Art Corrections and Sound Effects: Benjamin Miguel - Graphics: Lucas Sera Piao - Lead Beta Tester and Quality Control: Xavi Sorinas - Packaging: XXX - Cover Illustration: XXX - Digital Moai sincerely thanks the following entities for helping keep the MSX alive: AAMSX (Spain), MSX Boixos Club (Spain), MSX.org (Holland) - (c) Digital Moai 2026",0
+		db		"BLUE WARRIOR II - Beta version 4.8.09 - 26/5/2026 - 77% - (C) Digital Moai - TECLAS 1 - 5 PARA IR DIRECTO A FASE",0
 
 TEXTO_ROTATIVO_PRESENTACION_FIN:
 
@@ -2543,7 +2542,7 @@ NOS_VAMOS_AL_JUEGO:
 
 		ld		a,8
 		ld      (DIRPA2),a										    ; Banco 1, pagina 3 del MEGAROM
-		jp		CARGA_SLOT_JUEGO
+		jp		CARGA_SLOT_MAPA
 
 TABLA_LATIDO_CINEMATICA_2:
 
