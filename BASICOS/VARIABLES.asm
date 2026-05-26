@@ -34,6 +34,7 @@ LIM_Y_INF:						#1										; Límite inferior de Y según si hay contador o no
 LIM_MUERTE:						#1
 FOTOGRAMA_DEPH:					#1
 ATRIBUTOS_DEPH_VARIABLES:		#40
+ATRIBUTOS_VAGONETA_VARIABLES:	#48
 SEMAFORO_CHECK_POINT:			#1										; Nos indica si ya podemos mostrar el check-pint
 SEMAFORO_VIDA_EXTRA:			#1										; Nos indica si ya hemos dado una vida extra por pasar de 50000 puntos
 ATRIBUTOS_NUMERO_DE_VIDAS_O_PUNTOS:		#15								; Los datos para el copy de las vidas que tiene

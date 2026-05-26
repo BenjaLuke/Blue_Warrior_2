@@ -160,6 +160,92 @@ PINTA_SPRITE_DEPH_SOLO_ATRIBUTOS_VAGON_SECTOR_10:
 		ld		bc,40
 		jp		PON_COLOR_2.sin_bc_impuesta
 
+
+PINTA_SPRITE_VAGONETA_TOTAL_SECTOR_10:
+
+		push	ix
+
+		ld		ix,ATRIBUTOS_VAGONETA_VARIABLES
+
+		ld		a,(INMUNE)
+[3]		srl		a
+		and		00000001B
+		or		a
+		jp		z,.PINTA_SPRITE_NORMAL_VAGONETA_TOTAL
+
+.PINTA_SPRITE_TRANSPARENTE_VAGONETA_TOTAL:
+
+		ld		a,(DONDE_VA_LA_INTERRUPCION_LINEAL)
+		add		23
+		jp		.MISMOS_DATOS_VAGONETA_TOTAL
+
+.PINTA_SPRITE_NORMAL_VAGONETA_TOTAL:
+
+		ld		a,(Y_DEPH)
+
+.MISMOS_DATOS_VAGONETA_TOTAL:
+
+		ld		h,a
+		ld		a,(X_DEPH)
+		sub		5
+		ld		l,a
+
+		ld		b,h
+		ld		c,l
+		ld		a,4
+		call	PONE_TRES_MASCARAS_VAGONETA_TOTAL
+
+		ld		b,h
+		ld		a,l
+		add		16
+		ld		c,a
+		ld		a,16
+		call	PONE_TRES_MASCARAS_VAGONETA_TOTAL
+
+		ld		a,h
+		add		16
+		ld		b,a
+		ld		c,l
+		ld		a,28
+		call	PONE_TRES_MASCARAS_VAGONETA_TOTAL
+
+		ld		a,h
+		add		16
+		ld		b,a
+		ld		a,l
+		add		16
+		ld		c,a
+		ld		a,40
+		call	PONE_TRES_MASCARAS_VAGONETA_TOTAL
+
+		pop		ix
+
+		ld		hl,ATRIBUTOS_VAGONETA_VARIABLES
+		ld		de,#4A00
+		ld		bc,48
+		jp		PON_COLOR_2.sin_bc_impuesta
+
+
+PONE_TRES_MASCARAS_VAGONETA_TOTAL:
+
+		ld		d,3
+
+.BUCLE:
+
+		ld		(ix),b
+		ld		(ix+1),c
+		ld		(ix+2),a
+		ld		(ix+3),0
+		push	de
+		ld		de,4
+		add		ix,de
+		pop		de
+		add		4
+		dec		d
+		jr		nz,.BUCLE
+		ret
+
+
 CONTROL_TILES_PUPA:
 
 			call	ES_FASE3_VAGON_ACTIVO
@@ -421,7 +507,7 @@ AHORA_SI_EL_AGUJERO:
 
 DEPH_PARALIZADO_2:
 
-			call	PINTA_SPRITE_DEPH
+			call	PINTA_SPRITE_DEPH_VAGON_AJUSTADO
 
 			jp		CONTROL_TILES_PUPA
 
