@@ -245,7 +245,6 @@ PONE_TRES_MASCARAS_VAGONETA_TOTAL:
 		jr		nz,.BUCLE
 		ret
 
-
 CONTROL_TILES_PUPA:
 
 			call	ES_FASE3_VAGON_ACTIVO
@@ -693,6 +692,7 @@ SE_PUEDE_MOVER_Y_EFES_VARIOS:
 			call	hltmus
 			ei
 			call	GICINI
+			call	CARGA_SPRITES_VAGONETA_PAUSA
 
 			ld		a,1
 			ld		(MARCADOR_PULSADO),a
@@ -703,6 +703,7 @@ SE_PUEDE_MOVER_Y_EFES_VARIOS:
 			ld		(TIEMPO_DE_ADJUST),a
 
 			call	LLAMA_PAUSE_VAGON_FASE_3
+			call	APLICA_SPRITES_DEPH_VAGON
 
 			ld		a,(VARIABLE_UN_USO)
 			ld		(TIEMPO_DE_ADJUST),a
@@ -714,8 +715,41 @@ SE_PUEDE_MOVER_Y_EFES_VARIOS:
 
 .MUSIC_ON_OFF_VAGON:
 
+			call	ES_FASE3_VAGON_ACTIVO
+			jp		nc,MUSIC_ON_OFF
+
 			call	MARCA_REAPLICA_VAGON_RET
-			jp		MUSIC_ON_OFF
+
+			ld		a,(MARCADOR_PULSADO)
+			or		a
+			jp		nz,CONTROL.teclado
+
+			ld		a,(FMPAC_DESCONECTADO)
+			or		a
+			jp		z,CONTROL.teclado
+
+			ld		a,1
+			ld		(MARCADOR_PULSADO),a
+
+			ld		a,(MUSICA_ON_OFF)
+			or		a
+			jp		z,.ENCIENDE_MUSICA_VAGON
+
+.APAGA_MUSICA_VAGON:
+
+			xor		a
+			ld		(MUSICA_ON_OFF),a
+			call	stpmus
+			call	CARGA_SPRITES_VAGONETA_CASCOS
+			jp		CONTROL.teclado
+
+.ENCIENDE_MUSICA_VAGON:
+
+			ld		a,1
+			ld		(MUSICA_ON_OFF),a
+			call	CARGA_MUSICA_VAGONETA
+			call	APLICA_SPRITES_DEPH_VAGON
+			jp		CONTROL.teclado
 
 RUTINA_ESPECIAL_FASE_3:
 

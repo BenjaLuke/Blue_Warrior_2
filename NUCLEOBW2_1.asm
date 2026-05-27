@@ -292,6 +292,7 @@ INICIA_SCROLL:
 		ld		(AGU_ACTIVO),a
 		ld		(SPRITE_CAIDO),a
 		call	RECUPERA_SPRITES
+		call	PRECARGA_SOLO_VAGONETA_FASE3
 		
 		ld		a,6
 		ld		(CAMBIO_POSE),a
@@ -422,11 +423,13 @@ FASE1_PONEMOS_DECORADO_EN_SU_SITIO:
 .SEGUIMOS:
 
 			call	RECUPERA_SPRITES_SALUDO									; A veces los pierde por el camino. Aquí garantizamos que los tiene cuando los necesita
+			call	PRECARGA_SOLO_VAGONETA_FASE3
 			ld		a,(MUSICA_ON_OFF)
 			or		a
 			jp		nz,PRE_CONTROL
 
 			call	CARGA_DEPH_MUSIC_OFF
+			call	PRECARGA_SOLO_VAGONETA_FASE3
 
 PRE_CONTROL:
 
@@ -1137,15 +1140,6 @@ PINTA_SPRITE_DEPH_VAGON_AJUSTADO:
 		call	PINTA_SPRITE_VAGONETA_TOTAL_SECTOR_10
 		jp		PINTA_COLORES_SPRITE_VAGON
 
-RECOLOCA_X_IZQ_VAGON:
-
-		ld		a,(hl)
-		sub		5 ; RECOLOCA SOLO LOS SPRITES IZQUIERDOS DEL VAGON
-		ld		(hl),a
-		ex		de,hl
-		ld		bc,1
-		jp		FILVRM_RAM
-
 MARCA_REAPLICA_VAGON_RET:
 
 		ld		a,(SUMA_CAMINO)
@@ -1159,25 +1153,101 @@ APLICA_SPRITES_DEPH_VAGON:
 
 		call	PAGE_32_A_SEGMENT_2
 
+		ld		a,(MUSICA_ON_OFF)
+		or		a
+		jr		nz,.SPRITES_VAGONETA_NORMAL
+
+		ld		hl,SPRITES_VAGONETA_CASCOS
+		ld		de,#4000+4*8
+		ld		bc,6*32
+		call	PON_COLOR_2.sin_bc_impuesta
+		jr		.MARCA_SPRITES_VAGONETA_APLICADOS
+
+.SPRITES_VAGONETA_NORMAL:
+
 		ld		hl,SPRITES_VAGON_TOTAL
 		ld		de,#4000+4*8
 		ld		bc,12*32
 		call	PON_COLOR_2.sin_bc_impuesta
+
+.MARCA_SPRITES_VAGONETA_APLICADOS:
 
 		ld		a,1
 		ld		(SUMA_CAMINO),a
 
 		jp		PINTA_COLORES_SPRITE_VAGON_DESDE_PAGE32
 
+CARGA_SPRITES_VAGONETA_PAUSA:
 
-PINTA_BLOQUE_VAGON_192_EN_DE:
+		call	PAGE_32_A_SEGMENT_2
+		ld		hl,SPRITES_VAGONETA_PAUSA
+		ld		de,#4000+4*8
+		ld		bc,5*32
+		call	PON_COLOR_2.sin_bc_impuesta
 
-		push	hl
+		ld		hl,SPRITE_VAGONETA_PATRON_BLANCO
+		ld		de,#4000+24*8
+		ld		bc,32
+		call	PON_COLOR_2.sin_bc_impuesta
+
+		ld		hl,COLOR_SPRITES_VAGONETA_PAUSA
+		ld		de,#4800
+		ld		bc,5*16
+		call	PON_COLOR_2.sin_bc_impuesta
+
+		ld		hl,COLOR_SPRITE_VAGONETA_PATRON_BLANCO
+		ld		de,#4850
+		ld		bc,16
+		call	PON_COLOR_2.sin_bc_impuesta
+		jp		PAGE_10_A_SEGMENT_2
+
+CARGA_SPRITES_VAGONETA_CASCOS:
+
+		call	PAGE_32_A_SEGMENT_2
+		ld		hl,SPRITES_VAGONETA_CASCOS
+		ld		de,#4000+4*8
 		ld		bc,6*32
 		call	PON_COLOR_2.sin_bc_impuesta
-		pop		hl
-		ret
 
+		ld		hl,COLOR_SPRITES_VAGONETA_CASCOS
+		ld		de,#4800
+		ld		bc,6*16
+		call	PON_COLOR_2.sin_bc_impuesta
+		ld		a,1
+		ld		(SUMA_CAMINO),a
+		jp		PAGE_10_A_SEGMENT_2
+
+PRECARGA_SOLO_VAGONETA_FASE3:
+
+		ld		a,(FASE)
+		cp		3
+		ret		nz
+
+PRECARGA_SOLO_VAGONETA_EN_PATRONES_ALTOS:
+
+		call	PAGE_32_A_SEGMENT_2
+		ld		hl,SPRITES_SOLO_VAGONETA
+		ld		de,#4000+216*8
+		ld		bc,6*32
+		call	PON_COLOR_2.sin_bc_impuesta
+
+		ld		hl,COLOR_SPRITE_SOLO_VAGONETA
+		ld		de,#4860
+		ld		bc,6*16
+		call	PON_COLOR_2.sin_bc_impuesta
+		jp		PAGE_10_A_SEGMENT_2
+
+SPRITE_VAGONETA_PATRON_BLANCO:
+
+		db		0,0,0,0,0,0,0,0
+		db		0,0,0,0,0,0,0,0
+		db		0,0,0,0,0,0,0,0
+		db		0,0,0,0,0,0,0,0
+
+COLOR_SPRITE_VAGONETA_PATRON_BLANCO:
+
+		db		0,0,0,0,0,0,0,0
+		db		0,0,0,0,0,0,0,0
 
 PINTA_COLORES_SPRITE_VAGON:
 
@@ -1185,7 +1255,19 @@ PINTA_COLORES_SPRITE_VAGON:
 
 PINTA_COLORES_SPRITE_VAGON_DESDE_PAGE32:
 
+		ld		a,(MUSICA_ON_OFF)
+		or		a
+		jr		nz,.COLORES_VAGONETA_NORMAL
+
+		ld		hl,COLOR_SPRITES_VAGONETA_CASCOS
+		jr		.COLORES_VAGONETA_SUPERIOR
+
+.COLORES_VAGONETA_NORMAL:
+
 		ld		hl,COLOR_SPRITE_VAGONETA_TOTAL
+
+.COLORES_VAGONETA_SUPERIOR:
+
 		ld		de,#4800
 		ld		bc,6*16
 		call	PON_COLOR_2.sin_bc_impuesta

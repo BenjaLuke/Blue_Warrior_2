@@ -25,7 +25,7 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH:
 
         ld      c,(ix+1)                                                    ; Y enemigo
         ld      a,(Y_DEPH)                                                 ; Y prota
-        add     32                                                          ; Corrección para que ajusten
+        add     32                                                          ; Correcciï¿½n para que ajusten
         sub     c                                                           ; Se restan
         cp      32                                                          ; El margen para que colapsen en este caso es 32
         jp      nc,.NO_HAY_COLISION
@@ -47,14 +47,14 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH:
 
 .EXCEPCIONES_1:
 
-; ¿ES CORAZON?
+; ï¿½ES CORAZON?
 
         ld      a,(ix+8)
 
         cp      35*4
         jp      nz,.EXCEPCIONES_2
 
-; ¿ES AMPLIADO?
+; ï¿½ES AMPLIADO?
 
         ld      a,(CORAZON_ACTIVO)
         or      a
@@ -63,7 +63,7 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH:
 
 .EXCEPCIONES_2:
 
-; ¿ES LETRA?
+; ï¿½ES LETRA?
 
         cp      27*4
         jp      z,.CARGA_LA_D
@@ -74,17 +74,17 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH:
         cp      30*4
         jp      z,.CARGA_LA_H
 
-; ¿ES UN PROYECTIL?
+; ï¿½ES UN PROYECTIL?
 
         cp      40*4
         jp      z,.SI_QUE_HAY_COLISION
 
-; ¿ES > 43*4?
+; ï¿½ES > 43*4?
 
         cp      43*4
         jp      c,.NO_HAY_COLISION
 
-; ¿ES UN PREMIO?
+; ï¿½ES UN PREMIO?
 
         jp      z,.ES_FLECHA
         cp      44*4
@@ -103,22 +103,29 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH:
         jp      .NO_HAY_COLISION
 
 .SI_QUE_HAY_COLISION:
-; ¿ES INMUNE?
+; ï¿½ES INMUNE?
 
         ld      a,(INMUNE)
         or      a
         jp      nz,.SALIMOS
 
-; ¿NO TIENE CORAZONES?
+; ï¿½NO TIENE CORAZONES?
 
         ld      a,(CORAZONES)
         or      a
         jp      z,MUERTE_POR_TOQUES
            
-        ;dec     a          ;XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   no resta vida para opder jugar con corazones infinitos
-        ;ld      (CORAZONES),a ;XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  no resta vida para opder jugar con corazones infinitos
-        ;jp      z,MUERTE_POR_TOQUES
-        ;call    PINTA_CORAZONES ;XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  no resta vida para opder jugar con corazones infinitos
+        ld      a,(TRUCO_CORAZONES_ACTIVO)
+        or      a
+        jp      nz,.NO_RESTA_CORAZON_POR_TRUCO
+
+        ; ld      a,(CORAZONES)      ; XXXXXX
+        ; dec     a                  ; XXXXXX  truco
+        ; ld      (CORAZONES),a      ; XXXXXX
+        jp      z,MUERTE_POR_TOQUES
+        call    PINTA_CORAZONES
+
+.NO_RESTA_CORAZON_POR_TRUCO:
 
         ld      a,3
         ld      c,1

@@ -188,6 +188,7 @@ TITULO:
 		; 7 - Preparamos rotativo inferior.
 
 		call	INICIALIZA_ROTATIVO_PRESENTACION
+		call	INICIALIZA_TRUCOS_PRESENTACION
 
 		ret
 
@@ -2415,11 +2416,258 @@ DATOS_NEGRO_ROTATIVO_EN_PAGE_1:
 
 TEXTO_ROTATIVO_PRESENTACION:
 
-		db		"BLUE WARRIOR II - Beta version 4.8.09 - 26/5/2026 - 77% - (C) Digital Moai - TECLAS 1 - 5 PARA IR DIRECTO A FASE",0
+		db		"BLUE WARRIOR II - Beta version 4.8.09 - 26/5/2026 - 77% - (C) Digital Moai",0
 
 TEXTO_ROTATIVO_PRESENTACION_FIN:
 
+INICIALIZA_TRUCOS_PRESENTACION:
+
+		xor		a
+		ld		(TRUCO_FASES_ACTIVO),a
+		ld		(TRUCO_CORAZONES_ACTIVO),a
+		ld		(TRUCO_ELSLUCKIS_POS),a
+		ld		(TRUCO_CARAMBALAN_POS),a
+		ld		(TRUCO_TECLA_PRESENTACION),a
+		ret
+
+
+ACTUALIZA_TRUCOS_PRESENTACION:
+
+		call	LEE_TECLA_TRUCO_PRESENTACION
+		or		a
+		ret		z
+
+		ld		c,a
+		push	bc
+		call	ACTUALIZA_TRUCO_ELSLUCKIS
+		pop		bc
+		jp		ACTUALIZA_TRUCO_CARAMBALAN
+
+
+ACTUALIZA_TRUCO_ELSLUCKIS:
+
+		ld		hl,TEXTO_TRUCO_ELSLUCKIS
+		ld		a,(TRUCO_ELSLUCKIS_POS)
+		ld		e,a
+		ld		d,0
+		add		hl,de
+		ld		a,(hl)
+		cp		c
+		jr		z,.ACIERTO
+
+		ld		a,c
+		cp		"E"
+		jr		z,.PRIMERA_LETRA
+		xor		a
+		ld		(TRUCO_ELSLUCKIS_POS),a
+		ret
+
+.PRIMERA_LETRA:
+
+		ld		a,1
+		ld		(TRUCO_ELSLUCKIS_POS),a
+		ret
+
+.ACIERTO:
+
+		ld		a,(TRUCO_ELSLUCKIS_POS)
+		inc		a
+		ld		(TRUCO_ELSLUCKIS_POS),a
+		ld		e,a
+		ld		d,0
+		ld		hl,TEXTO_TRUCO_ELSLUCKIS
+		add		hl,de
+		ld		a,(hl)
+		or		a
+		ret		nz
+
+		ld		a,1
+		ld		(TRUCO_FASES_ACTIVO),a
+		xor		a
+		ld		(TRUCO_ELSLUCKIS_POS),a
+		jp		FLASH_TRUCO_PRESENTACION
+
+
+ACTUALIZA_TRUCO_CARAMBALAN:
+
+		ld		hl,TEXTO_TRUCO_CARAMBALAN
+		ld		a,(TRUCO_CARAMBALAN_POS)
+		ld		e,a
+		ld		d,0
+		add		hl,de
+		ld		a,(hl)
+		cp		c
+		jr		z,.ACIERTO
+
+		ld		a,c
+		cp		"C"
+		jr		z,.PRIMERA_LETRA
+		xor		a
+		ld		(TRUCO_CARAMBALAN_POS),a
+		ret
+
+.PRIMERA_LETRA:
+
+		ld		a,1
+		ld		(TRUCO_CARAMBALAN_POS),a
+		ret
+
+.ACIERTO:
+
+		ld		a,(TRUCO_CARAMBALAN_POS)
+		inc		a
+		ld		(TRUCO_CARAMBALAN_POS),a
+		ld		e,a
+		ld		d,0
+		ld		hl,TEXTO_TRUCO_CARAMBALAN
+		add		hl,de
+		ld		a,(hl)
+		or		a
+		ret		nz
+
+		ld		a,1
+		ld		(TRUCO_CORAZONES_ACTIVO),a
+		xor		a
+		ld		(TRUCO_CARAMBALAN_POS),a
+		jp		FLASH_TRUCO_PRESENTACION
+
+
+LEE_TECLA_TRUCO_PRESENTACION:
+
+		call	LEE_TECLA_ACTUAL_TRUCO_PRESENTACION
+		ld		b,a
+		or		a
+		jr		nz,.HAY_TECLA
+
+		ld		(TRUCO_TECLA_PRESENTACION),a
+		ret
+
+.HAY_TECLA:
+
+		ld		a,(TRUCO_TECLA_PRESENTACION)
+		cp		b
+		jr		nz,.TECLA_NUEVA
+		xor		a
+		ret
+
+.TECLA_NUEVA:
+
+		ld		a,b
+		ld		(TRUCO_TECLA_PRESENTACION),a
+		ret
+
+
+LEE_TECLA_ACTUAL_TRUCO_PRESENTACION:
+
+		ld		ix,TABLA_TECLAS_TRUCO_PRESENTACION
+
+.BUCLE_TECLAS:
+
+		ld		a,(ix+0)
+		cp		#FF
+		jr		z,.SIN_TECLA
+		call	SNSMAT_RAM
+		ld		b,a
+		ld		a,(ix+1)
+		and		b
+		jr		z,.TECLA_ENCONTRADA
+		ld		de,3
+		add		ix,de
+		jr		.BUCLE_TECLAS
+
+.TECLA_ENCONTRADA:
+
+		ld		a,(ix+2)
+		ret
+
+.SIN_TECLA:
+
+		ld		c,9
+		ld		e,0
+
+.BUSCA_CUALQUIER_TECLA:
+
+		ld		a,e
+		call	SNSMAT_RAM
+		cp		#FF
+		jr		nz,.TECLA_DESCONOCIDA
+		inc		e
+		dec		c
+		jr		nz,.BUSCA_CUALQUIER_TECLA
+
+		xor		a
+		ret
+
+.TECLA_DESCONOCIDA:
+
+		ld		a,#FE
+		ret
+
+
+FLASH_TRUCO_PRESENTACION:
+
+		ld		hl,PALETA_BLANCA_PRESENTACION
+		call	SETPALETE_PRESENTACION_SIN_FORZAR
+		ld		a,5
+		call	BUCLE_PINTA_TILES.rutina_de_pausa
+		ld		hl,PALETA_MENU_LOCAL_FIJA
+		jp		SETPALETE_PRESENTACION_SIN_FORZAR
+
+
+SETPALETE_PRESENTACION_SIN_FORZAR:
+
+		xor		a
+		di
+		out		(#99),a
+		ld		a,16+128
+		out		(#99),a
+		ld		c,#9A
+[32]	outi
+		ei
+		ret
+
+
+TEXTO_TRUCO_ELSLUCKIS:
+
+		db		"ELSLUCKIS",0
+
+TEXTO_TRUCO_CARAMBALAN:
+
+		db		"CARAMBALAN",0
+
+TABLA_TECLAS_TRUCO_PRESENTACION:
+
+		db		0,00000010b,"1"
+		db		0,00000100b,"2"
+		db		0,00001000b,"3"
+		db		0,00010000b,"4"
+		db		0,00100000b,"5"
+		db		2,01000000b,"A"
+		db		2,10000000b,"B"
+		db		3,00000001b,"C"
+		db		3,00000100b,"E"
+		db		3,01000000b,"I"
+		db		4,00000001b,"K"
+		db		4,00000010b,"L"
+		db		4,00000100b,"M"
+		db		4,00001000b,"N"
+		db		4,10000000b,"R"
+		db		5,00000001b,"S"
+		db		5,00000100b,"U"
+		db		8,00000001b," "
+		db		#FF,0,0
+
+PALETA_BLANCA_PRESENTACION:
+
+		db		$77,$07,$77,$07,$77,$07,$77,$07
+		db		$77,$07,$77,$07,$77,$07,$77,$07
+		db		$77,$07,$77,$07,$77,$07,$77,$07
+		db		$77,$07,$77,$07,$77,$07,$77,$07
+
+
 PULSA_UNA_TECLA_PARA_EMPEZAR:
+
+		call	ACTUALIZA_TRUCOS_PRESENTACION
 
 		xor		a
 		call	GTTRIG_RAM
@@ -2430,6 +2678,10 @@ PULSA_UNA_TECLA_PARA_EMPEZAR:
 		call	SNSMAT_RAM
 		bit		1,a
 		jp		z,INICIA_EN_FASE_1
+
+		; ld		a,(TRUCO_FASES_ACTIVO)		; XXXXX
+		; or		a							; XXXXX truco
+		; jp		z,.NO_MIRA_FASES_DIRECTAS	; XXXXX
 
 		ld		a,0
 		call	SNSMAT_RAM
@@ -2450,6 +2702,8 @@ PULSA_UNA_TECLA_PARA_EMPEZAR:
 		call	SNSMAT_RAM
 		bit		5,a
 		jp		z,INICIA_EN_FASE_5
+
+.NO_MIRA_FASES_DIRECTAS:
 
 		halt
 		call 	ACTUALIZA_ROTATIVO_PRESENTACION

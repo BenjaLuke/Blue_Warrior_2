@@ -46,6 +46,11 @@ FX_ON_OFF:						#1										; 0 off 1 on
 SPRITE_QUE_TOCA:				#1										; Nos indica los atributos de sprite que toca usar
 VARIABLE_CARGA_AGUA:			#1										; 0 es normal, 1 es de lodo
 FASE:							#1										; Fase en la que está jugando
+TRUCO_FASES_ACTIVO:				#1										; Permite empezar directamente en fase 1-5 desde la presentacion
+TRUCO_CORAZONES_ACTIVO:			#1										; Evita perder corazones por enemigos fuera de bosses
+TRUCO_ELSLUCKIS_POS:			#1										; Posicion de lectura del truco ELSLUCKIS
+TRUCO_CARAMBALAN_POS:			#1										; Posicion de lectura del truco CARAMBALAN
+TRUCO_TECLA_PRESENTACION:		#1										; Ultima tecla leida para no repetir mientras se mantiene pulsada
 MUSICA_BEST_ON:					#1										; 0 - Pagína de musicas de la fase 1 - página de the best 2 - pagina de puente
 DESACTIVA_PUPA:					#1										; Se desactiva para alguna zona concreta que usa los tiles de pupa
 PAGE_A_GUARDAR:					#1
