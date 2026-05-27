@@ -338,6 +338,24 @@ NUEVO_ECTO_PALLERS_11_CIRCLE:
 
 COMUN_ECTO_PALLERS:
 
+        ld      a,r
+        and     00000111b
+        cp      7
+        jr      c,.random_ecto_ok
+        xor     a
+
+.random_ecto_ok:
+
+        ld      (ECTOPALLER_ROMPE_HORIZONTAL),a
+        add     3
+        cp      7
+        jr      c,.random_ecto_vertical_ok
+        sub     7
+
+.random_ecto_vertical_ok:
+
+        ld      (ECTOPALLER_ROMPE_VERTICAL),a
+
         ld      b,7
 
 .bucle_siete_ecto_pallers:

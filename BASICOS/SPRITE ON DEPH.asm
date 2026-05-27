@@ -121,9 +121,9 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH:
 
         ; ld      a,(CORAZONES)      ; XXXXXX
         ; dec     a                  ; XXXXXX  truco
-        ; ld      (CORAZONES),a      ; XXXXXX
-        jp      z,MUERTE_POR_TOQUES
-        call    PINTA_CORAZONES
+        ; ld      (CORAZONES),a      ; XXXXXX  truco
+        ;jp      z,MUERTE_POR_TOQUES ; XXXXXX  truco
+        ;call    PINTA_CORAZONES     ; XXXXXX
 
 .NO_RESTA_CORAZON_POR_TRUCO:
 

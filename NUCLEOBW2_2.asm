@@ -1433,6 +1433,33 @@ ECTO_PALLERS:
 		ld		(ix+13),a
 		pop		bc
 		ld		(ix+10),c
+		ld		a,c
+ [4]	rrca
+		and		00000111b
+		ld		b,a
+		ld		a,(ECTOPALLER_ROMPE_HORIZONTAL)
+		cp		b
+		jr		z,.ECTO_ROMPE_HORIZONTAL
+		ld		a,(ECTOPALLER_ROMPE_VERTICAL)
+		cp		b
+		jr		z,.ECTO_ROMPE_VERTICAL
+		xor		a
+		jr		.GUARDA_MODO_ECTO_CIRCLE
+
+.ECTO_ROMPE_HORIZONTAL:
+
+		ld		a,1
+		jr		.GUARDA_MODO_ECTO_CIRCLE
+
+.ECTO_ROMPE_VERTICAL:
+
+		ld		a,2
+
+.GUARDA_MODO_ECTO_CIRCLE:
+
+		ld		(ix+9),a
+		xor		a
+		ld		(ix+11),a
         call    TROZOS_COMUNES_1
 
 		ld		hl,COLORES_ECTO_PALLERS_1
@@ -1458,6 +1485,40 @@ ECTO_PALLERS:
 		or		a
 		jp		nz,.REDUCE_VALOR_ARRANQUE_ECTO_PALLER
 
+		ld		a,(ix+9)
+		cp		3
+		jp		z,.CRUZA_ECTO_HORIZONTAL
+		cp		4
+		jp		z,.CRUZA_ECTO_VERTICAL
+		cp		1
+		jr		nz,.MIRA_ROMPE_VERTICAL_ECTO
+
+		ld		a,(ix+7)
+		cp		32
+		jr		nz,.SIGUE_CIRCULO_ECTO
+		ld		a,3
+		ld		(ix+9),a
+		xor		a
+		ld		(ix+11),a
+		call    TROZOS_COMUNES_17
+		jp		.CRUZA_ECTO_HORIZONTAL
+
+.MIRA_ROMPE_VERTICAL_ECTO:
+
+		cp		2
+		jr		nz,.SIGUE_CIRCULO_ECTO
+
+		ld		a,(ix+7)
+		cp		64
+		jr		nz,.SIGUE_CIRCULO_ECTO
+		ld		a,4
+		ld		(ix+9),a
+		xor		a
+		ld		(ix+11),a
+		jp		.CRUZA_ECTO_VERTICAL
+
+.SIGUE_CIRCULO_ECTO:
+
 		push	iy
 		ld		iy,TABLA_MOVIMIENTO_ECTO
 		ld      a,(ix+7) ;el contador
@@ -1478,7 +1539,7 @@ ECTO_PALLERS:
 
 		ld		a,(ix+5)
 		inc		a
-		and		00000011b
+		and		00000001b
 		ld		(ix+5),a
 		or		a
 		jp		nz,TROZOS_COMUNES_23
@@ -1509,6 +1570,64 @@ ECTO_PALLERS:
 		ld		(ix+10),a
 		ld		a,255
 		ld		(ix),a
+		jp		TROZOS_COMUNES_23
+
+.CRUZA_ECTO_HORIZONTAL:
+
+		ld		a,(ix+11)
+		cp		128
+		jr		z,.FIN_CRUCE_ECTO_HORIZONTAL
+		ld		b,a
+		ld		a,(ix+13)
+		add		b
+		ld		(ix),a
+		ld		a,(ix+14)
+		add		64
+		ld		(ix+1),a
+		ld		a,(ix+11)
+		add		2
+		ld		(ix+11),a
+		jp		TROZOS_COMUNES_23
+
+.FIN_CRUCE_ECTO_HORIZONTAL:
+
+		ld		a,5
+		ld		(ix+9),a
+		xor		a
+		ld		(ix+11),a
+		ld		(ix+5),a
+		ld		a,96
+		ld		(ix+7),a
+		jp		TROZOS_COMUNES_23
+
+.CRUZA_ECTO_VERTICAL:
+
+		ld		a,(ix+11)
+		cp		128
+		jr		z,.FIN_CRUCE_ECTO_VERTICAL
+		ld		b,a
+		ld		a,(ix+13)
+		add		64
+		ld		(ix),a
+		ld		a,127
+		sub		b
+		ld		b,a
+		ld		a,(ix+14)
+		add		b
+		ld		(ix+1),a
+		ld		a,(ix+11)
+		add		2
+		ld		(ix+11),a
+		jp		TROZOS_COMUNES_23
+
+.FIN_CRUCE_ECTO_VERTICAL:
+
+		ld		a,5
+		ld		(ix+9),a
+		xor		a
+		ld		(ix+11),a
+		ld		(ix+5),a
+		ld		(ix+7),a
 		jp		TROZOS_COMUNES_23
 
 .SECUENCIA_ECTO_PALLERS_TOCA_HUEVOS:

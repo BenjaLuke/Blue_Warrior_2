@@ -61,6 +61,8 @@ FIREWORKS_ACTIVO:				#1										; Hay fuegos artificiales en pantalla
 MEGADEATH_ACTIVO:				#1										; Hay megadeath en pantalla
 ECTOPALLERS_ACTIVO:				#1										; Hay ectopallers en pantalla
 ECTOPALLERS_NUEVO_NECESARIO:	#1										; controla si no está en pantalla
+ECTOPALLER_ROMPE_HORIZONTAL:	#1										; Ecto del circulo que cruza de izquierda a derecha
+ECTOPALLER_ROMPE_VERTICAL:		#1										; Ecto del circulo que cruza de abajo a arriba
 ALPHONSERRYX_ACTIVO:			#1										; Hay alphonserryx de stage 4 en pantalla
 DEJA_EL_SPRITE:					#1										; Va sumadno 16 para dejar el siguietne sprite en una nueva posicion
 ESTADO_COLOR_PERM:				#1										; Nos dice el estado en el que deben estrar los colores
