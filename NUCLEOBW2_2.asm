@@ -755,6 +755,426 @@ RUTINA_ESPECIAL_FASE_3:
 
 			ret
 
+PREMIO_EXTRA:
+
+.DEFINE_PREMIO_EXTRA:
+
+        call    .HAY_PREMIO_EXTRA_ACTIVO
+        jp      nz,.NOS_VAMOS_PREMIO_EXTRA_SIN_CREAR
+        call    .HAY_SPRITE_LIBRE_PREMIO_EXTRA
+        jp      nz,.NOS_VAMOS_PREMIO_EXTRA_SIN_CREAR
+
+        ld      a,b
+        ld      hl,VALORES_BASICOS_PREMIO_EXTRA
+        call    STANDAR_LDIR_ENEMIGOS
+        ld      (ix),a
+        call    TROZOS_COMUNES_1
+
+        call    .ESCOGE_PREMIO_EXTRA
+        ld      (ix+9),a
+        call    .CARGA_PREMIO_EXTRA
+
+        xor     a
+        ld      (ix+10),a
+        ld      a,(ix)
+        ld      (ix+13),a
+        ld      a,12
+        ld      (ix+11),a
+
+        call    TROZOS_COMUNES_4
+        ld      hl,COLOR_SPRITE_EXTRA
+        call    TROZOS_COMUNES_7
+        jp      UN_NUEVO_ENEMIGO.RESOLUCION
+
+.NOS_VAMOS_PREMIO_EXTRA_SIN_CREAR:
+
+        xor     a
+        ld      (DATOS_A_SACAR),a
+        jp      UN_NUEVO_ENEMIGO.NOS_VAMOS
+
+.HAY_PREMIO_EXTRA_ACTIVO:
+
+        push    bc
+        push    de
+        push    ix
+        ld      ix,ENEMIGOS
+        ld      b,10
+
+.BUSCA_PREMIO_EXTRA_ACTIVO:
+
+        ld      a,(ix+2)
+        cp      $FF
+        jr      z,.SIGUIENTE_PREMIO_EXTRA_ACTIVO
+        ld      a,(ix+6)
+        cp      34
+        jr      z,.PREMIO_EXTRA_YA_ACTIVO
+
+.SIGUIENTE_PREMIO_EXTRA_ACTIVO:
+
+        ld      de,16
+        add     ix,de
+        djnz    .BUSCA_PREMIO_EXTRA_ACTIVO
+        pop     ix
+        pop     de
+        pop     bc
+        xor     a
+        ret
+
+.PREMIO_EXTRA_YA_ACTIVO:
+
+        pop     ix
+        pop     de
+        pop     bc
+        or      1
+        ret
+
+.HAY_SITIO_PREMIO_EXTRA:
+
+        push    bc
+        push    de
+        push    ix
+        ld      ix,ENEMIGOS
+        ld      b,10
+        ld      c,0
+
+.BUSCA_SITIO_PREMIO_EXTRA:
+
+        ld      a,(ix+2)
+        cp      $FF
+        jr      z,.MARCA_HUECO_PREMIO_EXTRA
+        ld      a,(ix+6)
+        cp      34
+        jr      z,.NO_HAY_SITIO_PREMIO_EXTRA
+
+.SIGUIENTE_SITIO_PREMIO_EXTRA:
+
+        ld      de,16
+        add     ix,de
+        djnz    .BUSCA_SITIO_PREMIO_EXTRA
+        ld      a,c
+        or      a
+        jr      z,.NO_HAY_SITIO_PREMIO_EXTRA
+        ld      ix,SPRITES_ACTIVOS
+        ld      b,20
+
+.BUSCA_SPRITE_SITIO_PREMIO_EXTRA:
+
+        ld      a,(ix)
+        or      a
+        jr      z,.SI_HAY_SITIO_PREMIO_EXTRA
+        inc     ix
+        djnz    .BUSCA_SPRITE_SITIO_PREMIO_EXTRA
+        jr      .NO_HAY_SITIO_PREMIO_EXTRA
+
+.MARCA_HUECO_PREMIO_EXTRA:
+
+        ld      c,1
+        jr      .SIGUIENTE_SITIO_PREMIO_EXTRA
+
+.SI_HAY_SITIO_PREMIO_EXTRA:
+
+        pop     ix
+        pop     de
+        pop     bc
+        xor     a
+        ret
+
+.NO_HAY_SITIO_PREMIO_EXTRA:
+
+        pop     ix
+        pop     de
+        pop     bc
+        or      1
+        ret
+
+.HAY_SPRITE_LIBRE_PREMIO_EXTRA:
+
+        push    bc
+        push    ix
+        ld      ix,SPRITES_ACTIVOS
+        ld      b,20
+
+.BUSCA_SPRITE_LIBRE_PREMIO_EXTRA:
+
+        ld      a,(ix)
+        or      a
+        jr      z,.SPRITE_LIBRE_PREMIO_EXTRA
+        inc     ix
+        djnz    .BUSCA_SPRITE_LIBRE_PREMIO_EXTRA
+        pop     ix
+        pop     bc
+        or      1
+        ret
+
+.SPRITE_LIBRE_PREMIO_EXTRA:
+
+        pop     ix
+        pop     bc
+        xor     a
+        ret
+
+.ESCOGE_PREMIO_EXTRA:
+
+        ld      a,r
+        and     00111111b
+        cp      34
+        jr      c,.PREMIO_EXTRA_RANDOM_OK
+        sub     34
+
+.PREMIO_EXTRA_RANDOM_OK:
+
+        cp      10
+        ret     c
+        cp      20
+        jr      c,.PREMIO_EXTRA_1000
+        cp      30
+        jr      c,.PREMIO_EXTRA_2000
+        cp      32
+        jr      c,.PREMIO_EXTRA_MAGIA
+        ld      a,4
+        ret
+
+.PREMIO_EXTRA_1000:
+
+        ld      a,1
+        ret
+
+.PREMIO_EXTRA_2000:
+
+        ld      a,2
+        ret
+
+.PREMIO_EXTRA_MAGIA:
+
+        ld      a,3
+        ret
+
+.CARGA_PREMIO_EXTRA:
+
+        ld      e,a
+        ld      d,0
+        ld      hl,.TABLA_OFFSETS_SPRITE_EXTRA
+        add     hl,de
+        ld      e,(hl)
+        ld      d,0
+        ld      hl,SPRITE_EXTRA
+        add     hl,de
+        ld      de,#4000+43*8*4
+        ld      bc,1*8*4
+        jp      TROZOS_COMUNES_15
+
+.TABLA_OFFSETS_SPRITE_EXTRA:
+
+        db      0,32,64,96,128
+
+.RECUPERA_FLECHA_PREMIO:
+
+        ld      hl,FLECHA_PREMIO
+        ld      de,#4000+43*8*4
+        ld      bc,1*8*4
+        jp      TROZOS_COMUNES_15
+
+.MATA_PREMIO_EXTRA_SI_ACTIVO:
+
+        push    bc
+        push    de
+        push    ix
+        ld      ix,ENEMIGOS
+        ld      b,10
+
+.BUSCA_PREMIO_EXTRA_PARA_MATAR:
+
+        ld      a,(ix+2)
+        cp      $FF
+        jr      z,.SIGUIENTE_PREMIO_EXTRA_PARA_MATAR
+        ld      a,(ix+6)
+        cp      34
+        jr      z,.MATA_PREMIO_EXTRA_ACTIVO
+
+.SIGUIENTE_PREMIO_EXTRA_PARA_MATAR:
+
+        ld      de,16
+        add     ix,de
+        djnz    .BUSCA_PREMIO_EXTRA_PARA_MATAR
+        pop     ix
+        pop     de
+        pop     bc
+        ret
+
+.MATA_PREMIO_EXTRA_ACTIVO:
+
+        ld      a,5
+        ld      c,1
+        call    A_31_DESDE_10
+        xor     a
+        ld      (ix+2),a
+        ld      (ix+10),a
+        ld      a,23*4
+        ld      (ix+8),a
+        ld      a,10
+        ld      (ix+6),a
+        pop     ix
+        pop     de
+        pop     bc
+        ret
+
+.SECUENCIA_PREMIO_EXTRA:
+
+        ld      a,(CUANDO_RALENTIZAMOS)
+        cp      1
+        jr      z,.MUEVE_Y_PREMIO_EXTRA
+
+        ld      a,(CONTROL_DE_C_R)
+        cp      2
+        jr      nz,.CONTROL_X_PREMIO_EXTRA
+
+.MUEVE_Y_PREMIO_EXTRA:
+
+        ld      a,(ix+1)
+        inc     a
+        ld      (ix+1),a
+
+.CONTROL_X_PREMIO_EXTRA:
+
+        ld      a,(ix+10)
+        or      a
+        jr      nz,.MUEVE_PARABOLA_PREMIO_EXTRA
+
+        ld      a,(ix+11)
+        dec     a
+        ld      (ix+11),a
+        jp      nz,.FIN_PREMIO_EXTRA
+
+        ld      a,r
+        and     00011111b
+        cp      31
+        jr      c,.TIEMPO_X_PREMIO_EXTRA_OK
+        sub     31
+
+.TIEMPO_X_PREMIO_EXTRA_OK:
+
+        add     60
+        ld      (ix+11),a
+
+.BUSCA_NUEVA_X_PREMIO_EXTRA:
+
+        ld      a,r
+        and     01111111b
+        add     24
+        ld      b,a
+        ld      a,(ix)
+        cp      b
+        jr      c,.NUEVA_X_ES_MAYOR_PREMIO_EXTRA
+
+.NUEVA_X_ES_MENOR_PREMIO_EXTRA:
+
+        sub     b
+        cp      30
+        jr      c,.BUSCA_NUEVA_X_PREMIO_EXTRA
+        ld      a,b
+        jr      .GUARDA_NUEVA_X_PREMIO_EXTRA
+
+.NUEVA_X_ES_MAYOR_PREMIO_EXTRA:
+
+        ld      a,b
+        sub     (ix)
+        cp      30
+        jr      c,.BUSCA_NUEVA_X_PREMIO_EXTRA
+        ld      a,b
+
+.GUARDA_NUEVA_X_PREMIO_EXTRA:
+
+        ld      (ix+13),a
+        ld      a,8
+        ld      (ix+10),a
+        ld      a,b
+        ld      c,(ix)
+        cp      c
+        jr      c,.CALCULA_PASO_IZQUIERDA_PREMIO_EXTRA
+
+        sub     c
+        jr      .GUARDA_PASO_PREMIO_EXTRA
+
+.CALCULA_PASO_IZQUIERDA_PREMIO_EXTRA:
+
+        ld      a,c
+        sub     b
+        srl     a
+        srl     a
+        srl     a
+        ld      c,a
+        xor     a
+        sub     c
+        ld      (ix+7),a
+        jr      .MUEVE_PARABOLA_PREMIO_EXTRA
+
+.GUARDA_PASO_PREMIO_EXTRA:
+
+        srl     a
+        srl     a
+        srl     a
+        ld      (ix+7),a
+
+.MUEVE_PARABOLA_PREMIO_EXTRA:
+
+        ld      a,(ix)
+        add     (ix+7)
+        ld      (ix),a
+        ld      a,(ix+10)
+        cp      5
+        jr      c,.BAJA_PARABOLA_PREMIO_EXTRA
+        ld      a,(ix+1)
+        sub     4
+        ld      (ix+1),a
+        jr      .SIGUIENTE_PARABOLA_PREMIO_EXTRA
+
+.BAJA_PARABOLA_PREMIO_EXTRA:
+
+        ld      a,(ix+1)
+        add     4
+        ld      (ix+1),a
+
+.SIGUIENTE_PARABOLA_PREMIO_EXTRA:
+
+        ld      a,(ix+10)
+        dec     a
+        ld      (ix+10),a
+        jr      nz,.FIN_PREMIO_EXTRA
+        ld      a,(ix+13)
+        ld      (ix),a
+
+.FIN_PREMIO_EXTRA:
+
+        ld      a,(ix+1)
+        cp      216
+        jp      nc,.MUERE_PREMIO_EXTRA
+
+        call    TROZOS_COMUNES_31
+        jp      nc,.PREMIO_EXTRA_PARTIDO
+
+.PREMIO_EXTRA_ENTERO:
+
+        cp      c
+        jp      nc,SECUENCIA_PROYECTILES_Y_ENEMIGOS.PASAMOS_A_LA_SIGUIENTE_POSICION
+
+        ld      a,b
+        cp      c
+        jp      nc,.MUERE_PREMIO_EXTRA
+        jp      SECUENCIA_PROYECTILES_Y_ENEMIGOS.PASAMOS_A_LA_SIGUIENTE_POSICION
+
+.PREMIO_EXTRA_PARTIDO:
+
+        cp      c
+        jp      c,.MUERE_PREMIO_EXTRA
+        ld      a,b
+        cp      c
+        jp      c,SECUENCIA_PROYECTILES_Y_ENEMIGOS.PASAMOS_A_LA_SIGUIENTE_POSICION
+
+.MUERE_PREMIO_EXTRA:
+
+        call    .RECUPERA_FLECHA_PREMIO
+        jp      TROZOS_COMUNES_29
+
 LLAMA_PAUSE_VAGON_FASE_3:
 
 			push	af

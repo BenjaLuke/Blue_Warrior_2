@@ -86,6 +86,12 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH:
 
 ; �ES UN PREMIO?
 
+        ld      b,a
+        ld      a,(ix+6)
+        cp      34
+        jp      z,.ES_PREMIO_EXTRA
+        ld      a,b
+        cp      43*4
         jp      z,.ES_FLECHA
         cp      44*4
         jp      z,.ES_FUEGO
@@ -260,6 +266,68 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH:
         call    SUMA_SCORE
 
         jp      .FINAL_DE_ENTREGA_DE_PREMIO
+
+.ES_PREMIO_EXTRA:
+
+        call    .AUDIO_PREMIO
+        ld      a,(ix+9)
+        or      a
+        jp      z,.PREMIO_EXTRA_500
+        cp      1
+        jp      z,.PREMIO_EXTRA_1000
+        cp      2
+        jp      z,.PREMIO_EXTRA_2000
+        cp      3
+        jp      z,.PREMIO_EXTRA_MAGIA
+
+.PREMIO_EXTRA_VIDA:
+
+        ld      a,(VIDAS)
+        cp      9
+        jp      nc,.FINAL_DE_ENTREGA_DE_PREMIO_EXTRA
+        inc     a
+        ld      (VIDAS),a
+        call    PINTA_VIDAS
+        jp      .FINAL_DE_ENTREGA_DE_PREMIO_EXTRA
+
+.PREMIO_EXTRA_MAGIA:
+
+        ld      a,(MAGIAS)
+        inc     a
+        cp      6
+        jr      c,.GUARDA_PREMIO_EXTRA_MAGIA
+        ld      a,5
+
+.GUARDA_PREMIO_EXTRA_MAGIA:
+
+        ld      (MAGIAS),a
+        call    PINTAMOS_LOS_PUNTOS_DE_MAGIA
+        jp      .FINAL_DE_ENTREGA_DE_PREMIO_EXTRA
+
+.PREMIO_EXTRA_500:
+
+        ld      hl,50
+        jp      .SUMA_SCORE_PREMIO_EXTRA
+
+.PREMIO_EXTRA_1000:
+
+        ld      hl,100
+        jp      .SUMA_SCORE_PREMIO_EXTRA
+
+.PREMIO_EXTRA_2000:
+
+        ld      hl,200
+
+.SUMA_SCORE_PREMIO_EXTRA:
+
+        ld      (SCORE_A_SUMAR),hl
+        call    SUMA_SCORE
+
+.FINAL_DE_ENTREGA_DE_PREMIO_EXTRA:
+
+        call    PREMIO_EXTRA.RECUPERA_FLECHA_PREMIO
+        call    STANDARD_DEJA_LIBRE_EL_SPRITE
+        jp      .SALIMOS
 
 .AUMENTA_ARMA:
 

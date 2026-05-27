@@ -265,6 +265,7 @@ SECUENCIA_PROYECTILES_Y_ENEMIGOS:
 		dw		SLIMES.SECUENCIA_SLIME_RONDA									; 31	
 		dw		FIREWORKS.SECUENCIA_FIREWORKS									; 32
 		dw		GARGOLAS.SECUENCIA_GARGOLA										; 33
+		dw		PREMIO_EXTRA.SECUENCIA_PREMIO_EXTRA							; 34
 
 .FLECHA_FRENTE_FUEGO_FRENTE:
 
@@ -649,7 +650,10 @@ DEJA_LIBRE_SPRITE_EN_RAM:
 
         rrca
         rrca
+        cp      32
+        ret     nc
         sub     10
+        ret     c
         push    ix
         ld      ix,SPRITES_ACTIVOS
         ld      e,a

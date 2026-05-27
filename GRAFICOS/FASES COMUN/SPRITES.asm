@@ -280,7 +280,8 @@ SPRITE_FLECHA_SIMPLE:
 		DB $03,$00,$00,$01,$01,$01,$00,$00
 		DB $00,$00,$00,$00,$00,$00,$00,$30
 		DB $B8,$FC,$FE,$FE,$F0,$C0,$00,$00
-		; 
+
+FLECHA_PREMIO:		; 
 		; --- COGE FLECHA
 		; mask 0
 		DB $01,$02,$0C,$1F,$3F,$3F,$7F,$7F
@@ -1829,50 +1830,38 @@ SPRITES_VAGONETA_PAUSA:
 
 SPRITE_EXTRA:
 
-	;  --- 500 PUNTOS
-	; color 15
+	; --- 500 PUNTOS
+	; mask 0
 	DB $0F,$17,$3B,$67,$5F,$FF,$C6,$DE
 	DB $E6,$C6,$FF,$5F,$67,$3B,$17,$0F
 	DB $F0,$E8,$DC,$E6,$FA,$FF,$23,$AB
 	DB $AB,$23,$FF,$FA,$E6,$DC,$E8,$F0
 	;
 	; --- 1000 PUNTOS
-	; color 15
+	; mask 0
 	DB $0F,$17,$3B,$67,$5F,$FF,$B1,$B5
 	DB $B5,$B1,$FF,$5F,$67,$3B,$17,$0F
 	DB $F0,$E8,$DC,$E6,$FA,$FF,$11,$55
 	DB $55,$11,$FF,$FA,$E6,$DC,$E8,$F0
 	;
 	; --- 2000 PUNTOS
-	; color 1
-	DB $00,$00,$00,$00,$00,$00,$60,$20
-	DB $40,$40,$00,$00,$00,$00,$00,$00
-	DB $00,$00,$00,$00,$00,$00,$00,$00
-	DB $00,$00,$00,$00,$00,$00,$00,$00
-	; color 15
+	; mask 0
 	DB $0F,$17,$3B,$67,$5F,$FF,$91,$D5
 	DB $B5,$91,$FF,$5F,$67,$3B,$17,$0F
 	DB $F0,$E8,$DC,$E6,$FA,$FF,$11,$55
 	DB $55,$11,$FF,$FA,$E6,$DC,$E8,$F0
 	;
 	; --- MAGIA EXTRA
-	; color 1
-	DB $00,$00,$00,$00,$00,$00,$00,$02
-	DB $01,$00,$00,$00,$00,$00,$00,$00
-	DB $00,$00,$00,$00,$00,$00,$00,$00
-	DB $00,$00,$00,$00,$00,$00,$00,$00
-	; color 15
+	; mask 0
 	DB $0F,$1F,$36,$7F,$56,$BD,$FA,$F4
 	DB $D4,$FA,$F5,$5E,$7F,$3B,$1E,$0F
 	DB $F0,$D8,$FC,$DE,$7E,$B7,$5F,$2F
 	DB $2D,$5F,$BF,$6A,$FE,$BC,$D8,$F0
 	;
 	; --- VIDA EXTRA
-	; color 15
+	; mask 0
 	DB $0F,$1F,$3E,$79,$65,$DD,$DD,$DD
 	DB $AD,$BD,$AD,$54,$67,$38,$1F,$0F
 	DB $F0,$F8,$7C,$9E,$A6,$BB,$BB,$BB
 	DB $B5,$BD,$B5,$2A,$E6,$1C,$F8,$F0
-
-
 

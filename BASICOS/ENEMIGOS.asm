@@ -359,6 +359,9 @@ UN_NUEVO_ENEMIGO:
 
 .DEFINE_PREMIO_1:                                                       ; Aleatoriamente sale un premio al azar
 
+        call    PAGE_10_A_SEGMENT_2
+        call    PREMIO_EXTRA.MATA_PREMIO_EXTRA_SI_ACTIVO
+
         ld      a,6
         ld      c,1
         call    A_31_DESDE_10       
@@ -428,6 +431,7 @@ UN_NUEVO_ENEMIGO:
 
 .SERA_FLECHA:
 
+        call    PREMIO_EXTRA.RECUPERA_FLECHA_PREMIO
         call    TROZOS_COMUNES_5
 	ld	hl,COLOR_COGE_FLECHA                 			; Damos color al sprite en la posición de sprite que le toca	
 	call    TROZOS_COMUNES_7

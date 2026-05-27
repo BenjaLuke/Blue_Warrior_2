@@ -44,6 +44,9 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES:
 
 .SI_QUE_HAY_COLISION:
 
+        ld      a,(ix+6)
+        cp      34
+        jp      z,.NO_HAY_COLISION
         jp      .sobre_el_proyectil
 
 .NO_HAY_COLISION:
