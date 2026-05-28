@@ -1124,55 +1124,60 @@ CALCULA_DANO_MAGIA_BOSS_2:
 
 		org		#4000
 ; RESUMEN: 28 - Rutinas de Boss 3
-RUTINA_BOSS_3:
+		include	"BOSSES/BOSS 3.asm"
 
-		include	"AUDIOS/INICIA MUSICA_BOSS.asm"
-
-; todo el codigo de enfrentamiento
-PULSA_UNA_TECLA_PARA_SEGUIR_b3:
-
-		xor		a
-		call	GTTRIG_RAM
-		or		a
-		jp		z,PULSA_UNA_TECLA_PARA_SEGUIR_b3
-
-TERMINANDO_LA_BATALLA_b3:
-
-		include	"AUDIOS/INICIA MUSICA_WIN.asm"
-
-CAMINITO_A_PUERTA_b3:
-
-		include	"ANIMACIONES/PASEITO HASTA PUERTA.asm"		
-SALUDO_b3:
-
-		include	"ANIMACIONES/SALUDO_GANA_FASE.asm"		
-
-FADE_DEPH_b3:
-
-;		ld		hl,FADE_DEPH_A_NEGRO_b3
-;		include	"ANIMACIONES/FADE DEPH SALIENDO DE ESCENA.asm"
-
-ULTIMO_DESPLAZAMIENTO_b3:
-
-		include	"ANIMACIONES/PASEITO DENTRO DE PUERTA.asm"	
-VOLVEMOS_b3:
-
-		jp		CARGA_SLOT_REGRESO_A_JUEGO
-
-FADE_DEPH_A_NEGRO_b3:
-
-		incbin	"PALETAS/BOSSES/BOSS3 DEPH.FADEOUT"
-
-FADE_FASE_1_3_A_NEGRO_b3:
-
-		incbin	"PALETAS/BOSSES/BOSS3.fadeout"
-
-        ds      #8000-$-#2200                                           ; Colocamos el resto del programa siempre en el mismo sitio    
+        ds      #5E00-$                                                 ; Colocamos el resto del programa siempre en el mismo sitio    
 
 		include "BASICOS/RUTINAS CERRADAS (sin etiquetas).asm"				            ; Incluímos las referencias a la BIOS
 		include "AUDIOS/LANZADOR EFECTOS PSG (sin etiquetas).asm"
         include "PALETAS/PALETAS (sin etiquetas).asm"
 		include "AUDIOS/LANZADOR FMPACK Y MUSIC MODULE (sin etiquetas).asm"        
+
+DANO_MAGIA_EN_CHUMIINIX_BOSS_3:
+
+		ld		a,(VIDA_CHUMINIX_BOSS_3)
+		or		a
+		ret		z
+		call	CALCULA_DANO_MAGIA_BOSS_3
+		ld		c,a
+		ld		a,(VIDA_CHUMINIX_BOSS_3)
+		cp		c
+		jr		nc,.RESTA_DANO_MAGIA_CHUMIINIX_BOSS_3
+		xor		a
+		jr		.GUARDA_VIDA_MAGIA_CHUMINIX_BOSS_3
+
+.RESTA_DANO_MAGIA_CHUMIINIX_BOSS_3:
+
+		sub		c
+
+.GUARDA_VIDA_MAGIA_CHUMINIX_BOSS_3:
+
+		ld		(VIDA_CHUMINIX_BOSS_3),a
+		push	af
+		call	PINTA_MARCADORES_VIDA_FINAL_BOSS_3
+		pop		af
+		or		a								; Z activo si Chuminix ha muerto
+		ret
+
+CALCULA_DANO_MAGIA_BOSS_3:
+
+		ld		a,(ARMA_USANDO)
+		cp		3
+		jr		c,.DANO_MAGIA_FLECHA_BOSS_3
+		cp		6
+		jr		c,.DANO_MAGIA_FUEGO_BOSS_3
+		ld		a,6
+		ret
+
+.DANO_MAGIA_FLECHA_BOSS_3:
+
+		ld		a,24
+		ret
+
+.DANO_MAGIA_FUEGO_BOSS_3:
+
+		ld		a,3
+		ret  
 
         ds		#8000-$
 
@@ -2233,7 +2238,7 @@ STATUS_BOSS_2_AND_SEMIBOSS_2:
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
 ; RESUMEN: 58 - Gráficos de status durante boss fases 3 y 4
 STATUS_BOSS_3:
-		incbin "GRAFICOS/STATUS/STATUS BOSS 1.DAT"
+		incbin "GRAFICOS/STATUS/STATUS BOSS 3.DAT"
 STATUS_BOSS_4:
        	incbin  "GRAFICOS/STATUS/STATUS BOSS 4.DAT"
         ds		#C000-$
@@ -2616,5 +2621,37 @@ GRAFICOS_MAPA_2:
 
 /**********************
  ****** PAGINA 70 ******
+ ******   END    ******
+ **********************/
+
+/**********************
+ ****** PAGINA 71 ******
+ ****** SLOT   2 ******    
+ **********************/
+
+		org		#8000											
+; RESUMEN: 71 - Gráficos de Chuminix parte 1-1
+        incbin  "GRAFICOS/BOSSES/TILES CHUMINIX 11.DAT"
+
+        ds		#C000-$
+
+/**********************
+ ****** PAGINA 71 ******
+ ******   END    ******
+ **********************/
+
+/**********************
+ ****** PAGINA 72 ******
+ ****** SLOT   2 ******   
+ **********************/
+
+		org		#8000											
+; RESUMEN: 72 - Gráficos de Chuminix parte 1-2
+        incbin  "GRAFICOS/BOSSES/TILES CHUMINIX 12.DAT"
+
+        ds		#C000-$
+
+/**********************
+ ****** PAGINA 72 ******
  ******   END    ******
  **********************/
