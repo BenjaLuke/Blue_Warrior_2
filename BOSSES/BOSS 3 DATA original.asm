@@ -42,6 +42,67 @@ BOSS_3_COPIA_STATUS_BOSS_A_PAGE_2:
         dw      #0000,#00C8,#0000,#0200,256,20
        	db      #00,#00,10010000b
 
+; -----------------------------------------------------------------------------
+; Copys de la animacion de entrada de Chuminix.
+;
+; SCREEN 5 / DOCOPY:
+; Cuando hablamos de page N (x,y), aqui se traduce a coordenadas absolutas
+; de VDP: X=x, Y=PAGE_N_VRAM_Y_BOSS_3+y. No se corrigen los origenes por
+; tamanyo ni por centrado; se usan exactamente las coordenadas indicadas.
+;
+; Frame 0 se salva desde page 2 a page 0 (zona oculta en y=150).
+; Los demas fotogramas se leen desde page 1 y se copian centrados a page 2.
+; -----------------------------------------------------------------------------
+BOSS_3_COPY_GUARDA_FRAME_0_CHUMINIX:
+
+		; Guarda el fondo visible donde aparecera Chuminix.
+		; Origen:  page 2 (64,78)  -> X=#0040, Y=#0200+#004E = #024E
+		; Destino: page 0 (0,150)  -> X=#0000, Y=#0096
+		dw		#0040,#024E
+		dw		#0000,#0096
+		dw		CHUMINIX_APARICION_ANCHO_BOSS_3,CHUMINIX_APARICION_ALTO_BOSS_3
+		db		#00,#00,10010000b
+
+BOSS_3_COPY_APARICION_CHUMINIX_FRAME_0:
+
+		; Recupera exactamente el frame 0 desde donde se guardo: page 0 (0,150).
+		dw		#0000,#0096
+		dw		#0040,#024E
+		dw		CHUMINIX_APARICION_ANCHO_BOSS_3,CHUMINIX_APARICION_ALTO_BOSS_3
+		db		#00,#00,10010000b
+
+BOSS_3_COPY_APARICION_CHUMINIX_FRAME_1:
+
+		; Origen: page 1 (0,96) -> X=#0000, Y=#0100+96 = #0160
+		dw		#0000,#0160
+		dw		#0040,#024E
+		dw		CHUMINIX_APARICION_ANCHO_BOSS_3,CHUMINIX_APARICION_ALTO_BOSS_3
+		db		#00,#00,10010000b
+
+BOSS_3_COPY_APARICION_CHUMINIX_FRAME_2:
+
+		; Origen: page 1 (128,96) -> X=#0080, Y=#0100+96 = #0160
+		dw		#0080,#0160
+		dw		#0040,#024E
+		dw		CHUMINIX_APARICION_ANCHO_BOSS_3,CHUMINIX_APARICION_ALTO_BOSS_3
+		db		#00,#00,10010000b
+
+BOSS_3_COPY_APARICION_CHUMINIX_FRAME_3:
+
+		; Origen: page 1 (0,0) -> X=#0000, Y=#0100
+		dw		#0000,#0100
+		dw		#0040,#024E
+		dw		CHUMINIX_APARICION_ANCHO_BOSS_3,CHUMINIX_APARICION_ALTO_BOSS_3
+		db		#00,#00,10010000b
+
+BOSS_3_COPY_APARICION_CHUMINIX_FRAME_4:
+
+		; Origen: page 1 (128,0) -> X=#0080, Y=#0100
+		dw		#0080,#0100
+		dw		#0040,#024E
+		dw		CHUMINIX_APARICION_ANCHO_BOSS_3,CHUMINIX_APARICION_ALTO_BOSS_3
+		db		#00,#00,10010000b
+
 TABLA_DIRECCIONES_VRAM_ATRIBUTOS_PROYECTIL_BOSS_3:
 	dw		#4A58,#4A5C,#4A60,#4A64,#4A68,#4A6C,#4A70,#4A74
 

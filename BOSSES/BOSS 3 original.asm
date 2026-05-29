@@ -29,14 +29,23 @@ BUBBLES_BOSS_3_SPRITE_INICIAL:              equ PROYECTIL_BOSS_3_SPRITE_FINAL
 BUBBLES_BOSS_3_CANTIDAD:                    equ 2
 BUBBLES_COLOR_VRAM_BOSS_3:                  equ SPRITES_COLOR_VRAM_BOSS_3+BUBBLES_BOSS_3_SPRITE_INICIAL*16
 
-COVID_BOSS_3_CADA_CICLOS:					equ	10
-COVID_BOSS_3_CANTIDAD:						equ	4
-COVID_BOSS_3_X_INICIAL:						equ	0
-COVID_BOSS_3_Y_INICIAL:						equ	0
+; Animacion de entrada de Chuminix
+COVID_BOSS_3_CANTIDAD:						equ	8		; Oleadas completas de 8 murcielagos
 COVID_BOSS_3_Y_OCULTO:						equ	217
-COVID_BOSS_3_Y_MUERTE:						equ	217
-COVID_BOSS_3_PASO_Y:						equ	1
-COVID_BOSS_3_TABLA_X_LONGITUD:				equ	128
+COVID_BOSS_3_LLEGADAS_FIN:					equ	48
+COVID_BOSS_3_TARGET_X:						equ	120		; 128-8: centro real del sprite 16x16
+COVID_BOSS_3_TARGET_Y:						equ	94		; 102-8: centro real del sprite 16x16
+COVID_BOSS_3_PASO_MOVIMIENTO:				equ	12		; Triple de la propuesta anterior
+COVID_BOSS_3_X_DERECHA:					equ	255
+COVID_BOSS_3_Y_ABAJO:						equ	212
+COVID_BOSS_3_RANDOM_X_LIMITE:				equ	223		; 0..222 cuando randomiza X
+COVID_BOSS_3_RANDOM_Y_LIMITE:				equ	213		; 0..212 cuando randomiza Y
+CHUMINIX_APARICION_DEST_X_BOSS_3:			equ	64		; 128 px centrados en pantalla
+CHUMINIX_APARICION_DEST_Y_BOSS_3:			equ	78		; 48 px centrados en Y=102
+CHUMINIX_APARICION_ANCHO_BOSS_3:			equ	128
+CHUMINIX_APARICION_ALTO_BOSS_3:				equ	48
+CHUMINIX_APARICION_FRAME_0_X_BOSS_3:		equ	0
+CHUMINIX_APARICION_FRAME_0_Y_BOSS_3:		equ	150
 BARROS_MUERTE_CANTIDAD_BOSS_3:				equ	8
 BARROS_MUERTE_SPRITE_INICIAL_BOSS_3:			equ	10
 BARROS_MUERTE_ATRIBUTOS_VRAM_BOSS_3:			equ	SPRITES_ATRIBUTOS_VRAM_BOSS_3+BARROS_MUERTE_SPRITE_INICIAL_BOSS_3*4
@@ -277,7 +286,6 @@ RUTINA_BOSS_3:
         
         call    PINTA_SPRITE_DEPH
 		call	CARGA_SPRITES_BARRO_BOSS_3
-		call    ANIMACION_BOSS_3_COMIENZO
 
 .CAMBIA_PAGE_PARA_OCULTAR:
 
@@ -378,6 +386,7 @@ RUTINA_BOSS_3:
 
 		include	"../AUDIOS/INICIA MUSICA_BOSS.asm"
 
+		call	ANIMACION_BOSS_3_COMIENZO
 
 ; todo el codigo de enfrentamiento
 
@@ -444,14 +453,642 @@ RUTINA_BOSS_3:
 ; -----------------------------------------------------------------------------
 CARGA_SPRITES_BARRO_BOSS_3:
 		
+		; Cargamos los dos fotogramas de murcielago/COVID usados en la entrada.
 		call	PAGE_32_A_SEGMENT_2
-		; Aquí llamaremos sprites si es necesario
 
-		ret
+		ld		hl,SPRITES_COVID
+		ld		de,PATRONES_SPRITES_VRAM_BOSS_3+COVID_PATRON_INICIAL_BOSS_3*8
+		ld		bc,8*4*COVID_PATRON_CANT_BOSS_3
+		call	PON_COLOR_2.sin_bc_impuesta
 
+		ld		de,COVID_COLOR_VRAM_BOSS_3
+		ld		b,COVID_BOSS_3_CANTIDAD
+
+.BUCLE_COLOR_COVID_BOSS_3:
+
+		push	bc
+		push	de
+		ld		hl,COLOR_COVID_BOSS_3
+		ld		bc,16
+		call	PON_COLOR_2.sin_bc_impuesta
+		pop		de
+		ld		a,e
+		add		16
+		ld		e,a
+		jr		nc,.SIN_ACARREO_COLOR_COVID_BOSS_3
+		inc		d
+
+.SIN_ACARREO_COLOR_COVID_BOSS_3:
+
+		pop		bc
+		djnz	.BUCLE_COLOR_COVID_BOSS_3
+
+		jp		PAGE_10_A_SEGMENT_2
+
+; -----------------------------------------------------------------------------
+; Animacion de entrada del Boss 3.
+; Frame 0 se salva desde page 2 a page 0. Despues entran oleadas de 8
+; murcielagos/COVIDs desde los bordes hacia el centro hasta revelar Chuminix.
+; -----------------------------------------------------------------------------
 ANIMACION_BOSS_3_COMIENZO:
 
-		; Aquí llamaremos animaciones si es necesario
+		; Guardamos el hueco limpio de page 2 en page 0, posicion (0,150).
+		ld		hl,BOSS_3_COPY_GUARDA_FRAME_0_CHUMINIX
+		call	DOCOPY
+		call	VDPREADY
+
+		; Empezamos mostrando el fotograma 0: fondo recuperado, sin Chuminix.
+		xor		a
+		call	COPIA_FRAME_CHUMINIX_APARICION_BOSS_3
+
+		call	INICIALIZA_POOL_COVID_BOSS_3
+		ld		a,2
+		ld		(SET_PAGE),a
+
+.BUCLE_ANIMACION_BOSS_3_COMIENZO:
+
+		halt
+		call	CONTROL_COVIDS_APARICION_BOSS_3
+		call	PINTA_FRAME_CHUMINIX_APARICION_BOSS_3
+
+		ld		a,(COVID_BOSS_3_LLEGADOS)
+		cp		COVID_BOSS_3_LLEGADAS_FIN
+		jr		c,.BUCLE_ANIMACION_BOSS_3_COMIENZO
+
+		; Ya han nacido todos. Esperamos a que los activos terminen de llegar.
+		call	HAY_COVIDS_ACTIVOS_BOSS_3
+		jr		nz,.BUCLE_ANIMACION_BOSS_3_COMIENZO
+
+		call	OCULTA_TODOS_COVIDS_BOSS_3
+		ld		a,4
+		jp		COPIA_FRAME_CHUMINIX_APARICION_BOSS_3
+
+INICIALIZA_POOL_COVID_BOSS_3:
+
+		ld		a,r
+		ld		(COVID_BOSS_3_CONTADOR),a
+		xor		a
+		ld		(COVID_BOSS_3_SIGUIENTE),a
+		ld		(COVID_BOSS_3_INDICE_ACTUAL),a
+		ld		(COVID_BOSS_3_ANIMACION),a
+		ld		(COVID_BOSS_3_LLEGADOS),a
+		ld		(COVID_BOSS_3_FOTOGRAMA_CHUMINIX),a
+
+		ld		hl,COVID_BOSS_3_ACTIVO
+		ld		b,COVID_BOSS_3_CANTIDAD
+
+.INICIALIZA_ACTIVOS_COVID_BOSS_3:
+
+		ld		(hl),a
+		inc		hl
+		djnz	.INICIALIZA_ACTIVOS_COVID_BOSS_3
+
+		ld		hl,COVID_BOSS_3_X
+		ld		b,COVID_BOSS_3_CANTIDAD
+
+.INICIALIZA_X_COVID_BOSS_3:
+
+		ld		(hl),a
+		inc		hl
+		djnz	.INICIALIZA_X_COVID_BOSS_3
+
+		ld		hl,COVID_BOSS_3_PASO_TABLA_X
+		ld		b,COVID_BOSS_3_CANTIDAD
+
+.INICIALIZA_PASO_COVID_BOSS_3:
+
+		ld		(hl),a
+		inc		hl
+		djnz	.INICIALIZA_PASO_COVID_BOSS_3
+
+		ld		a,COVID_BOSS_3_Y_OCULTO
+		ld		hl,COVID_BOSS_3_Y
+		ld		b,COVID_BOSS_3_CANTIDAD
+
+.INICIALIZA_Y_COVID_BOSS_3:
+
+		ld		(hl),a
+		inc		hl
+		djnz	.INICIALIZA_Y_COVID_BOSS_3
+
+		jp		OCULTA_TODOS_COVIDS_BOSS_3
+
+CONTROL_COVIDS_APARICION_BOSS_3:
+
+		; Mantenemos el semaforo de la propuesta anterior, pero cada paso vale x3.
+		ld		a,(COVID_BOSS_3_ANIMACION)
+		inc		a
+		and		00000001b
+		ld		(COVID_BOSS_3_ANIMACION),a
+		jr		nz,.SOLO_PINTA_COVIDS_BOSS_3
+
+		call	GENERA_OLEADA_COVIDS_BOSS_3
+		call	MUEVE_COVIDS_BOSS_3
+
+.SOLO_PINTA_COVIDS_BOSS_3:
+
+		jp		PINTA_COVIDS_BOSS_3
+
+GENERA_OLEADA_COVIDS_BOSS_3:
+
+		ld		a,(COVID_BOSS_3_LLEGADOS)
+		cp		COVID_BOSS_3_LLEGADAS_FIN
+		ret		nc
+
+		call	HAY_COVIDS_ACTIVOS_BOSS_3
+		ret		nz
+
+		xor		a
+		ld		(COVID_BOSS_3_INDICE_ACTUAL),a
+		ld		b,COVID_BOSS_3_CANTIDAD
+
+.BUCLE_ACTIVA_OLEADA_COVIDS_BOSS_3:
+
+		push	bc
+		call	ACTIVA_COVID_BOSS_3_ACTUAL
+		ld		a,(COVID_BOSS_3_INDICE_ACTUAL)
+		inc		a
+		ld		(COVID_BOSS_3_INDICE_ACTUAL),a
+		pop		bc
+		djnz	.BUCLE_ACTIVA_OLEADA_COVIDS_BOSS_3
+		ret
+
+ACTIVA_COVID_BOSS_3_ACTUAL:
+
+		call	OBTIENE_PUNTERO_ACTIVO_COVID_BOSS_3_ACTUAL
+		ld		a,1
+		ld		(hl),a
+		jp		INICIA_POSICION_COVID_BOSS_3_ACTUAL
+
+INICIA_POSICION_COVID_BOSS_3_ACTUAL:
+
+		; Primero escogemos borde real: 0=random,0 / 1=random,212 / 2=0,random / 3=255,random.
+		; El random se mezcla con contador, indice y llegadas para evitar oleadas nacidas todas en el mismo lado.
+		call	RANDOM_COVID_BOSS_3
+		and		00000011b
+		ld		c,a
+		cp		2
+		jr		c,.NACE_DESDE_ARRIBA_O_ABAJO_BOSS_3
+
+		; Laterales: X fijo y Y aleatoria limitada a 0..212.
+		cp		2
+		jr		z,.NACE_DESDE_IZQUIERDA_BOSS_3
+		ld		b,COVID_BOSS_3_X_DERECHA
+		jr		.GUARDA_X_LATERAL_COVID_BOSS_3
+
+.NACE_DESDE_IZQUIERDA_BOSS_3:
+
+		ld		b,0
+
+.GUARDA_X_LATERAL_COVID_BOSS_3:
+
+		call	OBTIENE_PUNTERO_X_COVID_BOSS_3_ACTUAL
+		ld		(hl),b
+		call	RANDOM_Y_COVID_BOSS_3
+		call	OBTIENE_PUNTERO_Y_COVID_BOSS_3_ACTUAL
+		ld		(hl),a
+		jr		.RESETEA_PASO_COVID_BOSS_3
+
+.NACE_DESDE_ARRIBA_O_ABAJO_BOSS_3:
+
+		call	RANDOM_X_COVID_BOSS_3
+		call	OBTIENE_PUNTERO_X_COVID_BOSS_3_ACTUAL
+		ld		(hl),a
+		ld		a,c
+		or		a
+		jr		z,.Y_ARRIBA_COVID_BOSS_3
+		ld		a,COVID_BOSS_3_Y_ABAJO
+		jr		.GUARDA_Y_VERTICAL_COVID_BOSS_3
+
+.Y_ARRIBA_COVID_BOSS_3:
+
+		xor		a
+
+.GUARDA_Y_VERTICAL_COVID_BOSS_3:
+
+		call	OBTIENE_PUNTERO_Y_COVID_BOSS_3_ACTUAL
+		ld		(hl),a
+
+.RESETEA_PASO_COVID_BOSS_3:
+
+		call	OBTIENE_PUNTERO_PASO_COVID_BOSS_3_ACTUAL
+		xor		a
+		ld		(hl),a
+		ret
+
+RANDOM_COVID_BOSS_3:
+
+		ld		a,(COVID_BOSS_3_CONTADOR)
+		inc		a
+		ld		(COVID_BOSS_3_CONTADOR),a
+		ld		b,a
+		ld		a,r
+		add		b
+		ld		b,a
+		ld		a,(COVID_BOSS_3_INDICE_ACTUAL)
+		add		b
+		ld		b,a
+		ld		a,(COVID_BOSS_3_LLEGADOS)
+		add		b
+		ret
+
+RANDOM_X_COVID_BOSS_3:
+
+		call	RANDOM_COVID_BOSS_3
+
+.AJUSTA_RANDOM_X_COVID_BOSS_3:
+
+		cp		COVID_BOSS_3_RANDOM_X_LIMITE
+		ret		c
+		sub		COVID_BOSS_3_RANDOM_X_LIMITE
+		jr		.AJUSTA_RANDOM_X_COVID_BOSS_3
+
+RANDOM_Y_COVID_BOSS_3:
+
+		call	RANDOM_COVID_BOSS_3
+
+.AJUSTA_RANDOM_Y_COVID_BOSS_3:
+
+		cp		COVID_BOSS_3_RANDOM_Y_LIMITE
+		ret		c
+		sub		COVID_BOSS_3_RANDOM_Y_LIMITE
+		jr		.AJUSTA_RANDOM_Y_COVID_BOSS_3
+
+MUEVE_COVIDS_BOSS_3:
+
+		ld		b,COVID_BOSS_3_CANTIDAD
+		xor		a
+		ld		(COVID_BOSS_3_INDICE_ACTUAL),a
+
+.BUCLE_MUEVE_COVIDS_BOSS_3:
+
+		push	bc
+		call	OBTIENE_PUNTERO_ACTIVO_COVID_BOSS_3_ACTUAL
+		ld		a,(hl)
+		or		a
+		jr		z,.SIGUIENTE_COVID_MOVIMIENTO_BOSS_3
+		call	MUEVE_UN_COVID_BOSS_3
+
+.SIGUIENTE_COVID_MOVIMIENTO_BOSS_3:
+
+		ld		a,(COVID_BOSS_3_INDICE_ACTUAL)
+		inc		a
+		ld		(COVID_BOSS_3_INDICE_ACTUAL),a
+		pop		bc
+		djnz	.BUCLE_MUEVE_COVIDS_BOSS_3
+		ret
+
+MUEVE_UN_COVID_BOSS_3:
+
+		call	OBTIENE_PUNTERO_PASO_COVID_BOSS_3_ACTUAL
+		inc		(hl)
+		call	MUEVE_X_COVID_BOSS_3_ACTUAL
+		call	MUEVE_Y_COVID_BOSS_3_ACTUAL
+		jp		COMPRUEBA_LLEGADA_COVID_BOSS_3
+
+MUEVE_X_COVID_BOSS_3_ACTUAL:
+
+		call	OBTIENE_PUNTERO_X_COVID_BOSS_3_ACTUAL
+		ld		a,(hl)
+		cp		COVID_BOSS_3_TARGET_X
+		ret		z
+		jr		c,.SUMA_X_COVID_BOSS_3
+
+		sub		COVID_BOSS_3_PASO_MOVIMIENTO
+		cp		COVID_BOSS_3_TARGET_X
+		jr		nc,.GUARDA_X_COVID_BOSS_3
+		ld		a,COVID_BOSS_3_TARGET_X
+		jr		.GUARDA_X_COVID_BOSS_3
+
+.SUMA_X_COVID_BOSS_3:
+
+		add		COVID_BOSS_3_PASO_MOVIMIENTO
+		cp		COVID_BOSS_3_TARGET_X
+		jr		c,.GUARDA_X_COVID_BOSS_3
+		ld		a,COVID_BOSS_3_TARGET_X
+
+.GUARDA_X_COVID_BOSS_3:
+
+		ld		(hl),a
+		ret
+
+MUEVE_Y_COVID_BOSS_3_ACTUAL:
+
+		call	OBTIENE_PUNTERO_Y_COVID_BOSS_3_ACTUAL
+		ld		a,(hl)
+		cp		COVID_BOSS_3_TARGET_Y
+		ret		z
+		jr		c,.SUMA_Y_COVID_BOSS_3
+
+		sub		COVID_BOSS_3_PASO_MOVIMIENTO
+		cp		COVID_BOSS_3_TARGET_Y
+		jr		nc,.GUARDA_Y_COVID_BOSS_3
+		ld		a,COVID_BOSS_3_TARGET_Y
+		jr		.GUARDA_Y_COVID_BOSS_3
+
+.SUMA_Y_COVID_BOSS_3:
+
+		add		COVID_BOSS_3_PASO_MOVIMIENTO
+		cp		COVID_BOSS_3_TARGET_Y
+		jr		c,.GUARDA_Y_COVID_BOSS_3
+		ld		a,COVID_BOSS_3_TARGET_Y
+
+.GUARDA_Y_COVID_BOSS_3:
+
+		ld		(hl),a
+		ret
+
+COMPRUEBA_LLEGADA_COVID_BOSS_3:
+
+		call	OBTIENE_PUNTERO_X_COVID_BOSS_3_ACTUAL
+		ld		a,(hl)
+		cp		COVID_BOSS_3_TARGET_X
+		ret		nz
+		call	OBTIENE_PUNTERO_Y_COVID_BOSS_3_ACTUAL
+		ld		a,(hl)
+		cp		COVID_BOSS_3_TARGET_Y
+		ret		nz
+
+		ld		a,(COVID_BOSS_3_LLEGADOS)
+		cp		COVID_BOSS_3_LLEGADAS_FIN
+		jr		nc,.SOLO_DESACTIVA_COVID_BOSS_3
+		inc		a
+		ld		(COVID_BOSS_3_LLEGADOS),a
+
+.SOLO_DESACTIVA_COVID_BOSS_3:
+
+		jp		DESACTIVA_COVID_BOSS_3
+
+DESACTIVA_COVID_BOSS_3:
+
+		call	OBTIENE_PUNTERO_ACTIVO_COVID_BOSS_3_ACTUAL
+		xor		a
+		ld		(hl),a
+		call	OBTIENE_PUNTERO_X_COVID_BOSS_3_ACTUAL
+		ld		(hl),a
+		call	OBTIENE_PUNTERO_PASO_COVID_BOSS_3_ACTUAL
+		ld		(hl),a
+		call	OBTIENE_PUNTERO_Y_COVID_BOSS_3_ACTUAL
+		ld		a,COVID_BOSS_3_Y_OCULTO
+		ld		(hl),a
+		jp		OCULTA_COVID_BOSS_3_EN_VRAM
+
+PINTA_COVIDS_BOSS_3:
+
+		ld		b,COVID_BOSS_3_CANTIDAD
+		xor		a
+		ld		(COVID_BOSS_3_INDICE_ACTUAL),a
+
+.BUCLE_PINTA_COVIDS_BOSS_3:
+
+		push	bc
+		call	OBTIENE_PUNTERO_ACTIVO_COVID_BOSS_3_ACTUAL
+		ld		a,(hl)
+		or		a
+		jr		z,.PINTA_COVID_OCULTO_BOSS_3
+		call	PINTA_UN_COVID_BOSS_3
+		jr		.SIGUIENTE_COVID_PINTA_BOSS_3
+
+.PINTA_COVID_OCULTO_BOSS_3:
+
+		call	OCULTA_COVID_BOSS_3_EN_VRAM
+
+.SIGUIENTE_COVID_PINTA_BOSS_3:
+
+		ld		a,(COVID_BOSS_3_INDICE_ACTUAL)
+		inc		a
+		ld		(COVID_BOSS_3_INDICE_ACTUAL),a
+		pop		bc
+		djnz	.BUCLE_PINTA_COVIDS_BOSS_3
+		ret
+
+PINTA_UN_COVID_BOSS_3:
+
+		ld		hl,PROPIEDADES_PATRON_SPRITE
+		call	OBTIENE_PUNTERO_Y_COVID_BOSS_3_ACTUAL
+		ld		a,(hl)
+		ld		hl,PROPIEDADES_PATRON_SPRITE
+		ld		(hl),a
+		inc		hl
+		call	OBTIENE_PUNTERO_X_COVID_BOSS_3_ACTUAL
+		ld		a,(hl)
+		ld		hl,PROPIEDADES_PATRON_SPRITE+1
+		ld		(hl),a
+
+		call	OBTIENE_PUNTERO_PASO_COVID_BOSS_3_ACTUAL
+		ld		a,(hl)
+		and		00000001b
+		jr		z,.PATRON_COVID_BOSS_3
+		push	hl
+		ld		a,9
+		ld		c,0
+		call	TIRA_FX_BOSS_3
+		pop		hl
+
+.PATRON_COVID_BOSS_3:
+
+		ld		a,(hl)
+		and		00000001b
+		add		a,a
+		add		a,a
+		add		a,COVID_PATRON_INICIAL_BOSS_3
+		ld		(PROPIEDADES_PATRON_SPRITE+2),a
+		call	OBTIENE_DIRECCION_ATRIBUTOS_COVID_BOSS_3
+		ld		hl,PROPIEDADES_PATRON_SPRITE
+		ld		bc,3
+		jp		PON_COLOR_2.sin_bc_impuesta
+
+OCULTA_TODOS_COVIDS_BOSS_3:
+
+		ld		b,COVID_BOSS_3_CANTIDAD
+		xor		a
+		ld		(COVID_BOSS_3_INDICE_ACTUAL),a
+
+.BUCLE_OCULTA_TODOS_COVIDS_BOSS_3:
+
+		push	bc
+		call	OCULTA_COVID_BOSS_3_EN_VRAM
+		ld		a,(COVID_BOSS_3_INDICE_ACTUAL)
+		inc		a
+		ld		(COVID_BOSS_3_INDICE_ACTUAL),a
+		pop		bc
+		djnz	.BUCLE_OCULTA_TODOS_COVIDS_BOSS_3
+		ret
+
+OCULTA_COVID_BOSS_3_EN_VRAM:
+
+		ld		hl,PROPIEDADES_PATRON_SPRITE
+		ld		a,COVID_BOSS_3_Y_OCULTO
+		ld		(hl),a
+		inc		hl
+		xor		a
+		ld		(hl),a
+		inc		hl
+		ld		(hl),a
+		call	OBTIENE_DIRECCION_ATRIBUTOS_COVID_BOSS_3
+		ld		hl,PROPIEDADES_PATRON_SPRITE
+		ld		bc,3
+		jp		PON_COLOR_2.sin_bc_impuesta
+
+HAY_COVIDS_ACTIVOS_BOSS_3:
+
+		ld		hl,COVID_BOSS_3_ACTIVO
+		ld		b,COVID_BOSS_3_CANTIDAD
+
+.BUCLE_HAY_COVIDS_ACTIVOS_BOSS_3:
+
+		ld		a,(hl)
+		or		a
+		ret		nz
+		inc		hl
+		djnz	.BUCLE_HAY_COVIDS_ACTIVOS_BOSS_3
+		xor		a
+		ret
+
+PINTA_FRAME_CHUMINIX_APARICION_BOSS_3:
+
+		ld		a,(COVID_BOSS_3_FOTOGRAMA_CHUMINIX)
+		inc		a
+		ld		(COVID_BOSS_3_FOTOGRAMA_CHUMINIX),a
+		ld		b,a
+		ld		a,(COVID_BOSS_3_LLEGADOS)
+
+		cp		9
+		jr		c,.FRAME_0_CHUMINIX_BOSS_3
+		cp		17
+		jr		c,.ESTADO_1_CHUMINIX_BOSS_3
+		cp		25
+		jr		c,.ESTADO_2_CHUMINIX_BOSS_3
+		cp		33
+		jr		c,.ESTADO_3_CHUMINIX_BOSS_3
+		cp		41
+		jr		c,.ESTADO_4_CHUMINIX_BOSS_3
+		ld		a,b
+		and		00000001b
+		add		a,3
+		jp		COPIA_FRAME_CHUMINIX_APARICION_BOSS_3
+
+.FRAME_0_CHUMINIX_BOSS_3:
+
+		xor		a
+		jp		COPIA_FRAME_CHUMINIX_APARICION_BOSS_3
+
+.ESTADO_1_CHUMINIX_BOSS_3:
+
+		ld		a,b
+		and		00000001b
+		jp		COPIA_FRAME_CHUMINIX_APARICION_BOSS_3
+
+.ESTADO_2_CHUMINIX_BOSS_3:
+
+		ld		a,b
+		call	MODULO_3_CHUMINIX_APARICION_BOSS_3
+		jp		COPIA_FRAME_CHUMINIX_APARICION_BOSS_3
+
+.ESTADO_3_CHUMINIX_BOSS_3:
+
+		ld		a,b
+		call	MODULO_3_CHUMINIX_APARICION_BOSS_3
+		inc		a
+		jp		COPIA_FRAME_CHUMINIX_APARICION_BOSS_3
+
+.ESTADO_4_CHUMINIX_BOSS_3:
+
+		ld		a,b
+		and		00000001b
+		add		a,2
+		jp		COPIA_FRAME_CHUMINIX_APARICION_BOSS_3
+
+MODULO_3_CHUMINIX_APARICION_BOSS_3:
+
+		cp		3
+		ret		c
+		sub		3
+		jr		MODULO_3_CHUMINIX_APARICION_BOSS_3
+
+COPIA_FRAME_CHUMINIX_APARICION_BOSS_3:
+
+		or		a
+		jr		z,.FRAME_0_CHUMINIX_APARICION_BOSS_3
+		cp		1
+		jr		z,.FRAME_1_CHUMINIX_APARICION_BOSS_3
+		cp		2
+		jr		z,.FRAME_2_CHUMINIX_APARICION_BOSS_3
+		cp		3
+		jr		z,.FRAME_3_CHUMINIX_APARICION_BOSS_3
+		ld		hl,BOSS_3_COPY_APARICION_CHUMINIX_FRAME_4
+		jr		.COPIA_FRAME_CHUMINIX_BOSS_3
+
+.FRAME_0_CHUMINIX_APARICION_BOSS_3:
+
+		ld		hl,BOSS_3_COPY_APARICION_CHUMINIX_FRAME_0
+		jr		.COPIA_FRAME_CHUMINIX_BOSS_3
+
+.FRAME_1_CHUMINIX_APARICION_BOSS_3:
+
+		ld		hl,BOSS_3_COPY_APARICION_CHUMINIX_FRAME_1
+		jr		.COPIA_FRAME_CHUMINIX_BOSS_3
+
+.FRAME_2_CHUMINIX_APARICION_BOSS_3:
+
+		ld		hl,BOSS_3_COPY_APARICION_CHUMINIX_FRAME_2
+		jr		.COPIA_FRAME_CHUMINIX_BOSS_3
+
+.FRAME_3_CHUMINIX_APARICION_BOSS_3:
+
+		ld		hl,BOSS_3_COPY_APARICION_CHUMINIX_FRAME_3
+
+.COPIA_FRAME_CHUMINIX_BOSS_3:
+
+		call	DOCOPY
+		jp		VDPREADY
+
+OBTIENE_OFFSET_COVID_BOSS_3_ACTUAL:
+
+		ld		a,(COVID_BOSS_3_INDICE_ACTUAL)
+		ld		e,a
+		ld		d,0
+		ret
+
+OBTIENE_PUNTERO_ACTIVO_COVID_BOSS_3_ACTUAL:
+
+		call	OBTIENE_OFFSET_COVID_BOSS_3_ACTUAL
+		ld		hl,COVID_BOSS_3_ACTIVO
+		add		hl,de
+		ret
+
+OBTIENE_PUNTERO_X_COVID_BOSS_3_ACTUAL:
+
+		call	OBTIENE_OFFSET_COVID_BOSS_3_ACTUAL
+		ld		hl,COVID_BOSS_3_X
+		add		hl,de
+		ret
+
+OBTIENE_PUNTERO_Y_COVID_BOSS_3_ACTUAL:
+
+		call	OBTIENE_OFFSET_COVID_BOSS_3_ACTUAL
+		ld		hl,COVID_BOSS_3_Y
+		add		hl,de
+		ret
+
+OBTIENE_PUNTERO_PASO_COVID_BOSS_3_ACTUAL:
+
+		call	OBTIENE_OFFSET_COVID_BOSS_3_ACTUAL
+		ld		hl,COVID_BOSS_3_PASO_TABLA_X
+		add		hl,de
+		ret
+
+OBTIENE_DIRECCION_ATRIBUTOS_COVID_BOSS_3:
+
+		call	OBTIENE_OFFSET_COVID_BOSS_3_ACTUAL
+		ld		a,e
+		add		a,a
+		add		a,a
+		ld		e,a
+		ld		d,0
+		ld		hl,COVID_BOSS_3_ATRIBUTOS_VRAM
+		add		hl,de
+		ex		de,hl
 		ret
 
 BUCLE_PELEA_BOSS_3:
@@ -697,6 +1334,7 @@ REVISAMOS_COLISION_CON_DEPH_Y_COVIDS_BOSS_3:
 .BUCLE_COLISION_DEPH_COVIDS_BOSS_3:
 
 		push	bc
+		call	OBTIENE_PUNTERO_ACTIVO_COVID_BOSS_3_ACTUAL
 		ld		a,(hl)
 		or		a
 		jr		z,.SIGUIENTE_COLISION_DEPH_COVID_BOSS_3
@@ -705,6 +1343,7 @@ REVISAMOS_COLISION_CON_DEPH_Y_COVIDS_BOSS_3:
 		; Deph aprox. 20x20 contra COVID hitbox 8x4 centrado en sprite 16x16.
 		; COVID hitbox: X+4, Y+6, ancho 8, alto 4.
 
+		call	OBTIENE_PUNTERO_X_COVID_BOSS_3_ACTUAL
 		ld		a,(hl)
 		add		4
 		ld		c,a
@@ -714,6 +1353,7 @@ REVISAMOS_COLISION_CON_DEPH_Y_COVIDS_BOSS_3:
 		cp		28
 		jr		nc,.SIGUIENTE_COLISION_DEPH_COVID_BOSS_3
 
+		call	OBTIENE_PUNTERO_Y_COVID_BOSS_3_ACTUAL
 		ld		a,(hl)
 		add		6
 		ld		c,a
