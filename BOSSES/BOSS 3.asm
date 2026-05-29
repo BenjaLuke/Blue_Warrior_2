@@ -1092,6 +1092,7 @@ BUCLE_PELEA_BOSS_3:
 		jp		z,MUERTE_DEPH_EN_BOSS_3
 		call	NUCLEO_DE_LA_PELEA_BOSS_3
 		
+		call	MOVIMIENTO_DEPH_EN_BOSS_3
 		call	SECUENCIA_PROYECTILES_PROPIOS_EN_BOSS_3
 		call	PINTA_PROYECTILES_DE_DEPH_EN_BOSS_3
         call    REVISAMOS_COLISION_CON_CHUMINIX_Y_DEPH
@@ -1183,6 +1184,10 @@ INICIALIZA_POOL_PROYECTILES_BOSS_3:
 SECUENCIA_PROYECTIL_BOSS_3:
 		; Aquí la secuencia de disparo de los proyectiles del boss, que incluye la lógica para determinar la dirección a disparar según la posición de Chuminix.
 		ret
+
+MOVIMIENTO_DEPH_EN_BOSS_3:
+
+		include	"COMUN/MOVIMIENTO EN BOSSES.asm"
 
 MUEVE_CHUMINIX_BOSS_3:
 
