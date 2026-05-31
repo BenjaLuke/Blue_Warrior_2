@@ -1699,17 +1699,26 @@
 
 		ld		a,(MUSICA_BEST_ON)
 		or		a
-		jp		z,PALETA_ESCOGIDA.musica_normal
+		jr		nz,PALETA_ESCOGIDA.musica_inusual
+
+;.musica_normal:
+
+		ld		a,(FASE)
+		add		20
+		jr		PALETA_ESCOGIDA.resolucion_musica
+
 
 ;.musica_inusual:
 
-		ld		a,39
-		jp		PALETA_ESCOGIDA.resolucion_musica
-
-;.musica_normal:
-		
 		ld		a,(FASE)
-		add		20
+		cp		4
+		jr		nc,PALETA_ESCOGIDA.resolucion_musica_inusual_menor_5
+
+		ld		a,39
+		jr		PALETA_ESCOGIDA.resolucion_musica
+
+;.resolucion_musica_inusual_menor_5:
+		ld		a,73
 
 ;.resolucion_musica:
 
@@ -1721,6 +1730,7 @@
 		ld		(DIRPA2),a
 
 		ret
+
 ;INTERRUPCION_DE_LINEA:
 
 		ld		a,2   													; Ponemos registro de estado 2 
@@ -1769,22 +1779,26 @@
 		jp		nc,INTERRUPCION_DE_LINEA.segundo_marcador
 
 ;.primer_marcador:
+
 		xor		a
 		ld		b,a
 		ld		c,18
 		call	WRTVDP_EN_RAM
 
-		ld		a,0
-		call	SETPAGE	
+		xor		a
+		call	SETPAGE
+
 		ld		a,33
 		ld		(DIRPA2),a	
+
 		ld		hl,PALETA_MARCADOR_STAGE_1
 		call	SETPALETE
-		ld		a,(CAMINO_NUEVA_INT)
-		ld		b,a
+
 		ld		a,64
-		sub		b
+		ld		hl,CAMINO_NUEVA_INT
+		sub		(hl)
 		ld		b,a
+
 		ld		c,23
 		call	WRTVDP_EN_RAM	
 							

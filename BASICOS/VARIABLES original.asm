@@ -349,14 +349,5 @@ TRAMO_FASE_3:					#1										; 0,1,2 para las tres paginas de datos de la fase 
 PAGE_DATOS_FASE:				#1										; Pagina ROM de constantes, eventos y paletas de fase
 RETENCION_Y_DEPH_POST_RECTIFICA_UP:     #1
 
-ROTATIVO_CONTADOR_PRESENTACION:              #1      ; Contador de velocidad del rotativo de presentacion
-ROTATIVO_PAGINA_VISIBLE_PRESENTACION:        #1      ; Page 0/1 actualmente visible en la presentacion
-ROTATIVO_PUNTERO_TEXTO_PRESENTACION:         #2      ; Puntero a la letra actual del texto rotativo
-ROTATIVO_REPETICION_LETRA_PRESENTACION:      #1      ; 0,1,2: cada letra entra en tres pasos de 2 pixeles
-ROTATIVO_MODO_SALIDA_PRESENTACION:           #1      ; 0 leyendo texto, 1 metiendo espacios hasta vaciar pantalla
-ROTATIVO_PASOS_SALIDA_PRESENTACION:          #1      ; Espacios de 6 pixeles que faltan para que salga la cola
-DATOS_COPY_SCROLL_ROTATIVO_PRESENTACION:     #15     ; Datos HMMM dinamicos para desplazar el rotativo
-DATOS_NEGRO_DERECHA_ROTATIVO_PRESENTACION:   #15     ; Datos HMMV dinamicos para borrar X=254..255
-
 FINAL_FASE_5_VAMOS_A_TERMINAR_DATAS_HMMV:   #15
 FINAL_FASE_5_VAMOS_A_TERMINAR_X_SEED:       #1

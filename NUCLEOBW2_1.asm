@@ -283,6 +283,7 @@ INICIA_SCROLL:
 		ld		(NO_SE_MUEVE),a
 		ld		(ECTOPALLERS_NUEVO_NECESARIO),a
 		ld		(SEMAFORO_PUENTE),a
+		LD		(SEMAFORO_LABERINTO),a
 		ld		(MUSICA_BEST_ON),a
 		ld		(SUMA_CAMINO),a
 
@@ -820,39 +821,68 @@ CONTROL:
 
 .miramos_si_hay_cambio_de_velocidad:
 			ld		a,(TILE_O)
-			cp		8
-			jp		z,.MIRAMOS_FASE_1
-			cp		9
-			jp		z,.MIRAMOS_FASE_1
-			cp		23
-			jp		z,.MIRAMOS_FASE_1
-			cp		43
-			jp		z,.MIRAMOS_FASE_1
+
 			cp		1
-			jp		z,.MIRAMOS_FASE_5
-			jp		.MIRAMOS_SI_HAY_AGUJERO
+			jp		z,.MIRAMOS_FASE_5			; TILE_O = 1
+
+			sub		8						; ahora:
+										; 8  -> 0
+										; 9  -> 1
+										; 23 -> 15
+										; 43 -> 35
+
+			cp		2
+			jr		c,.MIRAMOS_FASE_1			; TILE_O era 8 o 9
+
+			cp		15
+			jr		z,.MIRAMOS_FASE_1			; TILE_O era 23
+
+			cp		35
+			jp		nz,.MIRAMOS_SI_HAY_AGUJERO		; si no era 43, fuera
+
+			; si era 43, cae directamente aquí
 
 .MIRAMOS_FASE_1:
 			ld		a,(FASE)
-			cp		1
+			dec		a						; equivale a comprobar FASE = 1
 			jp		nz,.MIRAMOS_SI_HAY_AGUJERO
 			
-			ld		a,(SEMAFORO_PUENTE)
+			ld		hl,SEMAFORO_PUENTE
+			ld		a,(hl)
 			or		a
 			jp		nz,.MIRAMOS_SI_HAY_AGUJERO
-			inc		a
-			ld		(SEMAFORO_PUENTE),a
+
+			inc		(hl)						; SEMAforo pasa de 0 a 1
 			
-			include "AUDIOS/INICIA MUSICA_PUENTE.asm"   ;XXXXXX hay que analizar porqué se vuelve loca del coño la música al incluir esto. De momento lo dejo fuera y la música del puente no se oirá, pero al menos el juego será jugable. Hay que arreglarlo antes de la versión final.
+			ld		a,39
+			ld		hl,M_PUENTE
+			call    INICIA_MUSICA_EXTRA
+			; include "AUDIOS/INICIA MUSICA_PUENTE.asm"  
 
 			call    BUCLE_PINTA_TILES.VELOCIDAD_DE_FASE_GALOPE
 			jp		.MIRAMOS_SI_HAY_AGUJERO
+
 
 .MIRAMOS_FASE_5:
 			ld		a,(FASE)
 			cp		5
 			jp		nz,.MIRAMOS_SI_HAY_AGUJERO
+
+			ld		hl,SEMAFORO_LABERINTO
+			ld		a,(hl)
+			or		a
+			jp		nz,.MIRAMOS_SI_HAY_AGUJERO
+
+			inc		(hl)	
+
+			ld		a,73
+			ld		hl,M_LABERINT
+			call    INICIA_MUSICA_EXTRA
+			; include "AUDIOS/INICIA MUSICA_LABERINTO.asm"
+
 			call    BUCLE_PINTA_TILES.VELOCIDAD_DE_FASE_GALOPE
+
+
 .MIRAMOS_SI_HAY_AGUJERO:
 
 
@@ -889,6 +919,7 @@ CONTROL:
         	CALL   	A_31_DESDE_10
 
 			jp		DEPH_PARALIZADO_2
+
 
 CARGA_1_A_45:
 

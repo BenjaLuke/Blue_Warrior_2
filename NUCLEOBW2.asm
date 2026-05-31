@@ -365,6 +365,9 @@ REANUDA_MUSICA_DESDE_SLOT1:
             ei
             ret
 
+INICIA_MUSICA_EXTRA:
+
+			include "AUDIOS/INICIA MUSICA_EXTRA.asm"
         ds		#8000-$
 
 /**********************
@@ -805,7 +808,7 @@ M_STAGE_3:
 
 M_BOSS_3:
 
-		incbin	"AUDIOS/TEMAS/FASE 3/BOSS 1.mbm"
+		incbin	"AUDIOS/TEMAS/FASE 3/BOSS 3.mbm"
 
 		ds		#8000+4400+3800-$
 
@@ -853,7 +856,7 @@ M_STAGE_4:
 
 M_BOSS_4:
 
-		incbin	"AUDIOS/TEMAS/FASE 4/BOSS 1.mbm"
+		incbin	"AUDIOS/TEMAS/FASE 4/BOSS 4.mbm"
 
 		ds		#8000+4400+3800-$
 
@@ -1014,7 +1017,26 @@ CALCULA_DANO_MAGIA_BOSS_1:
 		org		#4000
 ; RESUMEN: 27 - Rutinas de Boss 2
 		include	"BOSSES/BOSS 2.asm"
+		
+CALCULA_DANO_MAGIA_BOSS_2:
 
+		ld		a,(ARMA_USANDO)
+		cp		3
+		jr		c,.DANO_MAGIA_FLECHA_BOSS_2
+		cp		6
+		jr		c,.DANO_MAGIA_FUEGO_BOSS_2
+		ld		a,6
+		ret
+
+.DANO_MAGIA_FLECHA_BOSS_2:
+
+		ld		a,24
+		ret
+
+.DANO_MAGIA_FUEGO_BOSS_2:
+
+		ld		a,3
+		ret
         ds      #5E00-$                                                 ; Colocamos el resto del programa siempre en el mismo sitio    
 
 		include "BASICOS/RUTINAS CERRADAS (sin etiquetas).asm"				            ; Incluímos las referencias a la BIOS
@@ -1088,25 +1110,7 @@ DANO_MAGIA_EN_DAVEANIX_BOSS_2:
 		or		a								; Z activo si Daveanix ha muerto
 		ret
 
-CALCULA_DANO_MAGIA_BOSS_2:
 
-		ld		a,(ARMA_USANDO)
-		cp		3
-		jr		c,.DANO_MAGIA_FLECHA_BOSS_2
-		cp		6
-		jr		c,.DANO_MAGIA_FUEGO_BOSS_2
-		ld		a,6
-		ret
-
-.DANO_MAGIA_FLECHA_BOSS_2:
-
-		ld		a,24
-		ret
-
-.DANO_MAGIA_FUEGO_BOSS_2:
-
-		ld		a,3
-		ret
 
         ds		#8000-$
 
@@ -2653,5 +2657,31 @@ GRAFICOS_MAPA_2:
 
 /**********************
  ****** PAGINA 72 ******
+ ******   END    ******
+ **********************/
+
+ /**********************
+ ****** PAGINA 73******
+ ****** SLOT   1 ******     Música you're the best
+ **********************/
+
+		org		#8000
+; RESUMEN: 73 - Músicas que no caben en su fase o globales
+M_FINAL:
+
+		incbin "AUDIOS/TEMAS/OTRAS/FINAL.mbm"
+
+M_CREDITS:
+
+		incbin "AUDIOS/TEMAS/OTRAS/CREDITS.mbm"
+
+M_LABERINT:
+
+		incbin	"AUDIOS/TEMAS/FASE 5/LABERINT.mbm"
+		
+        ds		#c000-$
+
+/**********************
+ ****** PAGINA 73******
  ******   END    ******
  **********************/

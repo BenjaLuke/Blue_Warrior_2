@@ -2153,372 +2153,258 @@ TEXTO_CINEMATICA_5_3:
 TEXTO_CINEMATICA_5_4:
 		db		"imitaria a conde mor",0
 
-ROTATIVO_Y_PRESENTACION                  equ     195
+ROTATIVO_X_PRESENTACION				equ		VARIABLE_UN_USO
+ROTATIVO_CONTADOR_PRESENTACION		equ		VARIABLE_UN_USO2
+ROTATIVO_PAGINA_VISIBLE_PRESENTACION	equ		VARIABLE_UN_USO3
+
+ROTATIVO_Y_PRESENTACION				equ		195
 
 ; Cada cuántos frames se actualiza el rotativo.
 ; 1 = cada frame, 2 = cada dos frames, etc.
-ROTATIVO_VELOCIDAD_PRESENTACION          equ     3
+ROTATIVO_VELOCIDAD_PRESENTACION		equ		1
 
-; El nuevo rotativo avanza copiando la franja 2 píxeles a la izquierda.
-; Cada letra mide 6 píxeles, así que se introduce en 3 pasos:
-;   paso 0 -> X=254
-;   paso 1 -> X=252
-;   paso 2 -> X=250
-ROTATIVO_PIXELES_POR_PASO_PRESENTACION   equ     2
-ROTATIVO_PASOS_POR_LETRA_PRESENTACION    equ     3
-ROTATIVO_X_ENTRADA_PRESENTACION          equ     254
-ROTATIVO_ANCHO_SCROLL_PRESENTACION       equ     254
-ROTATIVO_ALTO_PRESENTACION               equ     8
+; Cuántos píxeles avanza cada actualización.
+; 1 = suave, 2 = más rápido, 3 = más rápido pero menos fino.
+ROTATIVO_PIXELES_POR_PASO_PRESENTACION	equ		3
 
-; Cuando se acaba el texto, metemos espacios hasta que toda la cola sale
-; por la izquierda. 43 espacios * 6 píxeles = 258 píxeles.
-ROTATIVO_ESPACIOS_SALIDA_PRESENTACION    equ     43
+ROTATIVO_LIMITE_PRESENTACION		equ		65536-((TEXTO_ROTATIVO_PRESENTACION_FIN-TEXTO_ROTATIVO_PRESENTACION-1)*MENU_LETRA_ANCHO)
 
 
 INICIALIZA_ROTATIVO_PRESENTACION:
 
-        xor     a
-        ld      (ROTATIVO_CONTADOR_PRESENTACION),a
-        ld      (ROTATIVO_PAGINA_VISIBLE_PRESENTACION),a
-        ld      (ROTATIVO_REPETICION_LETRA_PRESENTACION),a
-        ld      (ROTATIVO_MODO_SALIDA_PRESENTACION),a
+		ld		hl,255
+		ld		(ROTATIVO_X_PRESENTACION),hl
 
-        ld      a,ROTATIVO_ESPACIOS_SALIDA_PRESENTACION
-        ld      (ROTATIVO_PASOS_SALIDA_PRESENTACION),a
+		xor		a
+		ld		(ROTATIVO_CONTADOR_PRESENTACION),a
 
-        ld      hl,TEXTO_ROTATIVO_PRESENTACION
-        ld      (ROTATIVO_PUNTERO_TEXTO_PRESENTACION),hl
+		; Ahora mismo la visible es page 0.
 
-        ; Dejamos limpia la franja en las dos páginas. Así el primer paso
-        ; parte de una zona negra y la página oculta no hereda basura.
+		ld		(ROTATIVO_PAGINA_VISIBLE_PRESENTACION),a
 
-        ld      hl,DATOS_NEGRO_ROTATIVO_EN_PAGE_0
-        call    DOCOPY
-        call    VDPREADY
-
-        ld      hl,DATOS_NEGRO_ROTATIVO_EN_PAGE_1
-        call    DOCOPY
-        jp      VDPREADY
+		call	PREPARA_ROTATIVO_EN_PAGE_OCULTA
+		call	PINTA_ROTATIVO_PRESENTACION_EN_PAGE_OCULTA
+		call	TAPA_BORDES_ROTATIVO_EN_PAGE_OCULTA
+		call	MUESTRA_PAGE_OCULTA_ROTATIVO
+		ret
 
 
 ACTUALIZA_ROTATIVO_PRESENTACION:
 
-        ld      a,(ROTATIVO_CONTADOR_PRESENTACION)
-        inc     a
-        cp      ROTATIVO_VELOCIDAD_PRESENTACION
-        jr      nc,.MUEVE_ROTATIVO_PRESENTACION
+		ld		a,(ROTATIVO_CONTADOR_PRESENTACION)
+		inc		a
+		cp		ROTATIVO_VELOCIDAD_PRESENTACION
+		jr		nc,.MUEVE_ROTATIVO_PRESENTACION
 
-        ld      (ROTATIVO_CONTADOR_PRESENTACION),a
-        ret
+		ld		(ROTATIVO_CONTADOR_PRESENTACION),a
+		ret
 
 
 .MUEVE_ROTATIVO_PRESENTACION:
 
-        xor     a
-        ld      (ROTATIVO_CONTADOR_PRESENTACION),a
+		xor		a
+		ld		(ROTATIVO_CONTADOR_PRESENTACION),a
 
-        ; 1 - Copiamos el rotativo ya visible hacia la página oculta,
-        ;     desplazándolo 2 píxeles a la izquierda.
-        ;     OJO: se usa la visible como origen para que el doble buffer
-        ;     no vaya alternando dos estados distintos del scroll.
+		call	PREPARA_ROTATIVO_EN_PAGE_OCULTA
+		call	PINTA_ROTATIVO_PRESENTACION_EN_PAGE_OCULTA
+		call	TAPA_BORDES_ROTATIVO_EN_PAGE_OCULTA
+		call	MUESTRA_PAGE_OCULTA_ROTATIVO
 
-        call    COPIA_SCROLL_ROTATIVO_A_PAGE_OCULTA
+		ld		hl,(ROTATIVO_X_PRESENTACION)
+		ld		de,ROTATIVO_PIXELES_POR_PASO_PRESENTACION
+		or		a
+		sbc		hl,de
+		ld		(ROTATIVO_X_PRESENTACION),hl
 
-        ; 2 - Borramos en la página oculta la parte derecha que ha quedado libre.
+		; Si sigue en zona positiva, continuamos.
+		ld		a,h
+		or		a
+		ret		z
 
-        call    BORRA_DERECHA_ROTATIVO_EN_PAGE_OCULTA
+		; Si ya ha pasado el límite negativo, reiniciamos.
+		ld		de,ROTATIVO_LIMITE_PRESENTACION
+		or		a
+		sbc		hl,de
+		ret		nc
 
-        ; 3 - Pintamos la letra que toca. La misma letra se pinta 3 veces,
-        ;     cada vez 2 píxeles más a la izquierda: 254, 252 y 250.
+		ld		hl,255
+		ld		(ROTATIVO_X_PRESENTACION),hl
+		ret
 
-        call    PINTA_ENTRADA_LETRA_ROTATIVO
-
-        ; 4 - Mostramos la página que acabamos de preparar.
-
-        jp      MUESTRA_PAGE_OCULTA_ROTATIVO
+		ld		hl,255
+		ld		(ROTATIVO_X_PRESENTACION),hl
+		ret
 
 
 OBTIENE_PAGE_OCULTA_ROTATIVO:
 
-        ld      a,(ROTATIVO_PAGINA_VISIBLE_PRESENTACION)
-        xor     1
-        ret
+		ld		a,(ROTATIVO_PAGINA_VISIBLE_PRESENTACION)
+		xor		1
+		ret
 
 
-OBTIENE_Y_ROTATIVO_DESDE_A_EN_HL:
+PREPARA_ROTATIVO_EN_PAGE_OCULTA:
 
-        or      a
-        ld      hl,ROTATIVO_Y_PRESENTACION
-        ret     z
-        ld      hl,#0100+ROTATIVO_Y_PRESENTACION
-        ret
+		call	OBTIENE_PAGE_OCULTA_ROTATIVO
+		or		a
+		jr		z,.PREPARA_ROTATIVO_EN_PAGE_0
 
+		ld		hl,DATOS_NEGRO_ROTATIVO_EN_PAGE_1
+		call	DOCOPY
+		jp		VDPREADY
 
-COPIA_SCROLL_ROTATIVO_A_PAGE_OCULTA:
 
-        ld      ix,DATOS_COPY_SCROLL_ROTATIVO_PRESENTACION
+.PREPARA_ROTATIVO_EN_PAGE_0:
 
-        ; Origen X = 2.
-
-        ld      (ix+0),2
-        ld      (ix+1),0
-
-        ; Origen Y = página actualmente visible + Y del rotativo.
-
-        ld      a,(ROTATIVO_PAGINA_VISIBLE_PRESENTACION)
-        call    OBTIENE_Y_ROTATIVO_DESDE_A_EN_HL
-        ld      (ix+2),l
-        ld      (ix+3),h
-
-        ; Destino X = 0.
-
-        ld      (ix+4),0
-        ld      (ix+5),0
-
-        ; Destino Y = página oculta + Y del rotativo.
-
-        call    OBTIENE_PAGE_OCULTA_ROTATIVO
-        call    OBTIENE_Y_ROTATIVO_DESDE_A_EN_HL
-        ld      (ix+6),l
-        ld      (ix+7),h
-
-        ; Ancho = 254, alto = 8, comando HMMM.
-
-        ld      (ix+8),ROTATIVO_ANCHO_SCROLL_PRESENTACION
-        ld      (ix+9),0
-        ld      (ix+10),ROTATIVO_ALTO_PRESENTACION
-        ld      (ix+11),0
-        ld      (ix+12),#00
-        ld      (ix+13),#00
-        ld      (ix+14),11010000b
-
-        ld      hl,DATOS_COPY_SCROLL_ROTATIVO_PRESENTACION
-        call    DOCOPY
-        jp      VDPREADY
-
-
-BORRA_DERECHA_ROTATIVO_EN_PAGE_OCULTA:
-
-        ld      ix,DATOS_NEGRO_DERECHA_ROTATIVO_PRESENTACION
-
-        ; Para HMMV el origen no importa.
-
-        ld      (ix+0),0
-        ld      (ix+1),0
-        ld      (ix+2),0
-        ld      (ix+3),0
-
-        ; Destino X = 254.
-
-        ld      (ix+4),ROTATIVO_X_ENTRADA_PRESENTACION
-        ld      (ix+5),0
-
-        ; Destino Y = página oculta + Y del rotativo.
-
-        call    OBTIENE_PAGE_OCULTA_ROTATIVO
-        call    OBTIENE_Y_ROTATIVO_DESDE_A_EN_HL
-        ld      (ix+6),l
-        ld      (ix+7),h
-
-        ; Ancho = 2, alto = 8, color 0, comando HMMV.
-
-        ld      (ix+8),ROTATIVO_PIXELES_POR_PASO_PRESENTACION
-        ld      (ix+9),0
-        ld      (ix+10),ROTATIVO_ALTO_PRESENTACION
-        ld      (ix+11),0
-        ld      (ix+12),#00
-        ld      (ix+13),#00
-        ld      (ix+14),11000000b
-
-        ld      hl,DATOS_NEGRO_DERECHA_ROTATIVO_PRESENTACION
-        call    DOCOPY
-        jp      VDPREADY
-
-
-PINTA_ENTRADA_LETRA_ROTATIVO:
-
-        call    OBTIENE_PAGE_OCULTA_ROTATIVO
-        ld      (ACPAGE),a
-        call    OBTIENE_DESTINO_Y_ROTATIVO_DESDE_A
-
-        ; X = 254 - repeticion*2
-
-        ld      a,(ROTATIVO_REPETICION_LETRA_PRESENTACION)
-        add     a,a
-        ld      c,a
-        ld      a,ROTATIVO_X_ENTRADA_PRESENTACION
-        sub     c
-        ld      l,a
-        ld      h,0
-
-        push    hl
-        push    de
-        call    OBTIENE_CARACTER_ROTATIVO_ACTUAL
-        pop     de
-        pop     hl
-        call    PINTA_LETRA_MENU_ROTATIVO_PARCIAL_EN_DESTINO
-        jp      AVANZA_ESTADO_ROTATIVO_PRESENTACION
-
-
-PINTA_LETRA_MENU_ROTATIVO_PARCIAL_EN_DESTINO:
-
-        ; Entrada:
-        ;   A  = caracter a pintar
-        ;   HL = X destino: 254, 252 o 250
-        ;   DE = Y destino con page incluida
-        ;
-        ; Copiamos solo la parte visible de la letra:
-        ;   repeticion 0 -> ancho 2
-        ;   repeticion 1 -> ancho 4
-        ;   repeticion 2 -> ancho 6
-        ;
-        ; Así respetamos la entrada progresiva sin escribir fuera de X=255.
-
-        push    hl
-        push    de
-        call    CALCULA_ORIGEN_X_LETRA_MENU
-
-        ld      ix,DATOS_DEL_TILE_PARA_COPY
-        ld      (ix+0),l
-        ld      (ix+1),h
-
-        ld      hl,MENU_FUENTE_Y_ORIGEN
-        ld      (ix+2),l
-        ld      (ix+3),h
-
-        pop     hl
-        ld      (ix+6),l
-        ld      (ix+7),h
-
-        pop     hl
-        ld      (ix+4),l
-        ld      (ix+5),h
-
-        ld      a,(ROTATIVO_REPETICION_LETRA_PRESENTACION)
-        inc     a
-        add     a,a
-        ld      (ix+8),a
-        ld      (ix+9),0
-        ld      (ix+10),MENU_LETRA_ALTO
-        ld      (ix+11),0
-        ld      (ix+12),#00
-        ld      (ix+13),#00
-        ld      (ix+14),11010000b
-
-        call    HL_DATOS_DEL_COPY
-        jp      VDPREADY
-
-
-OBTIENE_CARACTER_ROTATIVO_ACTUAL:
-
-        ; Si ya se ha terminado el texto, seguimos metiendo espacios
-        ; hasta que la cola del rotativo salga por completo.
-
-        ld      a,(ROTATIVO_MODO_SALIDA_PRESENTACION)
-        or      a
-        jr      nz,.PINTA_ESPACIO
-
-        ld      hl,(ROTATIVO_PUNTERO_TEXTO_PRESENTACION)
-        ld      a,(hl)
-        or      a
-        ret     nz
-
-        ; Hemos llegado al 0 final del texto: activamos modo salida.
-
-        ld      a,1
-        ld      (ROTATIVO_MODO_SALIDA_PRESENTACION),a
-        ld      a,ROTATIVO_ESPACIOS_SALIDA_PRESENTACION
-        ld      (ROTATIVO_PASOS_SALIDA_PRESENTACION),a
-
-.PINTA_ESPACIO:
-
-        ld      a,32
-        ret
-
-
-AVANZA_ESTADO_ROTATIVO_PRESENTACION:
-
-        ld      a,(ROTATIVO_REPETICION_LETRA_PRESENTACION)
-        inc     a
-        cp      ROTATIVO_PASOS_POR_LETRA_PRESENTACION
-        jr      nc,.LETRA_COMPLETA
-
-        ld      (ROTATIVO_REPETICION_LETRA_PRESENTACION),a
-        ret
-
-
-.LETRA_COMPLETA:
-
-        xor     a
-        ld      (ROTATIVO_REPETICION_LETRA_PRESENTACION),a
-
-        ld      a,(ROTATIVO_MODO_SALIDA_PRESENTACION)
-        or      a
-        jr      nz,.AVANZA_SALIDA
-
-        ld      hl,(ROTATIVO_PUNTERO_TEXTO_PRESENTACION)
-        inc     hl
-        ld      (ROTATIVO_PUNTERO_TEXTO_PRESENTACION),hl
-        ret
-
-
-.AVANZA_SALIDA:
-
-        ld      a,(ROTATIVO_PASOS_SALIDA_PRESENTACION)
-        dec     a
-        ld      (ROTATIVO_PASOS_SALIDA_PRESENTACION),a
-        ret     nz
-
-        ; Ya ha salido toda la cola. Reiniciamos el texto desde el principio.
-
-        xor     a
-        ld      (ROTATIVO_MODO_SALIDA_PRESENTACION),a
-        ld      (ROTATIVO_REPETICION_LETRA_PRESENTACION),a
-        ld      a,ROTATIVO_ESPACIOS_SALIDA_PRESENTACION
-        ld      (ROTATIVO_PASOS_SALIDA_PRESENTACION),a
-        ld      hl,TEXTO_ROTATIVO_PRESENTACION
-        ld      (ROTATIVO_PUNTERO_TEXTO_PRESENTACION),hl
-        ret
+		ld		hl,DATOS_NEGRO_ROTATIVO_EN_PAGE_0
+		call	DOCOPY
+		jp		VDPREADY
 
 
 MUESTRA_PAGE_OCULTA_ROTATIVO:
 
-        call    OBTIENE_PAGE_OCULTA_ROTATIVO
+		call	OBTIENE_PAGE_OCULTA_ROTATIVO
 
-        push    af
-        call    SETPAGE
-        pop     af
+		push	af
+		call	SETPAGE
+		pop		af
 
-        ld      (ROTATIVO_PAGINA_VISIBLE_PRESENTACION),a
-        ld      (ACPAGE),a
+		ld		(ROTATIVO_PAGINA_VISIBLE_PRESENTACION),a
+		ld		(ACPAGE),a
 
-        ret
+		ret
 
 
-; Rutinas antiguas del rotativo por repintado completo eliminadas.
-; Ahora el movimiento se hace con copia de 2 píxeles + entrada parcial de letra.
+PINTA_ROTATIVO_PRESENTACION_EN_PAGE_OCULTA:
+
+		call	OBTIENE_PAGE_OCULTA_ROTATIVO
+		ld		(ACPAGE),a
+		call	OBTIENE_DESTINO_Y_ROTATIVO_DESDE_A
+
+		ld		ix,TEXTO_ROTATIVO_PRESENTACION
+		ld		hl,(ROTATIVO_X_PRESENTACION)
+
+
+.BUCLE_PINTA_ROTATIVO_PRESENTACION:
+
+		ld		a,(ix+0)
+		or		a
+		jp		z,.FIN_PINTA_ROTATIVO_PRESENTACION
+
+		; Sólo pintamos caracteres cuyo inicio esté entre 0 y 247.
+		; Luego sólo copiaremos X=8..247 a page visible.
+
+		ld		a,h
+		or		a
+		jr		nz,.SALTA_CARACTER_ROTATIVO_PRESENTACION
+
+		ld		a,l
+		cp		251
+		jr		nc,.SALTA_CARACTER_ROTATIVO_PRESENTACION
+
+		push	de
+		push	hl
+		push	ix
+
+		ld		a,(ix+0)
+		call	PINTA_LETRA_MENU_EN_DESTINO
+
+		pop		ix
+		pop		hl
+		pop		de
+
+
+.SALTA_CARACTER_ROTATIVO_PRESENTACION:
+
+		ld		bc,MENU_LETRA_ANCHO
+		add		hl,bc
+
+		inc		ix
+		jp		.BUCLE_PINTA_ROTATIVO_PRESENTACION
+
+
+.FIN_PINTA_ROTATIVO_PRESENTACION:
+
+		ret
+
+TAPA_BORDES_ROTATIVO_EN_PAGE_OCULTA:
+
+		call	OBTIENE_PAGE_OCULTA_ROTATIVO
+		or		a
+		jr		z,.TAPA_BORDES_ROTATIVO_PAGE_0
+
+		ld		hl,DATOS_TAPA_BORDE_IZQ_ROTATIVO_PAGE_1
+		call	DOCOPY
+		call	VDPREADY
+
+		ld		hl,DATOS_TAPA_BORDE_DER_ROTATIVO_PAGE_1
+		call	DOCOPY
+		jp		VDPREADY
+
+
+.TAPA_BORDES_ROTATIVO_PAGE_0:
+
+		ld		hl,DATOS_TAPA_BORDE_IZQ_ROTATIVO_PAGE_0
+		call	DOCOPY
+		call	VDPREADY
+
+		ld		hl,DATOS_TAPA_BORDE_DER_ROTATIVO_PAGE_0
+		call	DOCOPY
+		jp		VDPREADY
+
+DATOS_TAPA_BORDE_IZQ_ROTATIVO_PAGE_0:
+
+		dw		#0000,#0000
+		dw		#0000,#0000+ROTATIVO_Y_PRESENTACION
+		dw		#0008,#0008
+		db		#00,#00,11000000b
+
+
+DATOS_TAPA_BORDE_DER_ROTATIVO_PAGE_0:
+
+		dw		#0000,#0000
+		dw		#00F8,#0000+ROTATIVO_Y_PRESENTACION
+		dw		#0008,#0008
+		db		#00,#00,11000000b
+
+
+DATOS_TAPA_BORDE_IZQ_ROTATIVO_PAGE_1:
+
+		dw		#0000,#0000
+		dw		#0000,#0100+ROTATIVO_Y_PRESENTACION
+		dw		#0008,#0008
+		db		#00,#00,11000000b
+
+
+DATOS_TAPA_BORDE_DER_ROTATIVO_PAGE_1:
+
+		dw		#0000,#0000
+		dw		#00F8,#0100+ROTATIVO_Y_PRESENTACION
+		dw		#0008,#0008
+		db		#00,#00,11000000b
 
 DATOS_NEGRO_ROTATIVO_EN_PAGE_0:
 
-        ; Rectángulo negro en page 0.
-        ; X=0, Y=ROTATIVO_Y_PRESENTACION, ancho 256, alto 8.
+		; Rectángulo negro en page 0.
+		; X=8, Y=ROTATIVO_Y_PRESENTACION
+		; ancho 240, alto 8.
 
-        dw      #0000,#0000
-        dw      #0000,#0000+ROTATIVO_Y_PRESENTACION
-        dw      #0100,#0008
-        db      #00,#00,11000000b
+		dw		#0000,#0000
+		dw		#0008,#0000+ROTATIVO_Y_PRESENTACION
+		dw		#00F0,#0008
+		db		#00,#00,11000000b
 
 
 DATOS_NEGRO_ROTATIVO_EN_PAGE_1:
 
-        ; Rectángulo negro en page 1.
-        ; X=0, Y=ROTATIVO_Y_PRESENTACION, ancho 256, alto 8.
+		; Rectángulo negro en page 1.
+		; X=8, Y=ROTATIVO_Y_PRESENTACION
+		; ancho 240, alto 8.
 
-        dw      #0000,#0000
-        dw      #0000,#0100+ROTATIVO_Y_PRESENTACION
-        dw      #0100,#0008
-        db      #00,#00,11000000b
-
+		dw		#0000,#0000
+		dw		#0008,#0100+ROTATIVO_Y_PRESENTACION
+		dw		#00F0,#0008
+		db		#00,#00,11000000b
 
 ; Editar estas lineas al sacar una version nueva.
 ; Regla del porcentaje: cada fase vale 2, cada enemigo y bloque auxiliar vale 1.
@@ -2530,7 +2416,7 @@ DATOS_NEGRO_ROTATIVO_EN_PAGE_1:
 
 TEXTO_ROTATIVO_PRESENTACION:
 
-		db		"BLUE WARRIOR II - Beta version 4.9.19 - 27/5/2026 - 77% - (C) Digital Moai",0
+		db		"BLUE WARRIOR II - Beta version 4.10.06 - 31/5/2026 - 77% - (C) Digital Moai",0
 
 TEXTO_ROTATIVO_PRESENTACION_FIN:
 
