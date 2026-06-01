@@ -5,6 +5,11 @@ COLOR_SPRITE_INTERRUPCION:
 		; attr 0
 		DB $04,$00,$00,$00,$00,$00,$00,$00
 ;		DB $00,$00,$00,$00,$00,$00,$00,$00
+
+COVIDS_FASE_3:
+
+		db		13,13,13,6,6,6,7,7
+		db		7,7,7,7,1,1,1,1
 		
 COLORES_SPRITES_DEPH:
 
