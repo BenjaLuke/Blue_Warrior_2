@@ -781,7 +781,10 @@ PREMIO_EXTRA:
         ld      a,12
         ld      (ix+11),a
 
-        call    TROZOS_COMUNES_4
+        xor     a
+        ld      (ix+3),a
+        ld      a,(ix+12)
+        call    PON_COLOR_1
         ld      hl,COLOR_SPRITE_EXTRA
         call    TROZOS_COMUNES_7
         jp      UN_NUEVO_ENEMIGO.RESOLUCION
@@ -924,7 +927,7 @@ PREMIO_EXTRA:
 .PREMIO_EXTRA_RANDOM_OK:
 
         cp      10
-        ret     c
+        jr      c,.PREMIO_EXTRA_500
         cp      20
         jr      c,.PREMIO_EXTRA_1000
         cp      30
@@ -932,6 +935,11 @@ PREMIO_EXTRA:
         cp      32
         jr      c,.PREMIO_EXTRA_MAGIA
         ld      a,4
+        ret
+
+.PREMIO_EXTRA_500:
+
+        xor     a
         ret
 
 .PREMIO_EXTRA_1000:
@@ -1144,10 +1152,6 @@ PREMIO_EXTRA:
         ld      (ix),a
 
 .FIN_PREMIO_EXTRA:
-
-        ld      a,(ix+1)
-        cp      216
-        jp      nc,.MUERE_PREMIO_EXTRA
 
         call    TROZOS_COMUNES_31
         jp      nc,.PREMIO_EXTRA_PARTIDO

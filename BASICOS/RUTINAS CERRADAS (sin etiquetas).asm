@@ -147,8 +147,8 @@
 		out		(#99),a
 		ld		a,h
 		or		64
-		ei
 		out		(#99),a
+		ei
 		pop		hl
 		pop		af
 				
@@ -170,11 +170,11 @@
 		out		(099h),a
 		ld		a,c
 		add		a,128													; For register
-		ei
 				
 ;OUT_VDP_REG2:	
 
 		out		(099h),a
+		ei
 	
 	
 		ld		b,0
@@ -2448,6 +2448,9 @@
 
 		xor		a
 		ld		(TIEMPO_DE_ADJUST),a
+		ld		(ESTADO_MARCADOR),a
+		ld		a,(SET_PAGE)
+		call	SETPAGE
 
 			; PARAMOS MÚSICA
 
@@ -2559,6 +2562,10 @@
 		jp		SALTO_AL_FADEAR_EN_GRISES
 ;MUERTE_POR_APLASTAMIENTO:
 
+		xor		a
+		ld		(ESTADO_MARCADOR),a
+		ld		a,(SET_PAGE)
+		call	SETPAGE
 		call	stpmus
 
 ;SALTO_AL_FADEAR_EN_GRISES:
