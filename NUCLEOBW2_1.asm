@@ -17,6 +17,8 @@ COMIENZA_JUEGO:
         call	FILVRM_RAM						                        ; Limpiamos toda esta zona de la VRAM 
 		
 .carga_graficos:
+
+RECARGAMOS_GRAFICOS_JUEGO_TRAS_MUERTE:
 		
 		; PAUSA PARA CARGAR LAS LETRAS DEL PREMIO DE LETRAS
 		xor		a
@@ -47,6 +49,10 @@ COMIENZA_JUEGO:
 		dec		a
 		jp		nz,.fin_de_carga
 
+		ld		a,(ESTADO_COLOR_PERM)
+		cp		11
+		jp		z,.fin_de_carga
+
 		push	hl
 		ld		hl,0
 		ld		(SCORE_REAL),hl
@@ -57,6 +63,8 @@ COMIENZA_JUEGO:
         ld		bc,16384
 
         call	PON_COLOR_2.sin_bc_impuesta
+
+REENTRA_JUEGO_TRAS_CARGA_GRAFICOS:
 
 		call	DISSCR_RAM
 

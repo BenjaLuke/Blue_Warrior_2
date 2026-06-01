@@ -2922,8 +2922,7 @@
 		di
 		ld		[DIRPA1],a												; Cambiamos la página del bloque 2	
 		ei			
-		call	RECARGAMOS_GRAFICOS_STAGE_X
-		jp		INICIA_SCROLL	
+		jp		RECARGAMOS_GRAFICOS_JUEGO_TRAS_MUERTE
 
 ;PREPARA_VRAM_PARA_MUERTE_DEPH_EN_BOSS:
 
