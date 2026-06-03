@@ -599,7 +599,7 @@ CONTROL_FASE3_TILE_145_SECTOR_10:
 			jr		nz,.mira_si_pisable
 
 			ld		a,b
-			cp		145
+			cp		46
 			jr		nz,.mira_si_pisable
 
 			ld		a,(FASE)
@@ -753,7 +753,153 @@ SE_PUEDE_MOVER_Y_EFES_VARIOS:
 
 RUTINA_ESPECIAL_FASE_3:
 
+			ld		a,(FASE)
+			cp		3
+			ret		nz
+			call	ES_FASE3_VAGON_ACTIVO
+			ret		nc
+			call	CONTROL_FASE3_TILE_PUNTO_DEPH
 			ret
+
+CONTROL_FASE3_TILE_PUNTO_DEPH:
+
+			call	CONTROL_FASE3_VAGON_AVANZA_CONTADOR_16
+
+			ld		a,b
+			or		a
+			ld		a,(TILE_FASE3_VAGON)
+			jr		nz,.MIRA_SECUENCIAS_X
+
+			cp		118
+			jp		z,.COLOCA_X_DEPH_EN_TILE_MAS_12
+			cp		119
+			jp		z,.COLOCA_X_DEPH_EN_TILE_MENOS_4
+			cp		121
+			jp		z,.COLOCA_X_DEPH_EN_TILE_MAS_12
+			cp		122
+			jp		z,.COLOCA_X_DEPH_EN_TILE_MENOS_4
+			cp		124
+			jp		z,.COLOCA_X_DEPH_EN_TILE_MAS_12
+			cp		125
+			jp		z,.COLOCA_X_DEPH_EN_TILE_MENOS_4
+			cp		127
+			jp		z,.COLOCA_X_DEPH_EN_TILE_MAS_12
+			cp		128
+			jp		z,.COLOCA_X_DEPH_EN_TILE_MENOS_4
+
+.MIRA_SECUENCIAS_X:
+
+			cp		52
+			jr		c,.SIN_EFECTO
+			cp		57
+			jr		c,.TABLA_TILE_X_MAS_CADA_2
+
+			cp		68
+			jr		c,.MIRA_TILES_ALTOS_X_MAS
+			cp		74
+			jr		c,.TABLA_TILE_X_MENOS_CADA_2
+
+.MIRA_TILES_ALTOS_X_MAS:
+
+			cp		149
+			jr		z,.TABLA_TILE_X_MAS_CADA_2
+			cp		150
+			jr		z,.TABLA_TILE_X_MAS_CADA_2
+			cp		165
+			jr		z,.TABLA_TILE_X_MAS_CADA_2
+			cp		166
+			jr		z,.TABLA_TILE_X_MAS_CADA_2
+
+			cp		153
+			jr		z,.TABLA_TILE_X_MENOS_CADA_2
+			cp		154
+			jr		z,.TABLA_TILE_X_MENOS_CADA_2
+			cp		169
+			jr		z,.TABLA_TILE_X_MENOS_CADA_2
+			cp		170
+			jr		z,.TABLA_TILE_X_MENOS_CADA_2
+			jr		.SIN_EFECTO
+
+.TABLA_TILE_X_MAS_CADA_2:
+
+			ld		hl,TABLA_FASE3_VAGON_X_MAS_CADA_2
+			jr		.APLICA_TABLA_X
+
+.TABLA_TILE_X_MENOS_CADA_2:
+
+			ld		hl,TABLA_FASE3_VAGON_X_MENOS_CADA_2
+			jr		.APLICA_TABLA_X
+
+.SIN_EFECTO:
+
+			ret
+
+.COLOCA_X_DEPH_EN_TILE_MAS_12:
+			ld		a,(X_DEPH)
+			add		6
+			and		11110000b
+			add		12
+			ld		(X_DEPH),a
+			ret
+
+.COLOCA_X_DEPH_EN_TILE_MENOS_4:
+			ld		a,(X_DEPH)
+			add		6
+			and		11110000b
+			sub		4
+			ld		(X_DEPH),a
+			ret
+
+.APLICA_TABLA_X:
+
+			call	LEE_ACCION_TABLA_FASE3_VAGON
+			ret		z
+			cp		1
+			jr		z,.SUMA_X_DEPH_TABLA
+
+.RESTA_X_DEPH_TABLA:
+
+			ld		a,(X_DEPH)
+			dec		a
+			ld		(X_DEPH),a
+			ret
+
+.SUMA_X_DEPH_TABLA:
+
+			ld		a,(X_DEPH)
+			inc		a
+			ld		(X_DEPH),a
+			ret
+
+CONTROL_FASE3_VAGON_AVANZA_CONTADOR_16:
+
+			ld		a,(Y_DEPH)
+			add		26
+			ld		b,a
+			ld		a,(Y_PINTA_SCROLL)
+			ld		c,a
+			ld		a,b
+			sub		c
+			and		00001111b
+			ld		b,a
+			ret
+
+LEE_ACCION_TABLA_FASE3_VAGON:
+
+			ld		e,b
+			ld		d,0
+			add		hl,de
+			ld		a,(hl)
+			or		a
+			ret
+
+TABLA_FASE3_VAGON_X_MAS_CADA_2:
+
+			db		1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0
+
+TABLA_FASE3_VAGON_X_MENOS_CADA_2:
+
+			db		#FF,0,#FF,0,#FF,0,#FF,0,#FF,0,#FF,0,#FF,0,#FF,0
 
 PREMIO_EXTRA:
 
@@ -2563,3 +2709,21 @@ GARGOLAS:
 .NO_DISPARA:
 
 		jp		TROZOS_COMUNES_28	
+
+CARGA_SPRITES_1_A_45_STANDARD:
+
+			ld		a,(SUMA_CAMINO)
+			or		a
+			jp		nz,MARCA_REAPLICA_VAGON_RET
+
+			ld		hl,TODOS_LOS_SPRITES										; Depositamos los sprites en vram	
+			call	CARGA_COMUN_45
+			call	MARCA_REAPLICA_VAGON_RET
+			ld		a,(ARMA_USANDO)
+			cp		2
+			jp		z,CARGA_FLECHA_DOBLE
+			ret
+
+CARGA_1_A_45_FASE_3_ESPECIFICO:
+
+			jp		PRECARGA_SOLO_VAGONETA_EN_PATRONES_ALTOS

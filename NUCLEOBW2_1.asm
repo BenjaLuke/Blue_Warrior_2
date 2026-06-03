@@ -301,7 +301,6 @@ INICIA_SCROLL:
 		ld		(AGU_ACTIVO),a
 		ld		(SPRITE_CAIDO),a
 		call	RECUPERA_SPRITES
-		call	PRECARGA_SOLO_VAGONETA_FASE3
 		
 		ld		a,6
 		ld		(CAMBIO_POSE),a
@@ -432,13 +431,11 @@ FASE1_PONEMOS_DECORADO_EN_SU_SITIO:
 .SEGUIMOS:
 
 			call	RECUPERA_SPRITES_SALUDO									; A veces los pierde por el camino. Aquí garantizamos que los tiene cuando los necesita
-			call	PRECARGA_SOLO_VAGONETA_FASE3
 			ld		a,(MUSICA_ON_OFF)
 			or		a
 			jp		nz,PRE_CONTROL
 
 			call	CARGA_DEPH_MUSIC_OFF
-			call	PRECARGA_SOLO_VAGONETA_FASE3
 
 PRE_CONTROL:
 
@@ -903,6 +900,19 @@ CONTROL:
 			ld		(TILE_CENTRO),a
 			ld		a,(ix+1)
 			ld		(TILE_CENTRO_2),a
+
+			ld		a,(Y_DEPH)
+			push	af
+			add		20
+			ld		(Y_DEPH),a
+			call	SITUA_LA_X_E_Y
+			add		6
+			call	SITUA_LA_X_E_Y_2
+			ld		a,(ix)
+			ld		(TILE_FASE3_VAGON),a
+			pop		af
+			ld		(Y_DEPH),a
+
 			call	PAGE_10_A_SEGMENT_2
 			pop		ix
 
@@ -931,17 +941,14 @@ CONTROL:
 
 CARGA_1_A_45:
 
-			ld		a,(SUMA_CAMINO)
-			or		a
-			jp		nz,MARCA_REAPLICA_VAGON_RET
+			call    PAGE_10_A_SEGMENT_2
+			jp		CARGA_SPRITES_1_A_45_STANDARD
 
-			ld		hl,TODOS_LOS_SPRITES										; Depositamos los sprites en vram	
-			call	CARGA_COMUN_45
-			call	MARCA_REAPLICA_VAGON_RET
-			ld		a,(ARMA_USANDO)
-			cp		2
-			jp		z,CARGA_FLECHA_DOBLE
-			ret
+CARGA_1_A_45_FASE_3:
+
+			call    PAGE_10_A_SEGMENT_2
+			call    CARGA_SPRITES_1_A_45_STANDARD
+			jp		CARGA_1_A_45_FASE_3_ESPECIFICO
 
 CARGA_PIES_EN_LODO:
 

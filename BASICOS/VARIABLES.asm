@@ -91,6 +91,7 @@ TILE_S:							#1
 TILE_S2:						#1
 TILE_CENTRO:					#1
 TILE_CENTRO_2:					#1
+TILE_FASE3_VAGON:				#1
 GUARDA_STRIG:					#1										; Guarda el valor de strig para ver si luego resta una pos
 GUARDA_STRIG_2:					#1
 PAUSA_BLOQUEADA:				#1										; Sólo podremos pulsar pause si está a 0
@@ -348,6 +349,7 @@ MAPA_SITUACION_RIGHT_X_PAGE_1:	#1
 TRAMO_FASE_3:					#1										; 0,1,2 para las tres paginas de datos de la fase 3
 PAGE_DATOS_FASE:				#1										; Pagina ROM de constantes, eventos y paletas de fase
 RETENCION_Y_DEPH_POST_RECTIFICA_UP:     #1
+FASE3_VAGON_AJUSTE_TILE_CONTADOR:       #1
 
 ROTATIVO_CONTADOR_PRESENTACION:              #1      ; Contador de velocidad del rotativo de presentacion
 ROTATIVO_PAGINA_VISIBLE_PRESENTACION:        #1      ; Page 0/1 actualmente visible en la presentacion

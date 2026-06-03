@@ -1,6 +1,46 @@
 TABLA_SUCESOS_FASE_3_2:
 
-
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
 		dw		RETORNO
 		dw		RETORNO
 		dw		RETORNO
@@ -429,45 +469,3 @@ TABLA_SUCESOS_FASE_3_2:
 		dw		RETORNO
 		dw		RETORNO
 		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-

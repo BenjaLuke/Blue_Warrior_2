@@ -16,7 +16,7 @@ CINEMATICA_TEXTO_Y_2				equ		164
 CINEMATICA_TEXTO_Y_3				equ		174
 CINEMATICA_TEXTO_Y_4				equ		184
 CINEMATICA_PAUSA_LETRA			equ		4
-CINEMATICA_PAUSA_FINAL			equ		250
+CINEMATICA_PAUSA_FINAL			equ		150
 
 CINEMATICA_PARPADEO_X_DESTINO              equ     74
 CINEMATICA_PARPADEO_Y_DESTINO_ORIGINAL     equ     38
@@ -336,7 +336,7 @@ CALCULA_ORIGEN_X_LETRA_MENU:
 
 TABLA_ESPECIALES_MENU:
 
-		db		"-/()1234567890%."
+		db		"-/,)1234567890'."
 
 PINTA_TEXTO_MENU_FORMA_3:
 
@@ -2109,49 +2109,49 @@ TEXTO_CINEMATICA_5:
 		dw		TEXTO_CINEMATICA_5_4
 
 TEXTO_CINEMATICA_1_1:
-		db		"Mientras amanece y todos se duchan",0
+		db		"The story of Gamourla isn't exactly as ",0
 TEXTO_CINEMATICA_1_2:
-		db		"Benja, el desarrollador es un poco trucha.",0
+		db		"you were told. Although it's a ",0
 TEXTO_CINEMATICA_1_3:
-		db		"El sol lo hinunda todo de norte a sur",0
+		db		"prosperous village, the fear of the past",0
 TEXTO_CINEMATICA_1_4:
-		db		"por eso no pienso volar con wintertour.",0
+		db		"still lingers.",0
 
 TEXTO_CINEMATICA_2_1:
-		db		"El chumino se descuelga",0
+		db		"And Deph Kurgan, hero of past ",0
 TEXTO_CINEMATICA_2_2:
-		db		"vamos todos a la huelga.",0
+		db		"adventures, feels in his bones how",0
 TEXTO_CINEMATICA_2_3:
-		db		"tulitulitulitu",0
+		db		"evil is approaching once more.",0
 TEXTO_CINEMATICA_2_4:
-		db		"visteme con canesu.",0
+		db		"   ",0
 
 TEXTO_CINEMATICA_3_1:
-		db		"si llego a saber que me dices eso",0
+		db		"And one night, his worst nightmares come",0
 TEXTO_CINEMATICA_3_2:
-		db		"te doy con la polla en los sesos.",0
+		db		"true. Lord Adder floods the sky,",0
 TEXTO_CINEMATICA_3_3:
-		db		"si me vas a contestar",0
+		db		"threatening the crops and the lives of",0
 TEXTO_CINEMATICA_3_4:
-		db		"pues te doy en el paladar.",0
+		db		"the villagers.",0
 
 TEXTO_CINEMATICA_4_1:
-		db		"Ya no se me ocurren mas rimas",0
+		db		"But Deph isn't intimidated by this",0				  	
 TEXTO_CINEMATICA_4_2:
-		db		"por eso he llamado a mi prima.",0
+		db		"apocalyptic vision. He knows what he has",0
 TEXTO_CINEMATICA_4_3:
-		db		"esta es la ultima frase",0
+		db		"to do. He's done it before.",0
 TEXTO_CINEMATICA_4_4:
-		db		"el pan me pide que lo amase.",0
+		db		"   ",0
 
 TEXTO_CINEMATICA_5_1:
-		db		"Un potorro esta palpitando",0
+		db		"Deph will obtain the Earth Goddess Stone",0
 TEXTO_CINEMATICA_5_2:
-		db		"es la Conchi que esta meando",0
+		db		"to stop Lord Adder. But this time, he",0
 TEXTO_CINEMATICA_5_3:
-		db		"si tuviera fuerzas y humor",0
+		db		"will also obtain the sacred Diamond that",0
 TEXTO_CINEMATICA_5_4:
-		db		"imitaria a conde mor",0
+		db		"will break the cycle.",0
 
 ROTATIVO_Y_PRESENTACION                  equ     195
 
@@ -2524,13 +2524,13 @@ DATOS_NEGRO_ROTATIVO_EN_PAGE_1:
 ; Regla del porcentaje: cada fase vale 2, cada enemigo y bloque auxiliar vale 1.
 ; EN TOTAL HAY 
 ; 5 PUNTOS DE 2(FASES) 4 HECHOS
-; 6 PUNTOS DE 2(ENEMIGOS) 4 HECHOS
+; 6 PUNTOS DE 2(ENEMIGOS) 5 HECHOS
 ; 4 PUNTOS DE 1(LOGO, MENU, ANIMACION PRESENTACION Y ANIMACION CIERRE) 4 HECHO
-; PUNTOS ACTUALES = (4+4)*2 + 4*1 = 20, PORCENTAJE ACTUAL = 20/26 = 77% APROXIMADAMENTE
+; PUNTOS ACTUALES = (4+5)*2 + 4*1 = 22, PORCENTAJE ACTUAL = 22/26 = 84% APROXIMADAMENTE
 
 TEXTO_ROTATIVO_PRESENTACION:
 
-		db		"BLUE WARRIOR II - Beta version 4.9.19 - 27/5/2026 - 77% - (C) Digital Moai",0
+		db		"BLUE WARRIOR II - Beta version 4.10.01 - 02/6/2026 - 84% - (C) Digital Moai",0
 
 TEXTO_ROTATIVO_PRESENTACION_FIN:
 
