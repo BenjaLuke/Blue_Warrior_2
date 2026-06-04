@@ -1,6 +1,5 @@
 TABLA_SUCESOS_FASE_3_0:
 
-
 		dw		RETORNO
 		dw		RETORNO
 		dw		RETORNO

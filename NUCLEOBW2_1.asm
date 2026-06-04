@@ -144,19 +144,11 @@ PREPARACION_INTERRUPCIONES:
 		ei																; Conectamos las interrupciones	
 
 		jp		VARIABLES_PARA_EMPEZAR_LA_PARTIDA		
+
 ACTIVAMOS_INTERRUPCIONES_DE_LINEA:
 
-		call	INTRODUCIMOS_LINEA_DE_INTERRUPCION_NUEVA
-
-		di
-		ld 		a,(RG0SAV)												; Enable Line Interrupt: Set R#0 bit 4
-		or		00010000B
-		ld		(RG0SAV),a				
-		ld		b,a
-		ld		c,0
-		call	WRTVDP_EN_RAM	
-		ei
-		ret
+		call		PAGE_10_A_SEGMENT_2
+		jp			ACTIVAMOS_INTERRUPCIONES_DE_LINEA_REAL
 
 VARIABLES_PARA_EMPEZAR_LA_PARTIDA:	
 																			; Cuando empieza el juego pero que luego no hay que recuperar si muere.
@@ -604,11 +596,13 @@ CONTROL:
 .resta_comun_y:
 		
 			ld		c,6
+			ld		d,0
 			ld		a,(TILE_N)
 			call	CONTROL_FASE3_TILE_145
 			jp		nc,.pre_sigue_comun
 
 			ld		c,14
+			ld		d,0
 			ld		a,(TILE_N2)
 			call	CONTROL_FASE3_TILE_145
 			jp		nc,.pre_sigue_comun
@@ -669,11 +663,13 @@ CONTROL:
 .suma_comun_y:
 
 			ld		c,6
+			ld		d,16
 			ld		a,(TILE_S)
 			call	CONTROL_FASE3_TILE_145
 			jp		nc,.pre_sigue_comun
 
 			ld		c,14
+			ld		d,16
 			ld		a,(TILE_S2)
 			call	CONTROL_FASE3_TILE_145
 			jp		nc,.pre_sigue_comun
@@ -871,12 +867,12 @@ CONTROL:
 .MIRAMOS_FASE_5:
 			ld		a,(FASE)
 			cp		5
-			jp		nz,.MIRAMOS_SI_HAY_AGUJERO
+			jr		nz,.MIRAMOS_SI_HAY_AGUJERO
 
 			ld		hl,SEMAFORO_LABERINTO
 			ld		a,(hl)
 			or		a
-			jp		nz,.MIRAMOS_SI_HAY_AGUJERO
+			jr		nz,.MIRAMOS_SI_HAY_AGUJERO
 
 			inc		(hl)	
 
@@ -901,17 +897,20 @@ CONTROL:
 			ld		a,(ix+1)
 			ld		(TILE_CENTRO_2),a
 
-			ld		a,(Y_DEPH)
+			ld		hl,Y_DEPH
+			ld		a,(hl)
 			push	af
 			add		20
-			ld		(Y_DEPH),a
+			ld		(hl),a
 			call	SITUA_LA_X_E_Y
 			add		6
 			call	SITUA_LA_X_E_Y_2
 			ld		a,(ix)
 			ld		(TILE_FASE3_VAGON),a
+			ld		a,(ix+5)
+			ld		(TILE_FASE3_VAGON_X16),a
 			pop		af
-			ld		(Y_DEPH),a
+			ld		(hl),a
 
 			call	PAGE_10_A_SEGMENT_2
 			pop		ix
@@ -942,20 +941,18 @@ CONTROL:
 CARGA_1_A_45:
 
 			call    PAGE_10_A_SEGMENT_2
-			jp		CARGA_SPRITES_1_A_45_STANDARD
+			jp		CARGA_1_A_45_REAL
 
 CARGA_1_A_45_FASE_3:
 
 			call    PAGE_10_A_SEGMENT_2
-			call    CARGA_SPRITES_1_A_45_STANDARD
-			jp		CARGA_1_A_45_FASE_3_ESPECIFICO
-
+			jp		CARGA_1_A_45_FASE_3_REAL
+			
 CARGA_PIES_EN_LODO:
 
-			ld		hl,SPRITES_BARRO_DEPH
-			ld		de,#4000+5*8*4
-			ld		bc,18*8*4
-			jp		TROZOS_COMUNES_15
+			call	PAGE_10_A_SEGMENT_2
+			jp		CARGA_PIES_EN_LODO_REAL
+			
 CARGA_FLECHA_SIMPLE:
 
 			ld		hl,SPRITE_FLECHA_SIMPLE
@@ -973,6 +970,7 @@ CARGA_FIREWORKS:
 			ld		(FIREWORKS_ACTIVO),a
 			ld		hl,SPRITES_FIREWORK
 			jp		CARGA_COMUN_24
+
 CARGA_SKRULLEX:
 
 			xor		a
@@ -980,6 +978,7 @@ CARGA_SKRULLEX:
 			ld		hl,SPRITES_SKRULLEX
 			ld		de,#4000+46*8*4
 			jp		CARGA_COMUN_4
+			
 CARGA_SKRULLEX_SLIME:
 
 			ld		hl,SPRITES_SKRULLEX
@@ -1133,27 +1132,15 @@ CARGA_MUSICA_VAGONETA:
 
 REVISA_LETRAS_DE_LA_FASE:
 
-		ld		a,(TENEMOS_D)
-		or		a
-		ret		z
-		ld		a,(TENEMOS_E)
-		or		a
-		ret		z
-		ld		a,(TENEMOS_P)
-		or		a
-		ret		z
-		ld		a,(TENEMOS_H)
-		or		a
-		ret		z
-		ld		a,(TENEMOS_TODAS)
-		inc		a
-		ld		(TENEMOS_TODAS),a
-		ret
+		call	PAGE_10_A_SEGMENT_2
+		jp		REVISA_LETRAS_DE_LA_FASE_REAL
+
 REVISA_LETRAS_DE_TODAS_LAS_FASES:
 
 		ld		a,(TENEMOS_TODAS)
 		cp		5
 		ret		z
+
 SALTAMOS_EXTRA:
 
 		push	hl
@@ -1198,29 +1185,12 @@ MARCA_REAPLICA_VAGON_RET:
 APLICA_SPRITES_DEPH_VAGON:
 
 		call	PAGE_32_A_SEGMENT_2
-
-		ld		a,(MUSICA_ON_OFF)
-		or		a
-		jr		nz,.SPRITES_VAGONETA_NORMAL
-
-		ld		hl,SPRITES_VAGONETA_CASCOS
-		ld		de,#4000+4*8
-		ld		bc,6*32
-		call	PON_COLOR_2.sin_bc_impuesta
-		jr		.MARCA_SPRITES_VAGONETA_APLICADOS
-
-.SPRITES_VAGONETA_NORMAL:
-
 		ld		hl,SPRITES_VAGON_TOTAL
 		ld		de,#4000+4*8
-		ld		bc,12*32
+		ld		bc,8*32
 		call	PON_COLOR_2.sin_bc_impuesta
-
-.MARCA_SPRITES_VAGONETA_APLICADOS:
-
 		ld		a,1
 		ld		(SUMA_CAMINO),a
-
 		jp		PINTA_COLORES_SPRITE_VAGON_DESDE_PAGE32
 
 CARGA_SPRITES_VAGONETA_PAUSA:
@@ -1274,12 +1244,12 @@ PRECARGA_SOLO_VAGONETA_EN_PATRONES_ALTOS:
 		call	PAGE_32_A_SEGMENT_2
 		ld		hl,SPRITES_SOLO_VAGONETA
 		ld		de,#4000+216*8
-		ld		bc,6*32
+		ld		bc,4*32
 		call	PON_COLOR_2.sin_bc_impuesta
 
 		ld		hl,COLOR_SPRITE_SOLO_VAGONETA
 		ld		de,#4860
-		ld		bc,6*16
+		ld		bc,4*16
 		call	PON_COLOR_2.sin_bc_impuesta
 		jp		PAGE_10_A_SEGMENT_2
 
@@ -1301,26 +1271,9 @@ PINTA_COLORES_SPRITE_VAGON:
 
 PINTA_COLORES_SPRITE_VAGON_DESDE_PAGE32:
 
-		ld		a,(MUSICA_ON_OFF)
-		or		a
-		jr		nz,.COLORES_VAGONETA_NORMAL
-
-		ld		hl,COLOR_SPRITES_VAGONETA_CASCOS
-		jr		.COLORES_VAGONETA_SUPERIOR
-
-.COLORES_VAGONETA_NORMAL:
-
 		ld		hl,COLOR_SPRITE_VAGONETA_TOTAL
-
-.COLORES_VAGONETA_SUPERIOR:
-
 		ld		de,#4800
-		ld		bc,6*16
-		call	PON_COLOR_2.sin_bc_impuesta
-
-		ld		hl,COLOR_SPRITE_SOLO_VAGONETA
-		ld		de,#4860
-		ld		bc,6*16
+		ld		bc,8*16
 		call	PON_COLOR_2.sin_bc_impuesta
 		jp		PAGE_10_A_SEGMENT_2
 
@@ -1328,44 +1281,23 @@ CONTROL_BUCLES:
 
 .INICIO_BUCLE:
 
-		xor		a
-		ld		(SUMA_BUCLE),a
-		ld		hl,(LINEA_A_LEER)
-		inc		hl
-		ld		(LINEA_DE_REGRESO_BUCLE),hl
-		ret
+		call    PAGE_10_A_SEGMENT_2
+		jp		CONTROL_BUCLES_INICIO_BUCLE_REAL
 
 .CONTROL_IZQUIERDA:
 
-		ld		a,(X_DEPH)
-		cp		5*16
-		ret		nc
-		ld		a,(SUMA_BUCLE)
-		inc		a
-		ld		(SUMA_BUCLE),a
-		ret
+		call    PAGE_10_A_SEGMENT_2
+		jp		CONTROL_BUCLES_CONTROL_IZQUIERDA_REAL
 
 .CONTROL_CENTRO:
 
-		ld		a,(X_DEPH)
-		cp		5*16
-		ret		c
-		cp		11*16
-		ret		nc
-		ld		a,(SUMA_BUCLE)
-		inc		a
-		ld		(SUMA_BUCLE),a
-		ret
+		call    PAGE_10_A_SEGMENT_2
+		jp		CONTROL_BUCLES_CONTROL_CENTRO_REAL
 
 .CONTROL_DERECHA:
 
-		ld		a,(X_DEPH)
-		cp		11*16
-		ret		c
-		ld		a,(SUMA_BUCLE)
-		inc		a
-		ld		(SUMA_BUCLE),a
-		ret
+		call    PAGE_10_A_SEGMENT_2
+		jp		CONTROL_BUCLES_CONTROL_DERECHA_REAL
 
 .CONTROL_SUMA_TRES_S5:
 

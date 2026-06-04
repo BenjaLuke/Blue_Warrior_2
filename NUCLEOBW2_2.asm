@@ -193,21 +193,21 @@ PINTA_SPRITE_VAGONETA_TOTAL_SECTOR_10:
 		ld		b,h
 		ld		c,l
 		ld		a,4
-		call	PONE_TRES_MASCARAS_VAGONETA_TOTAL
+		call	PONE_DOS_MASCARAS_VAGONETA_TOTAL
 
 		ld		b,h
 		ld		a,l
 		add		16
 		ld		c,a
-		ld		a,16
-		call	PONE_TRES_MASCARAS_VAGONETA_TOTAL
+		ld		a,12
+		call	PONE_DOS_MASCARAS_VAGONETA_TOTAL
 
 		ld		a,h
 		add		16
 		ld		b,a
 		ld		c,l
-		ld		a,28
-		call	PONE_TRES_MASCARAS_VAGONETA_TOTAL
+		ld		a,20
+		call	PONE_DOS_MASCARAS_VAGONETA_TOTAL
 
 		ld		a,h
 		add		16
@@ -215,20 +215,20 @@ PINTA_SPRITE_VAGONETA_TOTAL_SECTOR_10:
 		ld		a,l
 		add		16
 		ld		c,a
-		ld		a,40
-		call	PONE_TRES_MASCARAS_VAGONETA_TOTAL
+		ld		a,28
+		call	PONE_DOS_MASCARAS_VAGONETA_TOTAL
 
 		pop		ix
 
 		ld		hl,ATRIBUTOS_VAGONETA_VARIABLES
 		ld		de,#4A00
-		ld		bc,48
+		ld		bc,32
 		jp		PON_COLOR_2.sin_bc_impuesta
 
 
-PONE_TRES_MASCARAS_VAGONETA_TOTAL:
+PONE_DOS_MASCARAS_VAGONETA_TOTAL:
 
-		ld		d,3
+		ld		d,2
 
 .BUCLE:
 
@@ -594,24 +594,17 @@ CONTROL_FASE3_TILE_145_SECTOR_10:
 			call	ES_FASE3_VAGON_ACTIVO
 			jr		c,.TILE_PISABLE_FORZADO
 
-			ld		a,(SUMA_CAMINO)
-			or		a
-			jr		nz,.mira_si_pisable
-
-			ld		a,b
-			cp		46
-			jr		nz,.mira_si_pisable
-
 			ld		a,(FASE)
 			cp		3
 			jr		nz,.mira_si_pisable
-
-			ld		a,(X_DEPH)
-			add		c
-			and		11110000b
-			sub		3 ; RECOLOCA SPRITES DE VAGON PARA CUADRAR CON DEPH
-			ld		(X_DEPH),a
-
+			ld		a,d
+			ld		(VARIABLE_UN_USO2),a
+			ld		a,b
+			cp		16
+			jr		c,.mira_si_pisable
+			cp		22
+			jr		nc,.mira_si_pisable
+			call	PINTA_TRIADA_ENTRADA_FASE3_VAGON
 			call	CONTROL_VELOCIDAD_FASE_VAGON
 			or		a
 			ret
@@ -625,6 +618,237 @@ CONTROL_FASE3_TILE_145_SECTOR_10:
 
 			ld		a,b
 			cp		79
+			ret
+
+
+PINTA_TRIADA_ENTRADA_FASE3_VAGON:
+
+			ld		e,b
+			cp		19
+			jr		nc,.GRUPO_DERECHA
+
+			xor		a
+			ld		(FASE3_VAGON_TIPO_MUERTE),a
+			ld		a,121
+			jr		.CALCULA_DESTINO
+
+.GRUPO_DERECHA:
+
+			ld		a,1
+			ld		(FASE3_VAGON_TIPO_MUERTE),a
+			ld		a,127
+
+.CALCULA_DESTINO:
+
+			push	af
+			call	CALCULA_XY_TILE_FASE3_VAGON_ENTRADA
+			call	.COLOCA_X_DEPH_ENTRADA_VAGON
+			ld		a,e
+			cp		17
+			jr		z,.RESTA_UN_TILE
+			cp		20
+			jr		z,.RESTA_UN_TILE
+			cp		18
+			jr		z,.RESTA_DOS_TILES
+			cp		21
+			jr		z,.RESTA_DOS_TILES
+			jr		.PINTA
+
+.RESTA_UN_TILE:
+
+			ld		a,b
+			sub		16
+			ld		b,a
+			jr		.PINTA
+
+.RESTA_DOS_TILES:
+
+			ld		a,b
+			sub		32
+			ld		b,a
+
+.PINTA:
+
+			pop		af
+			jp		PINTA_TRIADA_FASE3_VAGON
+
+.COLOCA_X_DEPH_ENTRADA_VAGON:
+
+			ld		a,(Y_DEPH)
+			sub		16
+			ld		(Y_DEPH),a
+
+			ld		a,e
+			cp		17
+			jr		z,.COLOCA_X_TILE_MENOS_8
+			cp		20
+			jr		z,.COLOCA_X_TILE_MENOS_8
+			cp		18
+			jr		z,.COLOCA_X_TILE_MENOS_24
+			cp		21
+			jr		z,.COLOCA_X_TILE_MENOS_24
+
+			ld		a,b
+			add		a,12
+			ld		(X_DEPH),a
+			ret
+
+.COLOCA_X_TILE_MENOS_8:
+
+			ld		a,b
+			sub		4
+			ld		(X_DEPH),a
+			ret
+
+.COLOCA_X_TILE_MENOS_24:
+
+			ld		a,b
+			sub		20
+			ld		(X_DEPH),a
+			ret
+
+PINTA_TRIADA_SALIDA_FASE3_VAGON:
+
+			ld		e,a
+			ld		a,(FASE3_VAGON_TIPO_MUERTE)
+			or		a
+			ld		a,22
+			jr		z,.CALCULA_DESTINO
+			ld		a,25
+
+.CALCULA_DESTINO:
+
+			push	af
+			call	CALCULA_XY_TILE_FASE3_VAGON
+			ld		a,c
+			add		16
+			ld		c,a
+			ld		a,e
+			cp		9
+			jr		z,.RESTA_UN_TILE
+			cp		10
+			jr		z,.RESTA_DOS_TILES
+			jr		.PINTA
+
+.RESTA_UN_TILE:
+
+			ld		a,b
+			sub		16
+			ld		b,a
+			jr		.PINTA
+
+.RESTA_DOS_TILES:
+
+			ld		a,b
+			sub		32
+			ld		b,a
+
+.PINTA:
+
+			pop		af
+			jp		PINTA_TRIADA_FASE3_VAGON
+
+CALCULA_XY_TILE_FASE3_VAGON:
+
+			ld		a,(X_DEPH)
+			add		6
+			and		#f0
+			ld		b,a
+			ld		a,(Y_DEPH)
+			add		20
+			and		#f0
+			ld		c,a
+			ret
+
+CALCULA_XY_TILE_FASE3_VAGON_ENTRADA:
+
+			ld		a,(X_DEPH)
+			add		a,c
+			and		#f0
+			ld		b,a
+			ld		a,(Y_DEPH)
+			ld		d,a
+			ld		a,(VARIABLE_UN_USO2)
+			add		a,16
+			add		a,d
+			and		#f0
+			ld		c,a
+			ret
+
+PINTA_TRIADA_FASE3_VAGON:
+
+			call	PINTA_TILE_FASE3_VAGON_PAGE2
+			inc		a
+			push	af
+			ld		a,b
+			add		16
+			ld		b,a
+			pop		af
+			call	PINTA_TILE_FASE3_VAGON_PAGE2
+			inc		a
+			push	af
+			ld		a,b
+			add		16
+			ld		b,a
+			pop		af
+			jp		PINTA_TILE_FASE3_VAGON_PAGE2
+
+PINTA_TILE_FASE3_VAGON_PAGE2:
+
+			ld		e,a
+			ld		d,0
+			push	af
+			push	bc
+			push	de
+			push	hl
+			push	ix
+			push	iy
+
+			ld		ix,DATOS_DEL_TILE_PARA_COPY
+			ld		iy,TABLA_RELACION_PARA_COPY
+
+			push	de
+			pop		hl
+			or		a
+			adc		hl,de
+			ex		de,hl
+			add		iy,de
+
+			ld		a,(iy)
+			ld		(ix),a
+			xor		a
+			ld		(ix+1),a
+			ld		a,(iy+1)
+			ld		(ix+2),a
+			ld		a,1
+			ld		(ix+3),a
+			ld		a,b
+			ld		(ix+4),a
+			xor		a
+			ld		(ix+5),a
+			ld		a,c
+			ld		(ix+6),a
+			ld		a,2
+			ld		(ix+7),a
+			ld		a,16
+			ld		(ix+8),a
+			ld		(ix+10),a
+			xor		a
+			ld		(ix+9),a
+			ld		(ix+11),a
+			ld		(ix+12),a
+			ld		(ix+13),a
+			ld		a,11010000B
+			ld		(ix+14),a
+
+			call	HL_DATOS_DEL_COPY
+
+			pop		iy
+			pop		ix
+			pop		hl
+			pop		de
+			pop		bc
+			pop		af
 			ret
 
 
@@ -764,11 +988,22 @@ RUTINA_ESPECIAL_FASE_3:
 CONTROL_FASE3_TILE_PUNTO_DEPH:
 
 			call	CONTROL_FASE3_VAGON_AVANZA_CONTADOR_16
+			call	.CONTROL_FASE3_VAGON_MUERTE_TILE
+			call	.CONTROL_FASE3_VAGON_SALIDA_TILE
+			ret		c
 
 			ld		a,b
 			or		a
 			ld		a,(TILE_FASE3_VAGON)
-			jr		nz,.MIRA_SECUENCIAS_X
+			jr		nz,.MIRA_ARRASTRE_X
+
+			push	af
+			ld		a,(FASE3_VAGON_ARRASTRE_X)
+			cp		1
+			jr		z,.ARRASTRE_ACTIVO_SALTA_X_FIJA
+			cp		2
+			jr		z,.ARRASTRE_ACTIVO_SALTA_X_FIJA
+			pop		af
 
 			cp		118
 			jp		z,.COLOCA_X_DEPH_EN_TILE_MAS_12
@@ -786,6 +1021,13 @@ CONTROL_FASE3_TILE_PUNTO_DEPH:
 			jp		z,.COLOCA_X_DEPH_EN_TILE_MAS_12
 			cp		128
 			jp		z,.COLOCA_X_DEPH_EN_TILE_MENOS_4
+
+.MIRA_ARRASTRE_X:
+
+			push	af
+			call	.CONTROL_FASE3_VAGON_ARRASTRE_X
+			jp		c,.ARRASTRE_X_CONSUME_CICLO
+			pop		af
 
 .MIRA_SECUENCIAS_X:
 
@@ -820,18 +1062,367 @@ CONTROL_FASE3_TILE_PUNTO_DEPH:
 			jr		z,.TABLA_TILE_X_MENOS_CADA_2
 			jr		.SIN_EFECTO
 
+.ARRASTRE_ACTIVO_SALTA_X_FIJA:
+
+			pop		af
+			jr		.MIRA_ARRASTRE_X
+
 .TABLA_TILE_X_MAS_CADA_2:
 
 			ld		hl,TABLA_FASE3_VAGON_X_MAS_CADA_2
-			jr		.APLICA_TABLA_X
+			jp		.APLICA_TABLA_X
 
 .TABLA_TILE_X_MENOS_CADA_2:
 
 			ld		hl,TABLA_FASE3_VAGON_X_MENOS_CADA_2
-			jr		.APLICA_TABLA_X
+			jp		.APLICA_TABLA_X
 
 .SIN_EFECTO:
 
+			ret
+
+.CONTROL_FASE3_VAGON_MUERTE_TILE:
+
+			push	bc
+			ld		a,(TILE_FASE3_VAGON_X16)
+			cp		160
+			jr		nz,.MIRA_TILE_MUERTE_NORMAL
+			ld		a,2
+			jr		.GUARDA_TIPO_MUERTE
+
+.MIRA_TILE_MUERTE_NORMAL:
+
+			ld		a,(TILE_FASE3_VAGON)
+			cp		130
+			jr		c,.NO_HAY_MUERTE_TILE
+			cp		139
+			jr		nc,.NO_HAY_MUERTE_TILE
+			sub		130
+			jr		z,.GUARDA_TIPO_MUERTE
+			ld		a,1
+
+.GUARDA_TIPO_MUERTE:
+
+			ld		(FASE3_VAGON_TIPO_MUERTE),a
+			pop		bc
+			pop		af
+			jp		.MUERTE_DEPH_FASE3_VAGON
+
+.NO_HAY_MUERTE_TILE:
+
+			pop		bc
+			ret
+
+.MUERTE_DEPH_FASE3_VAGON:
+
+			jp		MUERTE_POR_TOQUES
+
+.CONTROL_FASE3_VAGON_SALIDA_TILE:
+
+			ld		a,(TILE_FASE3_VAGON)
+			cp		8
+			jr		c,.NO_SALE_VAGON_TILE
+			cp		11
+			jr		nc,.NO_SALE_VAGON_TILE
+			call	PINTA_TRIADA_SALIDA_FASE3_VAGON
+			call	.SALE_DE_FASE3_VAGON
+			scf
+			ret
+
+.NO_SALE_VAGON_TILE:
+
+			or		a
+			ret
+
+.SALE_DE_FASE3_VAGON:
+
+			xor		a
+			ld		(SUMA_CAMINO),a
+			ld		(FASE3_VAGON_ARRASTRE_X),a
+			ld		(FASE3_VAGON_AJUSTE_TILE_CONTADOR),a
+			call	CARGA_1_A_45_FASE_3
+			ld		a,(Y_DEPH)
+			sub		16
+			ld		(Y_DEPH),a
+			call	BUCLE_PINTA_TILES.musica_mas_velocidad
+			ret
+
+.ARRASTRE_X_CONSUME_CICLO:
+
+			pop		af
+			ret
+
+.CONTROL_FASE3_VAGON_ARRASTRE_X:
+
+			ld		c,a
+			call	.ES_TILE_FASE3_VAGON_ARRASTRE_MAS
+			jr		c,.TILE_ARRASTRE_MAS
+
+			ld		a,(FASE3_VAGON_ARRASTRE_X)
+			cp		1
+			jr		z,.LIMPIA_ARRASTRE_MAS
+			cp		3
+			jr		nz,.MIRA_TILE_ARRASTRE_MENOS
+
+.LIMPIA_ARRASTRE_MAS:
+
+			xor		a
+			ld		(FASE3_VAGON_ARRASTRE_X),a
+			ld		(FASE3_VAGON_AJUSTE_TILE_CONTADOR),a
+
+.MIRA_TILE_ARRASTRE_MENOS:
+
+			ld		a,c
+			call	.ES_TILE_FASE3_VAGON_ARRASTRE_MENOS
+			jr		c,.TILE_ARRASTRE_MENOS
+
+			ld		a,(FASE3_VAGON_ARRASTRE_X)
+			cp		2
+			jr		z,.LIMPIA_ARRASTRE_MENOS
+			cp		4
+			jr		nz,.SIN_ARRASTRE_X
+
+.LIMPIA_ARRASTRE_MENOS:
+
+			xor		a
+			ld		(FASE3_VAGON_ARRASTRE_X),a
+			ld		(FASE3_VAGON_AJUSTE_TILE_CONTADOR),a
+
+.SIN_ARRASTRE_X:
+
+			or		a
+			ret
+
+.TILE_ARRASTRE_MAS:
+
+			call	.ACTUALIZA_TILE_ARRASTRE_X
+			ld		a,(FASE3_VAGON_ARRASTRE_X)
+			cp		1
+			jr		z,.APLICA_ARRASTRE_MAS
+			cp		3
+			jr		z,.SIN_ARRASTRE_X
+			ld		a,b
+			or		a
+			jr		nz,.SIN_ARRASTRE_X
+			call	.PULSA_DERECHA_FASE3_VAGON
+			jr		nc,.BLOQUEA_ARRASTRE_MAS
+			call	.CORRIGE_X_DEPH_ENTRADA_ARRASTRE
+			ld		a,1
+			ld		(FASE3_VAGON_ARRASTRE_X),a
+
+.APLICA_ARRASTRE_MAS:
+
+			ld		hl,TABLA_FASE3_VAGON_X_MAS_CADA_2
+			call	.APLICA_TABLA_X
+			scf
+			ret
+
+.BLOQUEA_ARRASTRE_MAS:
+
+			ld		a,3
+			ld		(FASE3_VAGON_ARRASTRE_X),a
+			or		a
+			ret
+
+.TILE_ARRASTRE_MENOS:
+
+			call	.ACTUALIZA_TILE_ARRASTRE_X
+			ld		a,(FASE3_VAGON_ARRASTRE_X)
+			cp		2
+			jr		z,.APLICA_ARRASTRE_MENOS
+			cp		4
+			jr		z,.SIN_ARRASTRE_X
+			ld		a,b
+			or		a
+			jr		nz,.SIN_ARRASTRE_X
+			call	.PULSA_IZQUIERDA_FASE3_VAGON
+			jr		nc,.BLOQUEA_ARRASTRE_MENOS
+			call	.CORRIGE_X_DEPH_ENTRADA_ARRASTRE
+			ld		a,2
+			ld		(FASE3_VAGON_ARRASTRE_X),a
+
+.APLICA_ARRASTRE_MENOS:
+
+			ld		hl,TABLA_FASE3_VAGON_X_MENOS_CADA_2
+			call	.APLICA_TABLA_X
+			scf
+			ret
+
+.BLOQUEA_ARRASTRE_MENOS:
+
+			ld		a,4
+			ld		(FASE3_VAGON_ARRASTRE_X),a
+			or		a
+			ret
+
+.ACTUALIZA_TILE_ARRASTRE_X:
+
+			ld		a,(FASE3_VAGON_AJUSTE_TILE_CONTADOR)
+			cp		c
+			ret		z
+			ld		a,b
+			or		a
+			ret		nz
+			ld		a,c
+			ld		(FASE3_VAGON_AJUSTE_TILE_CONTADOR),a
+			call	.ES_PRIMER_TILE_ARRASTRE_X
+			ret		nc
+
+.LIMPIA_ARRASTRE_X:
+
+			xor		a
+			ld		(FASE3_VAGON_ARRASTRE_X),a
+
+.NO_LIMPIA_ARRASTRE_X:
+
+			ret
+
+.ES_PRIMER_TILE_ARRASTRE_X:
+
+			cp		145
+			jr		z,.SI_PRIMER_TILE_ARRASTRE_X
+			cp		161
+			jr		z,.SI_PRIMER_TILE_ARRASTRE_X
+			cp		157
+			jr		z,.SI_PRIMER_TILE_ARRASTRE_X
+			cp		173
+			jr		z,.SI_PRIMER_TILE_ARRASTRE_X
+			or		a
+			ret
+
+.SI_PRIMER_TILE_ARRASTRE_X:
+
+			scf
+			ret
+
+.CORRIGE_X_DEPH_ENTRADA_ARRASTRE:
+
+			ld		a,(X_DEPH)
+			add		6
+			and		11110000b
+			ld		(X_DEPH),a
+			ret
+
+.ES_TILE_FASE3_VAGON_ARRASTRE_MAS:
+
+			cp		145
+			jr		c,.NO_ES_TILE_ARRASTRE_MAS
+			cp		148
+			jr		c,.SI_ES_TILE_ARRASTRE_MAS
+			cp		161
+			jr		c,.NO_ES_TILE_ARRASTRE_MAS
+			cp		164
+			jr		c,.SI_ES_TILE_ARRASTRE_MAS
+
+.NO_ES_TILE_ARRASTRE_MAS:
+
+			or		a
+			ret
+
+.SI_ES_TILE_ARRASTRE_MAS:
+
+			scf
+			ret
+
+.ES_TILE_FASE3_VAGON_ARRASTRE_MENOS:
+
+			cp		157
+			jr		c,.NO_ES_TILE_ARRASTRE_MENOS
+			cp		160
+			jr		c,.SI_ES_TILE_ARRASTRE_MENOS
+			cp		173
+			jr		c,.NO_ES_TILE_ARRASTRE_MENOS
+			cp		176
+			jr		c,.SI_ES_TILE_ARRASTRE_MENOS
+
+.NO_ES_TILE_ARRASTRE_MENOS:
+
+			or		a
+			ret
+
+.SI_ES_TILE_ARRASTRE_MENOS:
+
+			scf
+			ret
+
+.PULSA_DERECHA_FASE3_VAGON:
+
+			push	bc
+			xor		a
+			call	GTSTCK_RAM
+			call	.ES_STICK_DERECHA_FASE3_VAGON
+			jr		c,.PULSA_DERECHA_OK
+			ld		a,1
+			call	GTSTCK_RAM
+			cp		3
+			jr		z,.PULSA_DERECHA_PAD_OK
+			or		a
+			jr		.PULSA_DERECHA_OK
+
+.PULSA_DERECHA_PAD_OK:
+
+			scf
+
+.PULSA_DERECHA_OK:
+
+			pop		bc
+			ret
+
+.PULSA_IZQUIERDA_FASE3_VAGON:
+
+			push	bc
+			xor		a
+			call	GTSTCK_RAM
+			call	.ES_STICK_IZQUIERDA_FASE3_VAGON
+			jr		c,.PULSA_IZQUIERDA_OK
+			ld		a,1
+			call	GTSTCK_RAM
+			cp		7
+			jr		z,.PULSA_IZQUIERDA_PAD_OK
+			or		a
+			jr		.PULSA_IZQUIERDA_OK
+
+.PULSA_IZQUIERDA_PAD_OK:
+
+			scf
+
+.PULSA_IZQUIERDA_OK:
+
+			pop		bc
+			ret
+
+.ES_STICK_DERECHA_FASE3_VAGON:
+
+			cp		2
+			jr		c,.NO_STICK_DERECHA
+			cp		5
+			jr		c,.SI_STICK_DERECHA
+
+.NO_STICK_DERECHA:
+
+			or		a
+			ret
+
+.SI_STICK_DERECHA:
+
+			scf
+			ret
+
+.ES_STICK_IZQUIERDA_FASE3_VAGON:
+
+			cp		6
+			jr		c,.NO_STICK_IZQUIERDA
+			cp		9
+			jr		c,.SI_STICK_IZQUIERDA
+
+.NO_STICK_IZQUIERDA:
+
+			or		a
+			ret
+
+.SI_STICK_IZQUIERDA:
+
+			scf
 			ret
 
 .COLOCA_X_DEPH_EN_TILE_MAS_12:
@@ -1386,26 +1977,38 @@ COVIDS:
 .DEFINE_COVID_CORTO_DERECHA:
 
         ld      a,b
-        ld		hl,VALORES_BASICOS_COVID_CORTO_DERECHA
-        jp      .comun_covids
+        ld      d,135
+        ld      e,9
+        ld      c,135
+        ld      l,0
+        jp      .comun_covids_variante
 
 .DEFINE_COVID_ABAJO_IZQUIERDA:
 
         ld      a,b
-        ld		hl,VALORES_BASICOS_COVID_ABAJO_IZQUIERDA
-        jp      .comun_covids
+        ld      d,30
+        ld      e,28
+        ld      c,1
+        ld      l,62*4
+        jp      .comun_covids_variante
 
 .DEFINE_COVID_CORTO_IZQUIERDA:
 
         ld      a,b
-        ld		hl,VALORES_BASICOS_COVID_CORTO_IZQUIERDA
-        jp      .comun_covids
+        ld      d,10
+        ld      e,9
+        ld      c,10
+        ld      l,0
+        jp      .comun_covids_variante
 
 .DEFINE_COVID_CORTO_CENTRO:
 
         ld      a,b
-        ld		hl,VALORES_BASICOS_COVID_CORTO_CENTRO
-        jp      .comun_covids
+        ld      d,86
+        ld      e,9
+        ld      c,70
+        ld      l,62*4
+        jp      .comun_covids_variante
 
 
 .DEFINE_COVID:
@@ -1417,6 +2020,7 @@ COVIDS:
 
         call    STANDAR_LDIR_ENEMIGOS
 
+.comun_covids_sin_carga:
  
         ld      (ix+11),a
         cp      000100000B
@@ -1430,6 +2034,24 @@ COVIDS:
         call    TROZOS_COMUNES_1
 		ld		hl,COLOR_COVID_1_1						; Damos color al sprite en la posición de sprite que le toca	
 		jp      TROZOS_COMUNES_9
+
+.comun_covids_variante:
+
+        push    af
+        push    de
+        push    bc
+        push    hl
+        ld		hl,VALORES_BASICOS_COVID
+        call    STANDAR_LDIR_ENEMIGOS
+        pop     hl
+        pop     bc
+        pop     de
+        pop     af
+        ld      (ix),d
+        ld      (ix+6),e
+        ld      (ix+9),c
+        ld      (ix+15),l
+        jp      .comun_covids_sin_carga
 
 .SECUENCIA_COVID_ABAJO:
 
@@ -2727,3 +3349,203 @@ CARGA_SPRITES_1_A_45_STANDARD:
 CARGA_1_A_45_FASE_3_ESPECIFICO:
 
 			jp		PRECARGA_SOLO_VAGONETA_EN_PATRONES_ALTOS
+
+ACTIVAMOS_INTERRUPCIONES_DE_LINEA_REAL:
+
+		call	INTRODUCIMOS_LINEA_DE_INTERRUPCION_NUEVA
+
+		di
+		ld 		a,(RG0SAV)												; Enable Line Interrupt: Set R#0 bit 4
+		or		00010000B
+		ld		(RG0SAV),a
+		ld		b,a
+		ld		c,0
+		call	WRTVDP_EN_RAM
+		ei
+		ret
+
+REVISA_LETRAS_DE_LA_FASE_REAL:
+
+		ld		a,(TENEMOS_D)
+		or		a
+		ret		z
+		ld		a,(TENEMOS_E)
+		or		a
+		ret		z
+		ld		a,(TENEMOS_P)
+		or		a
+		ret		z
+		ld		a,(TENEMOS_H)
+		or		a
+		ret		z
+		ld		a,(TENEMOS_TODAS)
+		inc		a
+		ld		(TENEMOS_TODAS),a
+		ret
+
+CONTROL_BUCLES_INICIO_BUCLE_REAL:
+
+		xor		a
+		ld		(SUMA_BUCLE),a
+		ld		hl,(LINEA_A_LEER)
+		inc		hl
+		ld		(LINEA_DE_REGRESO_BUCLE),hl
+		ret
+
+CONTROL_BUCLES_CONTROL_IZQUIERDA_REAL:
+
+		ld		a,(X_DEPH)
+		cp		5*16
+		ret		nc
+		ld		a,(SUMA_BUCLE)
+		inc		a
+		ld		(SUMA_BUCLE),a
+		ret
+
+CONTROL_BUCLES_CONTROL_CENTRO_REAL:
+
+		ld		a,(X_DEPH)
+		cp		5*16
+		ret		c
+		cp		11*16
+		ret		nc
+		ld		a,(SUMA_BUCLE)
+		inc		a
+		ld		(SUMA_BUCLE),a
+		ret
+
+CONTROL_BUCLES_CONTROL_DERECHA_REAL:
+
+		ld		a,(X_DEPH)
+		cp		11*16
+		ret		c
+		ld		a,(SUMA_BUCLE)
+		inc		a
+		ld		(SUMA_BUCLE),a
+		ret
+
+CARGA_1_A_45_REAL:
+
+			call    PAGE_10_A_SEGMENT_2
+			call	CARGA_SPRITES_1_A_45_STANDARD
+			ld		a,(FASE)
+			cp		3
+			ret		nz
+			jp		CARGA_1_A_45_FASE_3_ESPECIFICO
+
+CARGA_1_A_45_FASE_3_REAL:
+
+			call    PAGE_10_A_SEGMENT_2
+			call    CARGA_SPRITES_1_A_45_STANDARD
+			jp		CARGA_1_A_45_FASE_3_ESPECIFICO
+
+CARGA_PIES_EN_LODO_REAL:
+
+			ld		hl,SPRITES_BARRO_DEPH
+			ld		de,#4000+5*8*4
+			ld		bc,18*8*4
+			jp		TROZOS_COMUNES_15
+
+CARGA_FIREWORKS_REAL:
+
+			ld		a,1
+			ld		(FIREWORKS_ACTIVO),a
+			ld		hl,SPRITES_FIREWORK
+			jp		CARGA_COMUN_24
+CARGA_SKRULLEX_REAL:
+
+			xor		a
+			ld		(ALPHONSERRYX_ACTIVO),a
+			ld		hl,SPRITES_SKRULLEX
+			ld		de,#4000+46*8*4
+			jp		CARGA_COMUN_4
+CARGA_SKRULLEX_SLIME_REAL:
+
+			ld		hl,SPRITES_SKRULLEX
+			ld		de,#4000+46*8*4
+			jp		CARGA_COMUN_8
+
+CARGA_SLIME_FUEGO_REAL:
+
+			ld		hl,SPRITES_SLIMES_FUEGO
+			ld		de,#4000+50*8*4
+			jp		CARGA_COMUN_4
+
+CARGA_CORVELLINI_COVID_REAL:
+
+			ld		hl,SPRITES_CORVELLINI
+			ld		de,#4000+54*8*4
+			jp		CARGA_COMUN_10
+CARGA_ALFONSERRYX_REAL:
+
+			ld		hl,SPRITES_ALPHONSERRYX
+			ld		de,#4000+54*8*4
+			jp		CARGA_COMUN_4
+
+CARGA_ALFONSERRYX_STAGE_4_REAL:
+
+			ld		a,1
+			ld		(ALPHONSERRYX_ACTIVO),a
+			ld		hl,SPRITES_ALPHONSERRYX
+			ld		de,#4000+46*8*4
+			jp		CARGA_COMUN_4
+
+CARGA_MEGADEATH_REAL:
+
+			ld		hl,SPRITES_MEGADEATH
+			ld		de,#4000+54*8*4
+			jp		CARGA_COMUN_6
+CARGA_ECTO_PALLER_REAL:
+
+			ld		hl,SPRITES_ECTO_PALLERS
+			ld		de,#4000+50*8*4
+			jp		CARGA_COMUN_4
+CARGA_ECTO_PALLER_MUERTO_REAL:
+
+			ld		hl,SPRITES_ECTO_MUERTO
+			ld		de,#4000+50*8*4
+			jp		CARGA_COMUN_4
+CARGA_INCORRECTO_REAL:
+
+			ld		hl,SPRITE_CAMINO_INCORRECTO
+			ld		de,#4000+37*8*4
+			jp		CARGA_COMUN_2
+
+CARGA_CORRECTO_REAL:
+
+			ld		hl,SPRITE_CAMINO_CORRECTO
+			ld		de,#4000+37*8*4
+			jp		CARGA_COMUN_2
+
+CARGA_COMUN_1_FLECHA_REAL:
+
+			ld		de,#4000+39*8*4
+			ld		bc,1*8*4
+			jp		TROZOS_COMUNES_15
+
+CARGA_COMUN_24_REAL:
+
+			ld		de,#4000+25*8*4
+			ld		bc,24*8*4
+			jp		TROZOS_COMUNES_15
+CARGA_COMUN_26_REAL:
+
+			ld		de,#4000+23*8*4
+			ld		bc,26*8*4
+			jp		TROZOS_COMUNES_15
+CARGA_COMUN_45_REAL:
+
+			halt
+			ld		de,#4000+1*8*4
+			ld		bc,45*8*4
+			call	TROZOS_COMUNES_15
+
+		ld		hl,COLORES_DEPH_CASCOS_POSE_3
+
+        call    PAGE_32_A_SEGMENT_2
+
+		ld		de,#4840
+		ld		bc,96
+		call	PON_COLOR_2.sin_bc_impuesta
+        jp    	PAGE_10_A_SEGMENT_2
+

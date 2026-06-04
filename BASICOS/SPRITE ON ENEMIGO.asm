@@ -23,6 +23,10 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES:
         inc     a
         jp      z,.NO_HAY_COLISION
 
+        ld      a,(ix+6)
+        cp      35
+        jp      z,.NO_HAY_COLISION
+
         ld      a,(ix+0)
         ld      e,(iy+0)
         sub     e

@@ -368,6 +368,8 @@
 		call	SITUAMOS_PUNTERO_EN_TABLA_DESDE_HL_YA_MARCADA			; Vamos a ver el suceso que le toca a esa linea
         call    PAGE_10_A_SEGMENT_2
 
+;.TRAS_SUCESO:
+
 
 ;.RECOLOCAMOS_Y:
 

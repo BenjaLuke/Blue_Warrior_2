@@ -350,6 +350,9 @@ TRAMO_FASE_3:					#1										; 0,1,2 para las tres paginas de datos de la fase 
 PAGE_DATOS_FASE:				#1										; Pagina ROM de constantes, eventos y paletas de fase
 RETENCION_Y_DEPH_POST_RECTIFICA_UP:     #1
 FASE3_VAGON_AJUSTE_TILE_CONTADOR:       #1
+FASE3_VAGON_ARRASTRE_X:                 #1
+TILE_FASE3_VAGON_X16:                   #1
+FASE3_VAGON_TIPO_MUERTE:                #1
 
 ROTATIVO_CONTADOR_PRESENTACION:              #1      ; Contador de velocidad del rotativo de presentacion
 ROTATIVO_PAGINA_VISIBLE_PRESENTACION:        #1      ; Page 0/1 actualmente visible en la presentacion
