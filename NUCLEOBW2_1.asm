@@ -817,7 +817,12 @@ CONTROL:
 .MIRA_SI_CAMBIA_VELOCIDAD:
 			call	SECUENCIA_PROYECTILES_Y_ENEMIGOS		
 			call	REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES
+			call	ES_FASE3_VAGON_ACTIVO
+			jr		c,.SIN_COLISION_ENEMIGOS_DEPH_VAGON_FASE3
 			call	REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH
+
+.SIN_COLISION_ENEMIGOS_DEPH_VAGON_FASE3:
+
 			call	PINTA_PROYECTILES_ENEMIGOS
 
 .miramos_si_hay_cambio_de_velocidad:
@@ -1171,6 +1176,9 @@ PINTA_SPRITE_DEPH_VAGON_AJUSTADO:
 		call	ES_FASE3_VAGON_ACTIVO
 		jp		nc,PINTA_SPRITE_DEPH
 		call	PINTA_SPRITE_VAGONETA_TOTAL_SECTOR_10
+		ld		a,(MUSICA_ON_OFF)
+		or		a
+		jp		z,PINTA_COLORES_SPRITE_VAGON_CASCOS
 		jp		PINTA_COLORES_SPRITE_VAGON
 
 MARCA_REAPLICA_VAGON_RET:
@@ -1198,22 +1206,12 @@ CARGA_SPRITES_VAGONETA_PAUSA:
 		call	PAGE_32_A_SEGMENT_2
 		ld		hl,SPRITES_VAGONETA_PAUSA
 		ld		de,#4000+4*8
-		ld		bc,5*32
-		call	PON_COLOR_2.sin_bc_impuesta
-
-		ld		hl,SPRITE_VAGONETA_PATRON_BLANCO
-		ld		de,#4000+24*8
-		ld		bc,32
+		ld		bc,4*32
 		call	PON_COLOR_2.sin_bc_impuesta
 
 		ld		hl,COLOR_SPRITES_VAGONETA_PAUSA
 		ld		de,#4800
-		ld		bc,5*16
-		call	PON_COLOR_2.sin_bc_impuesta
-
-		ld		hl,COLOR_SPRITE_VAGONETA_PATRON_BLANCO
-		ld		de,#4850
-		ld		bc,16
+		ld		bc,4*16
 		call	PON_COLOR_2.sin_bc_impuesta
 		jp		PAGE_10_A_SEGMENT_2
 
@@ -1222,12 +1220,22 @@ CARGA_SPRITES_VAGONETA_CASCOS:
 		call	PAGE_32_A_SEGMENT_2
 		ld		hl,SPRITES_VAGONETA_CASCOS
 		ld		de,#4000+4*8
-		ld		bc,6*32
+		ld		bc,2*32
+		call	PON_COLOR_2.sin_bc_impuesta
+
+		ld		hl,SPRITES_VAGONETA_CASCOS+3*32
+		ld		de,#4000+12*8
+		ld		bc,2*32
 		call	PON_COLOR_2.sin_bc_impuesta
 
 		ld		hl,COLOR_SPRITES_VAGONETA_CASCOS
 		ld		de,#4800
-		ld		bc,6*16
+		ld		bc,2*16
+		call	PON_COLOR_2.sin_bc_impuesta
+
+		ld		hl,COLOR_SPRITES_VAGONETA_CASCOS+3*16
+		ld		de,#4820
+		ld		bc,2*16
 		call	PON_COLOR_2.sin_bc_impuesta
 		ld		a,1
 		ld		(SUMA_CAMINO),a
@@ -1274,6 +1282,25 @@ PINTA_COLORES_SPRITE_VAGON_DESDE_PAGE32:
 		ld		hl,COLOR_SPRITE_VAGONETA_TOTAL
 		ld		de,#4800
 		ld		bc,8*16
+		call	PON_COLOR_2.sin_bc_impuesta
+		jp		PAGE_10_A_SEGMENT_2
+
+PINTA_COLORES_SPRITE_VAGON_CASCOS:
+
+		call	PAGE_32_A_SEGMENT_2
+		ld		hl,COLOR_SPRITES_VAGONETA_CASCOS
+		ld		de,#4800
+		ld		bc,2*16
+		call	PON_COLOR_2.sin_bc_impuesta
+
+		ld		hl,COLOR_SPRITES_VAGONETA_CASCOS+3*16
+		ld		de,#4820
+		ld		bc,2*16
+		call	PON_COLOR_2.sin_bc_impuesta
+
+		ld		hl,COLOR_SPRITE_VAGONETA_TOTAL+4*16
+		ld		de,#4840
+		ld		bc,4*16
 		call	PON_COLOR_2.sin_bc_impuesta
 		jp		PAGE_10_A_SEGMENT_2
 

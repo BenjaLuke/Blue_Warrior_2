@@ -340,8 +340,9 @@
 		sbc		hl,de
 		
 		ld		(LINEA_A_LEER),hl										; Comprovaciones sobre la posición del mapa
-		ld		a,h														; Paso H a A 
-		or		l														; Al hacer el OR con L se quedará a 0 si L y H son 0 y Z será 0
+		inc		hl														; Si hemos pasado de la linea 0 a #FFFF, cambiamos de tramo
+		ld		a,h
+		or		l
 		jr		nz,BUCLE_PINTA_TILES.SUCESOS
 		ld		a,(TRAMO_FASE_3)
 		cp		2
@@ -350,7 +351,7 @@
 		ld		(TRAMO_FASE_3),a
 		add		63
 		ld		(PAGE_DATOS_FASE),a
-		ld		hl,449
+		ld		hl,468
 		ld		(LINEA_A_LEER),hl
 
 ;.SUCESOS:

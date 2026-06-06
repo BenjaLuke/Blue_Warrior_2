@@ -6,8 +6,12 @@ ES_FASE3_VAGON_ACTIVO:
 			jr		nz,.NO_ES_FASE3_VAGON_ACTIVO
 
 			ld		a,(SUMA_CAMINO)
-			or		a
-			jr		z,.NO_ES_FASE3_VAGON_ACTIVO
+			cp		1
+			jr		z,.SI_ES_FASE3_VAGON_ACTIVO
+			cp		2
+			jr		nz,.NO_ES_FASE3_VAGON_ACTIVO
+
+.SI_ES_FASE3_VAGON_ACTIVO:
 
 			scf
 			ret
@@ -605,6 +609,8 @@ CONTROL_FASE3_TILE_145_SECTOR_10:
 			cp		22
 			jr		nc,.mira_si_pisable
 			call	PINTA_TRIADA_ENTRADA_FASE3_VAGON
+			xor		a
+			ld		(FASE3_VAGON_CORRIGE_Y_CADENCIA),a
 			call	CONTROL_VELOCIDAD_FASE_VAGON
 			or		a
 			ret
@@ -677,6 +683,9 @@ PINTA_TRIADA_ENTRADA_FASE3_VAGON:
 			ld		a,(Y_DEPH)
 			sub		16
 			ld		(Y_DEPH),a
+			ld		a,(CONTROL_Y)
+			sub		16
+			ld		(CONTROL_Y),a
 
 			ld		a,e
 			cp		17
@@ -946,11 +955,11 @@ SE_PUEDE_MOVER_Y_EFES_VARIOS:
 
 			ld		a,(MARCADOR_PULSADO)
 			or		a
-			jp		nz,CONTROL.teclado
+			jp		nz,.FIN_MUSIC_ON_OFF_VAGON
 
 			ld		a,(FMPAC_DESCONECTADO)
 			or		a
-			jp		z,CONTROL.teclado
+			jp		z,.FIN_MUSIC_ON_OFF_VAGON
 
 			ld		a,1
 			ld		(MARCADOR_PULSADO),a
@@ -965,7 +974,7 @@ SE_PUEDE_MOVER_Y_EFES_VARIOS:
 			ld		(MUSICA_ON_OFF),a
 			call	stpmus
 			call	CARGA_SPRITES_VAGONETA_CASCOS
-			jp		CONTROL.teclado
+			jp		.FIN_MUSIC_ON_OFF_VAGON
 
 .ENCIENDE_MUSICA_VAGON:
 
@@ -973,7 +982,14 @@ SE_PUEDE_MOVER_Y_EFES_VARIOS:
 			ld		(MUSICA_ON_OFF),a
 			call	CARGA_MUSICA_VAGONETA
 			call	APLICA_SPRITES_DEPH_VAGON
-			jp		CONTROL.teclado
+			jp		.FIN_MUSIC_ON_OFF_VAGON
+
+.FIN_MUSIC_ON_OFF_VAGON:
+
+			call	RUTINA_ESPECIAL_FASE_3
+			call	ES_FASE3_VAGON_ACTIVO
+			jp		c,CONTROL.FIN_RUTINA_GLOBAL
+			jp		CONTROL.pre_sigue_comun
 
 RUTINA_ESPECIAL_FASE_3:
 
@@ -982,8 +998,411 @@ RUTINA_ESPECIAL_FASE_3:
 			ret		nz
 			call	ES_FASE3_VAGON_ACTIVO
 			ret		nc
+			ld		a,(VARIABLE_UN_USO3)
+			cp		255
+			jp		z,RESUELVE_SALTO_FASE3_VAGON
+			call	CONTROL_SALTO_FASE3_VAGON
+			ret		c
 			call	CONTROL_FASE3_TILE_PUNTO_DEPH
 			ret
+
+CONTROL_SALTO_FASE3_VAGON:
+
+			call	.PULSA_DISPARO_FASE3_VAGON
+			ret		nc
+			call	.PULSA_DERECHA_SALTO_FASE3_VAGON
+			jr		c,.SALTO_DERECHA
+			call	.PULSA_IZQUIERDA_SALTO_FASE3_VAGON
+			ret		nc
+			ld		a,2
+			jr		.GUARDA_DIRECCION
+
+.SALTO_DERECHA:
+
+			ld		a,1
+
+.GUARDA_DIRECCION:
+
+			ld		(VARIABLE_UN_USO2),a
+			ld		a,(TILE_FASE3_VAGON)
+			cp		118
+			jr		c,.NO_SALTA_FASE3_VAGON
+			cp		130
+			ret		nc
+			call	PINTA_TRIADA_SALTO_SALE_VAGON
+			call	CARGA_DEPH_NORMAL_SALTO_FASE3_VAGON
+			ld		a,20
+			ld		(FOTOGRAMA_DEPH),a
+			xor		a
+			ld		(FOTOGRAMA_DEPH_EN_ORDEN),a
+			call	PINTA_SPRITE_DEPH_SALTO_VAGONETA
+			call	CARGA_COLORES_PARTE_INFERIOR_DEPH_SALTO_VAGONETA
+			ld		a,(Y_DEPH)
+			sub		16
+			ld		(Y_DEPH),a
+			ld		a,(CONTROL_Y)
+			sub		16
+			ld		(CONTROL_Y),a
+			ld		a,35
+			ld		c,0
+			call	A_31_DESDE_10
+			call	.EJECUTA_PARABOLA_FASE3_VAGON
+			ld		a,255
+			ld		(VARIABLE_UN_USO3),a
+			scf
+			ret
+
+.NO_SALTA_FASE3_VAGON:
+
+			or		a
+			ret
+
+.PULSA_DISPARO_FASE3_VAGON:
+
+			xor		a
+			call	GTTRIG_RAM
+			or		a
+			jr		nz,.SI_PULSA_DISPARO
+			ld		a,1
+			call	GTTRIG_RAM
+			or		a
+			ret		z
+
+.SI_PULSA_DISPARO:
+
+			scf
+			ret
+
+.PULSA_DERECHA_SALTO_FASE3_VAGON:
+
+			xor		a
+			call	GTSTCK_RAM
+			call	.ES_DERECHA_SALTO_FASE3_VAGON
+			ret		c
+			ld		a,1
+			call	GTSTCK_RAM
+			jp		.ES_DERECHA_SALTO_FASE3_VAGON
+
+.PULSA_IZQUIERDA_SALTO_FASE3_VAGON:
+
+			xor		a
+			call	GTSTCK_RAM
+			call	.ES_IZQUIERDA_SALTO_FASE3_VAGON
+			ret		c
+			ld		a,1
+			call	GTSTCK_RAM
+			jp		.ES_IZQUIERDA_SALTO_FASE3_VAGON
+
+.ES_DERECHA_SALTO_FASE3_VAGON:
+
+			cp		2
+			jr		c,.NO_DERECHA
+			cp		5
+			jr		nc,.NO_DERECHA
+			scf
+			ret
+
+.NO_DERECHA:
+
+			or		a
+			ret
+
+.ES_IZQUIERDA_SALTO_FASE3_VAGON:
+
+			cp		6
+			jr		c,.NO_IZQUIERDA
+			cp		9
+			jr		nc,.NO_IZQUIERDA
+			scf
+			ret
+
+.NO_IZQUIERDA:
+
+			or		a
+			ret
+
+.EJECUTA_PARABOLA_FASE3_VAGON:
+
+			ld		hl,TABLA_SALTO_FASE3_VAGON_X
+			ld		de,TABLA_SALTO_FASE3_VAGON_Y
+			ld		b,30
+
+.BUCLE_PARABOLA:
+
+			push	bc
+			push	hl
+			push	de
+			ld		a,(hl)
+			ld		c,a
+			ld		a,(VARIABLE_UN_USO2)
+			cp		1
+			jr		z,.SUMA_X_PARABOLA
+
+.RESTA_X_PARABOLA:
+
+			ld		a,(X_DEPH)
+			sub		c
+			jr		nc,.GUARDA_X_PARABOLA
+			xor		a
+			jr		.GUARDA_X_PARABOLA
+
+.SUMA_X_PARABOLA:
+
+			ld		a,(X_DEPH)
+			add		a,c
+			cp		240
+			jr		c,.GUARDA_X_PARABOLA
+			ld		a,239
+
+.GUARDA_X_PARABOLA:
+
+			ld		(X_DEPH),a
+			pop		de
+			push	de
+			ld		a,(de)
+			ld		c,a
+			ld		a,(Y_DEPH)
+			add		a,c
+			ld		(Y_DEPH),a
+			ld		a,(CONTROL_Y)
+			add		a,c
+			ld		(CONTROL_Y),a
+			halt
+			call	PINTA_SPRITE_DEPH_SALTO_VAGONETA
+			call	CARGA_COLORES_PARTE_INFERIOR_DEPH_SALTO_VAGONETA
+			pop		de
+			pop		hl
+			inc		hl
+			inc		de
+			pop		bc
+			djnz	.BUCLE_PARABOLA
+			ret
+
+CARGA_DEPH_NORMAL_SALTO_FASE3_VAGON:
+
+			ld		hl,SPRITES_PARTE_INFERIOR_DEPH_SALTO_VAGONETA_SECTOR_10
+			ld		de,#4000+20*8
+			ld		bc,4*32
+			call	PON_COLOR_2.sin_bc_impuesta
+			jp		CARGA_COLORES_PARTE_INFERIOR_DEPH_SALTO_VAGONETA
+
+CARGA_COLORES_PARTE_INFERIOR_DEPH_SALTO_VAGONETA:
+
+			ld		hl,COLOR_SPRITES_PARTE_INFERIOR_DEPH_SALTO_VAGONETA_SECTOR_10
+			ld		de,#4840
+			ld		bc,4*16
+			jp		PON_COLOR_2.sin_bc_impuesta
+
+PINTA_SPRITE_DEPH_SALTO_VAGONETA:
+
+			push	ix
+
+			ld		ix,ATRIBUTOS_DEPH_VARIABLES
+
+			ld		a,(INMUNE)
+[3]			srl		a
+			and		00000001B
+			or		a
+			jp		z,.PINTA_SPRITE_NORMAL_SALTO_VAGON
+
+.PINTA_SPRITE_TRANSPARENTE_SALTO_VAGON:
+
+			ld		a,(DONDE_VA_LA_INTERRUPCION_LINEAL)
+			add		23
+			jp		.MISMOS_DATOS_SALTO_VAGON
+
+.PINTA_SPRITE_NORMAL_SALTO_VAGON:
+
+			ld		a,(Y_DEPH)
+
+.MISMOS_DATOS_SALTO_VAGON:
+
+			push	af
+			add		16
+			push	af
+			ld		a,(X_DEPH)
+			push	af
+			add		16
+
+			ld		(ix+9),a
+			ld		(ix+13),a
+			ld		(ix+25),a
+			ld		(ix+29),a
+
+			pop		af
+			ld		(ix+1),a
+			ld		(ix+5),a
+			ld		(ix+17),a
+			ld		(ix+21),a
+
+			pop		af
+			ld		(ix+16),a
+			ld		(ix+20),a
+			ld		(ix+24),a
+			ld		(ix+28),a
+			ld		a,217
+			ld		(ix+32),a
+			ld		(ix+36),a
+
+			pop		af
+			ld		(ix),a
+			ld		(ix+4),a
+			ld		(ix+8),a
+			ld		(ix+12),a
+
+			ld		a,20
+			ld		(ix+18),a
+			add		4
+			ld		(ix+22),a
+			add		4
+			ld		(ix+26),a
+			add		4
+			ld		(ix+30),a
+			xor		a
+			ld		(ix+34),a
+			ld		(ix+38),a
+
+			pop		ix
+
+			ld		hl,ATRIBUTOS_DEPH_VARIABLES
+			ld		de,#4A00
+			ld		bc,40
+			jp		PON_COLOR_2.sin_bc_impuesta
+
+SPRITES_PARTE_INFERIOR_DEPH_SALTO_VAGONETA_SECTOR_10:
+
+			db		#00,#03,#01,#00,#00,#00,#00,#00
+			db		#00,#00,#00,#00,#00,#00,#00,#00
+			db		#1f,#bf,#fe,#e0,#e0,#00,#00,#00
+			db		#00,#00,#00,#00,#00,#00,#00,#00
+
+			db		#03,#04,#03,#01,#00,#00,#00,#00
+			db		#00,#00,#00,#00,#00,#00,#00,#00
+			db		#bf,#7f,#f9,#de,#00,#00,#00,#00
+			db		#00,#00,#00,#00,#00,#00,#00,#00
+
+			db		#f8,#fd,#7f,#07,#07,#00,#00,#00
+			db		#00,#00,#00,#00,#00,#00,#00,#00
+			db		#00,#c0,#80,#00,#00,#00,#00,#00
+			db		#00,#00,#00,#00,#00,#00,#00,#00
+
+			db		#f5,#fa,#ff,#7f,#00,#00,#00,#00
+			db		#00,#00,#00,#00,#00,#00,#00,#00
+			db		#c0,#20,#40,#80,#00,#00,#00,#00
+			db		#00,#00,#00,#00,#00,#00,#00,#00
+
+COLOR_SPRITES_PARTE_INFERIOR_DEPH_SALTO_VAGONETA_SECTOR_10:
+
+			db		#04,#04,#04,#04,#01,#00,#00,#00
+			db		#00,#00,#00,#00,#00,#00,#00,#00
+			db		#41,#41,#41,#41,#00,#00,#00,#00
+			db		#00,#00,#00,#00,#00,#00,#00,#00
+
+			db		#04,#04,#04,#04,#01,#00,#00,#00
+			db		#00,#00,#00,#00,#00,#00,#00,#00
+			db		#41,#41,#41,#41,#00,#00,#00,#00
+			db		#00,#00,#00,#00,#00,#00,#00,#00
+
+RESUELVE_SALTO_FASE3_VAGON:
+
+			xor		a
+			ld		(VARIABLE_UN_USO3),a
+			ld		a,(TILE_FASE3_VAGON)
+			cp		16
+			jr		c,.SALE_SALTO_FASE3_VAGON
+			cp		22
+			jr		nc,.MUERE_SALTO_FASE3_VAGON
+			ld		b,a
+			ld		c,6
+			ld		a,20
+			ld		(VARIABLE_UN_USO2),a
+			call	PINTA_TRIADA_ENTRADA_FASE3_VAGON_Y_MAS_16
+			ld		a,2
+			ld		(SUMA_CAMINO),a
+			xor		a
+			ld		(FASE3_VAGON_CORRIGE_Y_CADENCIA),a
+			call	BUCLE_PINTA_TILES.VELOCIDAD_DE_FASE_GALOPE
+			call	APLICA_SPRITES_DEPH_VAGON
+			scf
+			ret
+
+.SALE_SALTO_FASE3_VAGON:
+
+			call	CONTROL_FASE3_TILE_PUNTO_DEPH.SALE_DE_FASE3_VAGON
+			scf
+			ret
+
+.MUERE_SALTO_FASE3_VAGON:
+
+			ld		a,3
+			ld		(FASE3_VAGON_TIPO_MUERTE),a
+			jp		CONTROL_FASE3_TILE_PUNTO_DEPH.MUERTE_DEPH_FASE3_VAGON
+
+PINTA_TRIADA_SALTO_SALE_VAGON:
+
+			ld		e,a
+			cp		124
+			ld		a,16
+			jr		c,.CALCULA_DESTINO
+			ld		a,19
+
+.CALCULA_DESTINO:
+
+			push	af
+			call	CALCULA_XY_TILE_FASE3_VAGON
+			ld		a,e
+			cp		119
+			jr		z,.RESTA_UN_TILE
+			cp		122
+			jr		z,.RESTA_UN_TILE
+			cp		125
+			jr		z,.RESTA_UN_TILE
+			cp		128
+			jr		z,.RESTA_UN_TILE
+			cp		120
+			jr		z,.RESTA_DOS_TILES
+			cp		123
+			jr		z,.RESTA_DOS_TILES
+			cp		126
+			jr		z,.RESTA_DOS_TILES
+			cp		129
+			jr		z,.RESTA_DOS_TILES
+			jr		.PINTA
+
+.RESTA_UN_TILE:
+
+			ld		a,b
+			sub		16
+			ld		b,a
+			jr		.PINTA
+
+.RESTA_DOS_TILES:
+
+			ld		a,b
+			sub		32
+			ld		b,a
+
+.PINTA:
+
+			pop		af
+			jp		PINTA_TRIADA_FASE3_VAGON
+
+PINTA_TRIADA_ENTRADA_FASE3_VAGON_Y_MAS_16:
+
+			call	PINTA_TRIADA_ENTRADA_FASE3_VAGON
+			ret
+
+TABLA_SALTO_FASE3_VAGON_X:
+
+			db		2,1,2,1,2,1,2,1,2,1
+			db		2,1,2,1,2,1,2,1,2,1
+			db		2,1,2,1,2,1,2,1,2,4
+
+TABLA_SALTO_FASE3_VAGON_Y:
+
+			db		252,252,252,254,254,254,254,255,255,255
+			db		255,0,0,0,0,0,0,0,0,0
+			db		1,1,1,1,2,2,2,2,4,4
 
 CONTROL_FASE3_TILE_PUNTO_DEPH:
 
@@ -1009,18 +1428,26 @@ CONTROL_FASE3_TILE_PUNTO_DEPH:
 			jp		z,.COLOCA_X_DEPH_EN_TILE_MAS_12
 			cp		119
 			jp		z,.COLOCA_X_DEPH_EN_TILE_MENOS_4
+			cp		120
+			jp		z,.COLOCA_X_DEPH_EN_TILE_MENOS_20
 			cp		121
 			jp		z,.COLOCA_X_DEPH_EN_TILE_MAS_12
 			cp		122
 			jp		z,.COLOCA_X_DEPH_EN_TILE_MENOS_4
+			cp		123
+			jp		z,.COLOCA_X_DEPH_EN_TILE_MENOS_20
 			cp		124
 			jp		z,.COLOCA_X_DEPH_EN_TILE_MAS_12
 			cp		125
 			jp		z,.COLOCA_X_DEPH_EN_TILE_MENOS_4
+			cp		126
+			jp		z,.COLOCA_X_DEPH_EN_TILE_MENOS_20
 			cp		127
 			jp		z,.COLOCA_X_DEPH_EN_TILE_MAS_12
 			cp		128
 			jp		z,.COLOCA_X_DEPH_EN_TILE_MENOS_4
+			cp		129
+			jp		z,.COLOCA_X_DEPH_EN_TILE_MENOS_20
 
 .MIRA_ARRASTRE_X:
 
@@ -1084,15 +1511,14 @@ CONTROL_FASE3_TILE_PUNTO_DEPH:
 .CONTROL_FASE3_VAGON_MUERTE_TILE:
 
 			push	bc
-			ld		a,(TILE_FASE3_VAGON_X16)
+			ld		a,(TILE_FASE3_VAGON)
 			cp		160
-			jr		nz,.MIRA_TILE_MUERTE_NORMAL
+			jr		nz,.MIRA_TILE_MUERTE_130_138
 			ld		a,2
 			jr		.GUARDA_TIPO_MUERTE
 
-.MIRA_TILE_MUERTE_NORMAL:
+.MIRA_TILE_MUERTE_130_138:
 
-			ld		a,(TILE_FASE3_VAGON)
 			cp		130
 			jr		c,.NO_HAY_MUERTE_TILE
 			cp		139
@@ -1138,12 +1564,16 @@ CONTROL_FASE3_TILE_PUNTO_DEPH:
 
 			xor		a
 			ld		(SUMA_CAMINO),a
+			ld		(FASE3_VAGON_CORRIGE_Y_CADENCIA),a
 			ld		(FASE3_VAGON_ARRASTRE_X),a
 			ld		(FASE3_VAGON_AJUSTE_TILE_CONTADOR),a
 			call	CARGA_1_A_45_FASE_3
 			ld		a,(Y_DEPH)
 			sub		16
 			ld		(Y_DEPH),a
+			ld		a,(CONTROL_Y)
+			sub		16
+			ld		(CONTROL_Y),a
 			call	BUCLE_PINTA_TILES.musica_mas_velocidad
 			ret
 
@@ -1441,6 +1871,14 @@ CONTROL_FASE3_TILE_PUNTO_DEPH:
 			ld		(X_DEPH),a
 			ret
 
+.COLOCA_X_DEPH_EN_TILE_MENOS_20:
+			ld		a,(X_DEPH)
+			add		6
+			and		11110000b
+			sub		20
+			ld		(X_DEPH),a
+			ret
+
 .APLICA_TABLA_X:
 
 			call	LEE_ACCION_TABLA_FASE3_VAGON
@@ -1453,12 +1891,46 @@ CONTROL_FASE3_TILE_PUNTO_DEPH:
 			ld		a,(X_DEPH)
 			dec		a
 			ld		(X_DEPH),a
+			ld		a,(TILE_FASE3_VAGON)
+			cp		153
+			jr		z,.LIMITA_X_MIN_TILE_MENOS_4
+			cp		169
+			jr		z,.LIMITA_X_MIN_TILE_MENOS_4
 			ret
 
 .SUMA_X_DEPH_TABLA:
 
 			ld		a,(X_DEPH)
 			inc		a
+			ld		(X_DEPH),a
+			ld		a,(TILE_FASE3_VAGON)
+			cp		150
+			jr		z,.LIMITA_X_MAX_TILE_MENOS_4
+			cp		166
+			jr		z,.LIMITA_X_MAX_TILE_MENOS_4
+			ret
+
+.LIMITA_X_MAX_TILE_MENOS_4:
+
+			ld		a,(X_DEPH)
+			ld		e,a
+			add		6
+			and		11110000b
+			sub		4
+			cp		e
+			ret		nc
+			ld		(X_DEPH),a
+			ret
+
+.LIMITA_X_MIN_TILE_MENOS_4:
+
+			ld		a,(X_DEPH)
+			ld		e,a
+			add		6
+			and		11110000b
+			sub		4
+			cp		e
+			ret		c
 			ld		(X_DEPH),a
 			ret
 
@@ -1939,37 +2411,175 @@ LLAMA_PAUSE_VAGON_FASE_3:
 
 CORRIGE_Y_DEPH_SOLO_FASE3_VAGON:
 
-			call	ES_FASE3_VAGON_ACTIVO
-			ret		nc
+			ld		a,(FASE)
+			cp		3
+			ret		nz
+			ld		a,(SUMA_CAMINO)
+			cp		1
+			jr		z,.ES_VAGONETA_PARA_CORREGIR_Y
+			cp		2
+			ret		nz
+
+.ES_VAGONETA_PARA_CORREGIR_Y:
 
 			ld		a,(SPRITE_CAIDO)
 			or		a
 			ret		nz
 
-			ld		a,(CONTROL_Y)
-			cp		123
-			jr		c,.SUMA_Y_DEPH_VAGON
-			cp		179
+			ld		a,(VARIABLE_UN_USO3)
+			cp		255
+			ret		z
+
+			call	.HAY_DESPLAZAMIENTO_X_VAGON_ESTE_CICLO
 			ret		c
 
-.RESTA_Y_DEPH_VAGON:
-
-			ld		a,(CONTROL_Y)
-			dec		a
-			ld		(CONTROL_Y),a
 			ld		a,(Y_DEPH)
-			dec		a
-			ld		(Y_DEPH),a
-			ret
+			ld		b,a
+			ld		a,(DONDE_VA_LA_INTERRUPCION_LINEAL)
+			ld		c,a
+			ld		a,b
+			sub		c
+			cp		100
+			jr		c,.SUMA_Y_DEPH_VAGON
+			cp		185
+			ret		nc
+
+			ld		a,(FASE3_VAGON_CORRIGE_Y_CADENCIA)
+			xor		1
+			and		1
+			ld		(FASE3_VAGON_CORRIGE_Y_CADENCIA),a
+			ret		z
 
 .SUMA_Y_DEPH_VAGON:
 
 			ld		a,(CONTROL_Y)
 			inc		a
 			ld		(CONTROL_Y),a
+			call	.AJUSTA_CONTROL_Y_LIM_MUERTE_VAGON
 			ld		a,(Y_DEPH)
 			inc		a
 			ld		(Y_DEPH),a
+			cp		216
+			jr		z,.RECTIFICA_DOWN_Y_DEPH_VAGON
+			cp		200
+			ret		nz
+
+.RECTIFICA_DOWN_Y_DEPH_VAGON:
+
+			add		2
+			ld		(Y_DEPH),a
+			ld		a,(CONTROL_Y)
+			add		2
+			ld		(CONTROL_Y),a
+			call	.AJUSTA_CONTROL_Y_LIM_MUERTE_VAGON
+			ret
+
+.AJUSTA_CONTROL_Y_LIM_MUERTE_VAGON:
+
+			ld		a,(LIM_MUERTE)
+			ld		b,a
+			ld		a,(CONTROL_Y)
+			cp		b
+			jr		c,.MIRA_LIM_Y_INF_VAGON
+			ld		a,b
+			dec		a
+			ld		(CONTROL_Y),a
+
+.MIRA_LIM_Y_INF_VAGON:
+
+			ld		a,(LIM_Y_INF)
+			ld		b,a
+			ld		a,(CONTROL_Y)
+			cp		b
+			ret		c
+			ld		a,b
+			dec		a
+			ld		(CONTROL_Y),a
+			ret
+
+.HAY_DESPLAZAMIENTO_X_VAGON_ESTE_CICLO:
+
+			ld		a,(FASE3_VAGON_ARRASTRE_X)
+			cp		1
+			jr		z,.MIRA_TABLA_X_MAS_CORRIGE_Y
+			cp		2
+			jr		z,.MIRA_TABLA_X_MENOS_CORRIGE_Y
+
+			call	.CALCULA_INDICE_16_VAGON_CORRIGE_Y
+
+.MIRA_TILE_TABLA_X_CORRIGE_Y:
+
+			ld		a,(TILE_FASE3_VAGON)
+			cp		52
+			jr		c,.NO_HAY_DESPLAZAMIENTO_X_VAGON_ESTE_CICLO
+			cp		57
+			jr		c,.MIRA_TABLA_X_MAS_CORRIGE_Y
+			cp		68
+			jr		c,.MIRA_TILES_ALTOS_X_CORRIGE_Y
+			cp		74
+			jr		c,.MIRA_TABLA_X_MENOS_CORRIGE_Y
+
+.MIRA_TILES_ALTOS_X_CORRIGE_Y:
+
+			cp		149
+			jr		z,.MIRA_TABLA_X_MAS_CORRIGE_Y
+			cp		150
+			jr		z,.MIRA_TABLA_X_MAS_CORRIGE_Y
+			cp		165
+			jr		z,.MIRA_TABLA_X_MAS_CORRIGE_Y
+			cp		166
+			jr		z,.MIRA_TABLA_X_MAS_CORRIGE_Y
+
+			cp		153
+			jr		z,.MIRA_TABLA_X_MENOS_CORRIGE_Y
+			cp		154
+			jr		z,.MIRA_TABLA_X_MENOS_CORRIGE_Y
+			cp		169
+			jr		z,.MIRA_TABLA_X_MENOS_CORRIGE_Y
+			cp		170
+			jr		z,.MIRA_TABLA_X_MENOS_CORRIGE_Y
+			jr		.NO_HAY_DESPLAZAMIENTO_X_VAGON_ESTE_CICLO
+
+.MIRA_TABLA_X_MAS_CORRIGE_Y:
+
+			ld		hl,TABLA_FASE3_VAGON_X_MAS_CADA_2
+			jr		.MIRA_ACCION_X_CORRIGE_Y
+
+.MIRA_TABLA_X_MENOS_CORRIGE_Y:
+
+			ld		hl,TABLA_FASE3_VAGON_X_MENOS_CADA_2
+
+.MIRA_ACCION_X_CORRIGE_Y:
+
+			call	.CALCULA_INDICE_16_VAGON_CORRIGE_Y
+			ld		e,b
+			ld		d,0
+			add		hl,de
+			ld		a,(hl)
+			or		a
+			jr		nz,.SI_HAY_DESPLAZAMIENTO_X_VAGON_ESTE_CICLO
+
+.NO_HAY_DESPLAZAMIENTO_X_VAGON_ESTE_CICLO:
+
+			or		a
+			ret
+
+.SI_HAY_DESPLAZAMIENTO_X_VAGON_ESTE_CICLO:
+
+			scf
+			ret
+
+.CALCULA_INDICE_16_VAGON_CORRIGE_Y:
+
+			ld		a,(Y_DEPH)
+			add		26
+			ld		b,a
+			ld		a,(Y_PINTA_SCROLL)
+			ld		c,a
+			ld		a,b
+			sub		c
+			and		00001111b
+			ld		b,a
 			ret
 
 COVIDS:
@@ -3548,4 +4158,3 @@ CARGA_COMUN_45_REAL:
 		ld		bc,96
 		call	PON_COLOR_2.sin_bc_impuesta
         jp    	PAGE_10_A_SEGMENT_2
-
