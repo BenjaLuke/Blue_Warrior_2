@@ -1318,6 +1318,16 @@ STANDAR_LDIR_ENEMIGOS:
 
 STANDAR_Y_FUERA_PANTALLA:
 
+        call    ES_FASE3_VAGON_ACTIVO
+        jr      nc,.Y_FUERA_PANTALLA_NORMAL
+
+        ld      a,(DONDE_VA_LA_INTERRUPCION_LINEAL)
+        add     41
+        ld      (ix+1),a
+        ret
+
+.Y_FUERA_PANTALLA_NORMAL:
+
         ld      a,(CONTROL_Y)
         add     32
         ld      b,a
@@ -1363,10 +1373,6 @@ TROZOS_COMUNES_3:
         call    PON_COLOR_1
         jp      PAGE_10_A_SEGMENT_2
 
-TROZOS_COMUNES_6:
-
-        ld      (ix+8),a
-
 TROZOS_COMUNES_5:
 
         call    PAGE_32_A_SEGMENT_2
@@ -1388,28 +1394,11 @@ TROZOS_COMUNES_9:
         call    PAGE_10_A_SEGMENT_2
         jp      UN_NUEVO_ENEMIGO.RESOLUCION
 
-TROZOS_COMUNES_10:
-
-	call    PON_COLOR_2
-
-	ld	a,(ix+3)
-
-        jp      PON_COLOR_1
-
 TROZOS_COMUNES_11:
 
         call    PAGE_32_A_SEGMENT_2
 	call    PON_COLOR_2
         jp      PAGE_31_A_SEGMENT_2
-
-TROZOS_COMUNES_12:
-
-        call    PAGE_32_A_SEGMENT_2
-
-	ld	de,#44E0
-	ld	bc,32
-	call	PON_COLOR_2.sin_bc_impuesta
-        jp      PAGE_10_A_SEGMENT_2
 
 TROZOS_COMUNES_13:
 
@@ -1518,21 +1507,6 @@ TROZOS_COMUNES_24:
         cp      150
         ret
 
-TROZOS_COMUNES_26:
-
-        ld      a,(ix+11)
-        inc     a
-        and     00000001b
-        ret
-
-TROZOS_COMUNES_27:
-
-        ld      a,(CUANDO_RALENTIZAMOS)
-        ld      b,a
-        ld      a,(ix+13)
-        add     b
-        ld      (ix+13),a
-        ret
 TROZOS_COMUNES_28:
 
         call    TROZOS_COMUNES_31

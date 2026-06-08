@@ -2,7 +2,7 @@ COMIENZA_JUEGO:
 
 		ld		a,(FASE)
 		dec		a
-		jp		nz,.limpia_solo_sprites
+		jr		nz,.limpia_solo_sprites
 
         xor	    a							                            ; a     = el valor que vamos a poner
         ld	    bc,#ffff						                        ; bc	= longitud del area a rellenar con el dato A
@@ -17,6 +17,38 @@ COMIENZA_JUEGO:
         call	FILVRM_RAM						                        ; Limpiamos toda esta zona de la VRAM 
 		
 .carga_graficos:
+
+		call	PAGE_10_A_SEGMENT_2
+
+		ld		a,(FASE)
+		cp		3
+		jr		nz,.INICIO_NO_ES_FASE_3
+		xor		a
+		jr		.INICIO_TRAMO_FASE_3
+
+.INICIO_NO_ES_FASE_3:
+
+		ld		a,2
+
+.INICIO_TRAMO_FASE_3:
+
+		ld		(TRAMO_FASE_3),a
+		ld		(TRAMO_FASE_3_SALVADO),a
+
+		ld		a,(FASE)
+		add		32
+		ld		(PAGE_DATOS_FASE),a
+		ld		(PAGE_DATOS_FASE_SALVADA),a
+
+		ld		a,(FASE)
+		add		a
+		ld		ix,TABLA_DE_TAMANO_DE_FASE
+		ld		e,a
+		ld		d,0
+		add		ix,de
+		ld		l,(ix)
+		ld		h,(ix+1)
+		ld		(LINEA_SALVADA),hl
 
 RECARGAMOS_GRAFICOS_JUEGO_TRAS_MUERTE:
 		
@@ -47,11 +79,11 @@ RECARGAMOS_GRAFICOS_JUEGO_TRAS_MUERTE:
 
 		ld		a,(FASE)
 		dec		a
-		jp		nz,.fin_de_carga
+		jr		nz,.fin_de_carga
 
 		ld		a,(ESTADO_COLOR_PERM)
 		cp		11
-		jp		z,.fin_de_carga
+		jr		z,.fin_de_carga
 
 		push	hl
 		ld		hl,0
@@ -170,33 +202,6 @@ VARIABLES_PARA_EMPEZAR_LA_PARTIDA:
 
 VARIABLES_PARA_EMPEZAR_LA_PARTIDA_1:
 
-		ld		a,(FASE)
-		cp		3
-		jr		nz,.NO_ES_FASE_3_INICIAL
-		xor		a
-		jr		.TRAMO_INICIAL_FASE_3
-
-.NO_ES_FASE_3_INICIAL:
-
-		ld		a,2
-
-.TRAMO_INICIAL_FASE_3:
-
-		ld		(TRAMO_FASE_3),a
-
-		ld		a,(FASE)
-		add		32
-		ld		(PAGE_DATOS_FASE),a
-
-		ld		a,(FASE)
-		add		a
-		ld		ix,TABLA_DE_TAMANO_DE_FASE
-		ld		e,a
-		ld		d,0
-		add		ix,de
-		ld		l,(ix)													; Empezamos a leer por la última linea del mapa e iremos subiendo. Recordemos que cada linea horizontal son 16 tiles de 16 pixeles
-		ld		h,(ix+1)
-		ld		(LINEA_SALVADA),hl
 
 		xor		a
 
@@ -206,6 +211,7 @@ VARIABLES_PARA_EMPEZAR_LA_PARTIDA_1:
 		ld		(HAY_CORAZONES),a
 		ld		(DONDE_VA_LA_INTERRUPCION_LINEAL),a
 		ld		(MARCADOR_ANULADO),a
+		ld		(FASE3_VAGON_JUMP_ACTIVO),a
 
 		inc		a
 
@@ -240,23 +246,23 @@ INICIA_SCROLL:
 
 		ld		a,(FASE)
 		cp		1
-		jp		z,.VARIABLES_INAMOVIBLES
+		jr		z,.VARIABLES_INAMOVIBLES
 		cp		2
-		jp		z,.SPRITES_STAGE_2
+		jr		z,.SPRITES_STAGE_2
 		cp		4
-		jp		z,.SPRITES_STAGE_4
+		jr		z,.SPRITES_STAGE_4
 		cp		5
-		jp		z,.SPRITES_STAGE_5
+		jr		z,.SPRITES_STAGE_5
 
 .SPRITES_STAGE_2:
 
 		call	CARGA_ALFONSERRYX
-		jp		.VARIABLES_INAMOVIBLES
+		jr		.VARIABLES_INAMOVIBLES
 
 .SPRITES_STAGE_4:
 
 		call	CARGA_ECTO_PALLER
-		jp		.VARIABLES_INAMOVIBLES
+		jr		.VARIABLES_INAMOVIBLES
 
 .SPRITES_STAGE_5:
 
@@ -266,6 +272,10 @@ INICIA_SCROLL:
 
 		ld		hl,(LINEA_SALVADA)
 		ld		(LINEA_A_LEER),hl
+		ld		a,(PAGE_DATOS_FASE_SALVADA)
+		ld		(PAGE_DATOS_FASE),a
+		ld		a,(TRAMO_FASE_3_SALVADO)
+		ld		(TRAMO_FASE_3),a
 
 		ld		hl,0
 		ld		(CUANDO_RALENTIZAMOS),hl
@@ -416,7 +426,7 @@ FASE1_PONEMOS_DECORADO_EN_SU_SITIO:
 
 		ld		a,(MUSICA_ON_OFF)
 		or		a
-		jp		nz,.SEGUIMOS
+		jr		nz,.SEGUIMOS
 
 		call	stpmus
 
@@ -425,7 +435,7 @@ FASE1_PONEMOS_DECORADO_EN_SU_SITIO:
 			call	RECUPERA_SPRITES_SALUDO									; A veces los pierde por el camino. Aquí garantizamos que los tiene cuando los necesita
 			ld		a,(MUSICA_ON_OFF)
 			or		a
-			jp		nz,PRE_CONTROL
+			jr		nz,PRE_CONTROL
 
 			call	CARGA_DEPH_MUSIC_OFF
 
@@ -443,16 +453,16 @@ CONTROL:
 
 		ld		a,(CORAZONES)
 		or		a
-		jp		nz,.control_adjust
+		jr		nz,.control_adjust
 
 		ld		a,(PARPADEO_CORAZONES)
 		dec		a
 		and		00111111B
 		ld		(PARPADEO_CORAZONES),a
 		or		a
-		jp		z,.corazones_visibles
+		jr		z,.corazones_visibles
 		cp		00010000B
-		jp		nz,.control_adjust
+		jr		nz,.control_adjust
 
 .corazones_invisibles:
 
@@ -465,7 +475,7 @@ CONTROL:
 		call	DOCOPY
 		ld      hl,COPIA_MARCADOR_0_A_MARCADOR_3
 		call    DOCOPY
-		jp		.control_adjust
+		jr		.control_adjust
 
 .corazones_visibles:
 
@@ -475,7 +485,7 @@ CONTROL:
 
 			ld		a,(TIEMPO_DE_ADJUST)
 			or		a
-			jp		z,.control_inmune
+			jr		z,.control_inmune
 			dec		a
 			ld		(TIEMPO_DE_ADJUST),a
 
@@ -483,7 +493,7 @@ CONTROL:
 
 			ld		a,(INMUNE)
 			or		a
-			jp		z,.primeras_rutinas
+			jr		z,.primeras_rutinas
 			dec		a
 			ld		(INMUNE),a
 
@@ -817,11 +827,7 @@ CONTROL:
 .MIRA_SI_CAMBIA_VELOCIDAD:
 			call	SECUENCIA_PROYECTILES_Y_ENEMIGOS		
 			call	REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES
-			call	ES_FASE3_VAGON_ACTIVO
-			jr		c,.SIN_COLISION_ENEMIGOS_DEPH_VAGON_FASE3
 			call	REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH
-
-.SIN_COLISION_ENEMIGOS_DEPH_VAGON_FASE3:
 
 			call	PINTA_PROYECTILES_ENEMIGOS
 
@@ -891,6 +897,17 @@ CONTROL:
 
 .MIRAMOS_SI_HAY_AGUJERO:
 
+
+			call	BLOQUEA_LECTURA_TILES_CAMBIO_PAGE_FASE3
+			jr		nc,.LEE_TILES_MIRAMOS_SI_HAY_AGUJERO
+			xor		a
+			ld		(TILE_CENTRO),a
+			ld		(TILE_CENTRO_2),a
+			ld		(TILE_FASE3_VAGON),a
+			ld		(TILE_FASE3_VAGON_X16),a
+			jp		MIRAMOS_SI_HAY_AGUJERO
+
+.LEE_TILES_MIRAMOS_SI_HAY_AGUJERO:
 
 			push	ix
 			ld		a,(PAGE_DATOS_FASE)
@@ -1109,13 +1126,6 @@ CARGA_MUSICA_THE_BEST:
 		ei	
 		jp		PAGE_10_A_SEGMENT_2
 
-
-ACTIVA_MUSICA_VAGONETA_FASE_3:
-
-		call	CARGA_MUSICA_VAGONETA
-		jp		BUCLE_PINTA_TILES.PRE_VELOCIDAD_DE_FASE_TROTE
-
-
 CARGA_MUSICA_VAGONETA:
 
 		call	stpmus
@@ -1241,12 +1251,6 @@ CARGA_SPRITES_VAGONETA_CASCOS:
 		ld		(SUMA_CAMINO),a
 		jp		PAGE_10_A_SEGMENT_2
 
-PRECARGA_SOLO_VAGONETA_FASE3:
-
-		ld		a,(FASE)
-		cp		3
-		ret		nz
-
 PRECARGA_SOLO_VAGONETA_EN_PATRONES_ALTOS:
 
 		call	PAGE_32_A_SEGMENT_2
@@ -1260,18 +1264,6 @@ PRECARGA_SOLO_VAGONETA_EN_PATRONES_ALTOS:
 		ld		bc,4*16
 		call	PON_COLOR_2.sin_bc_impuesta
 		jp		PAGE_10_A_SEGMENT_2
-
-SPRITE_VAGONETA_PATRON_BLANCO:
-
-		db		0,0,0,0,0,0,0,0
-		db		0,0,0,0,0,0,0,0
-		db		0,0,0,0,0,0,0,0
-		db		0,0,0,0,0,0,0,0
-
-COLOR_SPRITE_VAGONETA_PATRON_BLANCO:
-
-		db		0,0,0,0,0,0,0,0
-		db		0,0,0,0,0,0,0,0
 
 PINTA_COLORES_SPRITE_VAGON:
 

@@ -812,6 +812,8 @@ BUCLE_PINTA_TILES:
 .VELOCIDAD_DE_FASE_TROTE:
 
 		call	PAGE_10_A_SEGMENT_2
+		call	ES_FASE3_VAGON_ACTIVO
+		ret		c
 
 		ld		a,3
 
@@ -830,6 +832,7 @@ CHECK_POINT:
 		call	PAGE_10_A_SEGMENT_2
 		ld		hl,(LINEA_A_LEER)
 		ld		(LINEA_SALVADA),hl
+		call	GUARDA_PAGE_DATOS_FASE_SALVADA
 
 .SALTO_PARA_OTROS_CARTELES:
 		ld		a,10
@@ -2574,9 +2577,9 @@ SALTO_AL_FADEAR_EN_GRISES:
 		xor		a
 		ld		(ARMA_USANDO),a											; 0 1 2 para flecha 3 4 5 para fuego 6 7 8 para hacha
 
-		ld		a,(VIDAS)
-		dec		a
-		ld		(VIDAS),a
+		;ld		a,(VIDAS)     ; XXXXXXXX Quitar esto para evitar vidas infinitas
+		;dec		a
+		;ld		(VIDAS),a
 
 		ld		a,(VIDAS)
 		cp		255

@@ -299,9 +299,7 @@ RUTINA_BOSS_2:
 
 		ld		a,25
 		ld		c,0
-        call    PAGE_31_A_SEGMENT_2
-		call	ayFX_INIT
-        call   	PAGE_10_A_SEGMENT_2
+		call	TIRA_FX_BOSS_2
 
 ; caen rocas
 		ld		a,100
@@ -448,9 +446,7 @@ RUTINA_BOSS_2:
 
 		ld		a,25
 		ld		c,0
-        call    PAGE_31_A_SEGMENT_2
-		call	ayFX_INIT
-        call   	PAGE_10_A_SEGMENT_2
+		call	TIRA_FX_BOSS_2
 
 		push    de
         call    .PINTAMOS_FOTOGRAMA
@@ -1093,9 +1089,7 @@ RESERVA_SIGUIENTE_SPRITE_LIBRE_PROYECTIL_BOSS_2:
 CALCULA_DIRECCION_BASE_PROYECTIL_BOSS_2:
 		ld      a,11
 		ld		c,0
-		call 	PAGE_31_A_SEGMENT_2
-		call	ayFX_INIT
-		call	PAGE_10_A_SEGMENT_2
+		call	TIRA_FX_BOSS_2
 
 		ld		a,(X_DEPH)
 		ld		e,a
@@ -2271,9 +2265,7 @@ MUERTE_DE_DAVEANIX_BOSS_2:
 ; audio de terremoto
 		ld		a,DAVEANIX_MUERTE_FX_BOSS_2
 		ld		c,DAVEANIX_MUERTE_FX_CANAL_BOSS_2
-        call    PAGE_31_A_SEGMENT_2
-		call	ayFX_INIT
-        call   	PAGE_10_A_SEGMENT_2		
+		call	TIRA_FX_BOSS_2
 		
 		ld		hl,COPY_ANIMA_MUERTE_DAVEANIX_A_BUFFER_BOSS_2
 		call	DOCOPY
@@ -2309,7 +2301,6 @@ TERMINANDO_LA_BATALLA_b2:
 		ld		de,PATRONES_SPRITES_VRAM_BOSS_2+DEPH_SALIDA_SPRITES_INICIO_BOSS_2*8*4
 		ld		bc,DEPH_SALIDA_SPRITES_CANT_BOSS_2*8*4
 		call	PON_COLOR_2.sin_bc_impuesta
-		call	PAGE_10_A_SEGMENT_2
 		call	VUELCA_DATOS_COLORES_DEPH_A_VRAM
 		call	PAGE_10_A_SEGMENT_2
 

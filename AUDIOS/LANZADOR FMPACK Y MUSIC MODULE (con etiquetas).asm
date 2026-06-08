@@ -1693,18 +1693,26 @@ drmreg: 		db    		36h,37h,38h,16h,26h,17h,27h,18h,28h
 
 ;--- algemene data ---
 
-_chnwc1: 		dw    		0,0,0,0,0
 
 _modval: 		dw     		1,2,2,-2,-2,-1,-2,-2,2,2
-_mmfrqs: 		db    		0
-_speed: 		db    		0
-_spdcnt: 		db    		0
-_rtel:   		db    		0
-_patadr: 		dw    		0
-_patpnt: 		dw    		0
-_tpval:  		db    		0
-_xpos:   		dw    		0
-_laspl1: 		db    		0,0,0,0,0,0,0,0a0h,10h,0,0,0,030h,043h,0,0,0,0,0,0,0,0
+;_mmfrqs: 		
+				db    		0
+;_speed: 		
+				db    		0
+;_spdcnt: 		
+				db    		0
+;_rtel:   		
+				db    		0
+;_patadr: 		
+				dw    		0
+;_patpnt: 		
+				dw    		0
+;_tpval:  		
+				db    		0
+;_xpos:   		
+				dw    		0
+;_laspl1: 		
+				db    		0,0,0,0,0,0,0,0a0h,10h,0,0,0,030h,043h,0,0,0,0,0,0,0,0
 				db    		0,0,0,0,0,0,0,0a1h,11h,0,0,0,031h,044h,0,0,0,0,0,0,0,0
 				db    		0,0,0,0,0,0,0,0a2h,12h,0,0,0,032h,045h,0,0,0,0,0,0,0,0
 				db    		0,0,0,0,0,0,0,0a3h,13h,0,0,0,033h,04bh,0,0,0,0,0,0,0,0

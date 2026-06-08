@@ -21,6 +21,63 @@ ES_FASE3_VAGON_ACTIVO:
 			or		a
 			ret
 
+GUARDA_PAGE_DATOS_FASE_SALVADA:
+
+			ld		a,(PAGE_DATOS_FASE)
+			ld		(PAGE_DATOS_FASE_SALVADA),a
+			ld		a,(TRAMO_FASE_3)
+			ld		(TRAMO_FASE_3_SALVADO),a
+			ret
+
+BLOQUEA_LECTURA_TILES_CAMBIO_PAGE_FASE3:
+
+			ld		a,(FASE)
+			cp		3
+			jr		nz,.NO_BLOQUEA_LECTURA_TILES_FASE3
+
+			ld		a,(TRAMO_FASE_3)
+			or		a
+			jr		z,.MIRA_FINAL_TRAMO_FASE3
+			cp		1
+			jr		z,.MIRA_INICIO_Y_FINAL_TRAMO_FASE3
+			cp		2
+			jr		z,.MIRA_INICIO_TRAMO_FASE3
+			jr		.NO_BLOQUEA_LECTURA_TILES_FASE3
+
+.MIRA_INICIO_Y_FINAL_TRAMO_FASE3:
+
+			call	.MIRA_INICIO_TRAMO_FASE3
+			ret		c
+
+.MIRA_FINAL_TRAMO_FASE3:
+
+			ld		hl,(LINEA_A_LEER)
+			ld		a,h
+			or		a
+			jr		nz,.NO_BLOQUEA_LECTURA_TILES_FASE3
+			ld		a,l
+			cp		16
+			jr		c,.SI_BLOQUEA_LECTURA_TILES_FASE3
+			jr		.NO_BLOQUEA_LECTURA_TILES_FASE3
+
+.MIRA_INICIO_TRAMO_FASE3:
+
+			ld		hl,(LINEA_A_LEER)
+			ld		de,453
+			or		a
+			sbc		hl,de
+			jr		nc,.SI_BLOQUEA_LECTURA_TILES_FASE3
+
+.NO_BLOQUEA_LECTURA_TILES_FASE3:
+
+			or		a
+			ret
+
+.SI_BLOQUEA_LECTURA_TILES_FASE3:
+
+			scf
+			ret
+
 
 SUMA_RETENCION_Y_DEPH_POST_RECTIFICA_UP:
 
@@ -864,9 +921,15 @@ PINTA_TILE_FASE3_VAGON_PAGE2:
 CONTROL_ACCIONES_VAGON_FASE3:
 
 			call	ES_FASE3_VAGON_ACTIVO
-			jp		c,CONTROL.FIN_RUTINA_GLOBAL
+			jp		c,.VAGON_ACTIVA_SUCESOS
 
 			jp		CONTROL.PULSA_M
+
+.VAGON_ACTIVA_SUCESOS:
+
+			ld		a,1
+			ld		(ACTIVA_SUCESOS),a
+			jp		CONTROL.FIN_RUTINA_GLOBAL
 
 
 SE_PUEDE_MOVER_Y_EFES_VARIOS:
@@ -1007,6 +1070,10 @@ RUTINA_ESPECIAL_FASE_3:
 			ret
 
 CONTROL_SALTO_FASE3_VAGON:
+
+			ld		a,(FASE3_VAGON_JUMP_ACTIVO)
+			or		a
+			ret		z
 
 			call	.PULSA_DISPARO_FASE3_VAGON
 			ret		nc
@@ -1334,7 +1401,20 @@ RESUELVE_SALTO_FASE3_VAGON:
 
 .MUERE_SALTO_FASE3_VAGON:
 
-			ld		a,3
+			ld		a,(TILE_FASE3_VAGON)
+			cp		48
+			jr		c,.SALTO_MUERTE_ESTRELLADO
+			cp		51
+			jr		nc,.SALTO_MUERTE_ESTRELLADO
+			xor		a
+			jr		.GUARDA_MUERTE_SALTO
+
+.SALTO_MUERTE_ESTRELLADO:
+
+			ld		a,1
+
+.GUARDA_MUERTE_SALTO:
+
 			ld		(FASE3_VAGON_TIPO_MUERTE),a
 			jp		CONTROL_FASE3_TILE_PUNTO_DEPH.MUERTE_DEPH_FASE3_VAGON
 
@@ -1514,7 +1594,7 @@ CONTROL_FASE3_TILE_PUNTO_DEPH:
 			ld		a,(TILE_FASE3_VAGON)
 			cp		160
 			jr		nz,.MIRA_TILE_MUERTE_130_138
-			ld		a,2
+			ld		a,1
 			jr		.GUARDA_TIPO_MUERTE
 
 .MIRA_TILE_MUERTE_130_138:
@@ -1523,8 +1603,6 @@ CONTROL_FASE3_TILE_PUNTO_DEPH:
 			jr		c,.NO_HAY_MUERTE_TILE
 			cp		139
 			jr		nc,.NO_HAY_MUERTE_TILE
-			sub		130
-			jr		z,.GUARDA_TIPO_MUERTE
 			ld		a,1
 
 .GUARDA_TIPO_MUERTE:
@@ -1541,7 +1619,306 @@ CONTROL_FASE3_TILE_PUNTO_DEPH:
 
 .MUERTE_DEPH_FASE3_VAGON:
 
-			jp		MUERTE_POR_TOQUES
+			ld		a,(FASE3_VAGON_TIPO_MUERTE)
+			or		a
+			jp		z,.MUERTE_AL_VACIO
+			jp		.MUERTE_ESTRELLADO
+
+.MUERTE_ESTRELLADO:
+
+			ld		a,(TILE_FASE3_VAGON)
+			cp		130
+			jr		c,.SIN_PINTA_ORIGEN_ESTRELLADO
+			cp		139
+			jr		nc,.SIN_PINTA_ORIGEN_ESTRELLADO
+			call	.PINTA_TRIADA_MUERTE_ESTRELLADO
+
+.SIN_PINTA_ORIGEN_ESTRELLADO:
+
+			call	CARGA_DEPH_NORMAL_SALTO_FASE3_VAGON
+			ld		a,(Y_DEPH)
+			sub		16
+			ld		(Y_DEPH),a
+			ld		a,(CONTROL_Y)
+			sub		16
+			ld		(CONTROL_Y),a
+			ld		b,32
+
+.BUCLE_CAIDA_ESTRELLADO:
+
+			push	bc
+			ld		a,b
+			and		1
+			jr		z,.PINTA_CAIDA_ESTRELLADO
+			ld		a,(Y_DEPH)
+			dec		a
+			ld		(Y_DEPH),a
+			ld		a,(CONTROL_Y)
+			dec		a
+			ld		(CONTROL_Y),a
+
+.PINTA_CAIDA_ESTRELLADO:
+
+			halt
+			call	PINTA_SPRITE_DEPH_SALTO_VAGONETA
+			call	CARGA_COLORES_PARTE_INFERIOR_DEPH_SALTO_VAGONETA
+			pop		bc
+			djnz	.BUCLE_CAIDA_ESTRELLADO
+
+			call	BUCLE_PINTA_TILES.PINTA_PALETA_GRIS
+			call	stpmus
+			ld		a,10
+			ld		c,0
+			call	A_31_DESDE_10
+			call	.CARGA_SPRITES_VAGONETA_APLASTADA
+			call	.CARGA_COLORES_VAGONETA_APLASTADA
+			call	.PINTA_SPRITE_DEPH_APLASTADO_VAGONETA
+			ld		a,240
+			call	BUCLE_PINTA_TILES.rutina_de_pausa
+			ld		hl,PALETA_GRISES_FADE_OUT
+			jp		SALTO_AL_FADEAR_EN_GRISES
+
+.PINTA_TRIADA_MUERTE_ESTRELLADO:
+
+			ld		e,a
+			cp		133
+			ld		a,22
+			jr		c,.CALCULA_DESTINO_MUERTE
+			ld		a,25
+
+.CALCULA_DESTINO_MUERTE:
+
+			push	af
+			call	.CALCULA_XY_TILE_MUERTE_FASE3_VAGON
+			ld		a,e
+			cp		131
+			jr		z,.RESTA_UN_TILE_MUERTE
+			cp		134
+			jr		z,.RESTA_UN_TILE_MUERTE
+			cp		137
+			jr		z,.RESTA_UN_TILE_MUERTE
+			cp		132
+			jr		z,.RESTA_DOS_TILES_MUERTE
+			cp		135
+			jr		z,.RESTA_DOS_TILES_MUERTE
+			cp		138
+			jr		z,.RESTA_DOS_TILES_MUERTE
+			jr		.PINTA_TRIADA_MUERTE
+
+.RESTA_UN_TILE_MUERTE:
+
+			ld		a,b
+			sub		16
+			ld		b,a
+			jr		.PINTA_TRIADA_MUERTE
+
+.RESTA_DOS_TILES_MUERTE:
+
+			ld		a,b
+			sub		32
+			ld		b,a
+
+.PINTA_TRIADA_MUERTE:
+
+			pop		af
+			jp		PINTA_TRIADA_FASE3_VAGON
+
+.CALCULA_XY_TILE_MUERTE_FASE3_VAGON:
+
+			push	de
+			ld		a,(X_DEPH)
+			add		6
+			and		#f0
+			ld		b,a
+			ld		a,(Y_PINTA_SCROLL)
+			and		#0f
+			ld		d,a
+			ld		a,(Y_DEPH)
+			add		20
+			sub		d
+			and		#f0
+			add		d
+			ld		c,a
+			pop		de
+			ret
+
+.PINTA_SPRITE_DEPH_APLASTADO_VAGONETA:
+
+			push	ix
+
+			ld		ix,ATRIBUTOS_DEPH_VARIABLES
+			ld		a,(Y_DEPH)
+			push	af
+			add		16
+			push	af
+			ld		a,(X_DEPH)
+			push	af
+			add		16
+
+			ld		(ix+9),a
+			ld		(ix+13),a
+			ld		(ix+25),a
+			ld		(ix+29),a
+
+			pop		af
+			ld		(ix+1),a
+			ld		(ix+5),a
+			ld		(ix+17),a
+			ld		(ix+21),a
+
+			pop		af
+			ld		(ix+16),a
+			ld		(ix+20),a
+			ld		(ix+24),a
+			ld		(ix+28),a
+			ld		a,217
+			ld		(ix+32),a
+			ld		(ix+36),a
+
+			pop		af
+			ld		(ix),a
+			ld		(ix+4),a
+			ld		(ix+8),a
+			ld		(ix+12),a
+
+			ld		a,20
+			ld		(ix+2),a
+			add		4
+			ld		(ix+6),a
+			add		4
+			ld		(ix+10),a
+			add		4
+			ld		(ix+14),a
+			add		4
+			ld		(ix+18),a
+			add		4
+			ld		(ix+22),a
+			add		4
+			ld		(ix+26),a
+			add		4
+			ld		(ix+30),a
+			xor		a
+			ld		(ix+34),a
+			ld		(ix+38),a
+
+			pop		ix
+
+			ld		hl,ATRIBUTOS_DEPH_VARIABLES
+			ld		de,#4A00
+			ld		bc,40
+			jp		PON_COLOR_2.sin_bc_impuesta
+
+.CARGA_SPRITES_VAGONETA_APLASTADA:
+
+			ld		hl,SPRITES_VAGONETA_APLASTADA
+			ld		de,#4000+20*8
+			ld		bc,8*32
+			jp		PON_COLOR_2.sin_bc_impuesta
+
+.CARGA_SPRITES_VAGONETA_CAIDA_1:
+
+			ld		hl,SPRITES_CAIDA_1
+			ld		de,#4000+20*8
+			ld		bc,8*32
+			jp		PON_COLOR_2.sin_bc_impuesta
+
+.CARGA_SPRITES_VAGONETA_CAIDA_2:
+
+			ld		hl,SPRITES_CAIDA_2
+			ld		de,#4000+20*8
+			ld		bc,8*32
+			jp		PON_COLOR_2.sin_bc_impuesta
+
+.CARGA_COLORES_VAGONETA_APLASTADA:
+
+			ld		hl,COLOR_SPRITES_VAGONETA_APLASTADO
+			ld		de,#4840
+			ld		bc,8*16
+			jp		PON_COLOR_2.sin_bc_impuesta
+
+.CARGA_COLORES_VAGONETA_CAIDA_1:
+
+			ld		hl,COLOR_SPRITES_VAGONETA_CAIDA_1
+			ld		de,#4840
+			ld		bc,8*16
+			jp		PON_COLOR_2.sin_bc_impuesta
+
+.CARGA_COLORES_VAGONETA_CAIDA_2:
+
+			ld		hl,COLOR_SPRITES_VAGONETA_CAIDA_
+			ld		de,#4840
+			ld		bc,8*16
+			jp		PON_COLOR_2.sin_bc_impuesta
+
+.PONE_ATRIBUTOS_DEPH_CAIDA_A_0:
+
+			ld		hl,ATRIBUTOS_DEPH_VARIABLES
+			ld		b,32
+			xor		a
+
+.BUCLE_ATRIBUTOS_DEPH_CAIDA_A_0:
+
+			ld		(hl),a
+			inc		hl
+			djnz	.BUCLE_ATRIBUTOS_DEPH_CAIDA_A_0
+
+			ld		hl,ATRIBUTOS_DEPH_VARIABLES
+			ld		de,#4A00
+			ld		bc,32
+			jp		PON_COLOR_2.sin_bc_impuesta
+
+.MUERTE_AL_VACIO:
+
+			call	CARGA_DEPH_NORMAL_SALTO_FASE3_VAGON
+			ld		a,(Y_DEPH)
+			sub		16
+			ld		(Y_DEPH),a
+			ld		a,(CONTROL_Y)
+			sub		16
+			ld		(CONTROL_Y),a
+			ld		b,32
+
+.BUCLE_CAIDA_VACIO:
+
+			push	bc
+			ld		a,b
+			and		1
+			jr		z,.PINTA_CAIDA_VACIO
+			ld		a,(Y_DEPH)
+			dec		a
+			ld		(Y_DEPH),a
+			ld		a,(CONTROL_Y)
+			dec		a
+			ld		(CONTROL_Y),a
+
+.PINTA_CAIDA_VACIO:
+
+			halt
+			call	PINTA_SPRITE_DEPH_SALTO_VAGONETA
+			call	CARGA_COLORES_PARTE_INFERIOR_DEPH_SALTO_VAGONETA
+			pop		bc
+			djnz	.BUCLE_CAIDA_VACIO
+
+			call	BUCLE_PINTA_TILES.PINTA_PALETA_GRIS
+			call	stpmus
+			ld		a,19
+			ld		c,0
+			call	A_31_DESDE_10
+			call	.CARGA_SPRITES_VAGONETA_CAIDA_1
+			call	.CARGA_COLORES_VAGONETA_CAIDA_1
+			call	.PINTA_SPRITE_DEPH_APLASTADO_VAGONETA
+			ld		a,240
+			call	BUCLE_PINTA_TILES.rutina_de_pausa
+			call	.CARGA_SPRITES_VAGONETA_CAIDA_2
+			call	.CARGA_COLORES_VAGONETA_CAIDA_2
+			call	.PINTA_SPRITE_DEPH_APLASTADO_VAGONETA
+			ld		a,240
+			call	BUCLE_PINTA_TILES.rutina_de_pausa
+			call	.PONE_ATRIBUTOS_DEPH_CAIDA_A_0
+			ld		a,240
+			call	BUCLE_PINTA_TILES.rutina_de_pausa
+			ld		hl,PALETA_GRISES_FADE_OUT
+			jp		SALTO_AL_FADEAR_EN_GRISES
 
 .CONTROL_FASE3_VAGON_SALIDA_TILE:
 
@@ -2456,6 +2833,7 @@ CORRIGE_Y_DEPH_SOLO_FASE3_VAGON:
 			inc		a
 			ld		(CONTROL_Y),a
 			call	.AJUSTA_CONTROL_Y_LIM_MUERTE_VAGON
+			ret		c
 			ld		a,(Y_DEPH)
 			inc		a
 			ld		(Y_DEPH),a
@@ -2466,12 +2844,14 @@ CORRIGE_Y_DEPH_SOLO_FASE3_VAGON:
 
 .RECTIFICA_DOWN_Y_DEPH_VAGON:
 
-			add		2
-			ld		(Y_DEPH),a
 			ld		a,(CONTROL_Y)
 			add		2
 			ld		(CONTROL_Y),a
 			call	.AJUSTA_CONTROL_Y_LIM_MUERTE_VAGON
+			ret		c
+			ld		a,(Y_DEPH)
+			add		2
+			ld		(Y_DEPH),a
 			ret
 
 .AJUSTA_CONTROL_Y_LIM_MUERTE_VAGON:
@@ -2484,6 +2864,8 @@ CORRIGE_Y_DEPH_SOLO_FASE3_VAGON:
 			ld		a,b
 			dec		a
 			ld		(CONTROL_Y),a
+			scf
+			ret
 
 .MIRA_LIM_Y_INF_VAGON:
 
@@ -2491,10 +2873,16 @@ CORRIGE_Y_DEPH_SOLO_FASE3_VAGON:
 			ld		b,a
 			ld		a,(CONTROL_Y)
 			cp		b
-			ret		c
+			jr		c,.CONTROL_Y_VAGON_SIN_AJUSTE
 			ld		a,b
 			dec		a
 			ld		(CONTROL_Y),a
+			scf
+			ret
+
+.CONTROL_Y_VAGON_SIN_AJUSTE:
+
+			or		a
 			ret
 
 .HAY_DESPLAZAMIENTO_X_VAGON_ESTE_CICLO:
@@ -3956,10 +4344,6 @@ CARGA_SPRITES_1_A_45_STANDARD:
 			jp		z,CARGA_FLECHA_DOBLE
 			ret
 
-CARGA_1_A_45_FASE_3_ESPECIFICO:
-
-			jp		PRECARGA_SOLO_VAGONETA_EN_PATRONES_ALTOS
-
 ACTIVAMOS_INTERRUPCIONES_DE_LINEA_REAL:
 
 		call	INTRODUCIMOS_LINEA_DE_INTERRUPCION_NUEVA
@@ -4041,13 +4425,13 @@ CARGA_1_A_45_REAL:
 			ld		a,(FASE)
 			cp		3
 			ret		nz
-			jp		CARGA_1_A_45_FASE_3_ESPECIFICO
+			jp		PRECARGA_SOLO_VAGONETA_EN_PATRONES_ALTOS
 
 CARGA_1_A_45_FASE_3_REAL:
 
 			call    PAGE_10_A_SEGMENT_2
 			call    CARGA_SPRITES_1_A_45_STANDARD
-			jp		CARGA_1_A_45_FASE_3_ESPECIFICO
+			jp		PRECARGA_SOLO_VAGONETA_EN_PATRONES_ALTOS
 
 CARGA_PIES_EN_LODO_REAL:
 
@@ -4056,105 +4440,291 @@ CARGA_PIES_EN_LODO_REAL:
 			ld		bc,18*8*4
 			jp		TROZOS_COMUNES_15
 
-CARGA_FIREWORKS_REAL:
+SPRITES_VAGONETA_APLASTADA:
+	;
+	; --- APLASTADO SUP IZQ
+	; mask 0
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$05,$00,$00,$00
+	DB $00,$07,$02,$06,$0E,$0E,$3E,$2E
+	DB $3E,$2E,$27,$08,$F7,$78,$1F,$0F
 
-			ld		a,1
-			ld		(FIREWORKS_ACTIVO),a
-			ld		hl,SPRITES_FIREWORK
-			jp		CARGA_COMUN_24
-CARGA_SKRULLEX_REAL:
+	; mask 1
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $01,$00,$00,$05,$0F,$05,$00,$00
+	DB $00,$00,$07,$0D,$3B,$39,$53,$F3
+	DB $FF,$FB,$7F,$FF,$FF,$87,$E1,$1F
 
-			xor		a
-			ld		(ALPHONSERRYX_ACTIVO),a
-			ld		hl,SPRITES_SKRULLEX
-			ld		de,#4000+46*8*4
-			jp		CARGA_COMUN_4
-CARGA_SKRULLEX_SLIME_REAL:
+	;
+	; --- APLASTADO SUP DER
+	; mask 0
+	DB $80,$80,$B0,$BC,$BC,$BC,$BC,$B8
+	DB $BC,$38,$F4,$08,$F7,$0F,$FC,$F8
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$D0,$00,$00,$00
 
-			ld		hl,SPRITES_SKRULLEX
-			ld		de,#4000+46*8*4
-			jp		CARGA_COMUN_8
+	; mask 1
+	DB $00,$70,$5C,$6E,$6E,$E2,$66,$F7
+	DB $FE,$EC,$FE,$FF,$FD,$F2,$0F,$FC
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$D0,$F8,$D0,$80,$00
 
-CARGA_SLIME_FUEGO_REAL:
+	;
+	; --- APLASTADO INF IZQ
+	; mask 0
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $1F,$3F,$5E,$C0,$60,$40,$80,$80
+	DB $00,$00,$00,$00,$00,$00,$00,$00
 
-			ld		hl,SPRITES_SLIMES_FUEGO
-			ld		de,#4000+50*8*4
-			jp		CARGA_COMUN_4
+	; mask 1
+	DB $00,$00,$00,$01,$00,$00,$01,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $3F,$7F,$F9,$BE,$D0,$E0,$C0,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
 
-CARGA_CORVELLINI_COVID_REAL:
+	;
+	; --- APLASTADO INV DER
+	; mask 0
+	DB $F8,$FF,$7F,$7F,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$E0,$80,$80,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
 
-			ld		hl,SPRITES_CORVELLINI
-			ld		de,#4000+54*8*4
-			jp		CARGA_COMUN_10
-CARGA_ALFONSERRYX_REAL:
+	; mask 1
+	DB $F7,$F8,$FF,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $F8,$10,$60,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
 
-			ld		hl,SPRITES_ALPHONSERRYX
-			ld		de,#4000+54*8*4
-			jp		CARGA_COMUN_4
+SPRITES_CAIDA_1:
+	;
+	; --- CAIDA 1 SUP IZQ
+	; mask 0
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$01,$01,$07,$07,$03
+	DB $0F,$0B,$0F,$0B,$09,$02,$7D,$1E
 
-CARGA_ALFONSERRYX_STAGE_4_REAL:
+	; mask 1
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$07,$0F,$0E,$0E
+	DB $14,$3C,$7F,$3E,$1F,$7F,$FF,$61
 
-			ld		a,1
-			ld		(ALPHONSERRYX_ACTIVO),a
-			ld		hl,SPRITES_ALPHONSERRYX
-			ld		de,#4000+46*8*4
-			jp		CARGA_COMUN_4
+	;
+	; --- CAIDA 1 SUP DER
+	; mask 0
+	DB $00,$00,$00,$C0,$C0,$F0,$F0,$F0
+	DB $F8,$E8,$F8,$E8,$D8,$20,$DF,$3C
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
 
-CARGA_MEGADEATH_REAL:
+	; mask 1
+	DB $00,$00,$00,$00,$70,$B8,$B8,$88
+	DB $94,$DE,$FF,$BE,$FC,$FF,$F7,$CB
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$80,$00
 
-			ld		hl,SPRITES_MEGADEATH
-			ld		de,#4000+54*8*4
-			jp		CARGA_COMUN_6
-CARGA_ECTO_PALLER_REAL:
+	;
+	; --- CAIDA 1 INF IZQ
+	; mask 0
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $7F,$38,$38,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
 
-			ld		hl,SPRITES_ECTO_PALLERS
-			ld		de,#4000+50*8*4
-			jp		CARGA_COMUN_4
-CARGA_ECTO_PALLER_MUERTO_REAL:
+	; mask 1
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $FE,$77,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
 
-			ld		hl,SPRITES_ECTO_MUERTO
-			ld		de,#4000+50*8*4
-			jp		CARGA_COMUN_4
-CARGA_INCORRECTO_REAL:
+	;
+	; --- CAIDA 1 INF DER
+	; mask 0
+	DB $FE,$1C,$1C,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
 
-			ld		hl,SPRITE_CAMINO_INCORRECTO
-			ld		de,#4000+37*8*4
-			jp		CARGA_COMUN_2
+	; mask 1
+	DB $FD,$FE,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
 
-CARGA_CORRECTO_REAL:
+SPRITES_CAIDA_2:
 
-			ld		hl,SPRITE_CAMINO_CORRECTO
-			ld		de,#4000+37*8*4
-			jp		CARGA_COMUN_2
+	;
+	; --- CAIDA 2 SUP IZQ
+	; mask 0
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$01,$03,$07,$03
+	; mask 1
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	;
+	; --- CAIDA 2 SUP DER
+	; mask 0
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$80,$80,$80,$80,$80,$80
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
 
-CARGA_COMUN_1_FLECHA_REAL:
+	; mask 1
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$40,$E0,$F0,$E0
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
 
-			ld		de,#4000+39*8*4
-			ld		bc,1*8*4
-			jp		TROZOS_COMUNES_15
+	;
+	; --- CAIDA 2 INF IZQ
+	; mask 0
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $0E,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	; mask 1
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	;
+	; --- CAIDA 2 INF DER
+	; mask 0
+	DB $70,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	; mask 1
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00	
+COLOR_SPRITES_VAGONETA_APLASTADO:
+	;
+	; --- APLASTADO SUP IZQ
+	; attr 0
+	DB $00,$01,$04,$04,$04,$04,$04,$04
+	DB $04,$04,$04,$04,$04,$04,$04,$04
 
-CARGA_COMUN_24_REAL:
+	; attr 1
+	DB $00,$00,$41,$41,$41,$41,$41,$41
+	DB $41,$41,$41,$41,$41,$41,$41,$41
+	;
+	; --- APLASTADO SUP DER
 
-			ld		de,#4000+25*8*4
-			ld		bc,24*8*4
-			jp		TROZOS_COMUNES_15
-CARGA_COMUN_26_REAL:
+	; attr 0
+	DB $01,$04,$04,$04,$04,$04,$04,$04
+	DB $04,$04,$04,$04,$04,$04,$04,$04
 
-			ld		de,#4000+23*8*4
-			ld		bc,26*8*4
-			jp		TROZOS_COMUNES_15
-CARGA_COMUN_45_REAL:
+	; attr 1
+	DB $00,$41,$41,$41,$41,$41,$41,$41
+	DB $41,$41,$41,$41,$41,$41,$41,$41
+	;
+	; --- APLASTADO INF IZQ
 
-			halt
-			ld		de,#4000+1*8*4
-			ld		bc,45*8*4
-			call	TROZOS_COMUNES_15
+	; attr 0
+	DB $04,$04,$04,$04,$04,$04,$04,$01
+	DB $00,$00,$00,$00,$00,$00,$00,$00
 
-		ld		hl,COLORES_DEPH_CASCOS_POSE_3
+	; attr 1
+	DB $41,$41,$41,$41,$41,$41,$41,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	;
+	; --- APLASTADO INV DER
 
-        call    PAGE_32_A_SEGMENT_2
+	; attr 0
+	DB $04,$04,$04,$01,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
 
-		ld		de,#4840
-		ld		bc,96
-		call	PON_COLOR_2.sin_bc_impuesta
-        jp    	PAGE_10_A_SEGMENT_2
+	; attr 1
+	DB $41,$41,$41,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+
+COLOR_SPRITES_VAGONETA_CAIDA_1:
+	;
+	; --- CAIDA 1 SUP IZQ
+
+	; attr 0
+	DB $00,$00,$00,$01,$04,$04,$04,$04
+	DB $04,$04,$04,$04,$04,$04,$04,$04
+
+	; attr 1
+	DB $00,$00,$00,$00,$41,$41,$41,$41
+	DB $41,$41,$41,$41,$41,$41,$41,$41
+	;
+	; --- CAIDA 1 SUP DER
+
+	; attr 0
+	DB $00,$00,$00,$01,$04,$04,$04,$04
+	DB $04,$04,$04,$04,$04,$04,$04,$04
+
+	; attr 1
+	DB $00,$00,$00,$00,$41,$41,$41,$41
+	DB $41,$41,$41,$41,$41,$41,$41,$41
+	;
+	; --- CAIDA 1 INF IZQ
+
+	; attr 0
+	DB $04,$04,$01,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+
+	; attr 1
+	DB $41,$41,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	;
+	; --- CAIDA 1 INF DER
+
+	; attr 0
+	DB $04,$04,$01,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+
+	; attr 1
+	DB $41,$41,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+
+
+COLOR_SPRITES_VAGONETA_CAIDA_:
+	;
+	; --- CAIDA 2 SUP IZQ
+
+	; attr 0
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$01,$01,$01,$01
+	; attr 1
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	;
+	; --- CAIDA 2 SUP DER
+
+	; attr 0
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$01,$01,$04,$04,$04,$04
+
+	; attr 1
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$41,$41,$41,$41
+	;
+	; --- CAIDA 2 INF IZQ
+
+	; attr 0
+	DB $01,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	; attr 1
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	;
+	; --- CAIDA 2 INF DER
+
+	; attr 0
+	DB $01,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	; attr 1
+	DB $00,$00,$00,$00,$00,$00,$00,$00
+	DB $00,$00,$00,$00,$00,$00,$00,$00

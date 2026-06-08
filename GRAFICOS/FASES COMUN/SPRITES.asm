@@ -1720,27 +1720,27 @@ SPRITES_SOLO_VAGONETA:
 	;
 	; --- VAGON INFERIOR IZQUIERDA
 	; mask 0
-	DB $1F,$1F,$1F,$1F,$1F,$1F,$1F,$1F
-	DB $1F,$1F,$1F,$1F,$1F,$1F,$00,$00
+	DB $7F,$7F,$7F,$7F,$7F,$3F,$3F,$3F
+	DB $3F,$3F,$3F,$01,$01,$01,$01,$01
 	DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
-	DB $FF,$FF,$FF,$FF,$80,$E3,$E7,$60
-; mask 1
-	DB $00,$3F,$20,$20,$00,$3F,$20,$00
-	DB $3F,$20,$00,$3F,$20,$00,$00,$00
+	DB $FF,$FF,$FF,$FF,$80,$C0,$C0,$C0
+	; mask 1
+	DB $00,$FF,$80,$80,$00,$7F,$40,$00
+	DB $7F,$40,$00,$03,$02,$00,$00,$00
 	DB $00,$FF,$00,$00,$00,$FF,$00,$00
 	DB $FF,$00,$00,$FF,$7F,$00,$00,$00
 ;
 ; --- VAGONETA INFERIOR DERECHA
 ; mask 0
 	DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
-	DB $FF,$FF,$FF,$FF,$01,$C7,$E7,$06
-	DB $F8,$F8,$F8,$F8,$F8,$F8,$F8,$F8
-	DB $F8,$F8,$F8,$F8,$F8,$F8,$00,$00
+	DB $FF,$FF,$FF,$FF,$01,$03,$03,$03
+	DB $FE,$FE,$FE,$FE,$FE,$FC,$FC,$FC
+	DB $FC,$FC,$FC,$80,$80,$80,$80,$80
 ; mask 1
 	DB $00,$FF,$00,$00,$00,$FF,$00,$00
 	DB $FF,$00,$00,$FF,$FE,$00,$00,$00
-	DB $00,$FC,$04,$04,$00,$FC,$04,$00
-	DB $FC,$04,$00,$FC,$04,$00,$00,$00
+	DB $00,$FF,$01,$01,$00,$FE,$02,$00
+	DB $FE,$02,$00,$C0,$40,$00,$00,$00
 SPRITES_VAGONETA_CASCOS:
 ;
 ; --- VAGON CASCOS SUPERIOR IZQUIERDA
@@ -1844,6 +1844,3 @@ SPRITE_EXTRA:
 	DB $AD,$BD,$AD,$54,$67,$38,$1F,$0F
 	DB $F0,$F8,$7C,$9E,$A6,$BB,$BB,$BB
 	DB $B5,$BD,$B5,$2A,$E6,$1C,$F8,$F0
-
-
-

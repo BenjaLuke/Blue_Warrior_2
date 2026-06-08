@@ -120,6 +120,7 @@ NUEVO_SLIME_VERDE_1:
 
         ld      hl,NUEVO_SLIME_VERDE_1_DATA
         jp      COMUN_DATOS_A_SACAR
+
 NUEVO_SLIME_VERDE_6:
 
         ld      hl,NUEVO_SLIME_VERDE_6_DATA
@@ -128,11 +129,7 @@ NUEVO_SLIME_VERDE_7:
 
         ld      hl,NUEVO_SLIME_VERDE_7_DATA
         jp      COMUN_DATOS_A_SACAR
-NUEVO_SLIME_VERDE_11:
 
-        ld      hl,NUEVO_SLIME_VERDE_11_DATA
-        jp      COMUN_DATOS_A_SACAR
-              
 NUEVO_SLIME_VERDE_HACIA_IZQUIERDA:
 
         ld      hl,NUEVO_SLIME_VERDE_HACIA_IZQUIERDA_DATA
@@ -145,10 +142,16 @@ NUEVO_SLIME_FUEGO_1_QUIETO:
 
         ld      hl,NUEVO_SLIME_FUEGO_1_QUIETO_DATA
         jp      COMUN_DATOS_A_SACAR
-NUEVO_SLIME_FUEGO_8_QUIETO:
+NUEVO_SLIME_FUEGO_6_QUIETO:
 
-        ld      hl,NUEVO_SLIME_FUEGO_8_QUIETO_DATA
+        ld      hl,NUEVO_SLIME_FUEGO_6_QUIETO_DATA
         jp      COMUN_DATOS_A_SACAR
+
+NUEVO_SLIME_FUEGO_13_QUIETO:
+
+        ld      hl,NUEVO_SLIME_FUEGO_13_QUIETO_DATA
+        jp      COMUN_DATOS_A_SACAR
+
 NUEVO_SLIME_FUEGO_7_RONDA:
 
         ld      hl,NUEVO_SLIME_FUEGO_7_RONDA_DATA
@@ -171,20 +174,11 @@ NUEVO_SKRULLEX_12_HACHA:
         ld      hl,NUEVO_SKRULLEX_12_HACHA_DATA
         jp      COMUN_DATOS_A_SACAR
      
-NUEVO_SKRULLEX_3_HACHA:
-
-        ld      hl,NUEVO_SKRULLEX_3_HACHA_DATA
-        jp      COMUN_DATOS_A_SACAR
-
 NUEVO_SKRULLEX_4_HACHA:
 
         ld      hl,NUEVO_SKRULLEX_4_HACHA_DATA
         jp      COMUN_DATOS_A_SACAR
 
-NUEVO_SKRULLEX_3_FLECHA:
-
-        ld      hl,NUEVO_SKRULLEX_3_FLECHA_DATA
-        jp      COMUN_DATOS_A_SACAR
 NUEVO_SKRULLEX_6_FLECHA:
 
         ld      hl,NUEVO_SKRULLEX_6_FLECHA_DATA
@@ -425,6 +419,12 @@ NUEVA_D_12:
         ld      hl,NUEVA_D_12_DATA
         jp      COMUN_DATOS_A_SACAR
 
+NUEVA_D_13: 
+
+        call    REINICIA_D_E
+        ld      hl,NUEVA_D_13_DATA
+        jp      COMUN_DATOS_A_SACAR
+
 NUEVA_D_15: 
 
         call    REINICIA_D_E
@@ -433,6 +433,10 @@ NUEVA_D_15:
 NUEVA_E_0: 
 
         ld      hl,NUEVA_E_0_DATA
+        jp      COMUN_DATOS_A_SACAR
+NUEVA_E_6: 
+
+        ld      hl,NUEVA_E_6_DATA
         jp      COMUN_DATOS_A_SACAR
 NUEVA_E_11: 
 
@@ -450,7 +454,12 @@ NUEVA_P_0:
 
         call    REINICIA_P_H
         ld      hl,NUEVA_P_0_DATA
-        jp      COMUN_DATOS_A_SACAR        
+        jp      COMUN_DATOS_A_SACAR      
+NUEVA_P_1: 
+
+        call    REINICIA_P_H
+        ld      hl,NUEVA_P_1_DATA
+        jp      COMUN_DATOS_A_SACAR      
 NUEVA_P_3: 
 
         call    REINICIA_P_H
@@ -480,6 +489,10 @@ NUEVA_H_6:
 NUEVA_H_12: 
 
         ld      hl,NUEVA_H_12_DATA
+        jp      COMUN_DATOS_A_SACAR
+NUEVA_H_14: 
+
+        ld      hl,NUEVA_H_14_DATA
         jp      COMUN_DATOS_A_SACAR
 NUEVA_H_15: 
 
@@ -537,10 +550,6 @@ NUEVO_CORAZON_1:
         ld      hl,NUEVO_CORAZON_1_DATA
         jp      COMUN_DATOS_A_SACAR
 
-NUEVO_CORAZON_2: 
-
-        ld      hl,NUEVO_CORAZON_2_DATA
-        jp      COMUN_DATOS_A_SACAR
 NUEVO_CORAZON_3: 
 
         ld      hl,NUEVO_CORAZON_3_DATA
@@ -554,18 +563,12 @@ NUEVO_CORAZON_9:
 
         ld      hl,NUEVO_CORAZON_9_DATA
         jp      COMUN_DATOS_A_SACAR
-NUEVO_CORAZON_10:
 
-        ld      hl,NUEVO_CORAZON_10_DATA
-        jp      COMUN_DATOS_A_SACAR
 NUEVO_CORAZON_11:
 
         ld      hl,NUEVO_CORAZON_11_DATA
         jp      COMUN_DATOS_A_SACAR
-NUEVO_CORAZON_13:
 
-        ld      hl,NUEVO_CORAZON_13_DATA
-        jp      COMUN_DATOS_A_SACAR
 NUEVO_CORAZON_15:
 
         ld      hl,NUEVO_CORAZON_15_DATA
@@ -655,6 +658,19 @@ NUEVO_ROCKAGER:
         ld      a,34
         call	CHANGE_BANK_2        
         ret
+
+ACTIVA_JUMP:
+
+        ld      a,1
+        ld      (FASE3_VAGON_JUMP_ACTIVO),a
+        ret
+
+DESACTIVA_JUMP:
+
+        xor     a
+        ld      (FASE3_VAGON_JUMP_ACTIVO),a
+        ret
+
 COMUN_DATOS_A_SACAR:
 
         push    ix
