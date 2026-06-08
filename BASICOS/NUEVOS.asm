@@ -165,6 +165,14 @@ NUEVO_PREMIO_EXTRA:
         ld      hl,NUEVO_PREMIO_EXTRA_DATA
         jp      COMUN_DATOS_A_SACAR
 
+NUEVO_PREMIO_EXTRA_2:
+
+        call    PAGE_10_A_SEGMENT_2
+        call    PREMIO_EXTRA.HAY_SITIO_PREMIO_EXTRA
+        ret     nz
+        ld      hl,NUEVO_PREMIO_EXTRA_2_DATA
+        jp      COMUN_DATOS_A_SACAR
+
 NUEVO_SKRULLEX_5_HACHA:
 
         ld      hl,NUEVO_SKRULLEX_5_HACHA_DATA

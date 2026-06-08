@@ -2362,10 +2362,11 @@ PREMIO_EXTRA:
 
         xor     a
         ld      (ix+10),a
+        ld      (ix+7),a
+        ld      a,(ix+1)
+        ld      (ix+11),a
         ld      a,(ix)
         ld      (ix+13),a
-        ld      a,12
-        ld      (ix+11),a
 
         xor     a
         ld      (ix+3),a
@@ -2614,128 +2615,49 @@ PREMIO_EXTRA:
 
 .SECUENCIA_PREMIO_EXTRA:
 
-        ld      a,(CUANDO_RALENTIZAMOS)
-        cp      1
-        jr      z,.MUEVE_Y_PREMIO_EXTRA
-
-        ld      a,(CONTROL_DE_C_R)
-        cp      2
-        jr      nz,.CONTROL_X_PREMIO_EXTRA
-
-.MUEVE_Y_PREMIO_EXTRA:
-
-        ld      a,(ix+1)
-        inc     a
-        ld      (ix+1),a
-
-.CONTROL_X_PREMIO_EXTRA:
-
         ld      a,(ix+10)
+        cp      32
+        jr      c,.FASE_PREMIO_EXTRA_OK
+        xor     a
+        ld      (ix+10),a
+        ld      a,(ix+7)
+        xor     1
+        and     1
+        ld      (ix+7),a
+        xor     a
+
+.FASE_PREMIO_EXTRA_OK:
+
+        ld      e,a
+        ld      d,0
+        ld      hl,TABLA_PREMIO_EXTRA_X
+        add     hl,de
+        ld      c,(hl)
+        ld      a,(ix+7)
         or      a
-        jr      nz,.MUEVE_PARABOLA_PREMIO_EXTRA
+        jr      z,.PREMIO_EXTRA_X_A_DERECHA
+        ld      a,64
+        sub     c
+        ld      c,a
+
+.PREMIO_EXTRA_X_A_DERECHA:
+
+        ld      a,(ix+13)
+        add     c
+        ld      (ix),a
+
+        ld      hl,TABLA_PREMIO_EXTRA_Y
+        add     hl,de
+        ld      c,(hl)
 
         ld      a,(ix+11)
-        dec     a
-        ld      (ix+11),a
-        jp      nz,.FIN_PREMIO_EXTRA
-
-        ld      a,r
-        and     00011111b
-        cp      31
-        jr      c,.TIEMPO_X_PREMIO_EXTRA_OK
-        sub     31
-
-.TIEMPO_X_PREMIO_EXTRA_OK:
-
-        add     60
-        ld      (ix+11),a
-
-.BUSCA_NUEVA_X_PREMIO_EXTRA:
-
-        ld      a,r
-        and     01111111b
-        add     24
-        ld      b,a
-        ld      a,(ix)
-        cp      b
-        jr      c,.NUEVA_X_ES_MAYOR_PREMIO_EXTRA
-
-.NUEVA_X_ES_MENOR_PREMIO_EXTRA:
-
-        sub     b
-        cp      30
-        jr      c,.BUSCA_NUEVA_X_PREMIO_EXTRA
-        ld      a,b
-        jr      .GUARDA_NUEVA_X_PREMIO_EXTRA
-
-.NUEVA_X_ES_MAYOR_PREMIO_EXTRA:
-
-        ld      a,b
-        sub     (ix)
-        cp      30
-        jr      c,.BUSCA_NUEVA_X_PREMIO_EXTRA
-        ld      a,b
-
-.GUARDA_NUEVA_X_PREMIO_EXTRA:
-
-        ld      (ix+13),a
-        ld      a,8
-        ld      (ix+10),a
-        ld      a,b
-        ld      c,(ix)
-        cp      c
-        jr      c,.CALCULA_PASO_IZQUIERDA_PREMIO_EXTRA
-
-        sub     c
-        jr      .GUARDA_PASO_PREMIO_EXTRA
-
-.CALCULA_PASO_IZQUIERDA_PREMIO_EXTRA:
-
-        ld      a,c
-        sub     b
-        srl     a
-        srl     a
-        srl     a
-        ld      c,a
-        xor     a
-        sub     c
-        ld      (ix+7),a
-        jr      .MUEVE_PARABOLA_PREMIO_EXTRA
-
-.GUARDA_PASO_PREMIO_EXTRA:
-
-        srl     a
-        srl     a
-        srl     a
-        ld      (ix+7),a
-
-.MUEVE_PARABOLA_PREMIO_EXTRA:
-
-        ld      a,(ix)
-        add     (ix+7)
-        ld      (ix),a
-        ld      a,(ix+10)
-        cp      5
-        jr      c,.BAJA_PARABOLA_PREMIO_EXTRA
-        ld      a,(ix+1)
-        sub     4
-        ld      (ix+1),a
-        jr      .SIGUIENTE_PARABOLA_PREMIO_EXTRA
-
-.BAJA_PARABOLA_PREMIO_EXTRA:
-
-        ld      a,(ix+1)
-        add     4
+        add     c
         ld      (ix+1),a
 
-.SIGUIENTE_PARABOLA_PREMIO_EXTRA:
-
         ld      a,(ix+10)
-        dec     a
+        inc     a
         ld      (ix+10),a
-        jr      nz,.FIN_PREMIO_EXTRA
-        ld      a,(ix+13)
-        ld      (ix),a
+        jr      .FIN_PREMIO_EXTRA
 
 .FIN_PREMIO_EXTRA:
 
@@ -2764,6 +2686,20 @@ PREMIO_EXTRA:
 
         call    .RECUPERA_FLECHA_PREMIO
         jp      TROZOS_COMUNES_29
+
+TABLA_PREMIO_EXTRA_X:
+
+        db      0,0,1,2,3,5,7,10
+        db      13,17,21,25,29,33,37,41
+        db      45,49,53,56,59,61,63,64
+        db      64,64,64,64,64,64,64,64
+
+TABLA_PREMIO_EXTRA_Y:
+
+        db      0,2,4,6,8,6,4,2
+        db      0,2,4,6,8,6,4,2
+        db      0,2,4,6,8,6,4,2
+        db      0,2,4,6,8,6,4,2
 
 LLAMA_PAUSE_VAGON_FASE_3:
 
