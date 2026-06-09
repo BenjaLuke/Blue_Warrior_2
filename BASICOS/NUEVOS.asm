@@ -2,327 +2,361 @@ NUEVOS:
 
 NUEVO_COVID_1:                                                              ; Ocupan toda la pantalla
 
-        ld      hl,NUEVO_COVID_1_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_COVID_1_DATA
 
 NUEVO_COVID_1_DISPARA:          
 
-        ld      hl,NUEVO_COVID_1_DISPARA_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_COVID_1_DISPARA_DATA
 
 NUEVO_COVID_2_DERECHA:
 
-        ld      hl,NUEVO_COVID_2_DERECHA_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_COVID_2_DERECHA_DATA
 
 NUEVO_COVID_2_DERECHA_DISPARA:
 
-        ld      hl,NUEVO_COVID_2_DERECHA_DISPARA_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_COVID_2_DERECHA_DISPARA_DATA
 
 NUEVO_COVID_2_IZQUIERDA:
 
-        ld      hl,NUEVO_COVID_2_IZQUIERDA_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_COVID_2_IZQUIERDA_DATA
 
 NUEVO_COVID_2_IZQUIERDA_DISPARA:
 
-        ld      hl,NUEVO_COVID_2_IZQUIERDA_DISPARA_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_COVID_2_IZQUIERDA_DISPARA_DATA
 
 NUEVO_COVID_2_CENTRO:
 
-        ld      hl,NUEVO_COVID_2_CENTRO_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_COVID_2_CENTRO_DATA
 
 NUEVO_COVID_2_CENTRO_DISPARA:
 
-        ld      hl,NUEVO_COVID_2_CENTRO_DISPARA_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_COVID_2_CENTRO_DISPARA_DATA
 
 NUEVO_COVID_3_IZQUIERDA:
 
-        ld      hl,NUEVO_COVID_3_IZQUIERDA_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_COVID_3_IZQUIERDA_DATA
 
 NUEVO_SLIME_BLANCO:
 
-        ld      hl,NUEVO_SLIME_BLANCO_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_SLIME_BLANCO_DATA
 
 NUEVO_SLIME_AZUL_4:
 
-        ld      hl,NUEVO_SLIME_AZUL_4_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_SLIME_AZUL_4_DATA
 
 NUEVO_SLIME_AZUL_7:
 
-        ld      hl,NUEVO_SLIME_AZUL_7_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_SLIME_AZUL_7_DATA
 
 NUEVO_SLIME_AZUL_8:
 
-        ld      hl,NUEVO_SLIME_AZUL_8_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_SLIME_AZUL_8_DATA
 
 NUEVO_SLIME_AZUL_9:
 
-        ld      hl,NUEVO_SLIME_AZUL_9_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_SLIME_AZUL_9_DATA
 
 NUEVO_SLIME_AZUL_13:
 
-        ld      hl,NUEVO_SLIME_AZUL_13_DATA
-        jp      COMUN_DATOS_A_SACAR        
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_SLIME_AZUL_13_DATA        
 NUEVO_SLIME_AZUL_14:
 
-        ld      hl,NUEVO_SLIME_AZUL_14_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_SLIME_AZUL_14_DATA
 NUEVO_SLIME_AZUL_1_QUIETO:
 
-        ld      hl,NUEVO_SLIME_AZUL_1_QUIETO_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_SLIME_AZUL_1_QUIETO_DATA
 
 NUEVO_SLIME_AZUL_2_QUIETO:
 
-        ld      hl,NUEVO_SLIME_AZUL_2_QUIETO_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_SLIME_AZUL_2_QUIETO_DATA
 NUEVO_SLIME_AZUL_3_QUIETO:
 
-        ld      hl,NUEVO_SLIME_AZUL_3_QUIETO_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_SLIME_AZUL_3_QUIETO_DATA
 NUEVO_SLIME_AZUL_6_QUIETO:
 
-        ld      hl,NUEVO_SLIME_AZUL_6_QUIETO_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_SLIME_AZUL_6_QUIETO_DATA
 NUEVO_SLIME_AZUL_7_QUIETO:
 
-        ld      hl,NUEVO_SLIME_AZUL_7_QUIETO_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_SLIME_AZUL_7_QUIETO_DATA
 
 NUEVO_SLIME_AZUL_14_QUIETO:
 
-        ld      hl,NUEVO_SLIME_AZUL_14_QUIETO_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_SLIME_AZUL_14_QUIETO_DATA
 
 
 NUEVO_SLIME_AZUL_HACIA_DERECHA:
 
-        ld      hl,NUEVO_SLIME_AZUL_HACIA_DERECHA_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_SLIME_AZUL_HACIA_DERECHA_DATA
 
 NUEVO_SLIME_AZUL_HACIA_IZQUIERDA:
 
-        ld      hl,NUEVO_SLIME_AZUL_HACIA_IZQUIERDA_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_SLIME_AZUL_HACIA_IZQUIERDA_DATA
        
 NUEVO_SLIME_VERDE_1:
 
-        ld      hl,NUEVO_SLIME_VERDE_1_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_SLIME_VERDE_1_DATA
 
 NUEVO_SLIME_VERDE_6:
 
-        ld      hl,NUEVO_SLIME_VERDE_6_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_SLIME_VERDE_6_DATA
 NUEVO_SLIME_VERDE_7:
 
-        ld      hl,NUEVO_SLIME_VERDE_7_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_SLIME_VERDE_7_DATA
 
 NUEVO_SLIME_VERDE_HACIA_IZQUIERDA:
 
-        ld      hl,NUEVO_SLIME_VERDE_HACIA_IZQUIERDA_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_SLIME_VERDE_HACIA_IZQUIERDA_DATA
 NUEVO_SLIME_FUEGO_HACIA_IZQUIERDA:
 
-        ld      hl,NUEVO_SLIME_FUEGO_HACIA_IZQUIERDA_DATA
-        jp      COMUN_DATOS_A_SACAR         
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_SLIME_FUEGO_HACIA_IZQUIERDA_DATA         
 NUEVO_SLIME_FUEGO_1_QUIETO:
 
-        ld      hl,NUEVO_SLIME_FUEGO_1_QUIETO_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_SLIME_FUEGO_1_QUIETO_DATA
 NUEVO_SLIME_FUEGO_6_QUIETO:
 
-        ld      hl,NUEVO_SLIME_FUEGO_6_QUIETO_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_SLIME_FUEGO_6_QUIETO_DATA
 
 NUEVO_SLIME_FUEGO_13_QUIETO:
 
-        ld      hl,NUEVO_SLIME_FUEGO_13_QUIETO_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_SLIME_FUEGO_13_QUIETO_DATA
 
 NUEVO_SLIME_FUEGO_7_RONDA:
 
-        ld      hl,NUEVO_SLIME_FUEGO_7_RONDA_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_SLIME_FUEGO_7_RONDA_DATA
 
 NUEVO_PREMIO_EXTRA:
 
-        call    PAGE_10_A_SEGMENT_2
-        call    PREMIO_EXTRA.HAY_SITIO_PREMIO_EXTRA
-        ret     nz
-        ld      hl,NUEVO_PREMIO_EXTRA_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_PREMIO_EXTRA_INLINE
+        dw      NUEVO_PREMIO_EXTRA_DATA
+
+NUEVO_PREMIO_EXTRA_0:
+
+        call    COMUN_PREMIO_EXTRA_INLINE
+        dw      NUEVO_PREMIO_EXTRA_0_DATA
 
 NUEVO_PREMIO_EXTRA_2:
 
-        call    PAGE_10_A_SEGMENT_2
-        call    PREMIO_EXTRA.HAY_SITIO_PREMIO_EXTRA
-        ret     nz
-        ld      hl,NUEVO_PREMIO_EXTRA_2_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_PREMIO_EXTRA_INLINE
+        dw      NUEVO_PREMIO_EXTRA_2_DATA
+
+NUEVO_PREMIO_EXTRA_3:
+
+        call    COMUN_PREMIO_EXTRA_INLINE
+        dw      NUEVO_PREMIO_EXTRA_3_DATA
+
+NUEVO_PREMIO_EXTRA_4:
+
+        call    COMUN_PREMIO_EXTRA_INLINE
+        dw      NUEVO_PREMIO_EXTRA_4_DATA
+
+NUEVO_PREMIO_EXTRA_5:
+
+        call    COMUN_PREMIO_EXTRA_INLINE
+        dw      NUEVO_PREMIO_EXTRA_5_DATA
+
+NUEVO_PREMIO_EXTRA_6:
+
+        call    COMUN_PREMIO_EXTRA_INLINE
+        dw      NUEVO_PREMIO_EXTRA_6_DATA
+
+NUEVO_PREMIO_EXTRA_8:
+
+        call    COMUN_PREMIO_EXTRA_INLINE
+        dw      NUEVO_PREMIO_EXTRA_8_DATA
+
+NUEVO_PREMIO_EXTRA_10:
+
+        call    COMUN_PREMIO_EXTRA_INLINE
+        dw      NUEVO_PREMIO_EXTRA_10_DATA
+
+NUEVO_PREMIO_EXTRA_11:
+
+        call    COMUN_PREMIO_EXTRA_INLINE
+        dw      NUEVO_PREMIO_EXTRA_11_DATA
 
 NUEVO_SKRULLEX_5_HACHA:
 
-        ld      hl,NUEVO_SKRULLEX_5_HACHA_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_SKRULLEX_5_HACHA_DATA
 NUEVO_SKRULLEX_12_HACHA:
 
-        ld      hl,NUEVO_SKRULLEX_12_HACHA_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_SKRULLEX_12_HACHA_DATA
      
 NUEVO_SKRULLEX_4_HACHA:
 
-        ld      hl,NUEVO_SKRULLEX_4_HACHA_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_SKRULLEX_4_HACHA_DATA
 
 NUEVO_SKRULLEX_6_FLECHA:
 
-        ld      hl,NUEVO_SKRULLEX_6_FLECHA_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_SKRULLEX_6_FLECHA_DATA
 
 NUEVO_SKRULLEX_7_FLECHA:
 
-        ld      hl,NUEVO_SKRULLEX_7_FLECHA_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_SKRULLEX_7_FLECHA_DATA
 
 NUEVO_SKRULLEX_8_FLECHA:
 
-        ld      hl,NUEVO_SKRULLEX_8_FLECHA_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_SKRULLEX_8_FLECHA_DATA
 
 NUEVO_SKRULLEX_9_FLECHA:
 
-        ld      hl,NUEVO_SKRULLEX_9_FLECHA_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_SKRULLEX_9_FLECHA_DATA
 NUEVO_SKRULLEX_10_FLECHA:
 
-        ld      hl,NUEVO_SKRULLEX_10_FLECHA_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_SKRULLEX_10_FLECHA_DATA
 NUEVO_SKRULLEX_5_FUEGO:
 
-        ld      hl,NUEVO_SKRULLEX_5_FUEGO_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_SKRULLEX_5_FUEGO_DATA
 NUEVO_SKRULLEX_6_FUEGO:
 
-        ld      hl,NUEVO_SKRULLEX_6_FUEGO_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_SKRULLEX_6_FUEGO_DATA
 
 NUEVO_SKRULLEX_7_FUEGO:
 
-        ld      hl,NUEVO_SKRULLEX_7_FUEGO_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_SKRULLEX_7_FUEGO_DATA
 
 NUEVO_SKRULLEX_8_FUEGO:
 
-        ld      hl,NUEVO_SKRULLEX_8_FUEGO_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_SKRULLEX_8_FUEGO_DATA
 
 NUEVO_SKRULLEX_11_FUEGO:
 
-        ld      hl,NUEVO_SKRULLEX_11_FUEGO_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_SKRULLEX_11_FUEGO_DATA
 
 NUEVO_SKRULLEX_5_RANDOM:
 
-        ld      hl,NUEVO_SKRULLEX_5_RANDOM_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_SKRULLEX_5_RANDOM_DATA
 NUEVO_SKRULLEX_6_RANDOM:
 
-        ld      hl,NUEVO_SKRULLEX_6_RANDOM_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_SKRULLEX_6_RANDOM_DATA
 NUEVO_SKRULLEX_8_RANDOM:
 
-        ld      hl,NUEVO_SKRULLEX_8_RANDOM_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_SKRULLEX_8_RANDOM_DATA
 NUEVO_SKRULLEX_7_RANDOM:
 
-        ld      hl,NUEVO_SKRULLEX_7_RANDOM_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_SKRULLEX_7_RANDOM_DATA
 NUEVO_SKRULLEX_13_RANDOM:
 
-        ld      hl,NUEVO_SKRULLEX_13_RANDOM_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_SKRULLEX_13_RANDOM_DATA
 
 NUEVO_SKRULLEX_7_HACHA:
 
-        ld      hl,NUEVO_SKRULLEX_7_HACHA_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_SKRULLEX_7_HACHA_DATA
 NUEVO_SKRULLEX_8_HACHA:
 
-        ld      hl,NUEVO_SKRULLEX_8_HACHA_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_SKRULLEX_8_HACHA_DATA
 NUEVO_SKRULLEX_9_HACHA:
 
-        ld      hl,NUEVO_SKRULLEX_9_HACHA_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_SKRULLEX_9_HACHA_DATA
 
 NUEVO_CORVELLINI_0_0:
 
-        ld      hl,NUEVO_CORVELLINI_0_0_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_CORVELLINI_0_0_DATA
 NUEVO_CORVELLINI_1_5:
 
-        ld      hl,NUEVO_CORVELLINI_1_5_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_CORVELLINI_1_5_DATA
 NUEVO_CORVELLINI_2_5:
 
-        ld      hl,NUEVO_CORVELLINI_2_5_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_CORVELLINI_2_5_DATA
 NUEVO_CORVELLINI_2_21:
 
-        ld      hl,NUEVO_CORVELLINI_2_21_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_CORVELLINI_2_21_DATA
 NUEVO_CORVELLINI_4_0:
 
-        ld      hl,NUEVO_CORVELLINI_4_0_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_CORVELLINI_4_0_DATA
 NUEVO_CORVELLINI_6_0:
 
-        ld      hl,NUEVO_CORVELLINI_6_0_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_CORVELLINI_6_0_DATA
 NUEVO_CORVELLINI_7_0:
 
-        ld      hl,NUEVO_CORVELLINI_7_0_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_CORVELLINI_7_0_DATA
 NUEVO_CORVELLINI_12_0:
 
-        ld      hl,NUEVO_CORVELLINI_12_0_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_CORVELLINI_12_0_DATA
 
 NUEVO_CORVELLINI_13_5:
 
-        ld      hl,NUEVO_CORVELLINI_13_5_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_CORVELLINI_13_5_DATA
 NUEVO_CORVELLINI_15_0:
 
-        ld      hl,NUEVO_CORVELLINI_15_0_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_CORVELLINI_15_0_DATA
 NUEVO_CORVELLINI_15_8:
 
-        ld      hl,NUEVO_CORVELLINI_15_8_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_CORVELLINI_15_8_DATA
 
 NUEVA_GARGOLA_0:
 
-        ld      hl,NUEVA_GARGOLA_0_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVA_GARGOLA_0_DATA
 
 NUEVA_GARGOLA_11:
 
-        ld      hl,NUEVA_GARGOLA_11_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVA_GARGOLA_11_DATA
       
 NUEVO_ECTO_PALLERS_TOCA_HUEVOS:
 
@@ -376,9 +410,9 @@ COMUN_ECTO_PALLERS:
         call    COMUN_DATOS_A_SACAR
         pop     bc
         pop     hl
-        ld      de,3
-        or      a
-        adc     hl,de
+        inc     hl
+        inc     hl
+        inc     hl
         djnz    .bucle_siete_ecto_pallers
         ret
 
@@ -411,82 +445,72 @@ REINICIA_P_H:
         
 NUEVA_D_1: 
 
-        call    REINICIA_D_E
-        ld      hl,NUEVA_D_1_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_NUEVA_D_INLINE
+        dw      NUEVA_D_1_DATA
 
 NUEVA_D_2: 
 
-        call    REINICIA_D_E
-        ld      hl,NUEVA_D_2_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_NUEVA_D_INLINE
+        dw      NUEVA_D_2_DATA
 
 NUEVA_D_12: 
 
-        call    REINICIA_D_E
-        ld      hl,NUEVA_D_12_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_NUEVA_D_INLINE
+        dw      NUEVA_D_12_DATA
 
 NUEVA_D_13: 
 
-        call    REINICIA_D_E
-        ld      hl,NUEVA_D_13_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_NUEVA_D_INLINE
+        dw      NUEVA_D_13_DATA
 
 NUEVA_D_15: 
 
-        call    REINICIA_D_E
-        ld      hl,NUEVA_D_15_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_NUEVA_D_INLINE
+        dw      NUEVA_D_15_DATA
 NUEVA_E_0: 
 
-        ld      hl,NUEVA_E_0_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVA_E_0_DATA
 NUEVA_E_6: 
 
-        ld      hl,NUEVA_E_6_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVA_E_6_DATA
 NUEVA_E_11: 
 
-        ld      hl,NUEVA_E_11_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVA_E_11_DATA
 NUEVA_E_12: 
 
-        ld      hl,NUEVA_E_12_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVA_E_12_DATA
 NUEVA_E_14: 
 
-        ld      hl,NUEVA_E_14_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVA_E_14_DATA
 NUEVA_P_0: 
 
-        call    REINICIA_P_H
-        ld      hl,NUEVA_P_0_DATA
-        jp      COMUN_DATOS_A_SACAR      
+        call    COMUN_NUEVA_P_INLINE
+        dw      NUEVA_P_0_DATA      
 NUEVA_P_1: 
 
-        call    REINICIA_P_H
-        ld      hl,NUEVA_P_1_DATA
-        jp      COMUN_DATOS_A_SACAR      
+        call    COMUN_NUEVA_P_INLINE
+        dw      NUEVA_P_1_DATA      
 NUEVA_P_3: 
 
-        call    REINICIA_P_H
-        ld      hl,NUEVA_P_3_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_NUEVA_P_INLINE
+        dw      NUEVA_P_3_DATA
 NUEVA_P_10: 
 
-        call    REINICIA_P_H
-        ld      hl,NUEVA_P_10_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_NUEVA_P_INLINE
+        dw      NUEVA_P_10_DATA
 NUEVA_P_14: 
 
-        call    REINICIA_P_H
-        ld      hl,NUEVA_P_14_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_NUEVA_P_INLINE
+        dw      NUEVA_P_14_DATA
 NUEVA_H_2: 
 
-        ld      hl,NUEVA_H_2_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVA_H_2_DATA
 NUEVA_H_6: 
 
         ld      a,(SUMA_BUCLE)
@@ -496,16 +520,16 @@ NUEVA_H_6:
         jp      COMUN_DATOS_A_SACAR        
 NUEVA_H_12: 
 
-        ld      hl,NUEVA_H_12_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVA_H_12_DATA
 NUEVA_H_14: 
 
-        ld      hl,NUEVA_H_14_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVA_H_14_DATA
 NUEVA_H_15: 
 
-        ld      hl,NUEVA_H_15_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVA_H_15_DATA
 NUEVAS_LETRAS_AVISO_PREMIO:
 
 .nueva_d:
@@ -541,116 +565,116 @@ NUEVAS_LETRAS_AVISO_PREMIO:
         jp      COMUN_DATOS_A_SACAR
 NUEVO_CAMINO_INCORRECTO:
 
-        ld      hl,NUEVO_CAMINO_INCORRECTO_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_CAMINO_INCORRECTO_DATA
 
 NUEVO_CAMINO_CORRECTO:
 
-        ld      hl,NUEVO_CAMINO_CORRECTO_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_CAMINO_CORRECTO_DATA
 NUEVO_CORAZON_0: 
 
-        ld      hl,NUEVO_CORAZON_0_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_CORAZON_0_DATA
 
 NUEVO_CORAZON_1: 
 
-        ld      hl,NUEVO_CORAZON_1_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_CORAZON_1_DATA
 
 NUEVO_CORAZON_3: 
 
-        ld      hl,NUEVO_CORAZON_3_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_CORAZON_3_DATA
 NUEVO_CORAZON_4: 
 
-        ld      hl,NUEVO_CORAZON_4_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_CORAZON_4_DATA
 
 NUEVO_CORAZON_9:
 
-        ld      hl,NUEVO_CORAZON_9_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_CORAZON_9_DATA
 
 NUEVO_CORAZON_11:
 
-        ld      hl,NUEVO_CORAZON_11_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_CORAZON_11_DATA
 
 NUEVO_CORAZON_15:
 
-        ld      hl,NUEVO_CORAZON_15_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_CORAZON_15_DATA
 NUEVO_CORAZON_1_CONTENEDOR: 
 
-        ld      hl,NUEVO_CORAZON_1_CONTENEDOR_DATA
-        jp      COMUN_DATOS_A_SACAR        
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_CORAZON_1_CONTENEDOR_DATA        
 NUEVO_MEGADEATH_HEAT_5:
 
-        ld      hl,NUEVO_MEGADEATH_HEAT_5_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_MEGADEATH_HEAT_5_DATA
 NUEVO_MEGADEATH_5:
 
-        ld      hl,NUEVO_MEGADEATH_5_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_MEGADEATH_5_DATA
 NUEVO_MEGADEATH_HEAT_6:
 
-        ld      hl,NUEVO_MEGADEATH_HEAT_6_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_MEGADEATH_HEAT_6_DATA
 NUEVO_MEGADEATH_6:
 
-        ld      hl,NUEVO_MEGADEATH_6_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_MEGADEATH_6_DATA
 NUEVO_MEGADEATH_HEAT_7:
 
-        ld      hl,NUEVO_MEGADEATH_HEAT_7_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_MEGADEATH_HEAT_7_DATA
 NUEVO_MEGADEATH_7:
 
-        ld      hl,NUEVO_MEGADEATH_7_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_MEGADEATH_7_DATA
 NUEVO_MEGADEATH_HEAT_8:
 
-        ld      hl,NUEVO_MEGADEATH_HEAT_8_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_MEGADEATH_HEAT_8_DATA
 NUEVO_MEGADEATH_8:
 
-        ld      hl,NUEVO_MEGADEATH_8_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_MEGADEATH_8_DATA
 NUEVO_MEGADEATH_HEAT_9:
 
-        ld      hl,NUEVO_MEGADEATH_HEAT_9_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_MEGADEATH_HEAT_9_DATA
 NUEVO_MEGADEATH_9:
 
-        ld      hl,NUEVO_MEGADEATH_9_DATA
-        jp      COMUN_DATOS_A_SACAR                        
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_MEGADEATH_9_DATA                        
 NUEVO_ALFONSERRYX_NE:
 
-        ld      hl,NUEVA_ALFONSERRYX_NE_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVA_ALFONSERRYX_NE_DATA
 
 NUEVO_ALFONSERRYX_NO:
 
-        ld      hl,NUEVA_ALFONSERRYX_NO_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVA_ALFONSERRYX_NO_DATA
 
 NUEVO_ALFONSERRYX_SE:
 
-        ld      hl,NUEVA_ALFONSERRYX_SE_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVA_ALFONSERRYX_SE_DATA
 NUEVO_ALFONSERRYX_SE_S4:
 
-        ld      hl,NUEVA_ALFONSERRYX_SE_S4_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVA_ALFONSERRYX_SE_S4_DATA
 NUEVO_ALFONSERRYX_SO:
 
-        ld      hl,NUEVA_ALFONSERRYX_SO_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVA_ALFONSERRYX_SO_DATA
 NUEVO_ALFONSERRYX_SO_S4:
 
-        ld      hl,NUEVA_ALFONSERRYX_SO_S4_DATA
-        jp      COMUN_DATOS_A_SACAR
+        call    COMUN_DATOS_INLINE
+        dw      NUEVA_ALFONSERRYX_SO_S4_DATA
 NUEVO_FIREWORKS:
 
         ld      hl,NUEVO_FIREWORKS_DATA
@@ -670,14 +694,65 @@ NUEVO_ROCKAGER:
 ACTIVA_JUMP:
 
         ld      a,1
-        ld      (FASE3_VAGON_JUMP_ACTIVO),a
-        ret
+        jr      COMUN_CAMBIA_JUMP
 
 DESACTIVA_JUMP:
 
         xor     a
+
+COMUN_CAMBIA_JUMP:
+
         ld      (FASE3_VAGON_JUMP_ACTIVO),a
         ret
+
+COMUN_DATOS_INLINE:
+
+        pop     hl              ; HL apunta al DW que hay justo tras el CALL
+        ld      a,(hl)          ; byte bajo del puntero DATA
+        inc     hl
+        ld      h,(hl)          ; byte alto del puntero DATA
+        ld      l,a             ; HL = DATA
+        jp      COMUN_DATOS_A_SACAR
+
+COMUN_PREMIO_EXTRA_INLINE:
+
+        pop     hl              ; HL apunta al DW que hay justo tras el CALL
+        ld      e,(hl)          ; guardamos DATA en DE
+        inc     hl
+        ld      d,(hl)
+        push    de              ; lo protegemos: las llamadas de control podrian tocar registros
+
+        call    PAGE_10_A_SEGMENT_2
+        call    PREMIO_EXTRA.HAY_SITIO_PREMIO_EXTRA
+        jr      z,.hay_sitio_premio_extra
+
+        pop     de              ; sin sitio: descartamos DATA y volvemos al llamador real
+        ret
+
+.hay_sitio_premio_extra:
+
+        pop     hl              ; HL = DATA
+        jp      COMUN_DATOS_A_SACAR
+
+COMUN_NUEVA_D_INLINE:
+
+        pop     hl              ; HL apunta al DW que hay justo tras el CALL
+        ld      e,(hl)
+        inc     hl
+        ld      d,(hl)          ; DE = DATA
+        call    REINICIA_D_E
+        ex      de,hl           ; HL = DATA
+        jp      COMUN_DATOS_A_SACAR
+
+COMUN_NUEVA_P_INLINE:
+
+        pop     hl              ; HL apunta al DW que hay justo tras el CALL
+        ld      e,(hl)
+        inc     hl
+        ld      d,(hl)          ; DE = DATA
+        call    REINICIA_P_H
+        ex      de,hl           ; HL = DATA
+        jp      COMUN_DATOS_A_SACAR
 
 COMUN_DATOS_A_SACAR:
 
