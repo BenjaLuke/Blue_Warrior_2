@@ -1225,32 +1225,6 @@ CARGA_SPRITES_VAGONETA_PAUSA:
 		call	PON_COLOR_2.sin_bc_impuesta
 		jp		PAGE_10_A_SEGMENT_2
 
-CARGA_SPRITES_VAGONETA_CASCOS:
-
-		call	PAGE_32_A_SEGMENT_2
-		ld		hl,SPRITES_VAGONETA_CASCOS
-		ld		de,#4000+4*8
-		ld		bc,2*32
-		call	PON_COLOR_2.sin_bc_impuesta
-
-		ld		hl,SPRITES_VAGONETA_CASCOS+3*32
-		ld		de,#4000+12*8
-		ld		bc,2*32
-		call	PON_COLOR_2.sin_bc_impuesta
-
-		ld		hl,COLOR_SPRITES_VAGONETA_CASCOS
-		ld		de,#4800
-		ld		bc,2*16
-		call	PON_COLOR_2.sin_bc_impuesta
-
-		ld		hl,COLOR_SPRITES_VAGONETA_CASCOS+3*16
-		ld		de,#4820
-		ld		bc,2*16
-		call	PON_COLOR_2.sin_bc_impuesta
-		ld		a,1
-		ld		(SUMA_CAMINO),a
-		jp		PAGE_10_A_SEGMENT_2
-
 PRECARGA_SOLO_VAGONETA_EN_PATRONES_ALTOS:
 
 		call	PAGE_32_A_SEGMENT_2

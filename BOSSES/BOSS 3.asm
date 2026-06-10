@@ -1173,7 +1173,6 @@ BUCLE_PELEA_BOSS_3:
 		ld		a,(CORAZONES)
 		or		a
 		jp		z,MUERTE_DEPH_EN_BOSS_3
-		call	NUCLEO_DE_LA_PELEA_BOSS_3
 		call	CONTROLA_INMUNIDAD_DEPH_BOSS_3
 		
 		call	MOVIMIENTO_DEPH_EN_BOSS_3
@@ -1201,13 +1200,6 @@ BUCLE_PELEA_BOSS_3:
 
 		jp	BUCLE_PELEA_BOSS_3
 
-NUCLEO_DE_LA_PELEA_BOSS_3:
-
-		call	CONTROL_DISPARO_CHUMINIX_BOSS_3
-		call	SECUENCIA_PROYECTIL_BOSS_3						; doble velocidad
-		call	SECUENCIA_PROYECTIL_BOSS_3						; doble velocidad
-		ret
-
 CONTROLA_INMUNIDAD_DEPH_BOSS_3:
 
 		ld		a,(INMUNE)
@@ -1215,11 +1207,6 @@ CONTROLA_INMUNIDAD_DEPH_BOSS_3:
 		ret		z
 		dec		a
 		ld		(INMUNE),a
-		ret
-
-CONTROL_DISPARO_CHUMINIX_BOSS_3:
-
-		; Aquí el control de disparo de Chuminix.
 		ret
 
 INICIALIZA_POOL_PROYECTILES_BOSS_3:
@@ -1274,11 +1261,6 @@ INICIALIZA_POOL_PROYECTILES_BOSS_3:
 		ld		(PROYECTIL_BOSS_3_SPRITE_ACTUAL),a
 		ld		a,PROYECTIL_BOSS_3_ESPERA_INICIAL
 		ld		(PROYECTIL_BOSS_3_ESPERA),a
-		ret
-
-
-SECUENCIA_PROYECTIL_BOSS_3:
-		; Aquí la secuencia de disparo de los proyectiles del boss, que incluye la lógica para determinar la dirección a disparar según la posición de Chuminix.
 		ret
 
 MUEVE_CHUMINIX_BOSS_3:

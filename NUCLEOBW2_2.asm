@@ -942,14 +942,8 @@ SE_PUEDE_MOVER_Y_EFES_VARIOS:
 
 			ld		a,6	
 			call	SNSMAT_RAM  
-;			bit		6,a											; Si pulsa f2 quitamos o ponemos el marcador
-;			jp		z,HIDE_STATUS
 			bit		5,a											; Si pulsa f1 pausamos
-			jp		z,.PAUSE_VAGON
-			bit		6,a											; Si pulsa f2 paramos la m�sica
-			jp		z,.MUSIC_ON_OFF_VAGON
-			bit		7,a
-			jp		z,EFECTOS_ON_OFF								; Si pulsa f3 paramos FX			
+			jp		z,.PAUSE_VAGON		
 			
 			ld		a,7
 			call	SNSMAT_RAM
@@ -1009,51 +1003,6 @@ SE_PUEDE_MOVER_Y_EFES_VARIOS:
 
 			call	REANUDA_MUSICA_DESDE_SLOT1
 			jp		CONTROL.teclado
-
-.MUSIC_ON_OFF_VAGON:
-
-			call	ES_FASE3_VAGON_ACTIVO
-			jp		nc,MUSIC_ON_OFF
-
-			call	MARCA_REAPLICA_VAGON_RET
-
-			ld		a,(MARCADOR_PULSADO)
-			or		a
-			jp		nz,.FIN_MUSIC_ON_OFF_VAGON
-
-			ld		a,(FMPAC_DESCONECTADO)
-			or		a
-			jp		z,.FIN_MUSIC_ON_OFF_VAGON
-
-			ld		a,1
-			ld		(MARCADOR_PULSADO),a
-
-			ld		a,(MUSICA_ON_OFF)
-			or		a
-			jp		z,.ENCIENDE_MUSICA_VAGON
-
-.APAGA_MUSICA_VAGON:
-
-			xor		a
-			ld		(MUSICA_ON_OFF),a
-			call	stpmus
-			call	CARGA_SPRITES_VAGONETA_CASCOS
-			jp		.FIN_MUSIC_ON_OFF_VAGON
-
-.ENCIENDE_MUSICA_VAGON:
-
-			ld		a,1
-			ld		(MUSICA_ON_OFF),a
-			call	CARGA_MUSICA_VAGONETA
-			call	APLICA_SPRITES_DEPH_VAGON
-			jp		.FIN_MUSIC_ON_OFF_VAGON
-
-.FIN_MUSIC_ON_OFF_VAGON:
-
-			call	RUTINA_ESPECIAL_FASE_3
-			call	ES_FASE3_VAGON_ACTIVO
-			jp		c,CONTROL.FIN_RUTINA_GLOBAL
-			jp		CONTROL.pre_sigue_comun
 
 RUTINA_ESPECIAL_FASE_3:
 
@@ -3819,7 +3768,7 @@ ECTO_PALLERS:
 
 .EMPIEZA_SECUENCIA:
 
-.PASEANDO:
+; PASEANDO
 
 		call	.ACTUALIZA_VELOCIDAD_ECTO_HUEVOS
 		ld		a,(ix+5)
@@ -4090,7 +4039,7 @@ CORVELLINIS:
 
 .SECUENCIA_CORVELLINI:
 
-.MIRAMOS_SU_FASE:
+;MIRAMOS_SU_FASE:
 
 		ld		a,(ix+3)
 		or		a
@@ -4247,7 +4196,7 @@ GARGOLAS:
 
 .SECUENCIA_GARGOLA:
 
-.MIRAMOS_SI_DISPARA:
+; MIRAMOS_SI_DISPARA
 
 		ld		a,(ix+5)
 		dec		a

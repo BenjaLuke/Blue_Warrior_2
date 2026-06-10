@@ -167,6 +167,11 @@ NUEVO_PREMIO_EXTRA_0:
         call    COMUN_PREMIO_EXTRA_INLINE
         dw      NUEVO_PREMIO_EXTRA_0_DATA
 
+NUEVO_PREMIO_EXTRA_1:
+
+        call    COMUN_PREMIO_EXTRA_INLINE
+        dw      NUEVO_PREMIO_EXTRA_1_DATA
+
 NUEVO_PREMIO_EXTRA_2:
 
         call    COMUN_PREMIO_EXTRA_INLINE
@@ -438,24 +443,10 @@ NUEVO_PROYECTIL_NORMAL:
         ld      ix,NUEVO_PROYECTIL_NORMAL_DATA
         ld      a,1
         jp      COMUN_DATOS_A_SACAR_SIN_A
-
-REINICIA_D_E:
-
-        xor     a
-        ld      (TENEMOS_D),a
-        ld      (TENEMOS_E),a
-        ret
-
-REINICIA_P_H:
-
-        xor     a
-        ld      (TENEMOS_P),a
-        ld      (TENEMOS_H),a
-        ret
         
 NUEVAS_LETRAS_AVISO_PREMIO:
 
-.nueva_d:
+; nueva_d
 
         ld      a,(TENEMOS_D)
         or      a
@@ -619,26 +610,6 @@ COMUN_PREMIO_EXTRA_INLINE:
 .hay_sitio_premio_extra:
 
         pop     hl              ; HL = DATA
-        jp      COMUN_DATOS_A_SACAR
-
-COMUN_NUEVA_D_INLINE:
-
-        pop     hl              ; HL apunta al DW que hay justo tras el CALL
-        ld      e,(hl)
-        inc     hl
-        ld      d,(hl)          ; DE = DATA
-        call    REINICIA_D_E
-        ex      de,hl           ; HL = DATA
-        jp      COMUN_DATOS_A_SACAR
-
-COMUN_NUEVA_P_INLINE:
-
-        pop     hl              ; HL apunta al DW que hay justo tras el CALL
-        ld      e,(hl)
-        inc     hl
-        ld      d,(hl)          ; DE = DATA
-        call    REINICIA_P_H
-        ex      de,hl           ; HL = DATA
         jp      COMUN_DATOS_A_SACAR
 
 COMUN_DATOS_A_SACAR:

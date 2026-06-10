@@ -1964,14 +1964,6 @@ SITUA_LA_X_E_Y_2:
 		add		ix,de	
 
 		ret
-HIDE_STATUS:
-
-		ld		a,(MARCADOR_ANULADO)
-		or		a
-		jp		nz,CONTROL.teclado	
-		
-		call	HIDE_STATUS_RET
-		jp		CONTROL.teclado	
 
 HIDE_STATUS_COMP:
 
@@ -1993,12 +1985,6 @@ SHOW_STATUS_COMP:
 		ret		z
 
 		jp		HIDE_STATUS_RET_SIN_CONTROL
-
-HIDE_STATUS_RET:
-
-		ld		a,(MARCADOR_PULSADO)
-		or		a
-		ret		nz
 
 HIDE_STATUS_RET_SIN_CONTROL:
 
