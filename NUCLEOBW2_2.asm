@@ -942,16 +942,17 @@ SE_PUEDE_MOVER_Y_EFES_VARIOS:
 
 			ld		a,6	
 			call	SNSMAT_RAM  
-			bit		6,a											; Si pulsa f2 quitamos o ponemos el marcador
-			jp		z,HIDE_STATUS
+;			bit		6,a											; Si pulsa f2 quitamos o ponemos el marcador
+;			jp		z,HIDE_STATUS
 			bit		5,a											; Si pulsa f1 pausamos
 			jp		z,.PAUSE_VAGON
-			bit		7,a											; Si pulsa f3 paramos la m�sica
+			bit		6,a											; Si pulsa f2 paramos la m�sica
 			jp		z,.MUSIC_ON_OFF_VAGON
+			bit		7,a
+			jp		z,EFECTOS_ON_OFF								; Si pulsa f3 paramos FX			
+			
 			ld		a,7
 			call	SNSMAT_RAM
-			bit		0,a
-			jp		z,EFECTOS_ON_OFF								; Si pulsa f4 paramos FX
 			bit		1,a	
 			jp		z,AGILIZA_MAPA									; Si pulsa f5 avanza 20 lineas en el mapa			
 			xor		a

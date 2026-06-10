@@ -137,19 +137,19 @@
 		dw		RETORNO
 		dw		NUEVO_COVID_2_IZQUIERDA
 		dw		RETORNO
-		dw		BUCLE_PINTA_TILES.musica_mas_velocidad_mas_limites
+		dw		RETORNO
+		dw		RETORNO
 		dw		RETORNO
 		dw		RETORNO
 		dw		RETORNO
 		dw		RETORNO
 		dw		RETORNO
 		dw		BUCLE_PINTA_TILES.SI_QUE_SE_MUEVE
-		dw		BUCLE_PINTA_TILES.PINTA_FADE_IN_2
-		dw		RETORNO
+		dw		BUCLE_PINTA_TILES.musica_mas_velocidad_mas_limites
 		dw		NUEVO_ALFONSERRYX_NO
 		dw		CARGA_ALFONSERRYX
-		dw		RETORNO
-		dw		RETORNO
+		dw		BUCLE_PINTA_TILES.PINTA_FADE_IN_2
+		dw		BUCLE_PINTA_TILES.VELOCIDAD_DE_FASE_TROTE
 		dw		NUEVO_COVID_1
 		dw		NUEVO_COVID_1_DISPARA
 		dw		NUEVO_COVID_1
@@ -165,7 +165,7 @@
 		dw		CARGA_ALFONSERRYX
 		dw		RETORNO
 		dw		RETORNO
-		dw		RETORNO
+		dw		SHOW_STATUS_COMP
 		dw		CHECK_POINT
 		dw		NUEVO_PREMIO_EXTRA_5
 		dw		BUCLE_PINTA_TILES.musica_mas_velocidad_mas_limites
@@ -341,7 +341,7 @@
 		dw		RETORNO
 		dw		RETORNO
 		dw		RETORNO
-		dw		RETORNO
+		dw		SHOW_STATUS_COMP
 		dw		RETORNO
 		dw		RETORNO
 		dw		RETORNO
