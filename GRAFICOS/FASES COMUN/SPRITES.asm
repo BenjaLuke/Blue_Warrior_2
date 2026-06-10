@@ -1010,7 +1010,7 @@ SPRITES_STAGE_DESDE_A:
 		DB $00,$FE,$FC,$FE,$00,$00,$00,$FC
 		DB $F8,$FC,$00,$00,$FE,$FC,$FE,$00
 
-SPRITES_1:
+SPRITES_NUMERO_DE_FASE:
 		; 
 		; --- 1
 		; mask 0
@@ -1019,7 +1019,6 @@ SPRITES_1:
 		DB $00,$C0,$C0,$C0,$C0,$C0,$C0,$C0
 		DB $C0,$C0,$C0,$C0,$F8,$F0,$F8,$00
 
-SPRITES_2:
 		; 
 		; --- 2
 		; mask 0
@@ -1028,7 +1027,6 @@ SPRITES_2:
 		DB $00,$F0,$F8,$FC,$1C,$1C,$1C,$F8
 		DB $F0,$E0,$00,$00,$F8,$F0,$F8,$00
 
-SPRITES_3:
 		; 
 		; --- 3
 		; mask 0
@@ -1037,7 +1035,6 @@ SPRITES_3:
 		DB $00,$F0,$F8,$FC,$1C,$1C,$1C,$F8
 		DB $F8,$FC,$1C,$1C,$FC,$F8,$F0,$00
 
-SPRITES_4:
 		; 
 		; --- 4
 		; mask 0
@@ -1046,7 +1043,6 @@ SPRITES_4:
 		DB $00,$14,$1C,$1C,$1C,$1C,$1C,$FC
 		DB $FC,$FC,$1C,$1C,$1C,$1C,$14,$00
 
-SPRITES_FINAL:
 		; 
 		; --- 5
 		; mask 0
@@ -1054,6 +1050,7 @@ SPRITES_FINAL:
 		DB $96,$97,$55,$64,$3B,$1F,$0F,$03
 		DB $C0,$F0,$F8,$FC,$FC,$C2,$3A,$AA
 		DB $BA,$AB,$A8,$86,$7C,$F8,$F0,$C0
+
 SPRITES_FIREWORK:
 
 		; 

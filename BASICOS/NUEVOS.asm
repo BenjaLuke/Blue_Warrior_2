@@ -192,10 +192,20 @@ NUEVO_PREMIO_EXTRA_6:
         call    COMUN_PREMIO_EXTRA_INLINE
         dw      NUEVO_PREMIO_EXTRA_6_DATA
 
+NUEVO_PREMIO_EXTRA_7:
+
+        call    COMUN_PREMIO_EXTRA_INLINE
+        dw      NUEVO_PREMIO_EXTRA_7_DATA
+
 NUEVO_PREMIO_EXTRA_8:
 
         call    COMUN_PREMIO_EXTRA_INLINE
         dw      NUEVO_PREMIO_EXTRA_8_DATA
+
+NUEVO_PREMIO_EXTRA_9:
+
+        call    COMUN_PREMIO_EXTRA_INLINE
+        dw      NUEVO_PREMIO_EXTRA_9_DATA
 
 NUEVO_PREMIO_EXTRA_10:
 
@@ -443,93 +453,6 @@ REINICIA_P_H:
         ld      (TENEMOS_H),a
         ret
         
-NUEVA_D_1: 
-
-        call    COMUN_NUEVA_D_INLINE
-        dw      NUEVA_D_1_DATA
-
-NUEVA_D_2: 
-
-        call    COMUN_NUEVA_D_INLINE
-        dw      NUEVA_D_2_DATA
-
-NUEVA_D_12: 
-
-        call    COMUN_NUEVA_D_INLINE
-        dw      NUEVA_D_12_DATA
-
-NUEVA_D_13: 
-
-        call    COMUN_NUEVA_D_INLINE
-        dw      NUEVA_D_13_DATA
-
-NUEVA_D_15: 
-
-        call    COMUN_NUEVA_D_INLINE
-        dw      NUEVA_D_15_DATA
-NUEVA_E_0: 
-
-        call    COMUN_DATOS_INLINE
-        dw      NUEVA_E_0_DATA
-NUEVA_E_6: 
-
-        call    COMUN_DATOS_INLINE
-        dw      NUEVA_E_6_DATA
-NUEVA_E_11: 
-
-        call    COMUN_DATOS_INLINE
-        dw      NUEVA_E_11_DATA
-NUEVA_E_12: 
-
-        call    COMUN_DATOS_INLINE
-        dw      NUEVA_E_12_DATA
-NUEVA_E_14: 
-
-        call    COMUN_DATOS_INLINE
-        dw      NUEVA_E_14_DATA
-NUEVA_P_0: 
-
-        call    COMUN_NUEVA_P_INLINE
-        dw      NUEVA_P_0_DATA      
-NUEVA_P_1: 
-
-        call    COMUN_NUEVA_P_INLINE
-        dw      NUEVA_P_1_DATA      
-NUEVA_P_3: 
-
-        call    COMUN_NUEVA_P_INLINE
-        dw      NUEVA_P_3_DATA
-NUEVA_P_10: 
-
-        call    COMUN_NUEVA_P_INLINE
-        dw      NUEVA_P_10_DATA
-NUEVA_P_14: 
-
-        call    COMUN_NUEVA_P_INLINE
-        dw      NUEVA_P_14_DATA
-NUEVA_H_2: 
-
-        call    COMUN_DATOS_INLINE
-        dw      NUEVA_H_2_DATA
-NUEVA_H_6: 
-
-        ld      a,(SUMA_BUCLE)
-        cp      3
-        ret     nz
-        ld      hl,NUEVA_H_6_DATA
-        jp      COMUN_DATOS_A_SACAR        
-NUEVA_H_12: 
-
-        call    COMUN_DATOS_INLINE
-        dw      NUEVA_H_12_DATA
-NUEVA_H_14: 
-
-        call    COMUN_DATOS_INLINE
-        dw      NUEVA_H_14_DATA
-NUEVA_H_15: 
-
-        call    COMUN_DATOS_INLINE
-        dw      NUEVA_H_15_DATA
 NUEVAS_LETRAS_AVISO_PREMIO:
 
 .nueva_d:
@@ -572,43 +495,7 @@ NUEVO_CAMINO_CORRECTO:
 
         call    COMUN_DATOS_INLINE
         dw      NUEVO_CAMINO_CORRECTO_DATA
-NUEVO_CORAZON_0: 
 
-        call    COMUN_DATOS_INLINE
-        dw      NUEVO_CORAZON_0_DATA
-
-NUEVO_CORAZON_1: 
-
-        call    COMUN_DATOS_INLINE
-        dw      NUEVO_CORAZON_1_DATA
-
-NUEVO_CORAZON_3: 
-
-        call    COMUN_DATOS_INLINE
-        dw      NUEVO_CORAZON_3_DATA
-NUEVO_CORAZON_4: 
-
-        call    COMUN_DATOS_INLINE
-        dw      NUEVO_CORAZON_4_DATA
-
-NUEVO_CORAZON_9:
-
-        call    COMUN_DATOS_INLINE
-        dw      NUEVO_CORAZON_9_DATA
-
-NUEVO_CORAZON_11:
-
-        call    COMUN_DATOS_INLINE
-        dw      NUEVO_CORAZON_11_DATA
-
-NUEVO_CORAZON_15:
-
-        call    COMUN_DATOS_INLINE
-        dw      NUEVO_CORAZON_15_DATA
-NUEVO_CORAZON_1_CONTENEDOR: 
-
-        call    COMUN_DATOS_INLINE
-        dw      NUEVO_CORAZON_1_CONTENEDOR_DATA        
 NUEVO_MEGADEATH_HEAT_5:
 
         call    COMUN_DATOS_INLINE

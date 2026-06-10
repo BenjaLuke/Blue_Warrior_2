@@ -588,7 +588,7 @@ UN_NUEVO_ENEMIGO:
         ld      (ix),a
         ld      (ix+6),c
         call    TROZOS_COMUNES_1
-	ld	hl,COLOR_GUSANO_1_1						; Damos color al sprite en la posición de sprite que le toca	
+	ld	hl,COLOR_GUSANO_PARTES_1_3						; Damos color al sprite en la posición de sprite que le toca	
 	jp      TROZOS_COMUNES_7
 
 .DEFINE_ALFONSERRIX_COMUN_2:
@@ -599,7 +599,7 @@ UN_NUEVO_ENEMIGO:
 
  	call	STANDAR_DA_EL_VALOR_SPRITE_QUE_TOCA_IX3
         call    TROZOS_COMUNES_3
-	ld	hl,COLOR_GUSANO_1_2						; Damos color al sprite en la posición de sprite que le toca	
+	ld	hl,COLOR_GUSANO_PARTES_2_4						; Damos color al sprite en la posición de sprite que le toca	
 	jp      TROZOS_COMUNES_9
 
 .PASAMOS_A_LA_SIGUIENTE_POSICION:

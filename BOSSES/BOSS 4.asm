@@ -1188,7 +1188,6 @@ CREA_PROYECTIL_ERRECENYX_BOSS_4:
 		call	OBTIENE_PUNTERO_DIRECCION_PROYECTIL_BOSS_4_ACTUAL
 		ld		a,(PROYECTIL_BOSS_4_DIRECCION)
 		ld		(hl),a
-		call	CARGA_COLOR_PROYECTIL_BOSS_4_ACTUAL
 		ret
 
 SECUENCIA_PROYECTIL_BOSS_4:
@@ -1367,15 +1366,6 @@ CARGA_ATRIBUTOS_PROYECTIL_BOSS_4:
 		add		a,a
 		add		a,BARRO_PATRON_INICIAL_BOSS_4
 		jr		PINTA_PROYECTIL_BOSS_4_1
-
-CARGA_COLOR_PROYECTIL_BOSS_4_ACTUAL:
-
-		; El color del barro ya queda precargado al entrar en el boss
-		; para todos los slots de proyectil 22-29.
-		; No lo copiamos aqui porque durante la pelea COLOR_BARRO
-		; no tiene por que estar paginado en RAM. Si lo leemos aqui,
-		; podemos sobreescribir el color bueno con basura o ceros.
-		ret
 
 OCULTA_SPRITE_PROYECTIL_BOSS_4_EN_VRAM:
 

@@ -360,7 +360,7 @@ BUCLE_PINTA_TILES:
 		or		a
 		jp		z,.RECOLOCAMOS_Y
 
-		ld		de,TABLA_SUCESOS_FASE_1									; DE hacer referencia a la tabla en sí
+		ld		de,TABLA_SUCESOS_DE_FASE									; DE hacer referencia a la tabla en sí
 
 		push	af
 		ld		a,(PAGE_DATOS_FASE)
@@ -591,7 +591,7 @@ BUCLE_PINTA_TILES:
 
 		ld		a,(FASE)
 		dec		a
-		ld		hl,SPRITES_1
+		ld		hl,SPRITES_NUMERO_DE_FASE
 		ld		e,a
 		ld		d,0
 		or		a

@@ -16,11 +16,11 @@ CINEMATICA_TEXTO_Y_2				equ		164
 CINEMATICA_TEXTO_Y_3				equ		174
 CINEMATICA_TEXTO_Y_4				equ		184
 CINEMATICA_PAUSA_LETRA			equ		4
-CINEMATICA_PAUSA_FINAL			equ		155
+CINEMATICA_PAUSA_FINAL			equ		150
 
 CINEMATICA_PARPADEO_X_DESTINO              equ     74
-CINEMATICA_PARPADEO_Y_DESTINO_ORIGINAL     equ     58
-CINEMATICA_PARPADEO_Y_DESTINO_FRAMES       equ     58
+CINEMATICA_PARPADEO_Y_DESTINO_ORIGINAL     equ     38
+CINEMATICA_PARPADEO_Y_DESTINO_FRAMES       equ     38
 CINEMATICA_PARPADEO_ANCHO                  equ     46
 CINEMATICA_PARPADEO_ALTO                   equ     20
 CINEMATICA_PARPADEO_ESPERA_MIN             equ     96
@@ -414,6 +414,15 @@ CINEMATICA:
 
 .SIN_OCULTAR_BANDERA:
 
+		ld		a,(iy+1)
+		bit		4,a
+		jr		z,.SIN_REINICIAR_COPI_CINEMATICA_5
+		push	iy
+		call	REINICIA_COPI_CINEMATICA_5
+		pop		iy
+
+.SIN_REINICIAR_COPI_CINEMATICA_5:
+
 		ld		l,(iy+2)
 		ld		h,(iy+3)
 
@@ -438,6 +447,7 @@ TABLA_BLOQUES_CINEMATICA:
 		; bit 1 = reinicia bandera
 		; bit 2 = reinicia latido
 		; bit 3 = oculta bandera
+		; bit 4 = reinicia animacion copi cinematica 5
 		db		1,00000011b
 		dw		DATOS_COPY_CINEMATICA_1,TEXTO_CINEMATICA_1
 
@@ -450,7 +460,7 @@ TABLA_BLOQUES_CINEMATICA:
 		db		4,00001100b
 		dw		DATOS_COPY_CINEMATICA_3,TEXTO_CINEMATICA_4
 
-		db		5,00001100b
+		db		5,00011000b
 		dw		DATOS_COPY_CINEMATICA_4,TEXTO_CINEMATICA_5
 
 		db		0
@@ -684,14 +694,21 @@ REINICIA_PARPADEO_CINEMATICA_2:
 		ld		(CINEMATICA_PARPADEO_CONTADOR),a
 		ret
 
+REINICIA_COPI_CINEMATICA_5:
+
+		xor		a
+		ld		(CINEMATICA_PARPADEO_ESTADO),a
+
+		ld		a,CINEMATICA_5_COPI_CADA_CICLOS
+		ld		(CINEMATICA_PARPADEO_CONTADOR),a
+		ret
+
 PINTA_PRIMER_FRAME_COPI_CINEMATICA_5:
 
 		ld		a,(CINEMATICA_BLOQUE_ACTUAL)
 		cp		5
 		ret		nz
 
-		ld		a,CINEMATICA_5_COPI_CADA_CICLOS
-		ld		(CINEMATICA_PARPADEO_CONTADOR),a
 		xor		a
 		ld		(CINEMATICA_PARPADEO_ESTADO),a
 		jr		EJECUTA_FRAME_COPI_CINEMATICA_5
@@ -753,8 +770,6 @@ REINICIA_LATIDO_CINEMATICA_2:
 CONTROL_LATIDO_CINEMATICA_2:
 
 		ld		a,(CINEMATICA_BLOQUE_ACTUAL)
-		cp		5
-		jp		z,CONTROL_LATIDO_CINEMATICA_5
 		cp		3
 		jr		z,.LATIDO_ACTIVO
 		cp		4
@@ -806,105 +821,6 @@ SETPALETE_LATIDO_CINEMATICA_2:
 		outi
 		outi
 		ei
-		ret
-
-CONTROL_LATIDO_CINEMATICA_5:
-
-		ld		a,(CINEMATICA_LATIDO_INDICE)
-		inc		a
-		and		00000011b
-		ld		(CINEMATICA_LATIDO_INDICE),a
-
-		ld		l,a
-		ld		h,0
-		ld		de,TABLA_DELTA_LATIDO_CINEMATICA_5
-		add		hl,de
-		ld		b,(hl)
-
-		ld		a,5
-		ld		hl,PALETA_CINEMATICA_3_4+10
-		call	SETPALETE_LATIDO_CINEMATICA_5
-
-		ld		a,10
-		ld		hl,PALETA_CINEMATICA_3_4+20
-		jp		SETPALETE_LATIDO_CINEMATICA_5
-
-TABLA_DELTA_LATIDO_CINEMATICA_5:
-
-		db		#00,#FF,#00,#01		; normal, -1 brillo, normal, +1 brillo
-
-SETPALETE_LATIDO_CINEMATICA_5:
-
-		push	af
-		call	AJUSTA_COLOR_LATIDO_CINEMATICA_5
-		pop		af
-
-		di
-		ld		c,#9A
-		out		(#99),a
-		ld		a,16+128
-		out		(#99),a
-		out		(c),d
-		out		(c),e
-		ei
-		ret
-
-AJUSTA_COLOR_LATIDO_CINEMATICA_5:
-
-		ld		a,(hl)
-		and		#07
-		call	AJUSTA_COMPONENTE_LATIDO_CINEMATICA_5
-		ld		e,a
-
-		ld		a,(hl)
-		and		#70
-		rrca
-		rrca
-		rrca
-		rrca
-		call	AJUSTA_COMPONENTE_LATIDO_CINEMATICA_5
-		add		a,a
-		add		a,a
-		add		a,a
-		add		a,a
-		or		e
-		ld		d,a
-
-		inc		hl
-		ld		a,(hl)
-		and		#07
-		call	AJUSTA_COMPONENTE_LATIDO_CINEMATICA_5
-		ld		e,a
-		ret
-
-AJUSTA_COMPONENTE_LATIDO_CINEMATICA_5:
-
-		ld		c,a
-		ld		a,b
-		or		a
-		jr		z,.DEVUELVE_COMPONENTE
-		cp		#FF
-		jr		z,.BAJA_BRILLO
-
-.SUBE_BRILLO:
-
-		ld		a,c
-		cp		7
-		ret		z
-		inc		a
-		ret
-
-.BAJA_BRILLO:
-
-		ld		a,c
-		or		a
-		ret		z
-		dec		a
-		ret
-
-.DEVUELVE_COMPONENTE:
-
-		ld		a,c
 		ret
 
 CONTROL_PARPADEO_CINEMATICA_2:
@@ -2117,7 +2033,7 @@ DATOS_COPY_CINEMATICA_2:
 DATOS_COPY_CINEMATICA_3:
 
 		dw		#0000,#0200
-		dw		#0000,#0000+20
+		dw		#0000,#0000
 		dw		#0100,#0072
 		db		#00,#00,10010000b
 
@@ -2131,21 +2047,21 @@ DATOS_COPY_CINEMATICA_4:
 DATOS_COPY_COPI_CINEMATICA_5_0:
 
 		dw		#008B,#0200+203
-		dw		#0031,#002F
+		dw		#0058,#002F
 		dw		#0026,#0022
 		db		#00,#00,10010000b
 
 DATOS_COPY_COPI_CINEMATICA_5_1:
 
 		dw		#00B2,#0200+203
-		dw		#0031,#002F
+		dw		#0058,#002F
 		dw		#0026,#0022
 		db		#00,#00,10010000b
 
 DATOS_COPY_COPI_CINEMATICA_5_2:
 
 		dw		#00D9,#0200+203
-		dw		#0031,#002F
+		dw		#0058,#002F
 		dw		#0026,#0022
 		db		#00,#00,10010000b
 
@@ -2606,7 +2522,7 @@ DATOS_NEGRO_ROTATIVO_EN_PAGE_1:
 
 TEXTO_ROTATIVO_PRESENTACION:
 
-		db		"BLUE WARRIOR II - Beta version 4.11.48 - 09/6/2026 - 91% - (C) Digital Moai",0
+		db		"BLUE WARRIOR II - Beta version 4.11.23 - 09/6/2026 - 90% - (C) Digital Moai",0
 
 TEXTO_ROTATIVO_PRESENTACION_FIN:
 
