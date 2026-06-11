@@ -357,6 +357,9 @@ TILE_FASE3_VAGON_X16:                   #1
 FASE3_VAGON_TIPO_MUERTE:                #1
 FASE3_VAGON_CORRIGE_Y_CADENCIA:         #1
 FASE3_VAGON_JUMP_ACTIVO:                #1
+TILE_ESPECIAL_DEPH_COOLDOWN:            #1
+TILE_ESPECIAL_DEPH_BLOQUEOS:            #1
+LETRAS_FASES_BITS:                      #3
 
 ROTATIVO_CONTADOR_PRESENTACION:              #1      ; Contador de velocidad del rotativo de presentacion
 ROTATIVO_PAGINA_VISIBLE_PRESENTACION:        #1      ; Page 0/1 actualmente visible en la presentacion
@@ -369,3 +372,4 @@ DATOS_NEGRO_DERECHA_ROTATIVO_PRESENTACION:   #15     ; Datos HMMV dinamicos para
 
 FINAL_FASE_5_VAMOS_A_TERMINAR_DATAS_HMMV:   #15
 FINAL_FASE_5_VAMOS_A_TERMINAR_X_SEED:       #1
+ENEMIGOS_BLINDA_NACIMIENTO:     #10

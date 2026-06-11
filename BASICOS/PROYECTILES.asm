@@ -1037,6 +1037,9 @@ MAGIA:
 		ld		(MAGIAS),a ;recuperar para que no tenga infinita magia
 
 		di															; Paramos la música
+MAGIA_GRATIS:
+
+		di
 		call	hltmus
 		ei
 

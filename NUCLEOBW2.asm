@@ -704,35 +704,27 @@ GRAFICOS_FASE_5_2:
 M_STAGE_1:
 
 		incbin 	"AUDIOS/TEMAS/FASE 1/STAGE 1.mbm"
-
 		ds		#8000+4400-$
 
 M_BOSS_1:
 
 		incbin	"AUDIOS/TEMAS/FASE 1/BOSS 1.mbm"
-
 		ds		#8000+4400+3800-$
-
-M_BONUS_1:
-
-		incbin	"AUDIOS/TEMAS/BONUS.mbm"
-        
-		ds      #8000+4400+3800+3800-$    
 
 M_FANFARE_1:
 
 		incbin 	"AUDIOS/TEMAS/FASE 1/S1_INTRO.mbm"
-
-		ds      #8000+4400+3800+3800+600-$    
+		ds      #8000+4400+3800+600-$    
 
 M_WIN_1:
 
 		incbin 	"AUDIOS/TEMAS/OTRAS/FASE_WIN.mbm"
+		ds		#8000+4400+3800+600+670-$
 
 M_GAME_OVER_1:
 
 		incbin	"AUDIOS/TEMAS/OTRAS/GAME_OVER.MBM"
-
+		ds		#8000+4400+3800+600+670+2070-$
         ds		#C000-$
 
 /**********************
@@ -751,40 +743,31 @@ M_GAME_OVER_1:
 M_STAGE_2:
 
 		incbin 	"AUDIOS/TEMAS/FASE 2/STAGE 2.mbm"
-
-
 		ds		#8000+4400-$
 
 M_BOSS_2:
 
 		incbin	"AUDIOS/TEMAS/FASE 2/BOSS 2.mbm"
-
 		ds		#8000+4400+3800-$
-
-M_BONUS_2:
-
-		incbin	"AUDIOS/TEMAS/BONUS.mbm"
-        
-		ds      #8000+4400+3800+3800-$    
 
 M_FANFARE_2:
 
 		incbin 	"AUDIOS/TEMAS/FASE 2/S2_INTRO.mbm"
-
-		ds      #8000+4400+3800+3800+600-$    
+		ds      #8000+4400+3800+600-$    
 
 M_WIN_2:
 
 		incbin 	"AUDIOS/TEMAS/OTRAS/FASE_WIN.mbm"
+		ds		#8000+4400+3800+600+670-$
 
 M_GAME_OVER_2:
 
 		incbin	"AUDIOS/TEMAS/OTRAS/GAME_OVER.MBM"
+		ds		#8000+4400+3800+600+670+2070-$
 
 M_INTRO_BOSS_2:
 
 		incbin 	"AUDIOS/TEMAS/FASE 2/BOSS 2 INTRO.MBM"
-
         ds		#C000-$
 
 /**********************
@@ -803,35 +786,27 @@ M_INTRO_BOSS_2:
 M_STAGE_3:
 
 		incbin 	"AUDIOS/TEMAS/FASE 3/STAGE 3.mbm"
-
 		ds		#8000+4400-$
 
 M_BOSS_3:
 
 		incbin	"AUDIOS/TEMAS/FASE 3/BOSS 3.mbm"
-
 		ds		#8000+4400+3800-$
-
-M_BONUS_3:
-
-		incbin	"AUDIOS/TEMAS/BONUS.mbm"
-        
-		ds      #8000+4400+3800+3800-$    
 
 M_FANFARE_3:
 
 		incbin 	"AUDIOS/TEMAS/FASE 3/S3_INTRO.mbm"
-
-		ds      #8000+4400+3800+3800+600-$    
+		ds      #8000+4400+3800+600-$    
 
 M_WIN_3:
 
 		incbin 	"AUDIOS/TEMAS/OTRAS/FASE_WIN.mbm"
+		ds		#8000+4400+3800+600+670-$
 
 M_GAME_OVER_3:
 
 		incbin	"AUDIOS/TEMAS/OTRAS/GAME_OVER.MBM"
-
+		ds		#8000+4400+3800+600+670+2070-$
         ds		#C000-$
 
 /**********************
@@ -850,36 +825,27 @@ M_GAME_OVER_3:
 M_STAGE_4:
 
 		incbin 	"AUDIOS/TEMAS/FASE 4/STAGE 4.mbm"
-
-
 		ds		#8000+4400-$
 
 M_BOSS_4:
 
 		incbin	"AUDIOS/TEMAS/FASE 4/BOSS 4.mbm"
-
 		ds		#8000+4400+3800-$
-
-M_BONUS_4:
-
-		incbin	"AUDIOS/TEMAS/BONUS.mbm"
-        
-		ds      #8000+4400+3800+3800-$    
-
+ 
 M_FANFARE_4:
 
 		incbin 	"AUDIOS/TEMAS/FASE 4/S4_INTRO.mbm"
-
-		ds      #8000+4400+3800+3800+600-$    
+		ds      #8000+4400+3800+600-$    
 
 M_WIN_4:
 
 		incbin 	"AUDIOS/TEMAS/OTRAS/FASE_WIN.mbm"
+		ds		#8000+4400+3800+600+670-$
 
 M_GAME_OVER_4:
 
 		incbin	"AUDIOS/TEMAS/OTRAS/GAME_OVER.MBM"
-
+		ds		#8000+4400+3800+600+670+2070-$
         ds		#C000-$
 
 /**********************
@@ -898,36 +864,27 @@ M_GAME_OVER_4:
 M_STAGE_5:
 
 		incbin 	"AUDIOS/TEMAS/FASE 5/STAGE 5.mbm"
-
-
 		ds		#8000+4400-$
 
 M_BOSS_5:
 
 		incbin	"AUDIOS/TEMAS/FASE 5/BOSS 5.mbm"
-
 		ds		#8000+4400+3800-$
-
-M_BONUS_5:
-
-		incbin	"AUDIOS/TEMAS/BONUS.mbm"
-        
-		ds      #8000+4400+3800+3800-$    
-
+ 
 M_FANFARE_5:
 
 		incbin 	"AUDIOS/TEMAS/FASE 5/S5_INTRO.mbm"
-
-		ds      #8000+4400+3800+3800+600-$    
+		ds      #8000+4400+3800+600-$    
 
 M_WIN_5:
 
 		incbin 	"AUDIOS/TEMAS/OTRAS/FASE_WIN.mbm"
+		ds		#8000+4400+3800+600+670-$
 
 M_GAME_OVER_5:
 
 		incbin	"AUDIOS/TEMAS/OTRAS/GAME_OVER.MBM"
-
+		ds		#8000+4400+3800+600+670+2070-$
         ds		#C000-$
 
 /**********************

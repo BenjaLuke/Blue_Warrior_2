@@ -1245,23 +1245,6 @@ ON_SPRITE_GLOBAL:
 	ld	(VARIABLE_UN_USO3),a
 	call	BUCLE_REVISION_4_PIEDRAS_BOSS_2
 	jp	BUCLE_REVISION_TODOS_LOS_PROYECTILES_OJO_BOSS_2
-
-GUARDA_ESTADO_PROYECTIL_BOSS_2:
-
-        ld      hl,PROYECTIL_BOSS_2_X
-        ld      de,COPIA_PROYECTIL_BOSS_2_X
-        ld      bc,14
-        ldir
-        ret
-
-
-RESTAURA_ESTADO_PROYECTIL_BOSS_2:
-
-        ld      hl,COPIA_PROYECTIL_BOSS_2_X
-        ld      de,PROYECTIL_BOSS_2_X
-        ld      bc,14
-        ldir
-        ret
 		
 BUCLE_REVISION_4_PIEDRAS_BOSS_2:
 
@@ -1929,18 +1912,6 @@ ANIMA_ROCKAGERS_EN_BOSS_2:
 
         ret
 
-.PAUSA_DE_ANIMACION_2:
-
-        ld      a,(PAUSA_EN_ANIMACION_ROCKAGER)
-        inc     a
-        and     00000111b
-        ld      (PAUSA_EN_ANIMACION_ROCKAGER),a
-        or      a
-        jp      nz,.PINTAMOS_FOTOGRAMA
-        ld      a,(FOTOGRAMA_SECUENCIA_ROCKAGER_3)
-        inc     a
-        jp      .SALVAMOS_FOTOGRAMA_2
-
 .PINTAMOS_FOTOGRAMA:
 
  		ld		hl,DATAS_COPY_RECUP_SCROLL
@@ -1996,7 +1967,7 @@ ANIMA_ROCKAGERS_EN_BOSS_2:
 
 RUTINA_ROCAS_EN_BOSS_2:
 
-.PREPARAMOS_ENTRADA:
+; PREPARAMOS_ENTRADA
 
 	push	ix
 	push	iy
@@ -2316,13 +2287,5 @@ ULTIMO_DESPLAZAMIENTO_b2:
 VOLVEMOS_b2:
 
 		jp		CARGA_SLOT_REGRESO_A_JUEGO
-
-FADE_DEPH_A_NEGRO_b2:
-
-		incbin	"../PALETAS/BOSSES/BOSS2 DEPH.FADEOUT"
-
-FADE_FASE_1_3_A_NEGRO_b2:
-
-		incbin	"../PALETAS/BOSSES/BOSS2.fadeout"
 
 	include	"BOSS 2 DATA.asm"

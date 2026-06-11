@@ -89,6 +89,9 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES:
         
 .miramos_todo_antes_de_ser_enemigo:
 
+        call    ENEMIGO_EN_BLINDAJE_NACIMIENTO
+        jp      c,.FIN_DE_LAS_REPERCUSIONES_DE_LA_COLISION
+        
         
 ; VEMOS_SI_ES_UN_PREMIO
 

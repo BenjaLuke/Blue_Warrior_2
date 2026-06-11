@@ -55,8 +55,6 @@
 	ret
 
 .HACHA_1:
-.HACHA_2:
-.HACHA_3:
 
 	push	ix
 

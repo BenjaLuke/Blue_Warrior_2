@@ -392,7 +392,9 @@
 		ld		a,(PUNTO_DEL_SCROLL)									; El valor del scroll se incrementa en 1
 		dec		a
 		ld		(PUNTO_DEL_SCROLL),a
-					
+		call	CONTROL_TILES_ESPECIALES_DEPH_COOLDOWN
+		call	CONTROL_BLINDAJE_NACIMIENTO_ENEMIGOS
+
 		ld		a,(DONDE_VA_LA_INTERRUPCION_LINEAL)
 		dec		a
 		ld		(DONDE_VA_LA_INTERRUPCION_LINEAL),a

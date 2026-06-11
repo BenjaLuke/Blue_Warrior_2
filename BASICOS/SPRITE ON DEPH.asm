@@ -292,16 +292,7 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH:
 
 .PREMIO_EXTRA_MAGIA:
 
-        ld      a,(MAGIAS)
-        inc     a
-        cp      6
-        jr      c,.GUARDA_PREMIO_EXTRA_MAGIA
-        ld      a,5
-
-.GUARDA_PREMIO_EXTRA_MAGIA:
-
-        ld      (MAGIAS),a
-        call    PINTAMOS_LOS_PUNTOS_DE_MAGIA
+        call    MAGIA_GRATIS
         jp      .FINAL_DE_ENTREGA_DE_PREMIO_EXTRA
 
 .PREMIO_EXTRA_500:

@@ -29,6 +29,100 @@ GUARDA_PAGE_DATOS_FASE_SALVADA:
 			ld		(TRAMO_FASE_3_SALVADO),a
 			ret
 
+LIMPIA_BLINDAJE_NACIMIENTO_ENEMIGOS:
+
+			xor		a
+			ld		hl,ENEMIGOS_BLINDA_NACIMIENTO
+			ld		b,10
+
+.BUCLE_LIMPIA_BLINDAJE_NACIMIENTO:
+
+			ld		(hl),a
+			inc		hl
+			djnz	.BUCLE_LIMPIA_BLINDAJE_NACIMIENTO
+			ret
+
+CONTROL_BLINDAJE_NACIMIENTO_ENEMIGOS:
+
+			ld		hl,ENEMIGOS_BLINDA_NACIMIENTO
+			ld		b,10
+
+.BUCLE_CONTROL_BLINDAJE_NACIMIENTO:
+
+			ld		a,(hl)
+			or		a
+			jr		z,.SIGUIENTE_CONTROL_BLINDAJE_NACIMIENTO
+			dec		(hl)
+
+.SIGUIENTE_CONTROL_BLINDAJE_NACIMIENTO:
+
+			inc		hl
+			djnz	.BUCLE_CONTROL_BLINDAJE_NACIMIENTO
+			ret
+
+ACTIVA_BLINDAJE_NACIMIENTO_ENEMIGO:
+
+			push	af
+			call	PUNTERO_BLINDAJE_NACIMIENTO_ENEMIGO
+			ld		a,16
+			ld		(hl),a
+			pop		af
+			ret
+
+ENEMIGO_EN_BLINDAJE_NACIMIENTO:
+
+			push	af
+			push	de
+			push	ix
+			pop		hl
+			ld		de,PROYECTILES
+			or		a
+			sbc		hl,de
+			pop		de
+			jr		c,.MIRA_BLINDAJE_NACIMIENTO_ENEMIGO
+			pop		af
+			or		a
+			ret
+
+.MIRA_BLINDAJE_NACIMIENTO_ENEMIGO:
+
+			call	PUNTERO_BLINDAJE_NACIMIENTO_ENEMIGO
+			ld		a,(hl)
+			or		a
+			jr		nz,.ENEMIGO_SI_BLINDADO_NACIMIENTO
+			pop		af
+			or		a
+			ret
+
+.ENEMIGO_SI_BLINDADO_NACIMIENTO:
+
+			pop		af
+			scf
+			ret
+
+PUNTERO_BLINDAJE_NACIMIENTO_ENEMIGO:
+
+			push	de
+			push	bc
+			push	ix
+			pop		hl
+			ld		de,ENEMIGOS
+			or		a
+			sbc		hl,de
+			srl		h
+			rr		l
+			srl		h
+			rr		l
+			srl		h
+			rr		l
+			srl		h
+			rr		l
+			ld		de,ENEMIGOS_BLINDA_NACIMIENTO
+			add		hl,de
+			pop		bc
+			pop		de
+			ret
+
 BLOQUEA_LECTURA_TILES_CAMBIO_PAGE_FASE3:
 
 			ld		a,(FASE)
@@ -916,6 +1010,471 @@ PINTA_TILE_FASE3_VAGON_PAGE2:
 			pop		bc
 			pop		af
 			ret
+
+CONTROL_TILES_ESPECIALES_DEPH_COOLDOWN:
+
+			ld		a,(TILE_ESPECIAL_DEPH_COOLDOWN)
+			or		a
+			ret		z
+			dec		a
+			ld		(TILE_ESPECIAL_DEPH_COOLDOWN),a
+			or		a
+			ret		nz
+			ld		(TILE_ESPECIAL_DEPH_BLOQUEOS),a
+			ret
+
+CONTROL_TILES_ESPECIALES_DEPH:
+
+			ld		a,(TILE_N)
+			ld		b,6
+			ld		c,0
+			call	.CONTROLA_TILE_ESPECIAL_DEPH
+			ret		c
+
+			ld		a,(TILE_N2)
+			ld		b,14
+			ld		c,0
+			call	.CONTROLA_TILE_ESPECIAL_DEPH
+			ret		c
+
+			ld		a,(TILE_S)
+			ld		b,6
+			ld		c,16
+			call	.CONTROLA_TILE_ESPECIAL_DEPH
+			ret		c
+
+			ld		a,(TILE_S2)
+			ld		b,14
+			ld		c,16
+			call	.CONTROLA_TILE_ESPECIAL_DEPH
+			ret
+
+.CONTROLA_TILE_ESPECIAL_DEPH:
+
+			call	.BUSCA_TILE_ESPECIAL_DEPH
+			ret		nc
+			call	.EFECTO_TILE_ESPECIAL_BLOQUEADO
+			ret		c
+			push	af
+			push	de
+			call	.CALCULA_XY_TILE_ESPECIAL_DEPH
+			pop		de
+			pop		af
+			push	af
+			push	bc
+			push	de
+			ld		a,e
+			call	.EJECUTA_EFECTO_TILE_ESPECIAL_DEPH
+			pop		de
+			pop		bc
+			pop		af
+			push	af
+			push	bc
+			ld		a,e
+			call	.BLOQUEA_EFECTO_TILE_ESPECIAL
+			pop		bc
+			pop		af
+			call	PINTA_TILE_FASE3_VAGON_PAGE2
+			ld		a,255
+			ld		(TILE_ESPECIAL_DEPH_COOLDOWN),a
+			scf
+			ret
+
+.EFECTO_TILE_ESPECIAL_BLOQUEADO:
+
+			push	af
+			push	bc
+			push	de
+			ld		a,e
+			call	.MASCARA_EFECTO_TILE_ESPECIAL
+			ld		b,a
+			ld		a,(TILE_ESPECIAL_DEPH_BLOQUEOS)
+			and		b
+			jr		nz,.EFECTO_TILE_ESPECIAL_SI_BLOQUEADO
+			pop		de
+			pop		bc
+			pop		af
+			or		a
+			ret
+
+.EFECTO_TILE_ESPECIAL_SI_BLOQUEADO:
+
+			pop		de
+			pop		bc
+			pop		af
+			scf
+			ret
+
+.BLOQUEA_EFECTO_TILE_ESPECIAL:
+
+			call	.MASCARA_EFECTO_TILE_ESPECIAL
+			ld		b,a
+			ld		a,(TILE_ESPECIAL_DEPH_BLOQUEOS)
+			or		b
+			ld		(TILE_ESPECIAL_DEPH_BLOQUEOS),a
+			ret
+
+.MASCARA_EFECTO_TILE_ESPECIAL:
+
+			ld		b,a
+			ld		a,1
+			ld		c,b
+			ld		b,c
+			ld		c,a
+			ld		a,b
+			or		a
+			ld		a,c
+			ret		z
+
+.BUCLE_MASCARA_EFECTO_TILE_ESPECIAL:
+
+			sla		a
+			djnz	.BUCLE_MASCARA_EFECTO_TILE_ESPECIAL
+			ret
+
+.CALCULA_XY_TILE_ESPECIAL_DEPH:
+
+			push	af
+			ld		a,(X_DEPH)
+			add		a,b
+			and		#f0
+			ld		b,a
+			ld		a,(Y_PINTA_SCROLL)
+			and		#0f
+			ld		e,a
+			ld		a,(Y_DEPH)
+			add		a,c
+			sub		e
+			and		#f0
+			add		a,e
+			add		16
+			ld		c,a
+			pop		af
+			ret
+
+.BUSCA_TILE_ESPECIAL_DEPH:
+
+			ld		h,a
+			ld		a,(FASE)
+			cp		1
+			jp		z,.BUSCA_TILE_ESPECIAL_FASE_1
+			cp		2
+			jp		z,.BUSCA_TILE_ESPECIAL_FASE_2
+			cp		3
+			jp		z,.BUSCA_TILE_ESPECIAL_FASE_3
+			cp		4
+			jp		z,.BUSCA_TILE_ESPECIAL_FASE_4
+			cp		5
+			jp		z,.BUSCA_TILE_ESPECIAL_FASE_5
+			or		a
+			ret
+
+.BUSCA_TILE_ESPECIAL_FASE_1:
+
+			ld		a,h
+			cp		37
+			jr		z,.TILE_F1_37
+			cp		39
+			jr		z,.TILE_F1_39
+			cp		42
+			jr		z,.TILE_F1_42
+			cp		46
+			jr		z,.TILE_F1_46
+			cp		47
+			jr		z,.TILE_F1_47
+			or		a
+			ret
+
+.TILE_F1_37:
+			ld		a,33
+			ld		e,1
+			scf
+			ret
+.TILE_F1_39:
+			ld		a,33
+			ld		e,2
+			scf
+			ret
+.TILE_F1_42:
+			ld		a,33
+			ld		e,3
+			scf
+			ret
+.TILE_F1_46:
+			ld		a,13
+			ld		e,4
+			scf
+			ret
+.TILE_F1_47:
+			ld		a,33
+			ld		e,5
+			scf
+			ret
+
+.BUSCA_TILE_ESPECIAL_FASE_2:
+
+			ld		a,h
+			cp		6
+			jr		z,.TILE_F2_6
+			cp		7
+			jr		z,.TILE_F2_7
+			cp		8
+			jr		z,.TILE_F2_8
+			cp		9
+			jr		z,.TILE_F2_9
+			cp		12
+			jr		z,.TILE_F2_12
+			cp		13
+			jr		z,.TILE_F2_13
+			or		a
+			ret
+
+.TILE_F2_6:
+			ld		e,0
+			jr		.TILE_F2_COMUN
+.TILE_F2_7:
+			ld		e,1
+			jr		.TILE_F2_COMUN
+.TILE_F2_8:
+			ld		e,2
+			jr		.TILE_F2_COMUN
+.TILE_F2_9:
+			ld		e,3
+			jr		.TILE_F2_COMUN
+.TILE_F2_12:
+			ld		e,4
+			jr		.TILE_F2_COMUN
+.TILE_F2_13:
+			ld		e,5
+.TILE_F2_COMUN:
+			ld		a,19
+			scf
+			ret
+
+.BUSCA_TILE_ESPECIAL_FASE_3:
+
+			ld		a,h
+			cp		28
+			jr		z,.TILE_F3_28
+			cp		29
+			jr		z,.TILE_F3_29
+			cp		30
+			jr		z,.TILE_F3_30
+			cp		31
+			jr		z,.TILE_F3_31
+			cp		15
+			jr		z,.TILE_F3_15
+			or		a
+			ret
+
+.TILE_F3_28:
+			ld		e,2
+			jr		.TILE_F3_COMUN
+.TILE_F3_29:
+			ld		e,3
+			jr		.TILE_F3_COMUN
+.TILE_F3_30:
+			ld		e,4
+			jr		.TILE_F3_COMUN
+.TILE_F3_31:
+			ld		e,5
+			jr		.TILE_F3_COMUN
+.TILE_F3_15:
+			ld		e,6
+.TILE_F3_COMUN:
+			xor		a
+			scf
+			ret
+
+.BUSCA_TILE_ESPECIAL_FASE_4:
+
+			ld		a,h
+			cp		19
+			jr		z,.TILE_F4_19
+			cp		20
+			jr		z,.TILE_F4_20
+			cp		23
+			jr		z,.TILE_F4_23
+			cp		35
+			jr		z,.TILE_F4_35
+			cp		36
+			jr		z,.TILE_F4_36
+			or		a
+			ret
+
+.TILE_F4_19:
+			ld		a,4
+			ld		e,1
+			scf
+			ret
+.TILE_F4_20:
+			ld		a,4
+			ld		e,2
+			scf
+			ret
+.TILE_F4_23:
+			ld		a,66
+			ld		e,3
+			scf
+			ret
+.TILE_F4_35:
+			ld		a,3
+			ld		e,4
+			scf
+			ret
+.TILE_F4_36:
+			ld		a,3
+			ld		e,5
+			scf
+			ret
+
+.BUSCA_TILE_ESPECIAL_FASE_5:
+
+			ld		a,h
+			cp		31
+			jr		z,.TILE_F5_31
+			cp		43
+			jr		z,.TILE_F5_43
+			cp		45
+			jr		z,.TILE_F5_45
+			cp		57
+			jr		z,.TILE_F5_57
+			cp		58
+			jr		z,.TILE_F5_58
+			cp		63
+			jr		z,.TILE_F5_63
+			or		a
+			ret
+
+.TILE_F5_31:
+			xor		a
+			ld		e,0
+			scf
+			ret
+.TILE_F5_43:
+			xor		a
+			ld		e,1
+			scf
+			ret
+.TILE_F5_45:
+			ld		a,4
+			ld		e,2
+			scf
+			ret
+.TILE_F5_57:
+			xor		a
+			ld		e,3
+			scf
+			ret
+.TILE_F5_58:
+			ld		a,4
+			ld		e,4
+			scf
+			ret
+.TILE_F5_63:
+			ld		a,4
+			ld		e,5
+			scf
+			ret
+
+.EJECUTA_EFECTO_TILE_ESPECIAL_DEPH:
+
+			cp		0
+			jp		z,.EFECTO_TILE_CORAZON_MAX
+			cp		1
+			jp		z,.EFECTO_TILE_CORAZON
+			cp		6
+			jp		z,.EFECTO_TILE_VIDA
+			sub		2
+			jp		.EFECTO_TILE_LETRA
+
+.FX_15_TILE_ESPECIAL:
+
+			ld		a,15
+			ld		c,0
+			jp		A_31_DESDE_10
+
+.FX_16_TILE_ESPECIAL:
+
+			ld		a,16
+			ld		c,0
+			jp		A_31_DESDE_10
+
+.EFECTO_TILE_CORAZON_MAX:
+
+			ld		a,(CORAZONES_MAXIMOS)
+			cp		5
+			jr		nc,.CORAZON_MAX_YA_AL_MAXIMO
+			inc		a
+			ld		(CORAZONES_MAXIMOS),a
+			ld		(CORAZONES),a
+			call	PINTA_CORAZONES
+			jp		.FX_15_TILE_ESPECIAL
+
+.CORAZON_MAX_YA_AL_MAXIMO:
+
+			ld		(CORAZONES),a
+			call	PINTA_CORAZONES
+			jp		.FX_16_TILE_ESPECIAL
+
+.EFECTO_TILE_CORAZON:
+
+			ld		a,(CORAZONES_MAXIMOS)
+			ld		b,a
+			ld		a,(CORAZONES)
+			cp		b
+			jp		nc,.FX_16_TILE_ESPECIAL
+			inc		a
+			ld		(CORAZONES),a
+			call	PINTA_CORAZONES
+			jp		.FX_15_TILE_ESPECIAL
+
+.EFECTO_TILE_VIDA:
+
+			ld		a,(VIDAS)
+			cp		5
+			jp		nc,.FX_16_TILE_ESPECIAL
+			inc		a
+			ld		(VIDAS),a
+			call	PINTA_VIDAS
+			jp		.FX_15_TILE_ESPECIAL
+
+.EFECTO_TILE_LETRA:
+
+			ld		c,a
+			ld		a,(FASE)
+			dec		a
+			add		a
+			add		a
+			add		c
+			ld		b,a
+			srl		a
+			srl		a
+			srl		a
+			ld		e,a
+			ld		d,0
+			ld		hl,LETRAS_FASES_BITS
+			add		hl,de
+			ld		a,b
+			and		00000111b
+			ld		b,a
+			ld		c,1
+
+.BUCLE_MASK_LETRA_TILE:
+
+			ld		a,b
+			or		a
+			jr		z,.GUARDA_LETRA_TILE
+			sla		c
+			dec		b
+			jr		.BUCLE_MASK_LETRA_TILE
+
+.GUARDA_LETRA_TILE:
+
+			ld		a,(hl)
+			or		c
+			ld		(hl),a
+			jp		.FX_15_TILE_ESPECIAL
 
 
 CONTROL_ACCIONES_VAGON_FASE3:
@@ -2465,9 +3024,9 @@ PREMIO_EXTRA:
 
         cp      10
         jr      c,.PREMIO_EXTRA_500
-        cp      20
+        cp      19
         jr      c,.PREMIO_EXTRA_1000
-        cp      30
+        cp      28
         jr      c,.PREMIO_EXTRA_2000
         cp      32
         jr      c,.PREMIO_EXTRA_MAGIA
@@ -4258,6 +4817,27 @@ REVISA_LETRAS_DE_LA_FASE_REAL:
 		ld		a,(TENEMOS_TODAS)
 		inc		a
 		ld		(TENEMOS_TODAS),a
+		ret
+
+REVISA_LETRAS_DE_TODAS_LAS_FASES_REAL:
+
+		ld		a,(LETRAS_FASES_BITS)
+		cp		#ff
+		jr		nz,.SALTAMOS_EXTRA
+		ld		a,(LETRAS_FASES_BITS+1)
+		cp		#ff
+		jr		nz,.SALTAMOS_EXTRA
+		ld		a,(LETRAS_FASES_BITS+2)
+		and		#0f
+		cp		#0f
+		ret		z
+
+.SALTAMOS_EXTRA:
+
+		push	hl
+		ld		hl,16
+		ld		(LINEA_A_LEER),hl
+		pop		hl
 		ret
 
 CONTROL_BUCLES_INICIO_BUCLE_REAL:

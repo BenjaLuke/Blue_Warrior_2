@@ -12,6 +12,7 @@ UN_NUEVO_ENEMIGO:
                 jp      nz,.PASAMOS_A_LA_SIGUIENTE_POSICION
 
                 ex      af,af'
+                call    ACTIVA_BLINDAJE_NACIMIENTO_ENEMIGO
                 ld      de,TABLA_DE_ARMA_O_ENEMIGO_A_DEFINIR
                 JP      SITUAMOS_PUNTERO_EN_TABLA
 
@@ -1496,6 +1497,8 @@ TROZOS_COMUNES_23:
 
 TROZOS_COMUNES_25:
 
+        call    ENEMIGO_EN_BLINDAJE_NACIMIENTO
+        jp      c,SECUENCIA_PROYECTILES_Y_ENEMIGOS.PASAMOS_A_LA_SIGUIENTE_POSICION
         call    LIBERA_DOS_SPRITES
         jp      TROZOS_COMUNES_30
 
@@ -1539,6 +1542,8 @@ TROZOS_COMUNES_28:
 
 TROZOS_COMUNES_29:
 
+        call    ENEMIGO_EN_BLINDAJE_NACIMIENTO
+        jp      c,SECUENCIA_PROYECTILES_Y_ENEMIGOS.PASAMOS_A_LA_SIGUIENTE_POSICION
         call    STANDARD_DEJA_LIBRE_EL_SPRITE
         xor     a
         ld      (ix+3),a                                ; Nos aseguramos que no va a interpretar este sprite como doble a la hora de borrar
