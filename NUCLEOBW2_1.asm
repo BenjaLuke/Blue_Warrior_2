@@ -4,6 +4,10 @@ COMIENZA_JUEGO:
 		dec		a
 		jr		nz,.limpia_solo_sprites
 
+		ld		(LETRAS_FASES_BITS),a
+		ld		(LETRAS_FASES_BITS+1),a
+		ld		(LETRAS_FASES_BITS+2),a
+
         xor	    a							                            ; a     = el valor que vamos a poner
         ld	    bc,#ffff						                        ; bc	= longitud del area a rellenar con el dato A
         ld	    hl,#0000						                        ; hl	= dirección en la que empieza a pintar
@@ -218,9 +222,6 @@ VARIABLES_PARA_EMPEZAR_LA_PARTIDA_1:
 		ld		(FASE3_VAGON_JUMP_ACTIVO),a
 		ld		(TILE_ESPECIAL_DEPH_COOLDOWN),a
 		ld		(TILE_ESPECIAL_DEPH_BLOQUEOS),a
-		ld		(LETRAS_FASES_BITS),a
-		ld		(LETRAS_FASES_BITS+1),a
-		ld		(LETRAS_FASES_BITS+2),a
 		ld		(HACIA_DONDE_INTERRUPT),a
 
 		inc		a
@@ -292,6 +293,10 @@ INICIA_SCROLL:
 		ld		(CUANDO_PINTAMOS_UN_TILE),hl
 		ld		(CONTROL_DE_C_P_U_T),hl	
 		ld		(TIME_PARALIZA),hl
+		ld		hl,DATOS_COPY_TILE_SCROLL_16X16
+		ld		de,DATOS_DEL_TILE_PARA_COPY_IL
+		ld		bc,15
+		ldir
 		xor		a
 		ld		(X_PINTA_SCROLL),a										; La posición X del pintado empieza en 0
 		ld		(NUMERO_DE_TILE_EN_LINEA),a								; Irá de 0 a 15 y volverá a empezar reduciendo en 1 LINEA_A_LEER
@@ -336,7 +341,7 @@ INICIA_SCROLL:
 		ld		(X_DEPH),a
 
 
-		ld		a,183
+		ld		a,187
 		ld		(DONDE_VA_LA_INTERRUPCION_LINEAL),a
 			
 		ld		a,224

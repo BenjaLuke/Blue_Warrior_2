@@ -6,10 +6,10 @@
 		ld		(HTIMI),a
 		ld		(HKEYI),a
 		ei
-		call	PARA_MUSICA_MENU_PRESENTACION
+		call	PARA_MUSICA_MENU_PRESENTACION_MAPA
 
-		call	FADE_OUT_PRESENTACION
-		call	LIMPIA_VRAM_SALIDA_MENU
+		call	FADE_OUT_PRESENTACION_MAPA
+		call	LIMPIA_VRAM_SALIDA_MENU_MAPA
 
 		call	DISSCR_RAM
 		ld		a,5
@@ -61,6 +61,76 @@
 		ld      (DIRPA2),a										    ; Banco 1, pagina 3 del MEGAROM
 		jp		CARGA_SLOT_JUEGO
 
+
+PARA_MUSICA_MENU_PRESENTACION_MAPA:
+
+		call	stpmus
+
+		xor		a
+		ld		(MUSICA_BEST_ON),a
+
+		call	PAGE_10_A_SEGMENT_2
+		ret
+
+
+FADE_OUT_PRESENTACION_MAPA:
+
+		ret
+
+
+LIMPIA_VRAM_SALIDA_MENU_MAPA:
+
+		ret
+
+MUESTRA_MAPA_TRAS_BOSS:
+
+		call	CONTROL_PREVIO_GRAN_DIAMANTE
+		call	MAPA_DE_SITUACION
+		ld		a,8
+		ld      (DIRPA2),a										    ; Banco 1, pagina 3 del MEGAROM
+		jp		CARGA_SLOT_JUEGO
+
+CONTROL_PREVIO_GRAN_DIAMANTE:
+
+		ld		a,(FASE)
+		dec		a
+		jp		z,CONTROL_DEL_GRAN_DIAMANTE
+		dec		a
+		jr		z,.MIRA_FASE_1
+		dec		a
+		jr		z,.MIRA_FASE_2
+		dec		a
+		jr		z,.MIRA_FASE_3
+		dec		a
+		ret		nz
+
+.MIRA_FASE_4:
+
+		ld		a,(LETRAS_FASES_BITS+1)
+		and		#f0
+		ret		z
+		jp		CONTROL_DEL_GRAN_DIAMANTE
+
+.MIRA_FASE_1:
+
+		ld		a,(LETRAS_FASES_BITS)
+		and		#0f
+		ret		z
+		jp		CONTROL_DEL_GRAN_DIAMANTE
+
+.MIRA_FASE_2:
+
+		ld		a,(LETRAS_FASES_BITS)
+		and		#f0
+		ret		z
+		jp		CONTROL_DEL_GRAN_DIAMANTE
+
+.MIRA_FASE_3:
+
+		ld		a,(LETRAS_FASES_BITS+1)
+		and		#0f
+		ret		z
+		jp		CONTROL_DEL_GRAN_DIAMANTE
 
 MAPA_DE_SITUACION:
 
@@ -145,14 +215,14 @@ CARGA_GRAFICOS_MAPA_DE_SITUACION:
 		ld		hl,GRAFICOS_MAPA_1
 		ld		de,#8000
 		ld		bc,#4000
-		call	PON_COLOR_2.sin_bc_impuesta
+		call	PON_COLOR_2_MAPA_SIN_INTERRUPCIONES
 
 		ld		a,70
 		ld		(DIRPA2),a
 		ld		hl,GRAFICOS_MAPA_2
 		ld		de,#C000
 		ld		bc,#4000
-		call	PON_COLOR_2.sin_bc_impuesta
+		call	PON_COLOR_2_MAPA_SIN_INTERRUPCIONES
 		ei
 
 		ld		hl,DATOS_COPIS_MAPA
@@ -698,8 +768,898 @@ OCULTA_DEPH_MAPA_DE_SITUACION:
 ESPERA_MAPA_DE_SITUACION_B:
 
 		halt
+		call	REPRODUCE_FX_MAPA_SI_ACTIVO
 		djnz	ESPERA_MAPA_DE_SITUACION_B
 		ret
+
+
+REPRODUCE_FX_MAPA_SI_ACTIVO:
+
+		ld		a,(ayFX_C1)
+		cp		255
+		jr		nz,.HAY_FX
+		ld		a,(ayFX_C2)
+		cp		255
+		jr		nz,.HAY_FX
+		ld		a,(ayFX_C3)
+		cp		255
+		ret		z
+
+.HAY_FX:
+
+		push	af
+		push	bc
+		push	de
+		push	hl
+		ld		a,(DIRPA2)
+		push	af
+		ld		a,31
+		ld		(DIRPA2),a
+		call	AYfx_ROUT
+		call	ayFX_PLAY
+		pop		af
+		ld		(DIRPA2),a
+		pop		hl
+		pop		de
+		pop		bc
+		pop		af
+		ret
+
+
+LANZA_FX_DIAMANTES:
+
+		push	bc
+		push	de
+		push	hl
+		ld		b,a
+		ld		a,1
+		ld		(FX_ON_OFF),a
+		ld		a,(DIRPA2)
+		push	af
+		ld		a,31
+		ld		(DIRPA2),a
+		ld		a,b
+		ld		c,0
+		call	ayFX_INIT
+		call	AYfx_ROUT
+		call	ayFX_PLAY
+		pop		af
+		ld		(DIRPA2),a
+		pop		hl
+		pop		de
+		pop		bc
+		ret
+
+
+PON_COLOR_2_MAPA_SIN_INTERRUPCIONES:
+
+		xor		a
+		call	LDIRVM2_MAPA_SIN_INTERRUPCIONES
+		xor		a
+		ld 		(RG14SAV),a
+		out		(#99),a
+		ld		a,14+128
+		out		(#99),a
+		ret
+
+
+LDIRVM2_MAPA_SIN_INTERRUPCIONES:
+
+		ex		de,hl
+		call	SetVdp_Write_MAPA_SIN_INTERRUPCIONES
+		ex		de,hl
+		ld		a,c
+		or		a
+		ld		a,b
+		ld		b,c
+		jr		z,.BLK_VRAM_0
+		inc		a
+
+.BLK_VRAM_0:
+
+		ld		c,#98
+
+.BLK_VRAM_LOOP:
+
+		otir
+		dec		a
+		jr		nz,.BLK_VRAM_LOOP
+		ex		de,hl
+		ret
+
+
+SetVdp_Write_MAPA_SIN_INTERRUPCIONES:
+
+		push	af
+		push	hl
+		xor		a
+		and		a
+		rlc		h
+		rla
+		rlc		h
+		rla
+		srl		h
+		srl		h
+		di
+		out		(#99),a
+		ld		a,14+128
+		out		(#99),a
+		ld		a,l
+		nop
+		out		(#99),a
+		ld		a,h
+		or		64
+		out		(#99),a
+		pop		hl
+		pop		af
+		ret
+
+
+CONTROL_DEL_GRAN_DIAMANTE:
+
+		di
+		ld		a,74
+		ld		(DIRPA2),a
+		ld		hl,GRAFICOS_GRAN_DIAMANTE_1
+		ld		de,#8000
+		ld		bc,#4000
+		call	PON_COLOR_2_MAPA_SIN_INTERRUPCIONES
+
+		ld		a,75
+		ld		(DIRPA2),a
+		ld		hl,GRAFICOS_GRAN_DIAMANTE_2
+		ld		de,#C000
+		ld		bc,#4000
+		call	PON_COLOR_2_MAPA_SIN_INTERRUPCIONES
+		ld		a,10
+		ld		(DIRPA2),a
+
+		ld		hl,DATOS_COPIA_GRAN_DIAMANTE_PAGE_1_A_3
+		call	DOCOPY
+		call	VDPREADY
+		ei
+
+		call	LIMPIA_BUFFERS_GRAN_DIAMANTE
+		call	PINTA_DIAMANTES_CONSEGUIDOS
+		call	PONE_PRIMERA_PALETA_DIAMANTES
+		ld		a,1
+		call	SETPAGE
+		ld		(MAPA_SITUACION_BUFFER_PAGE),a
+		call	FADE_IN_DIAMANTES
+		call	PONE_PALETA_FINAL_DIAMANTES
+
+		ld		b,50
+		call	ESPERA_MAPA_DE_SITUACION_B
+		call	ANIMA_LETRAS_GRAN_DIAMANTE
+		jp		COMPRUEBA_PORCION_GRAN_DIAMANTE
+
+
+LIMPIA_BUFFERS_GRAN_DIAMANTE:
+
+		ld		hl,DATOS_LIMPIA_MAPA_PAGE_1
+		call	DOCOPY
+		call	VDPREADY
+		ld		hl,DATOS_LIMPIA_MAPA_PAGE_2
+		call	DOCOPY
+		jp		VDPREADY
+
+
+PINTA_DIAMANTES_CONSEGUIDOS:
+
+		ld		a,(FASE)
+		cp		3
+		jr		c,.MIRA_DIAMANTE_2
+		ld		a,(LETRAS_FASES_BITS)
+		and		#0f
+		cp		#0f
+		ld		hl,DATOS_DIAMANTE_1_PAGE_1
+		call	z,PINTA_DIAMANTE_EN_BUFFERS
+
+.MIRA_DIAMANTE_2:
+
+		ld		a,(FASE)
+		cp		4
+		jr		c,.MIRA_DIAMANTE_3
+		ld		a,(LETRAS_FASES_BITS)
+		and		#f0
+		cp		#f0
+		ld		hl,DATOS_DIAMANTE_2_PAGE_1
+		call	z,PINTA_DIAMANTE_EN_BUFFERS
+
+.MIRA_DIAMANTE_3:
+
+		ld		a,(FASE)
+		cp		5
+		jr		c,.MIRA_DIAMANTE_4
+		ld		a,(LETRAS_FASES_BITS+1)
+		and		#0f
+		cp		#0f
+		ld		hl,DATOS_DIAMANTE_3_PAGE_1
+		call	z,PINTA_DIAMANTE_EN_BUFFERS
+
+.MIRA_DIAMANTE_4:
+
+		ld		a,(FASE)
+		cp		6
+		jr		c,.MIRA_DIAMANTE_5
+		ld		a,(LETRAS_FASES_BITS+1)
+		and		#f0
+		cp		#f0
+		ld		hl,DATOS_DIAMANTE_4_PAGE_1
+		call	z,PINTA_DIAMANTE_EN_BUFFERS
+
+.MIRA_DIAMANTE_5:
+
+		ld		a,(FASE)
+		cp		7
+		ret		c
+		ld		a,(LETRAS_FASES_BITS+2)
+		and		#0f
+		cp		#0f
+		ret		nz
+		ld		hl,DATOS_DIAMANTE_5_PAGE_1
+
+
+PINTA_DIAMANTE_EN_BUFFERS:
+
+		push	hl
+		call	DOCOPY
+		call	VDPREADY
+		pop		hl
+		ld		de,DATOS_DIAMANTE_1_PAGE_2-DATOS_DIAMANTE_1_PAGE_1
+		add		hl,de
+		call	DOCOPY
+		jp		VDPREADY
+
+
+PONE_PRIMERA_PALETA_DIAMANTES:
+
+		ld		hl,PALETA_DIAMANTES_FADE_IN
+		jp		SETPALETE
+
+
+PONE_PALETA_FINAL_DIAMANTES:
+
+		ld		hl,PALETA_DIAMANTES_FIJA
+		jp		SETPALETE
+
+
+FADE_IN_DIAMANTES:
+
+		ld		hl,PALETA_DIAMANTES_FADE_IN+32
+		ld		e,6
+		jp		BUCLE_FADE_MAPA_DE_SITUACION
+
+
+FADE_OUT_DIAMANTES:
+
+		ld		hl,PALETA_DIAMANTES_FADE_OUT
+		ld		e,7
+		jp		BUCLE_FADE_MAPA_DE_SITUACION
+
+
+ANIMA_LETRAS_GRAN_DIAMANTE:
+
+		call	OBTIENE_LETRAS_FASE_ANTERIOR_GRAN_DIAMANTE
+		or		a
+		ret		z
+		push	af
+		bit		0,a
+		call	nz,ANIMA_LETRA_D_GRAN_DIAMANTE
+		pop		af
+		push	af
+		bit		1,a
+		call	nz,ANIMA_LETRA_E_GRAN_DIAMANTE
+		pop		af
+		push	af
+		bit		2,a
+		call	nz,ANIMA_LETRA_P_GRAN_DIAMANTE
+		pop		af
+		bit		3,a
+		call	nz,ANIMA_LETRA_H_GRAN_DIAMANTE
+		ret
+
+
+COMPRUEBA_PORCION_GRAN_DIAMANTE:
+
+		call	OBTIENE_LETRAS_FASE_ANTERIOR_GRAN_DIAMANTE
+		cp		#0f
+		jp		z,CONSEGUIMOS_PORCION
+		jp		NO_CONSEGUIMOS_PORCION
+
+
+CONSEGUIMOS_PORCION:
+
+		call	PONE_BUFFER_VISIBLE_PAGE_1_GRAN_DIAMANTE
+		call	OBTIENE_DATOS_PORCION_GRAN_DIAMANTE
+		call	COPIA_PORCION_GRAN_DIAMANTE_PAGE_3_A_0
+		call	COPIA_FONDO_PORCION_GRAN_DIAMANTE_A_PAGE_0
+		call	COPIA_MEZCLA_PORCION_GRAN_DIAMANTE_A_PAGE_2
+		ld		d,11
+		ld		a,2
+
+.BUCLE_PARPADEO:
+
+		push	af
+		call	SETPAGE
+		pop		af
+		ld		(MAPA_SITUACION_BUFFER_PAGE),a
+		push	af
+		ld		b,6
+		call	ESPERA_MAPA_DE_SITUACION_B
+		pop		af
+		cp		1
+		ld		a,1
+		jr		nz,.SIGUIENTE_PAGE_DECIDIDA
+		ld		a,2
+
+.SIGUIENTE_PAGE_DECIDIDA:
+
+		dec		d
+		jr		nz,.BUCLE_PARPADEO
+		jp		SALIENDO_DE_DIAMANTES
+
+
+PONE_BUFFER_VISIBLE_PAGE_1_GRAN_DIAMANTE:
+
+		ld		a,1
+		call	SETPAGE
+		ld		(MAPA_SITUACION_BUFFER_PAGE),a
+		ret
+
+
+NO_CONSEGUIMOS_PORCION:
+
+		call	OBTIENE_LETRAS_FASE_ANTERIOR_GRAN_DIAMANTE
+		or		a
+		jp		z,SALIENDO_DE_DIAMANTES
+		push	af
+		bit		0,a
+		call	nz,NO_PORCION_LETRA_D
+		pop		af
+		push	af
+		bit		1,a
+		call	nz,NO_PORCION_LETRA_E
+		pop		af
+		push	af
+		bit		2,a
+		call	nz,NO_PORCION_LETRA_P
+		pop		af
+		bit		3,a
+		call	nz,NO_PORCION_LETRA_H
+		jp		SALIENDO_DE_DIAMANTES
+
+
+NO_PORCION_LETRA_D:
+
+		ld		d,0
+		ld		e,0
+		ld		l,166
+		jr		NO_PORCION_ANIMA_LETRA
+
+
+NO_PORCION_LETRA_E:
+
+		ld		d,64
+		ld		e,40
+		ld		l,166
+		jr		NO_PORCION_ANIMA_LETRA
+
+
+NO_PORCION_LETRA_P:
+
+		ld		d,128
+		ld		e,80
+		ld		l,166
+		jr		NO_PORCION_ANIMA_LETRA
+
+
+NO_PORCION_LETRA_H:
+
+		ld		d,192
+		ld		e,144
+		ld		l,130
+
+
+NO_PORCION_ANIMA_LETRA:
+
+		ld		a,d
+		ld		(VARIABLE_UN_USO2),a
+		push	de
+		push	hl
+		call	COPIA_LETRA_PAGE_0_A_0_GRAN_DIAMANTE
+		pop		hl
+		pop		de
+		push	de
+		push	hl
+		call	COPIA_NO_PORCION_40_A_PAGE_0
+		pop		hl
+		pop		de
+		push	de
+		call	COPIA_LETRA_A_BUFFER_OCULTO_GRAN_DIAMANTE
+		pop		de
+		call	CAMBIA_BUFFER_GRAN_DIAMANTE
+		ld		a,37
+		call	LANZA_FX_DIAMANTES
+		ld		b,6
+		call	ESPERA_MAPA_DE_SITUACION_B
+
+		ld		e,192
+		ld		l,0
+		call	NO_PORCION_FRAME_64
+		ld		e,192
+		ld		l,63
+		call	NO_PORCION_FRAME_64
+		ld		e,192
+		ld		l,127
+		call	NO_PORCION_FRAME_64
+		ld		e,192
+		ld		l,190
+		call	NO_PORCION_FRAME_64
+		ld		e,130
+		ld		l,190
+		call	NO_PORCION_FRAME_64
+
+		ld		a,(VARIABLE_UN_USO2)
+		ld		d,a
+		call	COPIA_LETRA_ORIGINAL_A_BUFFER_OCULTO_GRAN_DIAMANTE
+		call	CAMBIA_BUFFER_GRAN_DIAMANTE
+		ld		b,6
+		call	ESPERA_MAPA_DE_SITUACION_B
+		ld		a,(VARIABLE_UN_USO2)
+		ld		d,a
+		jp		COPIA_LETRA_ORIGINAL_A_BUFFER_OCULTO_GRAN_DIAMANTE
+
+
+NO_PORCION_FRAME_64:
+
+		push	de
+		push	hl
+		call	COPIA_LETRA_PAGE_0_A_0_GRAN_DIAMANTE
+		pop		hl
+		pop		de
+		push	de
+		push	hl
+		call	COPIA_NO_PORCION_64_A_PAGE_0
+		pop		hl
+		pop		de
+		push	de
+		call	COPIA_LETRA_A_BUFFER_OCULTO_GRAN_DIAMANTE
+		pop		de
+		call	CAMBIA_BUFFER_GRAN_DIAMANTE
+		ld		b,6
+		jp		ESPERA_MAPA_DE_SITUACION_B
+
+
+SALIENDO_DE_DIAMANTES:
+
+		ld		b,250
+		call	ESPERA_MAPA_DE_SITUACION_B
+		call	FADE_OUT_DIAMANTES
+		ret
+
+
+OBTIENE_DATOS_PORCION_GRAN_DIAMANTE:
+
+		ld		a,(FASE)
+		sub		2
+		jr		nc,.INDICE_VALIDO
+		xor		a
+
+.INDICE_VALIDO:
+
+		cp		5
+		jr		c,.INDICE_EN_RANGO
+		ld		a,4
+
+.INDICE_EN_RANGO:
+
+		ld		e,a
+		add		a,a
+		add		a,e
+		add		a,a
+		ld		e,a
+		ld		d,0
+		ld		iy,TABLA_DATOS_PORCIONES_GRAN_DIAMANTE
+		add		iy,de
+		ret
+
+
+COPIA_PORCION_GRAN_DIAMANTE_PAGE_3_A_0:
+
+		ld		ix,DATOS_DEL_TILE_PARA_COPY
+		ld		a,(iy)
+		ld		(ix),a
+		ld		(ix+1),0
+		ld		a,(iy+1)
+		ld		(ix+2),a
+		ld		(ix+3),3
+		xor		a
+		ld		(ix+4),a
+		ld		(ix+5),a
+		ld		(ix+6),a
+		ld		(ix+7),a
+		ld		a,(iy+2)
+		ld		(ix+8),a
+		xor		a
+		ld		(ix+9),a
+		ld		a,(iy+3)
+		ld		(ix+10),a
+		xor		a
+		ld		(ix+11),a
+		ld		(ix+12),a
+		ld		(ix+13),a
+		ld		a,10010000b
+		ld		(ix+14),a
+		call	HL_DATOS_DEL_COPY
+		jp		VDPREADY
+
+
+COPIA_FONDO_PORCION_GRAN_DIAMANTE_A_PAGE_0:
+
+		ld		ix,DATOS_DEL_TILE_PARA_COPY
+		ld		a,(iy+4)
+		ld		(ix),a
+		ld		(ix+1),0
+		ld		a,(iy+5)
+		ld		(ix+2),a
+		ld		(ix+3),1
+		xor		a
+		ld		(ix+4),a
+		ld		(ix+5),a
+		ld		(ix+6),a
+		ld		(ix+7),a
+		ld		a,(iy+2)
+		ld		(ix+8),a
+		xor		a
+		ld		(ix+9),a
+		ld		a,(iy+3)
+		ld		(ix+10),a
+		xor		a
+		ld		(ix+11),a
+		ld		(ix+12),a
+		ld		(ix+13),a
+		ld		a,10011000b
+		ld		(ix+14),a
+		call	HL_DATOS_DEL_COPY
+		jp		VDPREADY
+
+
+COPIA_MEZCLA_PORCION_GRAN_DIAMANTE_A_PAGE_2:
+
+		ld		ix,DATOS_DEL_TILE_PARA_COPY
+		xor		a
+		ld		(ix),a
+		ld		(ix+1),a
+		ld		(ix+2),a
+		ld		(ix+3),a
+		ld		a,(iy+4)
+		ld		(ix+4),a
+		xor		a
+		ld		(ix+5),a
+		ld		a,(iy+5)
+		ld		(ix+6),a
+		ld		(ix+7),2
+		ld		a,(iy+2)
+		ld		(ix+8),a
+		xor		a
+		ld		(ix+9),a
+		ld		a,(iy+3)
+		ld		(ix+10),a
+		xor		a
+		ld		(ix+11),a
+		ld		(ix+12),a
+		ld		(ix+13),a
+		ld		a,10010000b
+		ld		(ix+14),a
+		call	HL_DATOS_DEL_COPY
+		jp		VDPREADY
+
+
+OBTIENE_LETRAS_FASE_ANTERIOR_GRAN_DIAMANTE:
+
+		ld		a,(FASE)
+		dec		a
+		ret		z
+		dec		a
+		jr		z,.FASE_1
+		dec		a
+		jr		z,.FASE_2
+		dec		a
+		jr		z,.FASE_3
+		dec		a
+		jr		z,.FASE_4
+		dec		a
+		jr		z,.FASE_5
+		xor		a
+		ret
+
+.FASE_1:
+
+		ld		a,(LETRAS_FASES_BITS)
+		and		#0f
+		ret
+
+.FASE_2:
+
+		ld		a,(LETRAS_FASES_BITS)
+		rrca
+		rrca
+		rrca
+		rrca
+		and		#0f
+		ret
+
+.FASE_3:
+
+		ld		a,(LETRAS_FASES_BITS+1)
+		and		#0f
+		ret
+
+.FASE_4:
+
+		ld		a,(LETRAS_FASES_BITS+1)
+		rrca
+		rrca
+		rrca
+		rrca
+		and		#0f
+		ret
+
+.FASE_5:
+
+		ld		a,(LETRAS_FASES_BITS+2)
+		and		#0f
+		ret
+
+
+ANIMA_LETRA_D_GRAN_DIAMANTE:
+
+		ld		d,0
+		ld		e,0
+		jr		ANIMA_LETRA_GRAN_DIAMANTE
+
+
+ANIMA_LETRA_E_GRAN_DIAMANTE:
+
+		ld		d,64
+		ld		e,36
+		jr		ANIMA_LETRA_GRAN_DIAMANTE
+
+
+ANIMA_LETRA_P_GRAN_DIAMANTE:
+
+		ld		d,128
+		ld		e,72
+		jr		ANIMA_LETRA_GRAN_DIAMANTE
+
+
+ANIMA_LETRA_H_GRAN_DIAMANTE:
+
+		ld		d,192
+		ld		e,108
+
+
+ANIMA_LETRA_GRAN_DIAMANTE:
+
+		push	de
+		call	COPIA_LETRA_PAGE_1_A_0_GRAN_DIAMANTE
+		pop		de
+		push	de
+		call	COPIA_LETRA_PAGE_0_A_0_GRAN_DIAMANTE
+		pop		de
+		push	de
+		call	COPIA_ICONO_LETRA_PAGE_3_A_0_GRAN_DIAMANTE
+		pop		de
+		push	de
+		call	COPIA_LETRA_A_PAGE_2_GRAN_DIAMANTE
+		pop		de
+		ld		a,2
+		call	SETPAGE
+		ld		(MAPA_SITUACION_BUFFER_PAGE),a
+		ld		a,36
+		call	LANZA_FX_DIAMANTES
+		push	de
+		ld		b,6
+		call	ESPERA_MAPA_DE_SITUACION_B
+		pop		de
+		push	de
+		call	COPIA_LETRA_A_PAGE_1_GRAN_DIAMANTE
+		pop		de
+		ld		b,25
+		jp		ESPERA_MAPA_DE_SITUACION_B
+
+
+COPIA_LETRA_PAGE_1_A_0_GRAN_DIAMANTE:
+
+		ld		ix,DATOS_DEL_TILE_PARA_COPY
+		ld		(ix),d
+		ld		(ix+1),0
+		ld		(ix+2),76
+		ld		(ix+3),1
+		ld		(ix+4),d
+		ld		(ix+5),0
+		ld		(ix+6),0
+		ld		(ix+7),0
+		jp		COPIA_LETRA_64_TAMANO_GRAN_DIAMANTE
+
+
+COPIA_LETRA_PAGE_0_A_0_GRAN_DIAMANTE:
+
+		ld		ix,DATOS_DEL_TILE_PARA_COPY
+		ld		(ix),d
+		ld		(ix+1),0
+		ld		(ix+2),0
+		ld		(ix+3),0
+		ld		(ix+4),d
+		ld		(ix+5),0
+		ld		(ix+6),64
+		ld		(ix+7),0
+		jp		COPIA_LETRA_64_TAMANO_GRAN_DIAMANTE
+
+
+COPIA_ICONO_LETRA_PAGE_3_A_0_GRAN_DIAMANTE:
+
+		ld		ix,DATOS_DEL_TILE_PARA_COPY
+		ld		(ix),e
+		ld		(ix+1),0
+		ld		(ix+2),130
+		ld		(ix+3),3
+		ld		a,d
+		add		14
+		ld		(ix+4),a
+		ld		(ix+5),0
+		ld		(ix+6),78
+		ld		(ix+7),0
+		ld		(ix+8),36
+		ld		(ix+9),0
+		ld		(ix+10),36
+		ld		(ix+11),0
+		ld		(ix+12),#00
+		ld		(ix+13),#00
+		ld		(ix+14),10011000b
+		call	HL_DATOS_DEL_COPY
+		jp		VDPREADY
+
+
+COPIA_NO_PORCION_40_A_PAGE_0:
+
+		ld		ix,DATOS_DEL_TILE_PARA_COPY
+		ld		(ix),e
+		ld		(ix+1),0
+		ld		(ix+2),l
+		ld		(ix+3),3
+		ld		a,d
+		add		12
+		ld		(ix+4),a
+		ld		(ix+5),0
+		ld		(ix+6),77
+		ld		(ix+7),0
+		ld		(ix+8),40
+		ld		(ix+9),0
+		ld		(ix+10),38
+		ld		(ix+11),0
+		jr		COPIA_TRANSPARENTE_GRAN_DIAMANTE
+
+
+COPIA_NO_PORCION_64_A_PAGE_0:
+
+		ld		ix,DATOS_DEL_TILE_PARA_COPY
+		ld		(ix),e
+		ld		(ix+1),0
+		ld		(ix+2),l
+		ld		(ix+3),3
+		ld		(ix+4),d
+		ld		(ix+5),0
+		ld		(ix+6),64
+		ld		(ix+7),0
+		ld		(ix+8),64
+		ld		(ix+9),0
+		ld		(ix+10),64
+		ld		(ix+11),0
+		jr		COPIA_TRANSPARENTE_GRAN_DIAMANTE
+
+
+COPIA_TRANSPARENTE_GRAN_DIAMANTE:
+
+		ld		(ix+12),#00
+		ld		(ix+13),#00
+		ld		(ix+14),10011000b
+		call	HL_DATOS_DEL_COPY
+		jp		VDPREADY
+
+
+COPIA_LETRA_A_BUFFER_OCULTO_GRAN_DIAMANTE:
+
+		ld		a,(MAPA_SITUACION_BUFFER_PAGE)
+		cp		1
+		ld		a,2
+		jr		z,COPIA_LETRA_A_PAGE_A_GRAN_DIAMANTE
+		ld		a,1
+		jr		COPIA_LETRA_A_PAGE_A_GRAN_DIAMANTE
+
+
+COPIA_LETRA_ORIGINAL_A_BUFFER_OCULTO_GRAN_DIAMANTE:
+
+		ld		a,(MAPA_SITUACION_BUFFER_PAGE)
+		cp		1
+		ld		a,2
+		jr		z,COPIA_LETRA_ORIGINAL_A_PAGE_A_GRAN_DIAMANTE
+		ld		a,1
+		jr		COPIA_LETRA_ORIGINAL_A_PAGE_A_GRAN_DIAMANTE
+
+
+COPIA_LETRA_A_PAGE_2_GRAN_DIAMANTE:
+
+		ld		a,2
+		jr		COPIA_LETRA_A_PAGE_A_GRAN_DIAMANTE
+
+
+COPIA_LETRA_A_PAGE_1_GRAN_DIAMANTE:
+
+		ld		a,1
+
+
+COPIA_LETRA_A_PAGE_A_GRAN_DIAMANTE:
+
+		ld		c,a
+		ld		ix,DATOS_DEL_TILE_PARA_COPY
+		ld		(ix),d
+		ld		(ix+1),0
+		ld		(ix+2),64
+		ld		(ix+3),0
+		ld		(ix+4),d
+		ld		(ix+5),0
+		ld		(ix+6),76
+		ld		(ix+7),c
+		jr		COPIA_LETRA_64_TAMANO_GRAN_DIAMANTE
+
+
+COPIA_LETRA_ORIGINAL_A_PAGE_A_GRAN_DIAMANTE:
+
+		ld		c,a
+		ld		ix,DATOS_DEL_TILE_PARA_COPY
+		ld		(ix),d
+		ld		(ix+1),0
+		ld		(ix+2),0
+		ld		(ix+3),0
+		ld		(ix+4),d
+		ld		(ix+5),0
+		ld		(ix+6),76
+		ld		(ix+7),c
+		jr		COPIA_LETRA_64_TAMANO_GRAN_DIAMANTE
+
+
+CAMBIA_BUFFER_GRAN_DIAMANTE:
+
+		ld		a,(MAPA_SITUACION_BUFFER_PAGE)
+		cp		1
+		jr		z,.A_PAGE_2
+		ld		a,1
+		jr		.GUARDA
+
+.A_PAGE_2:
+
+		ld		a,2
+
+.GUARDA:
+
+		call	SETPAGE
+		ld		(MAPA_SITUACION_BUFFER_PAGE),a
+		ret
+
+
+COPIA_LETRA_64_TAMANO_GRAN_DIAMANTE:
+
+		ld		(ix+8),64
+		ld		(ix+9),0
+		ld		(ix+10),64
+		ld		(ix+11),0
+		ld		(ix+12),#00
+		ld		(ix+13),#00
+		ld		(ix+14),10010000b
+		call	HL_DATOS_DEL_COPY
+		jp		VDPREADY
 
 
 DATOS_COPIS_MAPA: ;datos_de_mapa_page_1_a_page_2
@@ -799,9 +1759,103 @@ TABLA_POSICIONES_DEPH_MAPA_DE_SITUACION:
 		db		149,167
 
 
+PALETA_DIAMANTES_FIJA:
+		incbin	"../PALETAS/DIAMANTE/DIAMANTE.palete"
+PALETA_DIAMANTES_FADE_IN:
+		incbin	"../PALETAS/DIAMANTE/DIAMANTE.fadein"
+PALETA_DIAMANTES_FADE_OUT:
+		incbin	"../PALETAS/DIAMANTE/DIAMANTE.fadeout"
 PALETA_MAPA_FIJA:
 		incbin	"../PALETAS/PRESENTACION/MAPA.palete"
 PALETA_MAPA_FADE_IN:
 		incbin	"../PALETAS/PRESENTACION/MAPA.fadein"
 PALETA_MAPA_FADE_OUT:
 		incbin	"../PALETAS/PRESENTACION/MAPA.fadeout"
+
+DATOS_COPIA_GRAN_DIAMANTE_PAGE_1_A_3:
+
+		dw		#0000,#0100
+		dw		#0000,#0300
+		dw		#0100,#0100
+		db		#00,#00,10010000b
+
+
+DATOS_DIAMANTE_1_PAGE_1:
+
+		dw		#0000,#0300
+		dw		#002d,#0129
+		dw		#0053,#002b
+		db		#00,#00,10010000b
+
+DATOS_DIAMANTE_2_PAGE_1:
+
+		dw		#0053,#0300
+		dw		#0080,#0129
+		dw		#0053,#002b
+		db		#00,#00,10010000b
+
+DATOS_DIAMANTE_3_PAGE_1:
+
+		dw		#0000,#032b
+		dw		#002d,#0154
+		dw		#0053,#002b
+		db		#00,#00,10010000b
+
+DATOS_DIAMANTE_4_PAGE_1:
+
+		dw		#0053,#032b
+		dw		#0080,#0154
+		dw		#0053,#002b
+		db		#00,#00,10010000b
+
+DATOS_DIAMANTE_5_PAGE_1:
+
+		dw		#0000,#0356
+		dw		#002d,#017f
+		dw		#00a6,#002c
+		db		#00,#00,10010000b
+
+
+DATOS_DIAMANTE_1_PAGE_2:
+
+		dw		#0000,#0300
+		dw		#002d,#0229
+		dw		#0053,#002b
+		db		#00,#00,10010000b
+
+DATOS_DIAMANTE_2_PAGE_2:
+
+		dw		#0053,#0300
+		dw		#0080,#0229
+		dw		#0053,#002b
+		db		#00,#00,10010000b
+
+DATOS_DIAMANTE_3_PAGE_2:
+
+		dw		#0000,#032b
+		dw		#002d,#0254
+		dw		#0053,#002b
+		db		#00,#00,10010000b
+
+DATOS_DIAMANTE_4_PAGE_2:
+
+		dw		#0053,#032b
+		dw		#0080,#0254
+		dw		#0053,#002b
+		db		#00,#00,10010000b
+
+DATOS_DIAMANTE_5_PAGE_2:
+
+		dw		#0000,#0356
+		dw		#002d,#027f
+		dw		#00a6,#002c
+		db		#00,#00,10010000b
+
+
+TABLA_DATOS_PORCIONES_GRAN_DIAMANTE:
+
+		db		0,0,83,43,45,41
+		db		83,0,83,43,128,41
+		db		0,43,83,43,45,84
+		db		83,43,83,43,128,84
+		db		0,86,166,44,45,127

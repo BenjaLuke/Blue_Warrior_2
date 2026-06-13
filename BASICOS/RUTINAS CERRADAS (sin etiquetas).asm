@@ -80,17 +80,28 @@
 				
 		ret	
 
+;SETPALETE_MARCADOR_PARCIAL:
+
+		ld			hl,PALETA_MARCADOR_STAGE_1+10						; Cambia solo los colores 5-C
+		ld			a,5
+		ld			b,16
+		jr			SETPALETE_DESDE_A_Y_B
+
 ;SETPALETE:		
 
 		xor			a             										; Pon el puntero de la paleta a 0
+		ld			b,32
+
+;SETPALETE_DESDE_A_Y_B:
+
 		di
 		out			(#99),a
 		ld			a,16+128
 		ei
 		out			(#99),a
 		ld			c,#9A
-[32]	outi
-				
+		otir
+
 		ret
 
 
@@ -271,49 +282,31 @@
 		
 		push	ix														; Vamos a pintar el tile adecuado
 
-		ld		ix,DATOS_DEL_TILE_PARA_COPY
+		ld		ix,DATOS_DEL_TILE_PARA_COPY_IL
 		ld		iy,TABLA_RELACION_PARA_COPY
 		
-		ld		e,a
-		ld		d,0
-		push	de
-		pop		hl
-		or		a	
-		adc		hl,de
-		ex		de,hl
-		add		iy,de
+		add     a,a
+		ld      e,a
+		ld      d,0
+		jr      nc,.sin_carry
+		inc     d
+.sin_carry:
+		add     iy,de
 		
 		ld		a,(iy)													; Damos el valor de origen de X
 		ld		(ix),a
-		xor		a
-		ld		(ix+1),a
 		ld		a,(iy+1)												; Damos el valor de origen de Y
 		ld		(ix+2),a
-		ld		a,01
-		ld		(ix+3),a
 		ld		a,(X_PINTA_SCROLL)										; Damos el valor de destino de X
 		ld		(ix+4),a
-		xor		a
-		ld		(ix+5),a
 		ld		a,(Y_PINTA_SCROLL)										; Damos el valor de destino de Y
 		ld		(ix+6),a
-		ld		a,2
-		ld		(ix+7),a
-		ld		a,16													; Tamaño X e Y del trozo a copiar
-		ld		(ix+8),a
-		ld		(ix+10),a
-		xor		a
-		ld		(ix+9),a
-		ld		(ix+11),a
-		ld		(ix+12),a
-		ld		(ix+13),a
-		ld		a,11010000B												; Indicamos que es un HMMM
-		ld		(ix+14),a
 		
-        call    PAGE_10_A_SEGMENT_2
+        ;call    PAGE_10_A_SEGMENT_2
 
 		
-		call	HL_DATOS_DEL_COPY										; Vamos a copiar el tile que estamos mirando
+		ld		hl,DATOS_DEL_TILE_PARA_COPY_IL
+		call	DOCOPY													; Vamos a copiar el tile que estamos mirando
 		
 		ld		a,(NUMERO_DE_TILE_EN_LINEA)
 		inc		a
@@ -1770,7 +1763,7 @@
 		or		a
 		ret		z
 
-		ld 		a,(RG8SAV)												; Desactivamos los sprites
+		ld 		a,(RG8SAV)												; Desactivamos los sprites lo antes posible
 		or		00000010B
 		ld 		(RG8SAV),a			
 		ld		b,a
@@ -1789,48 +1782,57 @@
 ;.primer_marcador:
 
 		xor		a
-		ld		b,a
-		ld		c,18
-		call	WRTVDP_EN_RAM
+		out		(#99),a
+		ld		a,18+128
+		out		(#99),a
 
-		xor		a
-		call	SETPAGE
-
-		ld		a,33
-		ld		(DIRPA2),a	
-
-		ld		hl,PALETA_MARCADOR_STAGE_1
-		call	SETPALETE
+		ld		a,31
+		ld		(VDP+2),a
+		out		(#99),a
+		ld		a,2+128
+		out		(#99),a
 
 		ld		a,64
 		ld		hl,CAMINO_NUEVA_INT
 		sub		(hl)
 		ld		b,a
 
-		ld		c,23
-		call	WRTVDP_EN_RAM	
+		ld		a,b
+		out		(#99),a
+		ld		a,23+128
+		out		(#99),a
+
+		ld		a,33
+		ld		(DIRPA2),a	
+
+		call	SETPALETE_MARCADOR_PARCIAL
 							
 		jp		INTERRUPCION_DE_LINEA.fin
 		
 ;.segundo_marcador:
 		xor		a
-		ld		b,a
-		ld		c,18
-		call	WRTVDP_EN_RAM
+		out		(#99),a
+		ld		a,18+128
+		out		(#99),a
 
-		ld		a,3
-		call	SETPAGE	
-		ld		a,33
-		ld		(DIRPA2),a	
-		ld		hl,PALETA_MARCADOR_STAGE_1
-		call	SETPALETE
+		ld		a,127
+		ld		(VDP+2),a
+		out		(#99),a
+		ld		a,2+128
+		out		(#99),a
 		ld		a,(CAMINO_NUEVA_INT)
 		ld		b,a
 		ld		a,10
 		sub		b
 		ld		b,a
-		ld		c,23
-		call	WRTVDP_EN_RAM
+		ld		a,b
+		out		(#99),a
+		ld		a,23+128
+		out		(#99),a
+
+		ld		a,33
+		ld		(DIRPA2),a	
+		call	SETPALETE_MARCADOR_PARCIAL
 
 ;.fin:
 

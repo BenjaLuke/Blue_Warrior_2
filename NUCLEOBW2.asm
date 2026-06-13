@@ -402,9 +402,29 @@ CARGA_SLOT_REGRESO_A_JUEGO:
 		cp       6
 		jp    z,HACIA_CINEMATICAS_FINALES
 
-		ld		a,9
+		ld		b,150   												; Pausa para que termine la musica fanfarria de ganar a boss
+
+.ESPERA_MUSICA_ANTERIOR_TRAS_BOSS:
+
+		halt
+		djnz	.ESPERA_MUSICA_ANTERIOR_TRAS_BOSS
+
+		di
+		ld		a,#C9
+		ld		(HTIMI),a
+		ld		(HKEYI),a
+
+		ld 		a,(RG0SAV)												; Disable Line Interrupt: Reset R#0 bit 4
+		and		11101111B
+		ld		(RG0SAV),a
+		ld		b,a
+		ld		c,0
+		call	WRTVDP_EN_RAM
+		ei
+
+		ld		a,68
 		ld      (DIRPA1),a											    ; Banco 1, pagina 39 del MEGAROM
-        jp      COMIENZA_JUEGO
+        jp      MUESTRA_MAPA_TRAS_BOSS
 
 CARGA_SLOT_PARA_GAME_OVER:
 
@@ -2629,5 +2649,41 @@ M_LABERINT:
 
 /**********************
  ****** PAGINA 73******
+ ******   END    ******
+ **********************/
+
+ /**********************
+ ****** PAGINA 74 ******
+ ****** SLOT   2 ******   
+ **********************/
+
+		org		#8000											
+; RESUMEN: 74 - Gráficos de Diamante parte 1
+GRAFICOS_GRAN_DIAMANTE_1:
+        incbin  "GRAFICOS/DIAMANTE/DIAMANTE-1.DAT"
+
+        ds		#C000-$
+
+/**********************
+ ****** PAGINA 74 ******
+
+ ******   END    ******
+ **********************/
+
+ /**********************
+ ****** PAGINA 75 ******
+ ****** SLOT   2 ******   
+ **********************/
+
+		org		#8000											
+; RESUMEN: 75 - Gráficos de Diamante parte 2
+GRAFICOS_GRAN_DIAMANTE_2:
+        incbin  "GRAFICOS/DIAMANTE/DIAMANTE-2.DAT"
+
+        ds		#C000-$
+
+/**********************
+ ****** PAGINA 75 ******
+
  ******   END    ******
  **********************/
