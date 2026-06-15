@@ -267,6 +267,7 @@ SECUENCIA_PROYECTILES_Y_ENEMIGOS:
 		dw		GARGOLAS.SECUENCIA_GARGOLA										; 33
 		dw		PREMIO_EXTRA.SECUENCIA_PREMIO_EXTRA							; 34
 		dw		SECUENCIA_PROYECTILES_Y_ENEMIGOS.PASAMOS_A_LA_SIGUIENTE_POSICION	; 35
+		dw		FUEGO_AVISO_RAILES.SECUENCIA_FUEGO_AVISO_RAILES					; 36
 
 .FLECHA_FRENTE_FUEGO_FRENTE:
 
@@ -654,6 +655,7 @@ DEJA_LIBRE_SPRITE_EN_RAM:
         ret     nc
         sub     10
         ret     c
+        push    af
         push    ix
         ld      ix,SPRITES_ACTIVOS
         ld      e,a
@@ -662,47 +664,53 @@ DEJA_LIBRE_SPRITE_EN_RAM:
         xor     a
         ld      (ix),a
         pop     ix
+        pop     af
+        jp      APARTA_SPRITE_LIBERADO
+
+APARTA_SPRITE_LIBERADO:
+
+        push    bc
+        push    de
+        push    hl
+
+        ld      e,a
+        ld      d,0
+        ld      hl,#4A00+(4*10)
+    [4] add     hl,de
+
+        add     192
+        call    SetVdp_Write
+        out     (#98),a
+        ld      a,255
+        out     (#98),a
+
+        xor     a
+        ld      (RG14SAV),a
+        out     (#99),a
+        ld      a,14+128
+        out     (#99),a
+
+        pop     hl
+        pop     de
+        pop     bc
         ret
 
 APARTAMOS_SPRITES_QUE_MOLESTAN:
 
 		push	ix
-		push	iy
 		
 		ld		b,20
 
 .bucle_molestias:
 
-		ld		iy,SPRITES_ACTIVOS
 		ld		a,b
 		dec		a
-		ld		e,a
-		ld		d,0
-		add		iy,de
-		call	.quitamos_de_en_medio
+        call    APARTA_SPRITE_LIBERADO
 		djnz	.bucle_molestias
 
 .saliendo_de_la_rutina:
 
-		pop		iy
 		pop		ix
-		ret
-
-.quitamos_de_en_medio:
-
-        ld      hl,#4A00+(4*10)
-    [4] add     hl,de
-        ex      de,hl
-
-		ld		a,216
-
-		ld		(PROPIEDADES_PATRON_SPRITE),a
-		ld		hl,PROPIEDADES_PATRON_SPRITE
-		push	bc
-		ld		bc,1
-		call	PON_COLOR_2.sin_bc_impuesta
-		pop		bc
-		
 		ret
 
 CALCULAMOS_PROYECTILES_ENEMIGOS:

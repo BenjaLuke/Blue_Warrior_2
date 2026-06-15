@@ -439,6 +439,7 @@ RUTINA_BOSS_4:
 	ld		(ix+7),2
 	call   	DOCOPY
 	ld		(ix+7),3
+    ld      hl,CORAZONES_DEPH_EN_BOSSES
 	call   	DOCOPY
 	pop		bc
 	ret
@@ -2264,6 +2265,7 @@ PINTA_MARCADORES_VIDA_FINAL_BOSS_4:
 		ld		(ix+7),2
 		call	DOCOPY
 		ld		(ix+7),3
+	 	ld	    hl,DATAS_COR_EMPT_MALO
 		jp		DOCOPY
 
 CONVIERTE_VIDA_FINAL_A_BARRA_BOSS_4:
@@ -3476,10 +3478,7 @@ MUERTE_DE_ERRECENYX_BOSS_4:
 		call	stpmus
 
 ; Nos aseguramos que el prota no está en modo transparente ni el fondo en colores varios
-		ld		a,COLOR_ALEATORIO_SIN_CAMBIOS_BOSS_4
-		ld		(COLOR_ALEATORIO),a
-		xor		a
-		ld		(INMUNE),a
+		call	LIMPIA_ESTADO_DANO_DEPH_EN_MUERTE_BOSS
 
 ; pequeña pausa
 		ld		a,ERRECENYX_PAUSA_BOCA_BOSS_4

@@ -792,7 +792,7 @@ SETPALETE_LATIDO_CINEMATICA_2:
 		di
 		ld		c,#9A
 
-		ld		a,6
+		ld		a,3
 		out		(#99),a
 		ld		a,16+128
 		out		(#99),a
@@ -2606,7 +2606,7 @@ DATOS_NEGRO_ROTATIVO_EN_PAGE_1:
 
 TEXTO_ROTATIVO_PRESENTACION:
 
-		db		"BLUE WARRIOR II - Beta version 4.11.75 - 13/6/2026 - 93% - (C) Digital Moai",0
+		db		"BLUE WARRIOR II - Beta version 4.11.121 - 14/6/2026 - 94% - (C) Digital Moai",0
 
 TEXTO_ROTATIVO_PRESENTACION_FIN:
 
@@ -2908,25 +2908,26 @@ INICIA_EN_FASE_1:
 INICIA_EN_FASE_2:
 
 		ld		a,2
-		ld		(FASE),a
-		jp		SEGUIMOS
+		jr		INICIA_EN_FASE_DIRECTA
 
 INICIA_EN_FASE_3:
 
 		ld		a,3
-		ld		(FASE),a
-		jp		SEGUIMOS
+		jr		INICIA_EN_FASE_DIRECTA
 
 INICIA_EN_FASE_4:
 
 		ld		a,4
-		ld		(FASE),a
-		jp		SEGUIMOS
+		jr		INICIA_EN_FASE_DIRECTA
 
 INICIA_EN_FASE_5:
 
 		ld		a,5
+
+INICIA_EN_FASE_DIRECTA:
+
 		ld		(FASE),a
+		ld		(TRUCO_FASES_ACTIVO),a
 
 SEGUIMOS:
 
@@ -2935,6 +2936,7 @@ SEGUIMOS:
 		ld		(HTIMI),a
 		ld		(HKEYI),a
 		ei
+
 		call	PARA_MUSICA_MENU_PRESENTACION
 
 		call	FADE_OUT_PRESENTACION

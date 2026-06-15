@@ -53,17 +53,17 @@ VDPREADY:
 		ld 		a,0										; Regresa a s#0, activa interrupciones
 		out		(#99),a
 		ld		a,15+128
-		out		(#99),a									; Loop si el VDP no está listo
+		out		(#99),a									; Loop si el VDP no est?? listo
 		ei
 		jp		c,VDPREADY
 				
 		dw		#A3ED,#A3ED,#A3ED,#A3ED	  				; 15x OUTI
-		dw		#A3ED,#A3ED,#A3ED,#A3ED	  				; Es más rápido que un OTIR
+		dw		#A3ED,#A3ED,#A3ED,#A3ED	  				; Es m??s r??pido que un OTIR
 		dw		#A3ED,#A3ED,#A3ED,#A3ED
 		dw		#A3ED,#A3ED,#A3ED;,#A3ED
 				
 		ret
-SETPAGE:     															; Cambiar la página en screen 5 	
+SETPAGE:     															; Cambiar la p??gina en screen 5 	
 	
 		add     a,a        			      								; x32
 		add     a,a
@@ -104,11 +104,69 @@ SETPALETE_DESDE_A_Y_B:
 
 		ret
 
+FADE_OUT_FINAL_BOSS_COMUN:
+
+		call	ESPERA_FIN_MUSICA_BOSS_COMUN
+		ld		a,7
+		ld		(ESTADO_COLOR_PERM),a
+		ld		a,37
+		ld		(DIRPA2),a
+		ld		a,(FASE)
+		dec		a
+		ld		c,a
+		add		a,a
+		ld		e,a
+		ld		d,0
+		ld		hl,TABLA_PALETAS_FADE_OUT_BOSS
+		add		hl,de
+		ld		e,(hl)
+		inc		hl
+		ld		d,(hl)
+		ex		de,hl
+		ld		a,c
+		ld		e,a
+		ld		d,0
+		ld		hl,TABLA_PASOS_FADE_OUT_BOSS
+		add		hl,de
+		ld		e,(hl)
+
+.BUCLE_FADE_OUT_FINAL_BOSS:
+
+		ld		a,37
+		ld		(DIRPA2),a
+		call	SETPALETE
+		push	hl
+		push	de
+		ld		b,6
+
+.ESPERA_FADE_OUT_FINAL_BOSS:
+
+		halt
+		djnz	.ESPERA_FADE_OUT_FINAL_BOSS
+		pop		de
+		pop		hl
+		dec		e
+		jr		nz,.BUCLE_FADE_OUT_FINAL_BOSS
+		jp		PAGE_10_A_SEGMENT_2
+
+ESPERA_FIN_MUSICA_BOSS_COMUN:
+
+		ld		a,(busply)
+		or		a
+		jr		z,.MUSICA_BOSS_TERMINADA
+		halt
+		jr		ESPERA_FIN_MUSICA_BOSS_COMUN
+
+.MUSICA_BOSS_TERMINADA:
+
+		halt
+		ret
+
 
 LDIRVM2:																; Entra con A a 0 para las primeras 128k a escribir
 																		; BIOS:	5Ch
-																		; IN: HL= Dirección origen RAM
-																		; DE = Dirección destino VRAM
+																		; IN: HL= Direcci??n origen RAM
+																		; DE = Direcci??n destino VRAM
 																		; BC = Cantidad de bytes a transferir	
 		ex		de,hl
 		call	SetVdp_Write
@@ -242,7 +300,7 @@ CHANGE_BANK_2:
 		
 		ld		(PAGE_A_GUARDAR),a
 		di
-		ld		[DIRPA2],a												; Cambiamos la página del bloque 2	
+		ld		[DIRPA2],a												; Cambiamos la p??gina del bloque 2	
 		ei		
 				
 		ret
@@ -265,7 +323,7 @@ PON_COLOR_2:
 	
 BUCLE_PINTA_TILES:
 
-		ld		a,(FINAL_DEL_SCROLL)									; Si el scroll está desactivado, terminamos la rutina
+		ld		a,(FINAL_DEL_SCROLL)									; Si el scroll est?? desactivado, terminamos la rutina
 		or		a
 		jp		z,ENEMIGO_FINAL
 		
@@ -320,8 +378,8 @@ BUCLE_PINTA_TILES:
 		ld		de,1
 		add		ix,de
 				
-		or		a														; A aun tiene el valor de X, Si fuera 0 es que hemos  pintado toda la linea, nos guardamos esa información
-		ld		a,(ix)													; Ahora A vale la linea en la que está
+		or		a														; A aun tiene el valor de X, Si fuera 0 es que hemos  pintado toda la linea, nos guardamos esa informaci??n
+		ld		a,(ix)													; Ahora A vale la linea en la que est??
 		jp		nz,.SCROLL_DEL_CAMINO									; Si no ha acabado la linea seguiremos pintando tiles
 		
 		xor		a
@@ -332,7 +390,7 @@ BUCLE_PINTA_TILES:
 		or		a
 		sbc		hl,de
 		
-		ld		(LINEA_A_LEER),hl										; Comprovaciones sobre la posición del mapa
+		ld		(LINEA_A_LEER),hl										; Comprovaciones sobre la posici??n del mapa
 		inc		hl														; Si hemos pasado de la linea 0 a #FFFF, cambiamos de tramo
 		ld		a,h
 		or		l
@@ -353,7 +411,7 @@ BUCLE_PINTA_TILES:
 		or		a
 		jp		z,.RECOLOCAMOS_Y
 
-		ld		de,TABLA_SUCESOS_DE_FASE									; DE hacer referencia a la tabla en sí
+		ld		de,TABLA_SUCESOS_DE_FASE									; DE hacer referencia a la tabla en s??
 
 		push	af
 		ld		a,(PAGE_DATOS_FASE)
@@ -414,7 +472,7 @@ BUCLE_PINTA_TILES:
 		or		a
 		jp		nz,.RECTIFICA_CONTROL_Y
 		
-		ld		a,(Y_DEPH)												; Rectificamos la posición del sprite para que no se vaya con el decorado
+		ld		a,(Y_DEPH)												; Rectificamos la posici??n del sprite para que no se vaya con el decorado
 		dec		a
 		ld		(Y_DEPH),a
 
@@ -443,8 +501,10 @@ BUCLE_PINTA_TILES:
 		inc		a
 		ld		(CONTROL_Y),a		
 
+		cp		220
+		jp		nc,.SIGUE
 		cp		b
-		jp		z,MUERTE_POR_APLASTAMIENTO
+		jp		nc,MUERTE_POR_APLASTAMIENTO
 		
 .SIGUE:
 		
@@ -1090,9 +1150,9 @@ SITUAMOS_PUNTERO_EN_TABLA:
 
 SITUAMOS_PUNTERO_EN_TABLA_DESDE_HL_YA_MARCADA:
 
-		add 	hl,hl													; se multiplica el valor por 2 ya que cada dirección de memoria son 2 bytes
+		add 	hl,hl													; se multiplica el valor por 2 ya que cada direcci??n de memoria son 2 bytes
 		
-		add 	hl,de													; HL ya está apuntando a la posicion correcta de la tabla
+		add 	hl,de													; HL ya est?? apuntando a la posicion correcta de la tabla
 							
 		ld 		e,(hl)													; Extraemos la direccion de la etiqueta
 		inc 	hl
@@ -1114,12 +1174,12 @@ LEE_REGISTRO_PARA_HMMC:
 		ret
 HMMC: 																	;en hl metemos los datos para los registros hmmc
 		
-																		;en de metemos la dirección de los bits a copiar LA DIRECCION DE MEMORIA
+																		;en de metemos la direcci??n de los bits a copiar LA DIRECCION DE MEMORIA
 
 		ld a,2
 		call LEE_REGISTRO_PARA_HMMC
 		and 1
-		jr nz,HMMC 										;Si el VDP no está libre, no sigue con la acción
+		jr nz,HMMC 										;Si el VDP no est?? libre, no sigue con la acci??n
 
 		xor a
 		call LEE_REGISTRO_PARA_HMMC 									; "resetea" los registros de lectura del VDP
@@ -1127,7 +1187,7 @@ HMMC: 																	;en hl metemos los datos para los registros hmmc
 		push	hl
 		pop		ix														;Pasamos el material de hl a ix
 
-		ld 		a,[de]													;Nos centramos en los 4 bits bajos de la primera dirección de de
+		ld 		a,[de]													;Nos centramos en los 4 bits bajos de la primera direcci??n de de
 		inc		de														;incrementamos de para luego ya tenerlo apuntando a donde interesa
 
 		ld a,36 														;cargamos el primer registro a escribir
@@ -1135,7 +1195,7 @@ HMMC: 																	;en hl metemos los datos para los registros hmmc
 		di
 		
 		out ($99),a
-		ld a,17+128 													;sistema automático de autoincremento
+		ld a,17+128 													;sistema autom??tico de autoincremento
 		out ($99),a
 		ld c,$9B
 		
@@ -1150,23 +1210,23 @@ HMMC: 																	;en hl metemos los datos para los registros hmmc
 
 		ei
 		
-		ex de,hl 														;intercambiamos de con hl y ahora hl apunta al gráfico
+		ex de,hl 														;intercambiamos de con hl y ahora hl apunta al gr??fico
 
 ESPERA_A_QUE_TERMINE_LO_ANTERIOR: 
 
 		ld a,2															;vamos a fijarnos en el registro 2
 		call LEE_REGISTRO_PARA_HMMC 									;lee el registro 2
 
-		bit 0,a															;pone en a el valor del bit 0 del registro 2, aquí indica si ha terminado la acción
-		jp z,FIN_SENTENCIA_VDP											;si el bit está  a 0 es que ya ha terminado y va a salir del tema
-		bit 7,a															;nos fijamos ahora en el bit 7, aquí nos dice si ha terminado de realizar la parte concreta dentro de toda la acción
-		jp z,ESPERA_A_QUE_TERMINE_LO_ANTERIOR 							;si es 1, no ha terminado, por lo que vuelve a atrás a esperar.
+		bit 0,a															;pone en a el valor del bit 0 del registro 2, aqu?? indica si ha terminado la acci??n
+		jp z,FIN_SENTENCIA_VDP											;si el bit est??  a 0 es que ya ha terminado y va a salir del tema
+		bit 7,a															;nos fijamos ahora en el bit 7, aqu?? nos dice si ha terminado de realizar la parte concreta dentro de toda la acci??n
+		jp z,ESPERA_A_QUE_TERMINE_LO_ANTERIOR 							;si es 1, no ha terminado, por lo que vuelve a atr??s a esperar.
 
 		ld	a,[hl]														;cargamos en a el valor de los 4 bits de hl (el siguiente pixel a pintar
 		
 		di
 		out	[#9b],a			
-		ei											;transferimos el byte al registro 9 para que sepa lo que debe pintar después
+		ei											;transferimos el byte al registro 9 para que sepa lo que debe pintar despu??s
 		inc	hl															;incrementamos hl para la siguiente lectura
 
 
@@ -1467,7 +1527,7 @@ INTERRUPCION_DE_VBLANK:
 		out		(#99),a													; Apuntamos el dato a poner en el registro
 	
 		ld		a,23+128												; Cargamos el valor de registro con el bit 8 establecido (+128)
-		ei																; Contectamos las interrupciones que se conectarán después de la siguiente orden
+		ei																; Contectamos las interrupciones que se conectar??n despu??s de la siguiente orden
 		out		(#99),a													; Apuntamos al registro adecuado (en este caso el 23 para el scroll)
 
 PALETA_ESCOGIDA:
@@ -1493,7 +1553,7 @@ PALETA_ESCOGIDA:
 
 .A_PALETA_1:
 
-		call	.COMUN_PALETAS_1												; Cambiamos la página del bloque 2	
+		call	.COMUN_PALETAS_1												; Cambiamos la p??gina del bloque 2	
 		ld		hl,PALETA_STAGE_1_1
 		jp		.COMUN_PALETAS_2
 
@@ -1517,14 +1577,14 @@ PALETA_ESCOGIDA:
 		
 .A_PALETA_2_2:		
 		
-		call	.COMUN_PALETAS_1												; Cambiamos la página del bloque 2													; Cambiamos la página del bloque 2	
+		call	.COMUN_PALETAS_1												; Cambiamos la p??gina del bloque 2													; Cambiamos la p??gina del bloque 2	
 		ld		hl,PALETA_STAGE_1_2_1
 		call	.COMUN_PALETAS_5
 		jp		.COMUN_PALETAS_2
 
 .A_PALETA_3:
 
-		call	.COMUN_PALETAS_1												; Cambiamos la página del bloque 2													; Cambiamos la página del bloque 2	
+		call	.COMUN_PALETAS_1												; Cambiamos la p??gina del bloque 2													; Cambiamos la p??gina del bloque 2	
 		ld		hl,PALETA_STAGE_1_3
 		jp		.COMUN_PALETAS_2
 
@@ -1543,7 +1603,7 @@ PALETA_ESCOGIDA:
 		
 .A_FADE_IN_PALETA_1_2:		
 		
-		call	.COMUN_PALETAS_1												; Cambiamos la página del bloque 2													; Cambiamos la página del bloque 2	
+		call	.COMUN_PALETAS_1												; Cambiamos la p??gina del bloque 2													; Cambiamos la p??gina del bloque 2	
 		ld		hl,PALETA_STAGE_1_1_FADE_IN
 		call	.COMUN_PALETAS_5
 		jp		.COMUN_PALETAS_2
@@ -1564,7 +1624,7 @@ PALETA_ESCOGIDA:
 		
 .A_FADE_IN_PALETA_2_2:		
 		
-		call	.COMUN_PALETAS_1												; Cambiamos la página del bloque 2													; Cambiamos la página del bloque 2	
+		call	.COMUN_PALETAS_1												; Cambiamos la p??gina del bloque 2													; Cambiamos la p??gina del bloque 2	
 		ld		hl,PALETA_STAGE_2_2_FADE_IN
 		call	.COMUN_PALETAS_5
 		jp		.COMUN_PALETAS_2
@@ -1585,7 +1645,7 @@ PALETA_ESCOGIDA:
 		
 .A_FADE_OUT_GRIS_2:		
 		
-		call	.COMUN_PALETAS_1												; Cambiamos la página del bloque 2													; Cambiamos la página del bloque 2	
+		call	.COMUN_PALETAS_1												; Cambiamos la p??gina del bloque 2													; Cambiamos la p??gina del bloque 2	
 		ld		hl,PALETA_GRISES_FADE_OUT
 		call	.COMUN_PALETAS_5
 		jp		.COMUN_PALETAS_2
@@ -1606,7 +1666,7 @@ PALETA_ESCOGIDA:
 		
 .A_FADE_OUT_GRIS_A_BLANCO_2:		
 		
-		call	.COMUN_PALETAS_1												; Cambiamos la página del bloque 2													; Cambiamos la página del bloque 2	
+		call	.COMUN_PALETAS_1												; Cambiamos la p??gina del bloque 2													; Cambiamos la p??gina del bloque 2	
 		ld		hl,PALETA_GRIS_BLANCO_1
 		call	.COMUN_PALETAS_5
 		jp		.COMUN_PALETAS_2
@@ -1629,20 +1689,20 @@ PALETA_ESCOGIDA:
 		
 .A_FADE_OUT_BLANCO_A_NEGRO_2:		
 		
-		call	.COMUN_PALETAS_1												; Cambiamos la página del bloque 2													; Cambiamos la página del bloque 2	
+		call	.COMUN_PALETAS_1												; Cambiamos la p??gina del bloque 2													; Cambiamos la p??gina del bloque 2	
 		ld		hl,PALETA_BLANCO_NEGRO_1
 		call	.COMUN_PALETAS_5
 		jp		.COMUN_PALETAS_2
 		
 .A_PALETA_GRIS:
 
-		call	.COMUN_PALETAS_1												; Cambiamos la página del bloque 2													; Cambiamos la página del bloque 2	
+		call	.COMUN_PALETAS_1												; Cambiamos la p??gina del bloque 2													; Cambiamos la p??gina del bloque 2	
 		ld		hl,PALETA_GRISES
 		jp		.COMUN_PALETAS_2
 
 .A_PALETA_NEGRA:
 
-		call	.COMUN_PALETAS_1												; Cambiamos la página del bloque 2													; Cambiamos la página del bloque 2	
+		call	.COMUN_PALETAS_1												; Cambiamos la p??gina del bloque 2													; Cambiamos la p??gina del bloque 2	
 		ld		hl,PALETA_OSCURO_STAGE_1
 		jp		.COMUN_PALETAS_2
 
@@ -1835,7 +1895,7 @@ INTERRUPCION_DE_LINEA:
 .fin:
 
 		ld		a,(PAGE_A_GUARDAR)
-		ld		[DIRPA2],a												; Cambiamos la página del bloque 2	
+		ld		[DIRPA2],a												; Cambiamos la p??gina del bloque 2	
 
 		xor		a 														; Ponemos registro de estado 0 
 		out 	(099h),a												; Antes de salir o se puede colgar
@@ -1882,7 +1942,7 @@ RESCATA_ENTORNO:
 		call	SITUA_LA_X_E_Y_2
 
 		ld		a,(ix)
-		ld		(TILE_N),a												; Empezamos a capturar el valor de los tiles de su alrededor para usarlos después						
+		ld		(TILE_N),a												; Empezamos a capturar el valor de los tiles de su alrededor para usarlos despu??s						
 		
 		ld		de,16
 		add		ix,de
@@ -1933,8 +1993,10 @@ FUERA_DE_PANTALLA:
 		ld		b,a
 		ld		a,(CONTROL_Y)
 
+		cp		220
+		ret		nc
 		cp		b
-		jp		z,MUERTE_POR_APLASTAMIENTO_MENOS_RET
+		jp		nc,MUERTE_POR_APLASTAMIENTO_MENOS_RET
 		
 		ret
 
@@ -1942,7 +2004,7 @@ SITUA_LA_X_E_Y:
 
 		ld		ix,MAPA_CONSTANTE_FASE_1								; Colocamos el puntero de IX en el mapa de constantes
 		ld		de,(LINEA_A_LEER)
-[16]	add		ix,de													; Le añadimos tantas lineas Y como en la que está empezando a pintar la pantalla multiplicado por 16 tiles cada linea										
+[16]	add		ix,de													; Le a??adimos tantas lineas Y como en la que est?? empezando a pintar la pantalla multiplicado por 16 tiles cada linea										
 		ld		a,(Y_PINTA_SCROLL)
 [4]		srl		a		
 		ld		b,a
@@ -1952,7 +2014,7 @@ SITUA_LA_X_E_Y:
 [4]		add		a								
 		ld		e,a
 		ld		d,0
-		add		ix,de													; Le añadimos tantas lineas como aquellas que separan el compienzo de pintado del sprite
+		add		ix,de													; Le a??adimos tantas lineas como aquellas que separan el compienzo de pintado del sprite
 
 		ld		de,16
 		add		ix,de
@@ -2024,11 +2086,11 @@ COMUN_CARGA_DEPH:
 
 EFECTOS_ON_OFF:
 
-		ld		a,(MARCADOR_PULSADO)								; Si ya pulsamos el botón, no sirve hasta que lo sueltes
+		ld		a,(MARCADOR_PULSADO)								; Si ya pulsamos el bot??n, no sirve hasta que lo sueltes
 		or		a
 		jp		nz,CONTROL.teclado
 
-		ld		a,1													; Bloqueamos la posibilidad de pulsar el botón para evitar que se pulse dos veces
+		ld		a,1													; Bloqueamos la posibilidad de pulsar el bot??n para evitar que se pulse dos veces
 		ld		(MARCADOR_PULSADO),a
 
 		ld		a,(FX_ON_OFF)
@@ -2050,7 +2112,7 @@ EFECTOS_ON_OFF:
 		jp		CONTROL.teclado
 MUSIC_ON_OFF:
 
-		ld		a,(MARCADOR_PULSADO)								; Si ya pulsamos el botón, no sirve hasta que lo sueltes
+		ld		a,(MARCADOR_PULSADO)								; Si ya pulsamos el bot??n, no sirve hasta que lo sueltes
 		or		a
 		jp		nz,CONTROL.teclado
 
@@ -2058,7 +2120,7 @@ MUSIC_ON_OFF:
 		or		a
 		jp		z,CONTROL.teclado
 
-		ld		a,1													; Bloqueamos la posibilidad de pulsar el botón para evitar que se pulse dos veces
+		ld		a,1													; Bloqueamos la posibilidad de pulsar el bot??n para evitar que se pulse dos veces
 		ld		(MARCADOR_PULSADO),a
 
 		ld		a,(MUSICA_ON_OFF)
@@ -2090,25 +2152,25 @@ PAUSE:
 
 		ld		a,(BLOQUE_DE_SPRITES_VARIABLE)
 		push	af
-		ld		a,(MARCADOR_PULSADO)								; Si ya pulsamos el botón, no sirve hasta que lo sueltes
+		ld		a,(MARCADOR_PULSADO)								; Si ya pulsamos el bot??n, no sirve hasta que lo sueltes
 		or		a
 		jp		nz,CONTROL.teclado
 
-		ld		a,(PAUSA_BLOQUEADA)									; si alguna acción no compatible está sucediendo, no sirve hasta que acabe
+		ld		a,(PAUSA_BLOQUEADA)									; si alguna acci??n no compatible est?? sucediendo, no sirve hasta que acabe
 		or		a
 		jp		nz,CONTROL.teclado
 
-		ld		a,8													; FX en forma de música que anuncia pausa
+		ld		a,8													; FX en forma de m??sica que anuncia pausa
 		ld		c,0
         call    A_31_DESDE_10       
 
 
-		di															; Paramos la música
+		di															; Paramos la m??sica
 		call	hltmus
 		ei
 		call	GICINI
 
-		ld		a,1													; Bloqueamos la posibilidad de pulsar el botón para evitar que se pulse dos veces
+		ld		a,1													; Bloqueamos la posibilidad de pulsar el bot??n para evitar que se pulse dos veces
 		ld		(MARCADOR_PULSADO),a
 
 		ld		a,(TIEMPO_DE_ADJUST)
@@ -2142,7 +2204,7 @@ PAUSE:
 
 .bucle1:
 
-		ld		a,6														;si aun está pulsado f1 creamos un bucle
+		ld		a,6														;si aun est?? pulsado f1 creamos un bucle
 	    call	SNSMAT_RAM 
 		bit		5,a
 		jp		z,.bucle1
@@ -2171,8 +2233,7 @@ PAUSE:
 .bucle4:
 
 		halt
-		call	RECUPERA_SPRITES_SALUDO
-		call	CARGA_1_A_45
+		call	RECUPERA_SPRITES_SALUDO_TRAS_PAUSA
 ;		call	CARGA_SKRULLEX_SLIME
 
 		ld		a,(FIREWORKS_ACTIVO)
@@ -2426,7 +2487,7 @@ CAMBIAMOS_LA_INTERRUPCION_DE_LINEA_PARA_DESAPARECER:
 .revisa_si_desaparece:
 
 		ld		a,(CAMINO_NUEVA_INT)
-		cp		20
+		cp		14
 		ret		nz
 		ld		a,2
 		ld		(HACIA_DONDE_INTERRUPT),a
@@ -2445,8 +2506,10 @@ MUERTE_POR_TOQUES:
 		ld		(ESTADO_MARCADOR),a
 		ld		a,(SET_PAGE)
 		call	SETPAGE
+		call	PAGE_10_A_SEGMENT_2
+		call	FUEGO_AVISO_RAILES.MATA_FUEGO_AVISO_SI_ACTIVO
 
-			; PARAMOS MÚSICA
+			; PARAMOS M??SICA
 
 		call	stpmus
 			
@@ -2560,6 +2623,8 @@ MUERTE_POR_APLASTAMIENTO:
 		ld		(ESTADO_MARCADOR),a
 		ld		a,(SET_PAGE)
 		call	SETPAGE
+		call	PAGE_10_A_SEGMENT_2
+		call	FUEGO_AVISO_RAILES.MATA_FUEGO_AVISO_SI_ACTIVO
 		call	stpmus
 
 SALTO_AL_FADEAR_EN_GRISES:
@@ -2567,9 +2632,9 @@ SALTO_AL_FADEAR_EN_GRISES:
 		xor		a
 		ld		(ARMA_USANDO),a											; 0 1 2 para flecha 3 4 5 para fuego 6 7 8 para hacha
 
-		;ld		a,(VIDAS)     ; XXXXXXXX Quitar esto para evitar vidas infinitas
-		;dec		a
-		;ld		(VIDAS),a
+		ld		a,(VIDAS)     ; XXXXXXXX Quitar esto para evitar vidas infinitas
+		dec		a
+		ld		(VIDAS),a
 
 		ld		a,(VIDAS)
 		cp		255
@@ -2638,6 +2703,8 @@ RECUPERA_SPRITES_SALUDO:
 		halt
 		call	CARGA_1_A_45
 
+.RECUPERA_SPRITES_SALUDO_COMUN:
+
 		call	VUELCA_DATOS_COLORES_DEPH_A_VRAM
 		call	PAGE_10_A_SEGMENT_2
 
@@ -2650,7 +2717,12 @@ RECUPERA_SPRITES_SALUDO:
 
 RETORNO:
 
-		ret														; Cuando una sentencia debe ser enviada de vuelta pero tenemos que dar una dirección por narices
+		ret														; Cuando una sentencia debe ser enviada de vuelta pero tenemos que dar una direcci??n por narices
+RECUPERA_SPRITES_SALUDO_TRAS_PAUSA:
+
+		halt
+		call	CARGA_1_A_25_TRAS_PAUSA
+		jr		RECUPERA_SPRITES_SALUDO.RECUPERA_SPRITES_SALUDO_COMUN
 VUELCA_DATOS_DEPH_A_VRAM:
 
 		call	PAGE_32_A_SEGMENT_2
@@ -2658,7 +2730,6 @@ VUELCA_DATOS_DEPH_A_VRAM:
 		ld		de,#4A00												; Pinta al prota
 		ld		bc,40
 		jp		PON_COLOR_2.sin_bc_impuesta
-		call	PAGE_10_A_SEGMENT_2
 
 VUELCA_DATOS_COLORES_DEPH_A_VRAM:
 
@@ -2786,7 +2857,7 @@ PARTE_B:
         ld		a,(PAGINA_DE_REGRESO)
 
 		di
-		ld		[DIRPA1],a												; Cambiamos la página del bloque 2	
+		ld		[DIRPA1],a												; Cambiamos la p??gina del bloque 2	
 		ei	
 
 		ld		a,(MAGIAS)
@@ -2846,7 +2917,7 @@ PARTE_A:
 		ld		a,44
 
 		di
-		ld		[DIRPA1],a												; Cambiamos la página del bloque 2	
+		ld		[DIRPA1],a												; Cambiamos la p??gina del bloque 2	
 		ei	
 		ret
 
@@ -2914,7 +2985,7 @@ PAGE9_A_SEGMENT_1:
 
 		ld		a,9
 		di
-		ld		[DIRPA1],a												; Cambiamos la página del bloque 2	
+		ld		[DIRPA1],a												; Cambiamos la p??gina del bloque 2	
 		ei			
 		jp		RECARGAMOS_GRAFICOS_JUEGO_TRAS_MUERTE
 
@@ -2972,6 +3043,15 @@ DANO_DEPH_EN_BOSS_COMUN:
 		call	PREPARA_VRAM_PARA_MUERTE_DEPH_EN_BOSS
 		jp		MUERTE_POR_TOQUES_DESDE_BOSS
 
+LIMPIA_ESTADO_DANO_DEPH_EN_MUERTE_BOSS:
+
+		xor		a
+		ld		(INMUNE),a
+		ld		(TIEMPO_DE_ADJUST),a
+		inc		a
+		ld		(COLOR_ALEATORIO),a
+		ret
+
 DATOS_LIMPIA_PAGE_0_FIN_BOSS:
 
 		dw		#0000,#0000,#0000,#00AF,#0100,#0051
@@ -2981,3 +3061,4 @@ DATOS_LIMPIA_PAGE_3_FIN_BOSS:
 
 		dw		#0000,#0000,#0000,#0300,#0100,#0100
 		db		#00,#00,11000000b
+

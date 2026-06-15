@@ -60,6 +60,25 @@ CONTROL_BLINDAJE_NACIMIENTO_ENEMIGOS:
 			djnz	.BUCLE_CONTROL_BLINDAJE_NACIMIENTO
 			ret
 
+CONTROL_RESPAWN_ECTO_HUEVOS:
+
+			ld		a,(FASE)
+			cp		4
+			ret		nz
+			ld		a,(ECTO_HUEVOS_RESPAWN)
+			or		a
+			ret		z
+			dec		a
+			ld		(ECTO_HUEVOS_RESPAWN),a
+			ret		nz
+			xor		a
+			ld		(ECTOPALLERS_NUEVO_NECESARIO),a
+			ld		(ECTOPALLERS_ACTIVO),a
+			ld		(ECTO_HUEVOS_GOLPES),a
+			ld		(ECTO_PARALIZADO),a
+			call	NUEVO_ECTO_PALLERS_TOCA_HUEVOS
+			jp		CARGA_ECTO_PALLER
+
 ACTIVA_BLINDAJE_NACIMIENTO_ENEMIGO:
 
 			push	af
@@ -547,8 +566,7 @@ ESTADO_NORMAL:
 			jp		z,AHORA_SI_EL_AGUJERO
 			xor		a
 			ld		(VARIABLE_CARGA_AGUA),a
-			halt
-			call	CARGA_1_A_45
+		call	CARGA_1_A_25_TRAS_PAUSA
 AHORA_SI_EL_AGUJERO:
 
 			ld		hl,(TIME_PARALIZA)
@@ -759,6 +777,8 @@ CONTROL_FASE3_TILE_145_SECTOR_10:
 			jr		c,.mira_si_pisable
 			cp		22
 			jr		nc,.mira_si_pisable
+			call	PUEDE_ENTRAR_VAGON_POR_Y
+			jr		nc,.mira_si_pisable
 			call	PINTA_TRIADA_ENTRADA_FASE3_VAGON
 			xor		a
 			ld		(FASE3_VAGON_CORRIGE_Y_CADENCIA),a
@@ -775,6 +795,40 @@ CONTROL_FASE3_TILE_145_SECTOR_10:
 
 			ld		a,b
 			cp		79
+			ret
+
+PUEDE_ENTRAR_VAGON_POR_Y:
+
+			push	af
+			push	bc
+			push	de
+			push	hl
+			ld		a,(Y_DEPH)
+			sub		16
+			ld		b,a
+			ld		a,(DONDE_VA_LA_INTERRUPCION_LINEAL)
+			ld		c,a
+			ld		a,b
+			sub		c
+			cp		64
+			jr		c,.NO_PUEDE_ENTRAR_VAGON_POR_Y
+
+.SI_PUEDE_ENTRAR_VAGON_POR_Y:
+
+			pop		hl
+			pop		de
+			pop		bc
+			pop		af
+			scf
+			ret
+
+.NO_PUEDE_ENTRAR_VAGON_POR_Y:
+
+			pop		hl
+			pop		de
+			pop		bc
+			pop		af
+			or		a
 			ret
 
 
@@ -1885,12 +1939,13 @@ RESUELVE_SALTO_FASE3_VAGON:
 			ld		(VARIABLE_UN_USO3),a
 			ld		a,(TILE_FASE3_VAGON)
 			cp		16
-			jr		c,.SALE_SALTO_FASE3_VAGON
+			jr		c,.MIRA_MARGEN_Y_SALTO_FASE3_VAGON
 			cp		22
-			jr		nc,.MUERE_SALTO_FASE3_VAGON
+			jr		nc,.MIRA_MARGEN_Y_SALTO_FASE3_VAGON
+.ENTRA_SALTO_FASE3_VAGON:
 			ld		b,a
 			ld		c,6
-			ld		a,20
+			ld		a,(TILE_FASE3_VAGON_X16)
 			ld		(VARIABLE_UN_USO2),a
 			call	PINTA_TRIADA_ENTRADA_FASE3_VAGON_Y_MAS_16
 			ld		a,2
@@ -1901,6 +1956,13 @@ RESUELVE_SALTO_FASE3_VAGON:
 			call	APLICA_SPRITES_DEPH_VAGON
 			scf
 			ret
+
+.MIRA_MARGEN_Y_SALTO_FASE3_VAGON:
+
+			ld		a,(TILE_FASE3_VAGON)
+			cp		16
+			jr		c,.SALE_SALTO_FASE3_VAGON
+			jr		.MUERE_SALTO_FASE3_VAGON
 
 .SALE_SALTO_FASE3_VAGON:
 
@@ -1978,8 +2040,8 @@ PINTA_TRIADA_SALTO_SALE_VAGON:
 
 PINTA_TRIADA_ENTRADA_FASE3_VAGON_Y_MAS_16:
 
-			call	PINTA_TRIADA_ENTRADA_FASE3_VAGON
-			ret
+			ld		a,b
+			jp		PINTA_TRIADA_ENTRADA_FASE3_VAGON
 
 TABLA_SALTO_FASE3_VAGON_X:
 
@@ -2850,6 +2912,390 @@ TABLA_FASE3_VAGON_X_MENOS_CADA_2:
 
 			db		#FF,0,#FF,0,#FF,0,#FF,0,#FF,0,#FF,0,#FF,0,#FF,0
 
+FUEGO_AVISO_RAILES:
+
+.DEFINE_FUEGO_AVISO_RAILES:
+
+        call    .HAY_FUEGO_AVISO_ACTIVO
+        jp      nz,.NO_CREA_FUEGO_AVISO
+        ld      a,b
+        ld      hl,VALORES_BASICOS_FUEGO_AVISO_RAILES
+        call    STANDAR_LDIR_ENEMIGOS
+        ld      (ix),a
+        call    TROZOS_COMUNES_1
+        xor     a
+        ld      (ix+7),a
+        ld      (ix+10),a
+        ld      (ix+13),a
+        ld      (ix+14),a
+        ld      a,4
+        ld      (ix+9),a
+        ld      a,3
+        ld      (ix+11),a
+        call    TROZOS_COMUNES_4
+        ld      a,(DONDE_VA_LA_INTERRUPCION_LINEAL)
+        ld      (FUEGO_AVISO_RAILES_LINEA_ANT),a
+        ld      a,#0f
+        call    .PINTA_COLOR_FUEGO_AVISO
+        jp      UN_NUEVO_ENEMIGO.RESOLUCION
+
+.NO_CREA_FUEGO_AVISO:
+
+        xor     a
+        ld      (DATOS_A_SACAR),a
+        jp      UN_NUEVO_ENEMIGO.NOS_VAMOS
+
+.HAY_FUEGO_AVISO_ACTIVO:
+
+        push    bc
+        push    de
+        push    ix
+        ld      ix,ENEMIGOS
+        ld      b,10
+
+.BUSCA_FUEGO_AVISO_ACTIVO:
+
+        ld      a,(ix+2)
+        cp      $FF
+        jr      z,.SIGUIENTE_FUEGO_AVISO_ACTIVO
+        ld      a,(ix+6)
+        cp      36
+        jr      z,.FUEGO_AVISO_YA_ACTIVO
+
+.SIGUIENTE_FUEGO_AVISO_ACTIVO:
+
+        ld      de,16
+        add     ix,de
+        djnz    .BUSCA_FUEGO_AVISO_ACTIVO
+        pop     ix
+        pop     de
+        pop     bc
+        xor     a
+        ret
+
+.FUEGO_AVISO_YA_ACTIVO:
+
+        pop     ix
+        pop     de
+        pop     bc
+        or      1
+        ret
+
+.MATA_FUEGO_AVISO_SI_ACTIVO:
+
+        push    bc
+        push    de
+        push    ix
+        ld      ix,ENEMIGOS
+        ld      b,10
+
+.BUSCA_FUEGO_AVISO_PARA_MATAR:
+
+        ld      a,(ix+2)
+        cp      $FF
+        jr      z,.SIGUIENTE_FUEGO_AVISO_PARA_MATAR
+        ld      a,(ix+6)
+        cp      36
+        jr      z,.MATA_FUEGO_AVISO_ACTIVO
+
+.SIGUIENTE_FUEGO_AVISO_PARA_MATAR:
+
+        ld      de,16
+        add     ix,de
+        djnz    .BUSCA_FUEGO_AVISO_PARA_MATAR
+        jr      .FIN_MATA_FUEGO_AVISO
+
+.MATA_FUEGO_AVISO_ACTIVO:
+
+        call    STANDARD_DEJA_LIBRE_EL_SPRITE
+        ld      a,$FF
+        ld      (ix+2),a
+
+.FIN_MATA_FUEGO_AVISO:
+
+        xor     a
+        ld      (FUEGO_AVISO_RAILES_TIMER),a
+        ld      (FUEGO_AVISO_RAILES_RECOLOCA_Y),a
+        ld      (FUEGO_AVISO_RAILES_OBJETIVO_X),a
+        ld      (FUEGO_AVISO_RAILES_OBJETIVO_Y),a
+        ld      (FUEGO_AVISO_RAILES_LINEA_ANT),a
+        pop     ix
+        pop     de
+        pop     bc
+        ret
+
+.SECUENCIA_FUEGO_AVISO_RAILES:
+
+        call    .ANIMA_FUEGO_AVISO_RAILES
+        ld      a,(FUEGO_AVISO_RAILES_RECOLOCA_Y)
+        cp      2
+        jr      nz,.EN_VAGONETA
+
+        ld      a,(ix+1)
+        add     8
+        ld      (ix+1),a
+        cp      216
+        jp      c,SECUENCIA_PROYECTILES_Y_ENEMIGOS.PASAMOS_A_LA_SIGUIENTE_POSICION
+        call    STANDARD_DEJA_LIBRE_EL_SPRITE
+        ld      a,255
+        ld      (ix+2),a
+        jp      SECUENCIA_PROYECTILES_Y_ENEMIGOS.PASAMOS_A_LA_SIGUIENTE_POSICION
+
+.EN_VAGONETA:
+
+        ld      a,(FUEGO_AVISO_RAILES_RECOLOCA_Y)
+        cp      1
+        jr      z,.A_OBJETIVO
+        cp      3
+        jr      z,.ESPERA_EN_OBJETIVO
+        jp      .ERRATICO
+
+.COLOR_NORMAL_FUEGO_AVISO:
+
+        ld      a,#0f
+        call    .PINTA_COLOR_FUEGO_AVISO
+        ld      a,(DONDE_VA_LA_INTERRUPCION_LINEAL)
+        ld      (FUEGO_AVISO_RAILES_LINEA_ANT),a
+        xor     a
+        ld      (FUEGO_AVISO_RAILES_RECOLOCA_Y),a
+        jp      SECUENCIA_PROYECTILES_Y_ENEMIGOS.PASAMOS_A_LA_SIGUIENTE_POSICION
+
+.ESPERA_EN_OBJETIVO:
+
+        ld      a,#09
+        call    .PINTA_COLOR_FUEGO_AVISO
+        ld      a,(FUEGO_AVISO_RAILES_TIMER)
+        or      a
+        jr      z,.COLOR_NORMAL_FUEGO_AVISO
+        dec     a
+        ld      (FUEGO_AVISO_RAILES_TIMER),a
+        jp      SECUENCIA_PROYECTILES_Y_ENEMIGOS.PASAMOS_A_LA_SIGUIENTE_POSICION
+
+.A_OBJETIVO:
+
+        ld      a,#09
+        call    .PINTA_COLOR_FUEGO_AVISO
+        ld      a,(FUEGO_AVISO_RAILES_OBJETIVO_X)
+        ld      b,a
+        ld      c,(ix)
+        call    .MUEVE_EJE_OBJETIVO
+        ld      (ix),a
+        ld      a,(FUEGO_AVISO_RAILES_OBJETIVO_Y)
+        ld      b,a
+        ld      c,(ix+1)
+        call    .MUEVE_EJE_OBJETIVO
+        ld      (ix+1),a
+        ld      a,(ix)
+        ld      b,a
+        ld      a,(FUEGO_AVISO_RAILES_OBJETIVO_X)
+        cp      b
+        jp      nz,SECUENCIA_PROYECTILES_Y_ENEMIGOS.PASAMOS_A_LA_SIGUIENTE_POSICION
+        ld      a,(ix+1)
+        ld      b,a
+        ld      a,(FUEGO_AVISO_RAILES_OBJETIVO_Y)
+        cp      b
+        jp      nz,SECUENCIA_PROYECTILES_Y_ENEMIGOS.PASAMOS_A_LA_SIGUIENTE_POSICION
+        ld      a,150
+        ld      (FUEGO_AVISO_RAILES_TIMER),a
+        ld      a,3
+        ld      (FUEGO_AVISO_RAILES_RECOLOCA_Y),a
+        jp      SECUENCIA_PROYECTILES_Y_ENEMIGOS.PASAMOS_A_LA_SIGUIENTE_POSICION
+
+.MUEVE_EJE_OBJETIVO:
+
+        ld      a,c
+        cp      b
+        ret     z
+        jr      c,.EJE_MAS_RAPIDO
+        sub     b
+        cp      10
+        jr      c,.EJE_MENOS_1
+        ld      a,c
+        sub     7
+        jr      nc,.EJE_MENOS_LIMITA
+        xor     a
+
+.EJE_MENOS_LIMITA:
+
+        cp      b
+        ret     nc
+        ld      a,b
+        ret
+
+.EJE_MENOS_1:
+
+        ld      a,c
+        dec     a
+        ret
+
+.EJE_MAS_RAPIDO:
+
+        ld      a,b
+        sub     c
+        cp      10
+        jr      c,.EJE_MAS_1
+        ld      a,c
+        add     7
+        cp      b
+        ret     c
+        ld      a,b
+        ret
+
+.EJE_MAS_1:
+
+        ld      a,c
+        inc     a
+        ret
+
+.ERRATICO:
+
+.APLICA_VECTOR:
+
+        call    .CORRIGE_Y_SET_ADJUST
+        ld      b,(ix+9)
+        call    .APLICA_X
+        jp      c,SECUENCIA_PROYECTILES_Y_ENEMIGOS.PASAMOS_A_LA_SIGUIENTE_POSICION
+        ld      b,(ix+11)
+        call    .APLICA_Y
+        jp      SECUENCIA_PROYECTILES_Y_ENEMIGOS.PASAMOS_A_LA_SIGUIENTE_POSICION
+
+.CORRIGE_Y_SET_ADJUST:
+
+        ld      a,(FUEGO_AVISO_RAILES_LINEA_ANT)
+        ld      c,a
+        ld      a,(DONDE_VA_LA_INTERRUPCION_LINEAL)
+        cp      c
+        ret     z
+        ld      (FUEGO_AVISO_RAILES_LINEA_ANT),a
+        sub     c
+        ld      b,a
+        ld      a,(ix+1)
+        add     b
+        ld      (ix+1),a
+        ret
+
+.APLICA_X:
+
+        ld      a,(ix)
+        add     b
+        cp      236
+        jr      c,.X_OK
+        bit     7,b
+        jr      z,.X_MAX
+        xor     a
+        jr      .INVIERTE_X
+
+.X_MAX:
+
+        ld      a,235
+
+.INVIERTE_X:
+
+        ld      (ix),a
+        ld      a,b
+        cpl
+        inc     a
+        ld      (ix+9),a
+        scf
+        ret
+
+.X_OK:
+
+        ld      (ix),a
+        or      a
+        ret
+
+.APLICA_Y:
+
+        ld      a,(ix+1)
+        add     b
+        ld      c,a
+        ld      a,(DONDE_VA_LA_INTERRUPCION_LINEAL)
+        ld      e,a
+        ld      a,c
+        sub     e
+        ld      d,a
+        ld      a,d
+        cp      64
+        jr      c,.Y_MIN
+        cp      241
+        jr      c,.Y_OK
+
+.Y_MAX:
+
+        ld      a,e
+        sub     16
+        jr      .INVIERTE_Y
+
+.Y_MIN:
+
+        ld      a,e
+        add     64
+        jr      .INVIERTE_Y
+
+.INVIERTE_Y:
+
+        call    .EVITA_LINEA_OCULTA_FUEGO
+        ld      (ix+1),a
+        ld      a,b
+        cpl
+        inc     a
+        ld      (ix+11),a
+        ret
+
+.Y_OK:
+
+        ld      a,c
+        call    .EVITA_LINEA_OCULTA_FUEGO
+        ld      (ix+1),a
+        ret
+
+.EVITA_LINEA_OCULTA_FUEGO:
+
+        cp      216
+        jr      z,.RECTIFICA_LINEA_OCULTA_FUEGO
+        cp      200
+        ret     nz
+
+.RECTIFICA_LINEA_OCULTA_FUEGO:
+
+        bit     7,b
+        jr      z,.RECTIFICA_LINEA_OCULTA_FUEGO_DOWN
+        dec     a
+        ret
+
+.RECTIFICA_LINEA_OCULTA_FUEGO_DOWN:
+
+        add     2
+        ret
+
+.ANIMA_FUEGO_AVISO_RAILES:
+
+        ld      a,(ix+7)
+        inc     a
+        and     1
+        ld      (ix+7),a
+        ret     nz
+        ld      a,(ix+13)
+        inc     a
+        and     3
+        ld      (ix+13),a
+        add     a,a
+        add     a,a
+        add     108
+        ld      (ix+8),a
+        ret
+
+.PINTA_COLOR_FUEGO_AVISO:
+
+        push    af
+        ld      a,(ix+12)
+        call    PON_COLOR_1
+        ex      de,hl
+        ld      bc,16
+        pop     af
+        jp      FILVRM_RAM
+
 PREMIO_EXTRA:
 
 .DEFINE_PREMIO_EXTRA:
@@ -3063,7 +3509,7 @@ PREMIO_EXTRA:
         ld      d,0
         ld      hl,SPRITE_EXTRA
         add     hl,de
-        ld      de,#4000+43*8*4
+        ld      de,#4000+35*8*4
         ld      bc,1*8*4
         jp      TROZOS_COMUNES_15
 
@@ -3166,7 +3612,25 @@ PREMIO_EXTRA:
         ld      a,(ix+10)
         inc     a
         ld      (ix+10),a
+        call    .ALTERNA_COLOR_PREMIO_EXTRA
         jr      .FIN_PREMIO_EXTRA
+
+.ALTERNA_COLOR_PREMIO_EXTRA:
+
+        and     1
+        ld      a,#09
+        jr      z,.COLOR_PREMIO_EXTRA_OK
+        ld      a,#0f
+
+.COLOR_PREMIO_EXTRA_OK:
+
+        push    af
+        ld      a,(ix+12)
+        call    PON_COLOR_1
+        ex      de,hl
+        ld      bc,16
+        pop     af
+        jp      FILVRM_RAM
 
 .FIN_PREMIO_EXTRA:
 
@@ -4020,6 +4484,12 @@ ECTO_PALLERS:
 
 		ld		a,2
 		ld		(ECTOPALLERS_ACTIVO),a
+		xor		a
+		ld		(ECTO_HUEVOS_GOLPES),a
+		ld		(ECTO_HUEVOS_EXPLOSION),a
+		ld		(ECTO_HUEVOS_RESPAWN),a
+		ld		(ECTO_HUEVOS_SCROLL_ANT),a
+		ld		(ECTO_HUEVOS_X),a
 
 		ld		a,b		
         ld		hl,VALORES_BASICOS_ECTO_PALLER_TOCA_HUEVOS
@@ -4264,6 +4734,13 @@ ECTO_PALLERS:
 
 .SECUENCIA_ECTO_PALLERS_TOCA_HUEVOS:
 
+		ld		a,(ECTO_HUEVOS_EXPLOSION)
+		or		a
+		jp		nz,.ECTO_HUEVOS_EXPLOTANDO
+		ld		a,(ECTO_HUEVOS_RESPAWN)
+		or		a
+		jp		nz,.ECTO_HUEVOS_OCULTO
+
 		ld		a,(ix+4)
 		inc		a
 		and		00000001b
@@ -4455,6 +4932,92 @@ ECTO_PALLERS:
 .SALIENDO_ECTO_HUEVOS:
 
 		jp      SECUENCIA_PROYECTILES_Y_ENEMIGOS.PASAMOS_A_LA_SIGUIENTE_POSICION
+
+.ECTO_HUEVOS_EXPLOTANDO:
+
+		call	.OCULTA_SEGUNDO_SPRITE_ECTO_HUEVOS
+		ld		a,(ECTO_HUEVOS_EXPLOSION)
+		dec		a
+		ld		(ECTO_HUEVOS_EXPLOSION),a
+		jp		z,.ECTO_HUEVOS_EMPIEZA_RESPAWN
+		cp		10
+		ld		a,23*4
+		jr		nc,.ECTO_HUEVOS_GUARDA_FRAME_EXPLOSION
+		ld		a,24*4
+
+.ECTO_HUEVOS_GUARDA_FRAME_EXPLOSION:
+
+		ld		(ix+8),a
+		jp		.SALIENDO_ECTO_HUEVOS
+
+.ECTO_HUEVOS_EMPIEZA_RESPAWN:
+
+		ld		a,250
+		ld		(ECTO_HUEVOS_RESPAWN),a
+		xor		a
+		ld		(ix+8),a
+		call	.OCULTA_SEGUNDO_SPRITE_ECTO_HUEVOS
+		jp		.SALIENDO_ECTO_HUEVOS
+
+.ECTO_HUEVOS_OCULTO:
+
+		dec		a
+		ld		(ECTO_HUEVOS_RESPAWN),a
+		jp		nz,.SALIENDO_ECTO_HUEVOS
+
+		ld		a,(ECTO_HUEVOS_X)
+		ld		(ix),a
+		call	STANDAR_Y_FUERA_PANTALLA
+		ld		a,8
+		ld		(ix+2),a
+		ld		a,255
+		ld		(ix+4),a
+		xor		a
+		ld		(ix+5),a
+		ld		(ix+7),a
+		ld		(ix+9),a
+		ld		(ix+13),a
+		ld		a,(ix+1)
+		add		68
+		ld		(ix+14),a
+		ld		a,18
+		ld		(ix+6),a
+		ld		a,2
+		ld		(ix+10),a
+		ld		a,24
+		ld		(ix+11),a
+		ld		a,50*4
+		ld		(ix+8),a
+		ld		(ix+15),a
+		xor		a
+		ld		(ECTO_HUEVOS_GOLPES),a
+		ld		(ECTO_PARALIZADO),a
+		call	CARGA_ECTO_PALLER
+		call	.RESTAURA_COLORES_ECTO_HUEVOS
+		jp		.EMPIEZA_SECUENCIA
+
+.OCULTA_SEGUNDO_SPRITE_ECTO_HUEVOS:
+
+		ld		iy,PROPIEDADES_PATRON_SPRITE
+		ld		a,217
+		ld		(iy),a
+		ld		a,255
+		ld		(iy+1),a
+		xor		a
+		ld		(iy+2),a
+		jp		PATRONES_SPRITE_SECUNDARIO
+
+.RESTAURA_COLORES_ECTO_HUEVOS:
+
+		ld		a,(ix+12)
+		call	TROZOS_COMUNES_3
+		ld		hl,COLORES_ECTO_PALLERS_1
+		call	TROZOS_COMUNES_7
+		
+		ld		a,(ix+3)
+		call	TROZOS_COMUNES_3
+		ld		hl,COLORES_ECTO_PALLERS_2
+		jp		TROZOS_COMUNES_7
 
 .FX_ECTO_PUNTO_1:
 

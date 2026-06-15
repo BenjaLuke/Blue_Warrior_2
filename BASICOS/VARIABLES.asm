@@ -63,6 +63,11 @@ ECTOPALLERS_ACTIVO:				#1										; Hay ectopallers en pantalla
 ECTOPALLERS_NUEVO_NECESARIO:	#1										; controla si no está en pantalla
 ECTOPALLER_ROMPE_HORIZONTAL:	#1										; Ecto del circulo que cruza de izquierda a derecha
 ECTOPALLER_ROMPE_VERTICAL:		#1										; Ecto del circulo que cruza de abajo a arriba
+ECTO_HUEVOS_GOLPES:				#1										; Golpes recibidos por el ecto toca-huevos
+ECTO_HUEVOS_EXPLOSION:			#1										; Cuenta la explosion visual del ecto toca-huevos
+ECTO_HUEVOS_RESPAWN:			#1										; Cuenta scrolls antes de reaparecer
+ECTO_HUEVOS_SCROLL_ANT:			#1										; Ultimo set adjust usado para contar respawn
+ECTO_HUEVOS_X:					#1										; X en la que reaparece tras morir visualmente
 ALPHONSERRYX_ACTIVO:			#1										; Hay alphonserryx de stage 4 en pantalla
 DEJA_EL_SPRITE:					#1										; Va sumadno 16 para dejar el siguietne sprite en una nueva posicion
 ESTADO_COLOR_PERM:				#1										; Nos dice el estado en el que deben estrar los colores
@@ -357,6 +362,11 @@ TILE_FASE3_VAGON_X16:                   #1
 FASE3_VAGON_TIPO_MUERTE:                #1
 FASE3_VAGON_CORRIGE_Y_CADENCIA:         #1
 FASE3_VAGON_JUMP_ACTIVO:                #1
+FUEGO_AVISO_RAILES_OBJETIVO_X:          #1
+FUEGO_AVISO_RAILES_OBJETIVO_Y:          #1
+FUEGO_AVISO_RAILES_TIMER:               #1
+FUEGO_AVISO_RAILES_RECOLOCA_Y:          #1
+FUEGO_AVISO_RAILES_LINEA_ANT:           #1
 TILE_ESPECIAL_DEPH_COOLDOWN:            #1
 TILE_ESPECIAL_DEPH_BLOQUEOS:            #1
 LETRAS_FASES_BITS:                      #3

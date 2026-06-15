@@ -78,3 +78,5 @@
 
 		halt
 		djnz	.BUCLE_DE_SALIDA
+
+		call	FADE_OUT_FINAL_BOSS_COMUN

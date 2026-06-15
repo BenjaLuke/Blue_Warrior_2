@@ -26,6 +26,8 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES:
         ld      a,(ix+6)
         cp      35
         jp      z,.NO_HAY_COLISION
+        cp      36
+        jp      z,.NO_HAY_COLISION
 
         ld      a,(ix+0)
         ld      e,(iy+0)
@@ -226,6 +228,17 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES:
         ld      a,(ECTO_PARALIZADO)
         or      a
         jp      nz,.FIN_DE_LAS_REPERCUSIONES_DE_LA_COLISION
+        ld      a,(ECTO_HUEVOS_EXPLOSION)
+        or      a
+        jp      nz,.FIN_DE_LAS_REPERCUSIONES_DE_LA_COLISION
+        ld      a,(ECTO_HUEVOS_RESPAWN)
+        or      a
+        jp      nz,.FIN_DE_LAS_REPERCUSIONES_DE_LA_COLISION
+        ld      a,(ECTO_HUEVOS_GOLPES)
+        inc     a
+        ld      (ECTO_HUEVOS_GOLPES),a
+        cp      3
+        jp      z,.MUERE_ECTO_HUEVOS_VISUALMENTE
         
         ld      a,50
         ld      (ECTO_PARALIZADO),a
@@ -237,4 +250,19 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES:
         ld      (ix+5),a
          
         call    CARGA_ECTO_PALLER_MUERTO       
+        jp      .FIN_DE_LAS_REPERCUSIONES_DE_LA_COLISION
+
+.MUERE_ECTO_HUEVOS_VISUALMENTE:
+
+        xor     a
+        ld      (ECTO_PARALIZADO),a
+        ld      (ECTO_HUEVOS_GOLPES),a
+        ld      (ECTO_HUEVOS_EXPLOSION),a
+        ld      (ECTOPALLERS_ACTIVO),a
+        ld      a,250
+        ld      (ECTO_HUEVOS_RESPAWN),a
+        ld      a,5
+        ld      c,1
+        call    A_31_DESDE_10
+        call    UN_NUEVO_ENEMIGO.DEFINE_EXPLOSION
         jp      .FIN_DE_LAS_REPERCUSIONES_DE_LA_COLISION

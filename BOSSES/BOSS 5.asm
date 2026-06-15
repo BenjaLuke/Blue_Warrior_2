@@ -446,9 +446,11 @@ RUTINA_BOSS_5:
 	ld		(ix+4),a
     ld      hl,CORAZONES_DEPH_EN_BOSSES
 	push	bc
+	push	hl
 	ld		(ix+7),2
 	call   	DOCOPY
-	ld		(ix+7),3
+	inc		(ix+7)
+	pop		hl
 	call   	DOCOPY
 	pop		bc
 	ret
@@ -2289,9 +2291,11 @@ PINTA_MARCADORES_VIDA_FINAL_BOSS_5:
 		ld		(ix+9),a
 
 	 	ld	    hl,DATAS_COR_EMPT_MALO
+		push	hl
 		ld		(ix+7),2
 		call	DOCOPY
-		ld		(ix+7),3
+		inc		(ix+7)
+		pop		hl
 		jp		DOCOPY
 
 CONVIERTE_VIDA_FINAL_A_BARRA_BOSS_5:
@@ -3658,6 +3662,9 @@ MUERTE_DE_IDIUS_BOSS_5:
 
 ; paramos la música
 		call	stpmus
+
+; Nos aseguramos que el prota no está en modo transparente ni el fondo en colores varios
+		call	LIMPIA_ESTADO_DANO_DEPH_EN_MUERTE_BOSS
 
 FINAL_b5:
 

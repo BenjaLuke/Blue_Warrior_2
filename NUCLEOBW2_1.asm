@@ -2,11 +2,18 @@ COMIENZA_JUEGO:
 
 		ld		a,(FASE)
 		dec		a
-		jr		nz,.limpia_solo_sprites
+		jr		z,.limpia_letras_fases
+		ld		a,(TRUCO_FASES_ACTIVO)
+		or		a
+		jr		z,.limpia_solo_sprites
+		xor		a
+
+.limpia_letras_fases:
 
 		ld		(LETRAS_FASES_BITS),a
 		ld		(LETRAS_FASES_BITS+1),a
 		ld		(LETRAS_FASES_BITS+2),a
+		ld		(TRUCO_FASES_ACTIVO),a
 
         xor	    a							                            ; a     = el valor que vamos a poner
         ld	    bc,#ffff						                        ; bc	= longitud del area a rellenar con el dato A
@@ -237,7 +244,7 @@ VARIABLES_PARA_EMPEZAR_LA_PARTIDA_1:
 		ld		a,159
 		ld		(LIM_Y_INF),a	
 			
-		ld		a,190
+		ld		a,186
 		ld		(LIM_MUERTE),a
 
 		ld		a,195
@@ -310,7 +317,16 @@ INICIA_SCROLL:
 		LD		(SEMAFORO_LABERINTO),a
 		ld		(MUSICA_BEST_ON),a
 		ld		(SUMA_CAMINO),a
-
+		ld		(ECTO_HUEVOS_GOLPES),a
+		ld		(ECTO_HUEVOS_EXPLOSION),a
+		ld		(ECTO_HUEVOS_RESPAWN),a
+		ld		(ECTO_HUEVOS_SCROLL_ANT),a
+		ld		(ECTO_HUEVOS_X),a
+		ld		(FUEGO_AVISO_RAILES_TIMER),a
+		ld		(FUEGO_AVISO_RAILES_RECOLOCA_Y),a
+		ld		(FUEGO_AVISO_RAILES_OBJETIVO_X),a
+		ld		(FUEGO_AVISO_RAILES_OBJETIVO_Y),a
+		ld		(FUEGO_AVISO_RAILES_LINEA_ANT),a
 		inc		a
 		ld		(FINAL_DEL_SCROLL),a									; Activamos el scroll
 		ld		(AVANCE_BLOQUEADO),a
@@ -362,7 +378,7 @@ INICIA_SCROLL:
 		jp		nz,.entorno_a_1
 
 		ld		a,(DONDE_VA_LA_INTERRUPCION_LINEAL)
-		add		20
+		add		14
 		ld		(DONDE_VA_LA_INTERRUPCION_LINEAL),a
 			
 .entorno_a_1:
@@ -504,6 +520,8 @@ CONTROL:
 			ld		(TIEMPO_DE_ADJUST),a
 
 .control_inmune:
+
+			call	CONTROL_RESPAWN_ECTO_HUEVOS
 
 			ld		a,(INMUNE)
 			or		a
@@ -943,8 +961,38 @@ CONTROL:
 			call	SITUA_LA_X_E_Y_2
 			ld		a,(ix)
 			ld		(TILE_FASE3_VAGON),a
-			ld		a,(ix+5)
+			ld		a,20
 			ld		(TILE_FASE3_VAGON_X16),a
+
+			ld		a,(VARIABLE_UN_USO3)
+			cp		255
+			jr		nz,.RESTAURA_Y_TRAS_TILE_FASE3_VAGON
+			ld		a,(TILE_FASE3_VAGON)
+			cp		16
+			jr		c,.MIRA_MARGEN_Y_SALTO_FASE3_VAGON
+			cp		22
+			jr		c,.RESTAURA_Y_TRAS_TILE_FASE3_VAGON
+
+.MIRA_MARGEN_Y_SALTO_FASE3_VAGON:
+
+			pop		af
+			push	af
+			add		4
+			ld		(hl),a
+			call	SITUA_LA_X_E_Y
+			add		6
+			call	SITUA_LA_X_E_Y_2
+			ld		a,(ix)
+			cp		16
+			jr		c,.RESTAURA_Y_TRAS_TILE_FASE3_VAGON
+			cp		22
+			jr		nc,.RESTAURA_Y_TRAS_TILE_FASE3_VAGON
+			ld		(TILE_FASE3_VAGON),a
+			ld		a,4
+			ld		(TILE_FASE3_VAGON_X16),a
+
+.RESTAURA_Y_TRAS_TILE_FASE3_VAGON:
+
 			pop		af
 			ld		(hl),a
 
@@ -1107,6 +1155,29 @@ CARGA_COMUN_26:
 			ld		de,#4000+23*8*4
 			ld		bc,26*8*4
 			jp		TROZOS_COMUNES_15
+
+CARGA_1_A_25_TRAS_PAUSA:
+
+			call    PAGE_10_A_SEGMENT_2
+			ld		hl,TODOS_LOS_SPRITES
+			call	CARGA_COMUN_25_TRAS_PAUSA
+
+		ld		hl,COLORES_DEPH_CASCOS_POSE_3
+
+        call    PAGE_32_A_SEGMENT_2
+
+		ld		de,#4840
+		ld		bc,96
+		call	PON_COLOR_2.sin_bc_impuesta
+        jp    	PAGE_10_A_SEGMENT_2
+
+CARGA_COMUN_25_TRAS_PAUSA:
+
+			halt
+			ld		de,#4000+1*8*4
+			ld		bc,25*8*4
+			jp		TROZOS_COMUNES_15
+
 CARGA_COMUN_45:
 
 			halt

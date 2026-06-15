@@ -85,6 +85,14 @@ LIMPIA_VRAM_SALIDA_MENU_MAPA:
 MUESTRA_MAPA_TRAS_BOSS:
 
 		call	CONTROL_PREVIO_GRAN_DIAMANTE
+		ld		a,(FASE)
+		cp		6
+		jr		nz,.NO_VA_A_CINEMATICAS_FINALES
+		call	PAGE_10_A_SEGMENT_2
+		jp		HACIA_CINEMATICAS_FINALES
+
+.NO_VA_A_CINEMATICAS_FINALES:
+
 		call	MAPA_DE_SITUACION
 		ld		a,8
 		ld      (DIRPA2),a										    ; Banco 1, pagina 3 del MEGAROM
@@ -102,7 +110,16 @@ CONTROL_PREVIO_GRAN_DIAMANTE:
 		dec		a
 		jr		z,.MIRA_FASE_3
 		dec		a
+		jr		z,.MIRA_FASE_4
+		dec		a
 		ret		nz
+
+.MIRA_FASE_5:
+
+		ld		a,(LETRAS_FASES_BITS+2)
+		and		#0f
+		ret		z
+		jp		CONTROL_DEL_GRAN_DIAMANTE
 
 .MIRA_FASE_4:
 
@@ -138,7 +155,7 @@ MAPA_DE_SITUACION:
 		ld		a,5
 		call	CHGMOD
 		call	DISSCR_RAM
-		call	DESACTIVA_SPRITES_MAPA_DE_SITUACION
+		call	ACTIVA_SPRITES_MAPA_DE_SITUACION
 
 		call	CARGA_GRAFICOS_MAPA_DE_SITUACION
 		call	PONE_PRIMERA_PALETA_MAPA_DE_SITUACION
@@ -233,8 +250,25 @@ CARGA_GRAFICOS_MAPA_DE_SITUACION:
 DESACTIVA_SPRITES_MAPA_DE_SITUACION:
 
 		di
+		call	DESACTIVA_SPRITES_MAPA_DE_SITUACION_SIN_EI
+		ei
+		ret
+
+DESACTIVA_SPRITES_MAPA_DE_SITUACION_SIN_EI:
+
 		ld 		a,(RG8SAV)
 		or		00000010B
+		ld 		(RG8SAV),a
+		out		(#99),a
+		ld		a,8+128
+		out		(#99),a
+		ret
+
+ACTIVA_SPRITES_MAPA_DE_SITUACION:
+
+		di
+		ld 		a,(RG8SAV)
+		and		11111101B
 		ld 		(RG8SAV),a
 		ld		b,a
 		ld		c,8
@@ -783,7 +817,7 @@ REPRODUCE_FX_MAPA_SI_ACTIVO:
 		jr		nz,.HAY_FX
 		ld		a,(ayFX_C3)
 		cp		255
-		ret		z
+		jr		z,.NO_HAY_FX
 
 .HAY_FX:
 
@@ -803,6 +837,16 @@ REPRODUCE_FX_MAPA_SI_ACTIVO:
 		pop		de
 		pop		bc
 		pop		af
+		ret
+
+.NO_HAY_FX:
+
+		ld		a,(FX_ON_OFF)
+		or		a
+		ret		z
+		call	SILENCIA_FX_DIAMANTES
+		xor		a
+		ld		(FX_ON_OFF),a
 		ret
 
 
@@ -828,6 +872,28 @@ LANZA_FX_DIAMANTES:
 		pop		hl
 		pop		de
 		pop		bc
+		ret
+
+
+SILENCIA_FX_DIAMANTES:
+
+		push	af
+		push	bc
+		push	de
+		push	hl
+		ld		a,(DIRPA2)
+		push	af
+		ld		a,31
+		ld		(DIRPA2),a
+		call	ayFX_STOP
+		call	ayFX_PLAY
+		call	AYfx_ROUT
+		pop		af
+		ld		(DIRPA2),a
+		pop		hl
+		pop		de
+		pop		bc
+		pop		af
 		ret
 
 
@@ -894,10 +960,42 @@ SetVdp_Write_MAPA_SIN_INTERRUPCIONES:
 		pop		af
 		ret
 
+DOCOPY_MAPA_SIN_INTERRUPCIONES:
+
+		ld		a,32
+		out		(#99),a
+		ld		a,17+128
+		out		(#99),a
+		ld		c,#9B
+		call	VDPREADY_MAPA_SIN_INTERRUPCIONES
+
+		dw		#A3ED,#A3ED,#A3ED,#A3ED	  				; 15x OUTI
+		dw		#A3ED,#A3ED,#A3ED,#A3ED
+		dw		#A3ED,#A3ED,#A3ED,#A3ED
+		dw		#A3ED,#A3ED,#A3ED
+
+		ret
+
+VDPREADY_MAPA_SIN_INTERRUPCIONES:
+
+		ld		a,2
+		out		(#99),a
+		ld		a,15+128
+		out		(#99),a
+		in		a,(#99)
+		rra
+		xor		a
+		out		(#99),a
+		ld		a,15+128
+		out		(#99),a
+		jp		c,VDPREADY_MAPA_SIN_INTERRUPCIONES
+		ret
+
 
 CONTROL_DEL_GRAN_DIAMANTE:
 
 		di
+		call	DESACTIVA_SPRITES_MAPA_DE_SITUACION_SIN_EI
 		ld		a,74
 		ld		(DIRPA2),a
 		ld		hl,GRAFICOS_GRAN_DIAMANTE_1
@@ -915,8 +1013,7 @@ CONTROL_DEL_GRAN_DIAMANTE:
 		ld		(DIRPA2),a
 
 		ld		hl,DATOS_COPIA_GRAN_DIAMANTE_PAGE_1_A_3
-		call	DOCOPY
-		call	VDPREADY
+		call	DOCOPY_MAPA_SIN_INTERRUPCIONES
 		ei
 
 		call	LIMPIA_BUFFERS_GRAN_DIAMANTE
@@ -1006,7 +1103,7 @@ PINTA_DIAMANTE_EN_BUFFERS:
 		call	DOCOPY
 		call	VDPREADY
 		pop		hl
-		ld		de,DATOS_DIAMANTE_1_PAGE_2-DATOS_DIAMANTE_1_PAGE_1
+		ld		de,DATOS_DIAMANTES_PAGE_2-DATOS_DIAMANTE_1_PAGE_1
 		add		hl,de
 		call	DOCOPY
 		jp		VDPREADY
@@ -1233,8 +1330,9 @@ NO_PORCION_FRAME_64:
 
 SALIENDO_DE_DIAMANTES:
 
-		ld		b,250
-		call	ESPERA_MAPA_DE_SITUACION_B
+		call	SILENCIA_FX_DIAMANTES
+		xor		a
+		ld		(FX_ON_OFF),a
 		call	FADE_OUT_DIAMANTES
 		ret
 
@@ -1816,35 +1914,35 @@ DATOS_DIAMANTE_5_PAGE_1:
 		db		#00,#00,10010000b
 
 
-DATOS_DIAMANTE_1_PAGE_2:
-
+DATOS_DIAMANTES_PAGE_2:
+;DATOS_DIAMANTE_1_PAGE_2
 		dw		#0000,#0300
 		dw		#002d,#0229
 		dw		#0053,#002b
 		db		#00,#00,10010000b
 
-DATOS_DIAMANTE_2_PAGE_2:
+;DATOS_DIAMANTE_2_PAGE_2
 
 		dw		#0053,#0300
 		dw		#0080,#0229
 		dw		#0053,#002b
 		db		#00,#00,10010000b
 
-DATOS_DIAMANTE_3_PAGE_2:
+;DATOS_DIAMANTE_3_PAGE_2
 
 		dw		#0000,#032b
 		dw		#002d,#0254
 		dw		#0053,#002b
 		db		#00,#00,10010000b
 
-DATOS_DIAMANTE_4_PAGE_2:
+;DATOS_DIAMANTE_4_PAGE_2
 
 		dw		#0053,#032b
 		dw		#0080,#0254
 		dw		#0053,#002b
 		db		#00,#00,10010000b
 
-DATOS_DIAMANTE_5_PAGE_2:
+;DATOS_DIAMANTE_5_PAGE_2
 
 		dw		#0000,#0356
 		dw		#002d,#027f

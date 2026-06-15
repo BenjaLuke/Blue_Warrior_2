@@ -16,6 +16,10 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH:
         inc     a
         jp      z,.NO_HAY_COLISION
 
+        ld      a,(ix+6)
+        cp      36
+        jp      z,.NO_HAY_COLISION
+
         ld      c,(ix+0)
         ld      a,(X_DEPH)
         add     16
@@ -51,14 +55,14 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH:
 
         ld      a,(ix+8)
 
+        ld      b,a
+        ld      a,(ix+6)
+        cp      34
+        jp      z,.ES_PREMIO_EXTRA
+        ld      a,b
+
         cp      35*4
         jp      nz,.EXCEPCIONES_2
-
-; �ES AMPLIADO?
-
-        ld      a,(CORAZON_ACTIVO)
-        or      a
-        jp      z,.DAMOS_UN_CORAZON_AMPLIADO
         jp      .DAMOS_UN_CORAZON
 
 .EXCEPCIONES_2:
@@ -86,11 +90,6 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH:
 
 ; �ES UN PREMIO?
 
-        ld      b,a
-        ld      a,(ix+6)
-        cp      34
-        jp      z,.ES_PREMIO_EXTRA
-        ld      a,b
         cp      43*4
         jp      z,.ES_FLECHA
         cp      44*4
@@ -354,21 +353,6 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH:
 
         jp      .SALIMOS
 
-.DAMOS_UN_CORAZON_AMPLIADO:
-
-        ld      a,1
-        ld      (CORAZON_CONTENEDOR_COGIDO),a
-        ld      a,(CORAZONES_MAXIMOS)
-        cp      5
-        jp      nc,.DAMOS_UN_CORAZON_AMPLIADO_2
-
-        inc     a
-
-.DAMOS_UN_CORAZON_AMPLIADO_2:
-
-        ld      (CORAZONES_MAXIMOS),a
-        ld      (CORAZONES),a
-        jp      .lo_pintamos
 
 .DAMOS_UN_CORAZON:
   

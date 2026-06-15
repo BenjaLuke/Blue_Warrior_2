@@ -2430,10 +2430,7 @@ MUERTE_DE_AGONIX_BOSS_1:
 		call	stpmus
 
 ; Nos aseguramos que el prota no está en modo transparente ni el fondo en colores varios
-		ld		a,COLOR_ALEATORIO_SIN_CAMBIOS_BOSS_1
-		ld		(COLOR_ALEATORIO),a
-		xor		a
-		ld		(INMUNE),a
+		call	LIMPIA_ESTADO_DANO_DEPH_EN_MUERTE_BOSS
 
 ; pequeña pausa
 		ld		a,AGONIX_PAUSA_BOCA_BOSS_1

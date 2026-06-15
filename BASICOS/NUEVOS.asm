@@ -157,6 +157,11 @@ NUEVO_SLIME_FUEGO_7_RONDA:
         call    COMUN_DATOS_INLINE
         dw      NUEVO_SLIME_FUEGO_7_RONDA_DATA
 
+NUEVO_FUEGO_AVISO_RAILES:
+
+        call    COMUN_DATOS_INLINE
+        dw      NUEVO_FUEGO_AVISO_RAILES_DATA
+
 NUEVO_PREMIO_EXTRA:
 
         call    COMUN_PREMIO_EXTRA_INLINE
@@ -581,6 +586,71 @@ DESACTIVA_JUMP:
 COMUN_CAMBIA_JUMP:
 
         ld      (FASE3_VAGON_JUMP_ACTIVO),a
+        ret
+
+NUEVA_MUERTE_FUEGO_AVISO_RAILES:
+
+        xor     a
+        ld      (FUEGO_AVISO_RAILES_TIMER),a
+        ld      a,2
+        ld      (FUEGO_AVISO_RAILES_RECOLOCA_Y),a
+        ret
+
+NUEVA_POSICION_FUEGO_9:
+
+        ld      a,9*16
+        jr      COMUN_NUEVA_POSICION_FUEGO
+
+NUEVA_POSICION_FUEGO_7:
+
+        ld      a,7*16
+        jr      COMUN_NUEVA_POSICION_FUEGO
+
+NUEVA_POSICION_FUEGO_4:
+
+        ld      a,4*16
+        jr      COMUN_NUEVA_POSICION_FUEGO
+
+NUEVA_POSICION_FUEGO_3:
+
+        ld      a,3*16
+        jr      COMUN_NUEVA_POSICION_FUEGO
+
+NUEVA_POSICION_FUEGO_10:
+
+        ld      a,10*16
+        jr      COMUN_NUEVA_POSICION_FUEGO
+
+NUEVA_POSICION_FUEGO_13:
+
+        ld      a,13*16
+        jr      COMUN_NUEVA_POSICION_FUEGO
+
+NUEVA_POSICION_FUEGO_N11:
+NUEVA_POSICION_FUEGO_11:
+
+        ld      a,11*16
+        jr      COMUN_NUEVA_POSICION_FUEGO
+
+NUEVA_POSICION_FUEGO_12:
+
+        ld      a,12*16
+        jr      COMUN_NUEVA_POSICION_FUEGO
+
+NUEVA_POSICION_FUEGO_6:
+
+        ld      a,6*16
+
+COMUN_NUEVA_POSICION_FUEGO:
+
+        ld      (FUEGO_AVISO_RAILES_OBJETIVO_X),a
+        ld      a,(DONDE_VA_LA_INTERRUPCION_LINEAL)
+        add     41
+        ld      (FUEGO_AVISO_RAILES_OBJETIVO_Y),a
+        ld      a,150
+        ld      (FUEGO_AVISO_RAILES_TIMER),a
+        ld      a,1
+        ld      (FUEGO_AVISO_RAILES_RECOLOCA_Y),a
         ret
 
 COMUN_DATOS_INLINE:

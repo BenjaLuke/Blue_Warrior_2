@@ -2218,30 +2218,6 @@ ALTERNA_PAGE_PINTA_CHUMINIX_BOSS_3:
 		ld		(CHUMINIX_BOSS_3_PAGE_PINTA),a
 		ret
 
-; -----------------------------------------------------------------------------
-; Limpia las franjas que deja Chuminix al desplazarse.
-; Se llama DESPUES de pintar el copy nuevo.
-;
-; VARIABLE_UN_USO  = X anterior
-; VARIABLE_UN_USO2 = Y anterior
-;
-; Secuencia 1 y 2:
-;   X crece   -> X nueva - deltaX, Y nueva, ancho deltaX, alto Chuminix
-;   X decrece -> X nueva + ancho Chuminix, Y nueva, ancho deltaX, alto Chuminix
-;   Y crece   -> X nueva, Y nueva - deltaY, ancho Chuminix, alto deltaY
-;   Y decrece -> X nueva, Y nueva + alto Chuminix, ancho Chuminix, alto deltaY
-; -----------------------------------------------------------------------------
-BORRA_RASTRO_CHUMINIX_PELEA_BOSS_3:
-
-		ld		a,(CHUMINIX_BOSS_3_MODO)
-		cp		CHUMINIX_PELEA_SECUENCIA_3_BOSS_3
-		ret		z
-		or		a
-		ret		z
-
-		call	BORRA_RASTRO_X_CHUMINIX_PELEA_BOSS_3
-		jp		BORRA_RASTRO_Y_CHUMINIX_PELEA_BOSS_3
-
 BORRA_RASTRO_X_CHUMINIX_PELEA_BOSS_3:
 
 		ld		a,(CHUMINIX_BOSS_3_X)
@@ -3414,10 +3390,7 @@ MUERTE_DE_CHUMINIX_BOSS_3:
 		call	stpmus
 
 ; Nos aseguramos que el prota no está en modo transparente ni el fondo en colores varios
-		ld		a,COLOR_ALEATORIO_SIN_CAMBIOS_BOSS_3
-		ld		(COLOR_ALEATORIO),a
-		xor		a
-		ld		(INMUNE),a
+		call	LIMPIA_ESTADO_DANO_DEPH_EN_MUERTE_BOSS
 
 ; pequeña pausa
 		ld		a,CHUMINIX_PAUSA_BOCA_BOSS_3
