@@ -976,12 +976,17 @@ CALCULA_XY_TILE_FASE3_VAGON_ENTRADA:
 			add		a,c
 			and		#f0
 			ld		b,a
-			ld		a,(Y_DEPH)
+			ld		a,(Y_PINTA_SCROLL)
+			and		#0f
 			ld		d,a
+			ld		a,(Y_DEPH)
+			ld		h,a
 			ld		a,(VARIABLE_UN_USO2)
-			add		a,16
-			add		a,d
+			add		a,h
+			sub		d
 			and		#f0
+			add		a,d
+			add		16
 			ld		c,a
 			ret
 
@@ -1673,6 +1678,7 @@ CONTROL_SALTO_FASE3_VAGON:
 			ld		c,0
 			call	A_31_DESDE_10
 			call	.EJECUTA_PARABOLA_FASE3_VAGON
+			call	.CORRIGE_Y_FIN_SALTO_FASE3_VAGON
 			ld		a,255
 			ld		(VARIABLE_UN_USO3),a
 			scf
@@ -1682,6 +1688,18 @@ CONTROL_SALTO_FASE3_VAGON:
 
 			or		a
 			ret
+
+.CORRIGE_Y_FIN_SALTO_FASE3_VAGON:
+
+            ld      a,(Y_DEPH)
+            add     3
+            ld      (Y_DEPH),a
+
+            ld      a,(CONTROL_Y)
+            add     3
+            ld      (CONTROL_Y),a
+
+            ret
 
 .PULSA_DISPARO_FASE3_VAGON:
 
@@ -1794,6 +1812,8 @@ CONTROL_SALTO_FASE3_VAGON:
 			add		a,c
 			ld		(CONTROL_Y),a
 			halt
+			call	BUCLE_PINTA_TILES
+			call	INTRODUCIMOS_LINEA_DE_INTERRUPCION_NUEVA
 			call	PINTA_SPRITE_DEPH_SALTO_VAGONETA
 			call	CARGA_COLORES_PARTE_INFERIOR_DEPH_SALTO_VAGONETA
 			pop		de
@@ -2929,10 +2949,18 @@ FUEGO_AVISO_RAILES:
         ld      a,3
         ld      (ix+11),a
         call    TROZOS_COMUNES_4
+        ld      a,1
+        ld      (MIRAMOS_SEGUNDO_SPRITE),a
+        call    MIRAMOS_SI_ESTA_LIBRE_ESE_SPRITE
+        ld      a,(SPRITE_QUE_TOCA)
+        rlc     a
+        rlc     a
+        ld      (ix+3),a
         ld      a,(DONDE_VA_LA_INTERRUPCION_LINEAL)
         ld      (FUEGO_AVISO_RAILES_LINEA_ANT),a
         ld      a,#0f
         call    .PINTA_COLOR_FUEGO_AVISO
+        call    .PINTA_SEGUNDO_SPRITE_FUEGO
         jp      UN_NUEVO_ENEMIGO.RESOLUCION
 
 .NO_CREA_FUEGO_AVISO:
@@ -3003,7 +3031,7 @@ FUEGO_AVISO_RAILES:
 
 .MATA_FUEGO_AVISO_ACTIVO:
 
-        call    STANDARD_DEJA_LIBRE_EL_SPRITE
+        call    LIBERA_DOS_SPRITES
         ld      a,$FF
         ld      (ix+2),a
 
@@ -3031,8 +3059,8 @@ FUEGO_AVISO_RAILES:
         add     8
         ld      (ix+1),a
         cp      216
-        jp      c,SECUENCIA_PROYECTILES_Y_ENEMIGOS.PASAMOS_A_LA_SIGUIENTE_POSICION
-        call    STANDARD_DEJA_LIBRE_EL_SPRITE
+        jp      c,.FIN_FUEGO_AVISO
+        call    LIBERA_DOS_SPRITES
         ld      a,255
         ld      (ix+2),a
         jp      SECUENCIA_PROYECTILES_Y_ENEMIGOS.PASAMOS_A_LA_SIGUIENTE_POSICION
@@ -3054,7 +3082,7 @@ FUEGO_AVISO_RAILES:
         ld      (FUEGO_AVISO_RAILES_LINEA_ANT),a
         xor     a
         ld      (FUEGO_AVISO_RAILES_RECOLOCA_Y),a
-        jp      SECUENCIA_PROYECTILES_Y_ENEMIGOS.PASAMOS_A_LA_SIGUIENTE_POSICION
+        jp      .FIN_FUEGO_AVISO
 
 .ESPERA_EN_OBJETIVO:
 
@@ -3065,7 +3093,7 @@ FUEGO_AVISO_RAILES:
         jr      z,.COLOR_NORMAL_FUEGO_AVISO
         dec     a
         ld      (FUEGO_AVISO_RAILES_TIMER),a
-        jp      SECUENCIA_PROYECTILES_Y_ENEMIGOS.PASAMOS_A_LA_SIGUIENTE_POSICION
+        jp      .FIN_FUEGO_AVISO
 
 .A_OBJETIVO:
 
@@ -3085,17 +3113,17 @@ FUEGO_AVISO_RAILES:
         ld      b,a
         ld      a,(FUEGO_AVISO_RAILES_OBJETIVO_X)
         cp      b
-        jp      nz,SECUENCIA_PROYECTILES_Y_ENEMIGOS.PASAMOS_A_LA_SIGUIENTE_POSICION
+        jp      nz,.FIN_FUEGO_AVISO
         ld      a,(ix+1)
         ld      b,a
         ld      a,(FUEGO_AVISO_RAILES_OBJETIVO_Y)
         cp      b
-        jp      nz,SECUENCIA_PROYECTILES_Y_ENEMIGOS.PASAMOS_A_LA_SIGUIENTE_POSICION
+        jp      nz,.FIN_FUEGO_AVISO
         ld      a,150
         ld      (FUEGO_AVISO_RAILES_TIMER),a
         ld      a,3
         ld      (FUEGO_AVISO_RAILES_RECOLOCA_Y),a
-        jp      SECUENCIA_PROYECTILES_Y_ENEMIGOS.PASAMOS_A_LA_SIGUIENTE_POSICION
+        jp      .FIN_FUEGO_AVISO
 
 .MUEVE_EJE_OBJETIVO:
 
@@ -3145,14 +3173,33 @@ FUEGO_AVISO_RAILES:
 
 .ERRATICO:
 
+        ld      a,#0f
+        call    .PINTA_COLOR_FUEGO_AVISO
+        call    .CORRIGE_Y_SET_ADJUST
+        ld      a,(ix+10)
+        inc     a
+        cp      5
+        jr      nc,.MUEVE_ERRATICO
+        ld      (ix+10),a
+        jp      .FIN_FUEGO_AVISO
+
+.MUEVE_ERRATICO:
+
+        xor     a
+        ld      (ix+10),a
+
 .APLICA_VECTOR:
 
-        call    .CORRIGE_Y_SET_ADJUST
         ld      b,(ix+9)
         call    .APLICA_X
-        jp      c,SECUENCIA_PROYECTILES_Y_ENEMIGOS.PASAMOS_A_LA_SIGUIENTE_POSICION
+        jp      c,.FIN_FUEGO_AVISO
         ld      b,(ix+11)
         call    .APLICA_Y
+        jp      .FIN_FUEGO_AVISO
+
+.FIN_FUEGO_AVISO:
+
+        call    .PINTA_SEGUNDO_SPRITE_FUEGO
         jp      SECUENCIA_PROYECTILES_Y_ENEMIGOS.PASAMOS_A_LA_SIGUIENTE_POSICION
 
 .CORRIGE_Y_SET_ADJUST:
@@ -3267,15 +3314,11 @@ FUEGO_AVISO_RAILES:
 
 .ANIMA_FUEGO_AVISO_RAILES:
 
-        ld      a,(ix+7)
-        inc     a
-        and     1
-        ld      (ix+7),a
-        ret     nz
         ld      a,(ix+13)
         inc     a
-        and     3
+        and     1
         ld      (ix+13),a
+        add     a,a
         add     a,a
         add     a,a
         add     108
@@ -3289,8 +3332,26 @@ FUEGO_AVISO_RAILES:
         call    PON_COLOR_1
         ex      de,hl
         ld      bc,16
+        ld      a,#01
+        call    FILVRM_RAM
+        ld      a,(ix+3)
+        call    PON_COLOR_1
+        ex      de,hl
+        ld      bc,16
         pop     af
         jp      FILVRM_RAM
+
+.PINTA_SEGUNDO_SPRITE_FUEGO:
+
+        ld      iy,PROPIEDADES_PATRON_SPRITE
+        ld      a,(ix+1)
+        ld      (iy),a
+        ld      a,(ix)
+        ld      (iy+1),a
+        ld      a,(ix+8)
+        add     4
+        ld      (iy+2),a
+        jp      PATRONES_SPRITE_SECUNDARIO
 
 PREMIO_EXTRA:
 
@@ -3709,9 +3770,6 @@ CORRIGE_Y_DEPH_SOLO_FASE3_VAGON:
 			cp		255
 			ret		z
 
-			call	.HAY_DESPLAZAMIENTO_X_VAGON_ESTE_CICLO
-			ret		c
-
 			ld		a,(Y_DEPH)
 			ld		b,a
 			ld		a,(DONDE_VA_LA_INTERRUPCION_LINEAL)
@@ -3723,6 +3781,9 @@ CORRIGE_Y_DEPH_SOLO_FASE3_VAGON:
 			cp		185
 			ret		nc
 
+			call	.HAY_DESPLAZAMIENTO_X_VAGON_ESTE_CICLO
+			ret		c
+
 			ld		a,(FASE3_VAGON_CORRIGE_Y_CADENCIA)
 			xor		1
 			and		1
@@ -3731,14 +3792,15 @@ CORRIGE_Y_DEPH_SOLO_FASE3_VAGON:
 
 .SUMA_Y_DEPH_VAGON:
 
-			ld		a,(CONTROL_Y)
-			inc		a
-			ld		(CONTROL_Y),a
-			call	.AJUSTA_CONTROL_Y_LIM_MUERTE_VAGON
-			ret		c
-			ld		a,(Y_DEPH)
-			inc		a
-			ld		(Y_DEPH),a
+            ld      a,(CONTROL_Y)
+            inc     a
+            ld      (CONTROL_Y),a
+            call    .AJUSTA_CONTROL_Y_LIM_MUERTE_VAGON
+            ret     c
+
+            ld      a,(Y_DEPH)
+            inc     a
+            ld      (Y_DEPH),a
 			cp		216
 			jr		z,.RECTIFICA_DOWN_Y_DEPH_VAGON
 			cp		200
@@ -3746,15 +3808,15 @@ CORRIGE_Y_DEPH_SOLO_FASE3_VAGON:
 
 .RECTIFICA_DOWN_Y_DEPH_VAGON:
 
-			ld		a,(CONTROL_Y)
-			add		2
-			ld		(CONTROL_Y),a
-			call	.AJUSTA_CONTROL_Y_LIM_MUERTE_VAGON
-			ret		c
-			ld		a,(Y_DEPH)
-			add		2
-			ld		(Y_DEPH),a
-			ret
+            ld      a,(Y_DEPH)
+            add     2
+            ld      (Y_DEPH),a
+
+            ld      a,(CONTROL_Y)
+            add     2
+            ld      (CONTROL_Y),a
+
+            ret
 
 .AJUSTA_CONTROL_Y_LIM_MUERTE_VAGON:
 
