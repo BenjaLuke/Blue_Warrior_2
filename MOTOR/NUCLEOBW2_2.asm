@@ -773,7 +773,7 @@ CONTROL_FASE3_TILE_145_SECTOR_10:
 			ld		a,(FASE)
 			cp		3
 			jr		nz,.mira_si_pisable
-			ld		a,d
+			ld		a,16
 			ld		(VARIABLE_UN_USO2),a
 			ld		a,b
 			cp		16
@@ -2002,7 +2002,7 @@ PINTA_TRIADA_SALTO_SALE_VAGON:
 .CALCULA_DESTINO:
 
 			push	af
-			call	CALCULA_XY_TILE_FASE3_VAGON
+			call	CALCULA_XY_TILE_FASE3_VAGON_SALIDA_SALTO
 			ld		a,e
 			cp		119
 			jr		z,.RESTA_UN_TILE
@@ -2039,6 +2039,20 @@ PINTA_TRIADA_SALTO_SALE_VAGON:
 
 			pop		af
 			jp		PINTA_TRIADA_FASE3_VAGON
+
+CALCULA_XY_TILE_FASE3_VAGON_SALIDA_SALTO:
+
+			ld		a,(X_DEPH)
+			add		6
+			and		#f0
+			ld		b,a
+			ld		a,(Y_DEPH)
+			ld		d,a
+			ld		a,(TILE_FASE3_VAGON_X16)
+			add		a,d
+			and		#f0
+			ld		c,a
+			ret
 
 PINTA_TRIADA_ENTRADA_FASE3_VAGON_Y_MAS_16:
 
