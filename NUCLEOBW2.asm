@@ -341,7 +341,7 @@ CARGA_SLOT_MAPA:
 		org		#4000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
 ; RESUMEN: 9 - Motor del juego 1
 
-		include "NUCLEOBW2_1.asm"				                            ; Incluímos el motor del juego 1
+		include "MOTOR/NUCLEOBW2_1.asm"				                            ; Incluímos el motor del juego 1
 
         ds      #8000-$-#2200 
 
@@ -390,7 +390,7 @@ INICIA_MUSICA_EXTRA:
         include	"BASICOS/DATAS.asm"
 		include	"BASICOS/TABLAS.asm"
         include	"BASICOS/LISTAS.asm"
-		include	"NUCLEOBW2_2.asm"
+		include	"MOTOR/NUCLEOBW2_2.asm"
 
 
 CARGA_SLOT_REGRESO_A_JUEGO:

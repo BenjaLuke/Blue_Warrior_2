@@ -120,7 +120,7 @@ REENTRA_JUEGO_TRAS_CARGA_GRAFICOS:
         ld		a,2														; Página 2 a vista
         call	SETPAGE
 
-		ei	
+        ei	
 		xor		a
 		ld		(DONDE_VA_LA_INTERRUPCION_LINEAL),a
         call    PAGE_10_A_SEGMENT_2
@@ -247,6 +247,9 @@ VARIABLES_PARA_EMPEZAR_LA_PARTIDA_1:
 		ld		a,186
 		ld		(LIM_MUERTE),a
 
+		ld		a,255
+		ld		(FASE3_VAGON_INDICE_16_PRE_Y),a
+
 		ld		a,195
 		ld		(Y_LINEA_INT),a
 
@@ -359,8 +362,6 @@ INICIA_SCROLL:
 
 		ld		a,187
 		ld		(DONDE_VA_LA_INTERRUPCION_LINEAL),a
-		add		8
-		ld		(Y_LINEA_INT),a
 			
 		ld		a,224
 		ld		(Y_PINTA_SCROLL),a										; La posición Y del pintado empieza en 200
@@ -382,9 +383,6 @@ INICIA_SCROLL:
 		ld		a,(DONDE_VA_LA_INTERRUPCION_LINEAL)
 		add		14
 		ld		(DONDE_VA_LA_INTERRUPCION_LINEAL),a
-		ld		a,(Y_LINEA_INT)
-		add		14
-		ld		(Y_LINEA_INT),a
 			
 .entorno_a_1:
 
@@ -1438,8 +1436,8 @@ RECUPERA_SPRITES:
 		pop		af
 		ret
 
-        include "BASICOS/PROYECTILES.asm"
-        include "BASICOS/ENEMIGOS.asm"
+        include "../BASICOS/PROYECTILES.asm"
+        include "../BASICOS/ENEMIGOS.asm"
 		
 ENEMIGO_FINAL:
 

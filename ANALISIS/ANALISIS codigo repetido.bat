@@ -7,7 +7,7 @@ rem Lanza roman.py sobre BW2.rom, que debe estar en esta misma carpeta.
 rem ============================================================
 
 set "ROMAN_PY=C:\Users\benja\Dropbox\BENJA\MSX\CARAMBALAN STUDIOS\HERRAMIENTAS\CONTROL SOBRE BYTES DE LA ROM\roman.py"
-set "ROM_FILE=%~dp0BW2.rom"
+set "ROM_FILE=%~dp0..\BW2.rom"
 
 if not exist "%ROMAN_PY%" (
     echo ERROR: No se encuentra roman.py en:
@@ -29,7 +29,7 @@ echo Analizando ROM:
 echo "%ROM_FILE%"
 echo.
 
-python "%ROMAN_PY%" -p "%ROM_FILE%"
+python "%ROMAN_PY%" -r 30 -g -p "%ROM_FILE%"
 
 set "ERRORLEVEL_ROMAN=%ERRORLEVEL%"
 echo.
