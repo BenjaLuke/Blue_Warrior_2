@@ -2598,7 +2598,7 @@ MUESTRA_MAPA:
 
 GRAFICOS_MAPA_1:
 
-        incbin  "GRAFICOS/PRESENTACIONES/MAP01.DAT"
+        incbin  "GRAFICOS/PRESENTACIONES/MAPA01.DAT"
 
         ds		#C000-$
 
@@ -2614,9 +2614,9 @@ GRAFICOS_MAPA_1:
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
 ; RESUMEN: 70 - Gráficos mapa parte 2
 
-GRAFICOS_MAPA_2:
+GRAFICOS_MAPA2_1:
 
-		incbin  "GRAFICOS/PRESENTACIONES/MAP02.DAT"
+		incbin  "GRAFICOS/PRESENTACIONES/MAPA02.DAT"
 
         ds		#C000-$
 
@@ -2716,5 +2716,40 @@ GRAFICOS_GRAN_DIAMANTE_2:
 /**********************
  ****** PAGINA 75 ******
 
+ ******   END    ******
+ **********************/
+/**********************
+ ****** PAGINA 76 ******
+ ****** SLOT   2 ******    
+ **********************/
+		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
+; RESUMEN: 76 - Gráficos mapa 2 parte 1
+
+GRAFICOS_MAPA2_2:
+
+		incbin  "GRAFICOS/PRESENTACIONES/MAPA03.DAT"
+
+        ds		#C000-$
+
+/**********************
+ ****** PAGINA 76 ******
+ ******   END    ******
+ **********************/
+
+ /**********************
+ ****** PAGINA 77 ******
+ ****** SLOT   2 ******    
+ **********************/
+		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
+; RESUMEN: 77 - Gráficos mapa 2 parte 2
+
+GRAFICOS_MAPA_2:
+
+		incbin  "GRAFICOS/PRESENTACIONES/MAPA04.DAT"
+
+        ds		#C000-$
+
+/**********************
+ ****** PAGINA 77 ******
  ******   END    ******
  **********************/

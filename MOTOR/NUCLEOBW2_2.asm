@@ -944,6 +944,10 @@ PINTA_TRIADA_SALIDA_FASE3_VAGON:
 			push	af
 			call	CALCULA_XY_TILE_FASE3_VAGON
 			ld		a,c
+			sub		20
+			ld		d,a
+			ld		a,(TILE_FASE3_VAGON_X16)
+			add		a,d
 			add		16
 			ld		c,a
 			ld		a,e
@@ -1957,7 +1961,15 @@ RESUELVE_SALTO_FASE3_VAGON:
 			ld		c,6
 			ld		a,(TILE_FASE3_VAGON_X16)
 			ld		(VARIABLE_UN_USO2),a
+			ld		a,b
+			cp		19
+			jr		c,.NO_PINTA_TRIADA_ENTRADA_SALTO
+			cp		22
+			jr		nc,.NO_PINTA_TRIADA_ENTRADA_SALTO
 			call	PINTA_TRIADA_ENTRADA_FASE3_VAGON_SALTO
+
+.NO_PINTA_TRIADA_ENTRADA_SALTO:
+
 			ld		a,2
 			ld		(SUMA_CAMINO),a
 			xor		a
@@ -2643,9 +2655,8 @@ CONTROL_FASE3_TILE_PUNTO_DEPH:
 			jr		z,.APLICA_ARRASTRE_MAS
 			cp		3
 			jr		z,.SIN_ARRASTRE_X
-			ld		a,b
-			or		a
-			jr		nz,.SIN_ARRASTRE_X
+			call	.PUEDE_INICIAR_DESVIO_DERECHA_FASE3_VAGON
+			jr		nc,.SIN_ARRASTRE_X
 			call	.PULSA_DERECHA_FASE3_VAGON
 			jr		nc,.BLOQUEA_ARRASTRE_MAS
 			call	.CORRIGE_X_DEPH_ENTRADA_ARRASTRE
@@ -2674,9 +2685,8 @@ CONTROL_FASE3_TILE_PUNTO_DEPH:
 			jr		z,.APLICA_ARRASTRE_MENOS
 			cp		4
 			jr		z,.SIN_ARRASTRE_X
-			ld		a,b
-			or		a
-			jr		nz,.SIN_ARRASTRE_X
+			call	.PUEDE_INICIAR_DESVIO_IZQUIERDA_FASE3_VAGON
+			jr		nc,.SIN_ARRASTRE_X
 			call	.PULSA_IZQUIERDA_FASE3_VAGON
 			jr		nc,.BLOQUEA_ARRASTRE_MENOS
 			call	.CORRIGE_X_DEPH_ENTRADA_ARRASTRE
@@ -2695,6 +2705,37 @@ CONTROL_FASE3_TILE_PUNTO_DEPH:
 			ld		a,4
 			ld		(FASE3_VAGON_ARRASTRE_X),a
 			or		a
+			ret
+
+.PUEDE_INICIAR_DESVIO_DERECHA_FASE3_VAGON:
+
+			ld		e,15
+			jr		.PUEDE_INICIAR_DESVIO_FASE3_VAGON
+
+.PUEDE_INICIAR_DESVIO_IZQUIERDA_FASE3_VAGON:
+
+			ld		e,4
+
+.PUEDE_INICIAR_DESVIO_FASE3_VAGON:
+
+			push	bc
+			ld		a,(Y_DEPH)
+			add		32
+			ld		b,a
+			ld		a,(Y_PINTA_SCROLL)
+			ld		c,a
+			ld		a,b
+			sub		c
+			and		00001111b
+			cp		e
+			pop		bc
+			jr		z,.SI_PUEDE_INICIAR_DESVIO_FASE3_VAGON
+			or		a
+			ret
+
+.SI_PUEDE_INICIAR_DESVIO_FASE3_VAGON:
+
+			scf
 			ret
 
 .ACTUALIZA_TILE_ARRASTRE_X:

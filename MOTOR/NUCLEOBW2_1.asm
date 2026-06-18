@@ -643,12 +643,14 @@ CONTROL:
 			ld		c,6
 			ld		d,0
 			ld		a,(TILE_N)
+			call	AJUSTA_TILE_ENTRADA_VAGON_X
 			call	CONTROL_FASE3_TILE_145
 			jp		nc,.pre_sigue_comun
 
 			ld		c,14
 			ld		d,0
 			ld		a,(TILE_N2)
+			call	AJUSTA_TILE_ENTRADA_VAGON_X
 			call	CONTROL_FASE3_TILE_145
 			jp		nc,.pre_sigue_comun
 
@@ -967,11 +969,56 @@ CONTROL:
 			ld		a,20
 			ld		(TILE_FASE3_VAGON_X16),a
 
+			ld		a,(TILE_FASE3_VAGON)
+			cp		8
+			jr		c,.MIRA_MARGEN_Y_SALIDA_FASE3_VAGON
+			cp		11
+			jr		c,.CONTROL_SALTO_TILE_FASE3_VAGON
+
+.MIRA_MARGEN_Y_SALIDA_FASE3_VAGON:
+
+			pop		af
+			push	af
+			add		4
+			ld		(hl),a
+			call	SITUA_LA_X_E_Y
+			add		6
+			call	SITUA_LA_X_E_Y_2
+			ld		a,(ix)
+			cp		8
+			jr		c,.MIRA_MARGEN_Y_BAJO_SALIDA_FASE3_VAGON
+			cp		11
+			jr		nc,.MIRA_MARGEN_Y_BAJO_SALIDA_FASE3_VAGON
+			ld		(TILE_FASE3_VAGON),a
+			ld		a,4
+			ld		(TILE_FASE3_VAGON_X16),a
+			jr		.CONTROL_SALTO_TILE_FASE3_VAGON
+
+.MIRA_MARGEN_Y_BAJO_SALIDA_FASE3_VAGON:
+
+			pop		af
+			push	af
+			add		36
+			ld		(hl),a
+			call	SITUA_LA_X_E_Y
+			add		6
+			call	SITUA_LA_X_E_Y_2
+			ld		a,(ix)
+			cp		8
+			jr		c,.CONTROL_SALTO_TILE_FASE3_VAGON
+			cp		11
+			jr		nc,.CONTROL_SALTO_TILE_FASE3_VAGON
+			ld		(TILE_FASE3_VAGON),a
+			ld		a,36
+			ld		(TILE_FASE3_VAGON_X16),a
+
+.CONTROL_SALTO_TILE_FASE3_VAGON:
+
 			ld		a,(VARIABLE_UN_USO3)
 			cp		255
 			jr		nz,.RESTAURA_Y_TRAS_TILE_FASE3_VAGON
 			ld		a,(TILE_FASE3_VAGON)
-			cp		16
+			cp		19
 			jr		c,.MIRA_MARGEN_Y_SALTO_FASE3_VAGON
 			cp		22
 			jr		c,.RESTAURA_Y_TRAS_TILE_FASE3_VAGON
@@ -986,12 +1033,31 @@ CONTROL:
 			add		6
 			call	SITUA_LA_X_E_Y_2
 			ld		a,(ix)
-			cp		16
+			cp		19
+			jr		c,.MIRA_MARGEN_Y_BAJO_SALTO_FASE3_VAGON
+			cp		22
+			jr		nc,.MIRA_MARGEN_Y_BAJO_SALTO_FASE3_VAGON
+			ld		(TILE_FASE3_VAGON),a
+			ld		a,4
+			ld		(TILE_FASE3_VAGON_X16),a
+			jr		.RESTAURA_Y_TRAS_TILE_FASE3_VAGON
+
+.MIRA_MARGEN_Y_BAJO_SALTO_FASE3_VAGON:
+
+			pop		af
+			push	af
+			add		36
+			ld		(hl),a
+			call	SITUA_LA_X_E_Y
+			add		6
+			call	SITUA_LA_X_E_Y_2
+			ld		a,(ix)
+			cp		19
 			jr		c,.RESTAURA_Y_TRAS_TILE_FASE3_VAGON
 			cp		22
 			jr		nc,.RESTAURA_Y_TRAS_TILE_FASE3_VAGON
 			ld		(TILE_FASE3_VAGON),a
-			ld		a,4
+			ld		a,36
 			ld		(TILE_FASE3_VAGON_X16),a
 
 .RESTAURA_Y_TRAS_TILE_FASE3_VAGON:
@@ -1247,6 +1313,77 @@ DESCONECTA_PUPA:
 
 		ld		a,1
 		ld		(DESACTIVA_PUPA),a
+		ret
+
+AJUSTA_TILE_ENTRADA_VAGON_X:
+
+		call	.ES_TILE_ENTRADA_VAGON_X
+		ret		c
+
+		push	af
+		push	ix
+		ld		a,(PAGE_DATOS_FASE)
+		call	CHANGE_BANK_2
+
+		call	SITUA_LA_X_E_Y
+		add		c
+		add		16
+		call	SITUA_LA_X_E_Y_2
+		ld		a,(ix)
+		call	.ES_TILE_ENTRADA_VAGON_X
+		jr		c,.ENCUENTRA_ENTRADA_VAGON_DERECHA
+
+		call	SITUA_LA_X_E_Y
+		add		c
+		sub		16
+		call	SITUA_LA_X_E_Y_2
+		ld		a,(ix)
+		call	.ES_TILE_ENTRADA_VAGON_X
+		jr		c,.ENCUENTRA_ENTRADA_VAGON_IZQUIERDA
+
+		pop		ix
+		call	PAGE_10_A_SEGMENT_2
+		pop		af
+		ret
+
+.ENCUENTRA_ENTRADA_VAGON_DERECHA:
+
+		ld		b,a
+		ld		a,c
+		add		16
+		ld		c,a
+		ld		a,b
+		jr		.ENCUENTRA_ENTRADA_VAGON
+
+.ENCUENTRA_ENTRADA_VAGON_IZQUIERDA:
+
+		ld		b,a
+		ld		a,c
+		sub		16
+		ld		c,a
+		ld		a,b
+
+.ENCUENTRA_ENTRADA_VAGON:
+
+		pop		ix
+		push	af
+		call	PAGE_10_A_SEGMENT_2
+		pop		af
+		pop		hl
+		ret
+
+.ES_TILE_ENTRADA_VAGON_X:
+
+		cp		16
+		jr		c,.NO_ES_TILE_ENTRADA_VAGON_X
+		cp		22
+		jr		nc,.NO_ES_TILE_ENTRADA_VAGON_X
+		scf
+		ret
+
+.NO_ES_TILE_ENTRADA_VAGON_X:
+
+		or		a
 		ret
 
 CONTROL_FASE3_TILE_145:

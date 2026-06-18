@@ -155,7 +155,7 @@ MAPA_DE_SITUACION:
 		ld		a,5
 		call	CHGMOD
 		call	DISSCR_RAM
-		call	ACTIVA_SPRITES_MAPA_DE_SITUACION
+		call	DESACTIVA_SPRITES_MAPA_DE_SITUACION
 
 		call	CARGA_GRAFICOS_MAPA_DE_SITUACION
 		call	PONE_PRIMERA_PALETA_MAPA_DE_SITUACION
@@ -164,6 +164,9 @@ MAPA_DE_SITUACION:
 		ld		a,1
 		call	SETPAGE
 
+		ld		hl,DATOS_MAPA_INICIAL_CENTRO_PAGE_1
+		call	DOCOPY
+		call	VDPREADY
 		ld		hl,DATOS_MAPA_INICIAL_IZQUIERDA_PAGE_1
 		call	DOCOPY
 		call	VDPREADY
@@ -176,6 +179,9 @@ MAPA_DE_SITUACION:
 		call	FADE_IN_MAPA_DE_SITUACION
 		call	PONE_PALETA_FINAL_MAPA_DE_SITUACION
 
+		ld		hl,DATOS_MAPA_INICIAL_CENTRO_PAGE_3
+		call	DOCOPY
+		call	VDPREADY
 		ld		hl,DATOS_MAPA_INICIAL_IZQUIERDA_PAGE_3
 		call	DOCOPY
 		call	VDPREADY
@@ -183,7 +189,7 @@ MAPA_DE_SITUACION:
 		call	DOCOPY
 		call	VDPREADY
 
-		ld		a,107
+		ld		a,110
 		ld		(MAPA_SITUACION_LEFT_X),a
 		ld		(MAPA_SITUACION_LEFT_X_PAGE_0),a
 		ld		(MAPA_SITUACION_LEFT_X_PAGE_1),a
@@ -207,16 +213,18 @@ MAPA_DE_SITUACION:
 		jr		z,.FIN_ABRE_MAPA
 
 		ld		a,(MAPA_SITUACION_RIGHT_X)
-		cp		233
+		cp		238
 		jr		z,.FIN_ABRE_MAPA
 
 		jr		.BUCLE_ABRE_MAPA
 
 .FIN_ABRE_MAPA:
 
-		call	PREPARA_SPRITES_DEPH_MAPA_DE_SITUACION
+		ld		hl,DATOS_LIMPIA_MAPA_PAGE_0
+		call	DOCOPY
+		call	VDPREADY
+
 		call	PAUSA_CON_DEPH_MAPA_DE_SITUACION
-		call	OCULTA_DEPH_MAPA_DE_SITUACION
 
 		call	FADE_OUT_MAPA_DE_SITUACION
 		call	STOP_MUSICA_MAPA_DE_SITUACION
@@ -244,7 +252,30 @@ CARGA_GRAFICOS_MAPA_DE_SITUACION:
 
 		ld		hl,DATOS_COPIS_MAPA
 		call	DOCOPY
-		jp		VDPREADY
+		call	VDPREADY
+
+		di
+		call	CARGA_GRAFICOS_MAPA2_PAGE_0_SIN_INTERRUPCIONES
+		ei
+		ret
+
+
+CARGA_GRAFICOS_MAPA2_PAGE_0_SIN_INTERRUPCIONES:
+
+		ld		a,76
+		ld		(DIRPA2),a
+		ld		hl,GRAFICOS_MAPA2_1
+		ld		de,#0000
+		ld		bc,#4000
+		call	PON_COLOR_2_MAPA_SIN_INTERRUPCIONES
+
+		ld		a,77
+		ld		(DIRPA2),a
+		ld		hl,GRAFICOS_MAPA2_2
+		ld		de,#4000
+		ld		bc,#4000
+		call	PON_COLOR_2_MAPA_SIN_INTERRUPCIONES
+		ret
 
 
 DESACTIVA_SPRITES_MAPA_DE_SITUACION:
@@ -274,55 +305,6 @@ ACTIVA_SPRITES_MAPA_DE_SITUACION:
 		ld		c,8
 		call	WRTVDP_EN_RAM
 		ei
-		ret
-
-
-PREPARA_SPRITES_DEPH_MAPA_DE_SITUACION:
-
-		di
-		ld 		a,(RG1SAV)
-		or		00000010B
-		ld 		(RG1SAV),a
-		ld		b,a
-		ld		c,1
-		call	WRTVDP_EN_RAM
-
-		ld 		a,(RG8SAV)
-		and		11111101B
-		ld 		(RG8SAV),a
-		ld		b,a
-		ld		c,8
-		call	WRTVDP_EN_RAM
-
-		ld 		a,10010111b
-		ld 		(RG5SAV),a
-		ld		b,a
-		ld		c,5
-		call	WRTVDP_EN_RAM
-
-		ld 		a,(RG11SAV)
-		and		11111100B
-		ld 		(RG11SAV),a
-		ld		b,a
-		ld		c,11
-		call	WRTVDP_EN_RAM
-
-		ld 		a,00001000b
-		ld 		(RG6SAV),a
-		ld		b,a
-		ld		c,6
-		call	WRTVDP_EN_RAM
-		ei
-
-		call	CARGA_DEPH_MUSIC_ON
-
-		xor		a
-		ld		(INMUNE),a
-		ld		(VARIABLE_CARGA_AGUA),a
-		ld		(SPRITE_CAIDO),a
-		inc		a
-		ld		(MUSICA_ON_OFF),a
-		call	INICIALIZA_PATRONES_CABEZA_DEPH_MAPA_DE_SITUACION
 		ret
 
 
@@ -429,9 +411,9 @@ PINTA_FRAME_MAPA_DE_SITUACION:
 AVANZA_POSICION_MAPA_DE_SITUACION:
 
 		ld		a,(MAPA_SITUACION_LEFT_X)
-		cp		4
+		cp		8
 		jr		c,.LEFT_A_CERO
-		sub		4
+		sub		8
 		jr		.GUARDA_LEFT
 
 .LEFT_A_CERO:
@@ -443,14 +425,14 @@ AVANZA_POSICION_MAPA_DE_SITUACION:
 		ld		(MAPA_SITUACION_LEFT_X),a
 
 		ld		a,(MAPA_SITUACION_RIGHT_X)
-		cp		230
+		cp		232
 		jr		nc,.RIGHT_A_FINAL
-		add		4
+		add		8
 		jr		.GUARDA_RIGHT
 
 .RIGHT_A_FINAL:
 
-		ld		a,233
+		ld		a,238
 
 .GUARDA_RIGHT:
 
@@ -460,27 +442,15 @@ AVANZA_POSICION_MAPA_DE_SITUACION:
 
 PINTA_FRANJAS_NUEVAS_MAPA_DE_SITUACION:
 
-		call	OBTIENE_POSICION_ANTERIOR_BUFFER_MAPA_DE_SITUACION
-		push	bc
-		push	de
-
 		ld		a,(MAPA_SITUACION_LEFT_X)
-		add		22
-		ld		d,a
-		ld		a,b
-		add		22
-		sub		d
-		call	nz,PINTA_FRANJA_MAPA_DE_SITUACION
-
-		pop		de
-		pop		bc
-
-		ld		a,e
+		ld		b,a
+		add		6
 		ld		d,a
 		ld		a,(MAPA_SITUACION_RIGHT_X)
-		sub		d
-		call	nz,PINTA_FRANJA_MAPA_DE_SITUACION
-		ret
+		sub		b
+		add		4
+		ret		z
+		jr		PINTA_FRANJA_MAPA_DE_SITUACION
 
 
 PINTA_FRANJA_MAPA_DE_SITUACION:
@@ -497,7 +467,7 @@ PINTA_FRANJA_MAPA_DE_SITUACION:
 		call	PONE_Y_DESTINO_BUFFER_MAPA_DE_SITUACION
 		ld		(ix+8),c
 		ld		(ix+9),0
-		ld		(ix+10),212
+		ld		(ix+10),178
 		ld		(ix+11),0
 		ld		(ix+12),#00
 		ld		(ix+13),#00
@@ -554,18 +524,18 @@ PINTA_IZQUIERDA_MAPA_DE_SITUACION:
 		ld		(ix),0
 		ld		(ix+1),0
 		ld		(ix+2),0
-		ld		(ix+3),2
+		ld		(ix+3),0
 		ld		a,(MAPA_SITUACION_LEFT_X)
 		ld		(ix+4),a
 		ld		(ix+5),0
 		call	PONE_Y_DESTINO_BUFFER_MAPA_DE_SITUACION
-		ld		(ix+8),22
+		ld		(ix+8),18
 		ld		(ix+9),0
-		ld		(ix+10),212
+		ld		(ix+10),178
 		ld		(ix+11),0
 		ld		(ix+12),#00
 		ld		(ix+13),#00
-		ld		(ix+14),10010000b
+		ld		(ix+14),10011000b
 		call	HL_DATOS_DEL_COPY
 		jp		VDPREADY
 
@@ -573,21 +543,21 @@ PINTA_IZQUIERDA_MAPA_DE_SITUACION:
 PINTA_DERECHA_MAPA_DE_SITUACION:
 
 		ld		ix,DATOS_DEL_TILE_PARA_COPY
-		ld		(ix),233
+		ld		(ix),238
 		ld		(ix+1),0
 		ld		(ix+2),0
-		ld		(ix+3),2
+		ld		(ix+3),0
 		ld		a,(MAPA_SITUACION_RIGHT_X)
 		ld		(ix+4),a
 		ld		(ix+5),0
 		call	PONE_Y_DESTINO_BUFFER_MAPA_DE_SITUACION
-		ld		(ix+8),23
+		ld		(ix+8),18
 		ld		(ix+9),0
-		ld		(ix+10),212
+		ld		(ix+10),178
 		ld		(ix+11),0
 		ld		(ix+12),#00
 		ld		(ix+13),#00
-		ld		(ix+14),10010000b
+		ld		(ix+14),10011000b
 		call	HL_DATOS_DEL_COPY
 		jp		VDPREADY
 
@@ -682,22 +652,27 @@ BUCLE_FADE_MAPA_DE_SITUACION:
 
 PAUSA_CON_DEPH_MAPA_DE_SITUACION:
 
-		call	COLOCA_DEPH_MAPA_DE_SITUACION
+		xor		a
+		ld		(MAPA_SITUACION_PALETA_ROTACION),a
 
 		ld		d,25
 
 .BUCLE:
 
-		ld		a,20
+		xor		a
 		push	de
-		call	PINTA_DEPH_MAPA_DE_SITUACION
+		call	PINTA_DEPH_COPI_MAPA_DE_SITUACION
+		xor		a
+		call	PINTA_ANIMACIONES_DURANTE_PAUSA_MAPA
 		pop		de
 		ld		b,6
 		call	ESPERA_MAPA_DE_SITUACION_B
 
-		ld		a,44
+		ld		a,1
 		push	de
-		call	PINTA_DEPH_MAPA_DE_SITUACION
+		call	PINTA_DEPH_COPI_MAPA_DE_SITUACION
+		ld		a,1
+		call	PINTA_ANIMACIONES_DURANTE_PAUSA_MAPA
 		pop		de
 		ld		b,6
 		call	ESPERA_MAPA_DE_SITUACION_B
@@ -707,96 +682,185 @@ PAUSA_CON_DEPH_MAPA_DE_SITUACION:
 		ret
 
 
-COLOCA_DEPH_MAPA_DE_SITUACION:
+PINTA_DEPH_COPI_MAPA_DE_SITUACION:
+
+		or		a
+		ld		hl,TABLA_DEPH_COPI_MAPA_1
+		jr		z,.CON_TABLA
+		ld		hl,TABLA_DEPH_COPI_MAPA_2
+
+.CON_TABLA:
 
 		ld		a,(FASE)
 		dec		a
 		add		a,a
+		add		a,a
 		ld		e,a
 		ld		d,0
-		ld		hl,TABLA_POSICIONES_DEPH_MAPA_DE_SITUACION
 		add		hl,de
 
+		ld		ix,DATOS_DEL_TILE_PARA_COPY
 		ld		a,(hl)
-		ld		(X_DEPH),a
 		inc		hl
+		ld		(ix),a
+		ld		(ix+1),0
 		ld		a,(hl)
-		ld		(Y_DEPH),a
+		inc		hl
+		ld		(ix+2),a
+		ld		(ix+3),2
+		ld		a,(hl)
+		inc		hl
+		ld		(ix+4),a
+		ld		(ix+5),0
+		ld		a,(hl)
+		ld		(ix+6),a
+		call	PONE_PAGE_VISIBLE_DESTINO_MAPA_DE_SITUACION
+		ld		(ix+8),20
+		ld		(ix+9),0
+		ld		(ix+10),24
+		ld		(ix+11),0
+		ld		(ix+12),#00
+		ld		(ix+13),#00
+		ld		(ix+14),10010000b
+		call	HL_DATOS_DEL_COPY
+		jp		VDPREADY
+
+
+PINTA_ANIMACIONES_DURANTE_PAUSA_MAPA:
+
+		push	af
+		call	ROTA_COLORES_MAPA_DE_SITUACION
+		pop		af
+
+		or		a
+		ld		hl,TABLA_ANIMACIONES_PAUSA_MAPA_1
+		jr		z,.BUCLE
+		ld		hl,TABLA_ANIMACIONES_PAUSA_MAPA_2
+
+.BUCLE:
+
+		ld		b,6
+		xor		a
+
+.COPI:
+
+		push	af
+		push	bc
+		ld		ix,DATOS_DEL_TILE_PARA_COPY
+		ld		a,(hl)
+		inc		hl
+		ld		(ix),a
+		ld		(ix+1),0
+		ld		a,(hl)
+		inc		hl
+		ld		(ix+2),a
+		ld		(ix+3),2
+		ld		a,(hl)
+		inc		hl
+		ld		(ix+4),a
+		ld		(ix+5),0
+		ld		a,(hl)
+		inc		hl
+		ld		(ix+6),a
+		call	PONE_PAGE_VISIBLE_DESTINO_MAPA_DE_SITUACION
+		pop		bc
+		pop		af
+		push	af
+		push	bc
+		ld		a,b
+		cp		5
+		ld		a,11
+		jr		nc,.ALTO_7
+		ld		(ix+8),a
+		ld		(ix+9),0
+		ld		(ix+10),a
+		jr		.SIGUE_TAMANO
+
+.ALTO_7:
+
+		ld		(ix+8),a
+		ld		(ix+9),0
+		ld		(ix+10),7
+
+.SIGUE_TAMANO:
+
+		ld		(ix+11),0
+		ld		(ix+12),#00
+		ld		(ix+13),#00
+		ld		(ix+14),10010000b
+		push	hl
+		call	HL_DATOS_DEL_COPY
+		call	VDPREADY
+		pop		hl
+		pop		bc
+		pop		af
+		inc		a
+		djnz	.COPI
 		ret
 
 
-PINTA_DEPH_MAPA_DE_SITUACION:
+PONE_PAGE_VISIBLE_DESTINO_MAPA_DE_SITUACION:
 
-		ld		(FOTOGRAMA_DEPH),a
-		cp		44
-		jr		z,.POSE_1
+		ld		a,(MAPA_SITUACION_BUFFER_PAGE)
+		cp		1
+		jr		z,.VISIBLE_PAGE_3
 
+		ld		(ix+7),1
+		ret
+
+.VISIBLE_PAGE_3:
+
+		ld		(ix+7),3
+		ret
+
+
+ROTA_COLORES_MAPA_DE_SITUACION:
+
+		ld		a,(MAPA_SITUACION_PALETA_ROTACION)
+		add		a,a
+		ld		e,a
+		ld		d,0
+		ld		hl,TABLA_ROTACION_COLORES_MAPA
+		add		hl,de
+		ld		e,(hl)
+		inc		hl
+		ld		d,(hl)
+		ex		de,hl
+		call	APLICA_ROTACION_COLORES_MAPA
+
+		ld		a,(MAPA_SITUACION_PALETA_ROTACION)
+		inc		a
+		cp		3
+		jr		c,.GUARDA
 		xor		a
-		ld		(FOTOGRAMA_DEPH_EN_ORDEN),a
-		call	PINTA_SPRITE_DEPH
-		jp		AJUSTA_COLORES_DEPH_MAPA_DE_SITUACION
 
-.POSE_1:
+.GUARDA:
 
-		ld		a,1
-		ld		(FOTOGRAMA_DEPH_EN_ORDEN),a
-		call	PINTA_SPRITE_DEPH
-		jp		AJUSTA_COLORES_DEPH_MAPA_DE_SITUACION
+		ld		(MAPA_SITUACION_PALETA_ROTACION),a
+		ret
 
 
-AJUSTA_COLORES_DEPH_MAPA_DE_SITUACION:
+APLICA_ROTACION_COLORES_MAPA:
 
-		call	PAGE_32_A_SEGMENT_2
-
-		ld		hl,COLORES_SPRITES_DEPH
-		ld		de,#4800
-		ld		bc,64
-		call	PON_COLOR_2.sin_bc_impuesta
-
-		ld		a,(FOTOGRAMA_DEPH_EN_ORDEN)
-		cp		2
-		jr		z,.POSE_1
-		cp		0
-		jr		z,.POSE_3
-
-		ld		hl,COLOR_POSE_0_Y_2
-		jr		.VUELCA_CUERPO
-
-.POSE_1:
-
-		ld		hl,COLOR_POSE_1
-		jr		.VUELCA_CUERPO
-
-.POSE_3:
-
-		ld		hl,COLOR_POSE_3
-
-.VUELCA_CUERPO:
-
-		ld		de,#4840
-		ld		bc,96
-		call	PON_COLOR_2.sin_bc_impuesta
-		jp		PAGE_10_A_SEGMENT_2
+		ld		a,7
+		call	PONE_COLOR_MAPA_DESDE_HL
+		ld		a,8
+		call	PONE_COLOR_MAPA_DESDE_HL
+		ld		a,10
+		jr		PONE_COLOR_MAPA_DESDE_HL
 
 
-OCULTA_DEPH_MAPA_DE_SITUACION:
+PONE_COLOR_MAPA_DESDE_HL:
 
-		ld		ix,ATRIBUTOS_DEPH_VARIABLES
-		ld		(ix),#D8
-		ld		(ix+4),#D8
-		ld		(ix+8),#D8
-		ld		(ix+12),#D8
-		ld		(ix+16),#D8
-		ld		(ix+20),#D8
-		ld		(ix+24),#D8
-		ld		(ix+28),#D8
-		ld		(ix+32),#D8
-		ld		(ix+36),#D8
-
-		ld		hl,ATRIBUTOS_DEPH_VARIABLES
-		ld		de,#4A00
-		ld		bc,40
-		jp		PON_COLOR_2.sin_bc_impuesta
+		di
+		out		(#99),a
+		ld		a,16+128
+		out		(#99),a
+		ld		c,#9A
+		outi
+		outi
+		ei
+		ret
 
 
 ESPERA_MAPA_DE_SITUACION_B:
@@ -1771,48 +1835,64 @@ DATOS_COPIS_MAPA: ;datos_de_mapa_page_1_a_page_2
 ;DATOS_MAPA_INICIAL_IZQUIERDA:
 
 		dw		#0000,#0200
-		dw		#006B,#0000
-		dw		#0016,#00D4
-		db		#00,#00,10010000b
+		dw		#006E,#0000
+		dw		#0012,#00B2
+		db		#00,#00,10011000b
 
 
 ;DATOS_MAPA_INICIAL_DERECHA:
 
-		dw		#00E9,#0200
+		dw		#00EE,#0000
 		dw		#0080,#0000
-		dw		#0017,#00D4
+		dw		#0012,#00B2
+		db		#00,#00,10011000b
+
+
+DATOS_MAPA_INICIAL_CENTRO_PAGE_1:
+
+		dw		#0074,#0200
+		dw		#0074,#0100
+		dw		#0016,#00B2
 		db		#00,#00,10010000b
 
 
 DATOS_MAPA_INICIAL_IZQUIERDA_PAGE_1:
 
-		dw		#0000,#0200
-		dw		#006B,#0100
-		dw		#0016,#00D4
-		db		#00,#00,10010000b
+		dw		#0000,#0000
+		dw		#006E,#0100
+		dw		#0012,#00B2
+		db		#00,#00,10011000b
 
 
 DATOS_MAPA_INICIAL_DERECHA_PAGE_1:
 
-		dw		#00E9,#0200
+		dw		#00EE,#0000
 		dw		#0080,#0100
-		dw		#0017,#00D4
+		dw		#0012,#00B2
+		db		#00,#00,10011000b
+
+
+DATOS_MAPA_INICIAL_CENTRO_PAGE_3:
+
+		dw		#0074,#0200
+		dw		#0074,#0300
+		dw		#0016,#00B2
 		db		#00,#00,10010000b
 
 
 DATOS_MAPA_INICIAL_IZQUIERDA_PAGE_3:
 
-		dw		#0000,#0200
-		dw		#006B,#0300
-		dw		#0016,#00D4
-		db		#00,#00,10010000b
+		dw		#0000,#0000
+		dw		#006E,#0300
+		dw		#0012,#00B2
+		db		#00,#00,10011000b
 
 
 DATOS_MAPA_INICIAL_DERECHA_PAGE_3:
 
-		dw		#00E9,#0200
+		dw		#00EE,#0000
 		dw		#0080,#0300
-		dw		#0017,#00D4
+		dw		#0012,#00B2
 		db		#00,#00,10010000b
 
 
@@ -1848,13 +1928,64 @@ DATOS_LIMPIA_MAPA_PAGE_3:
 		db		#00,#00,11000000b
 
 
-TABLA_POSICIONES_DEPH_MAPA_DE_SITUACION:
+TABLA_ANIMACIONES_PAUSA_MAPA_1:
 
-		db		27,83
-		db		117,67
-		db		199,18
-		db		45,162
-		db		149,167
+		db		0,188,27,42
+		db		12,188,76,61
+		db		24,184,103,75
+		db		60,184,151,9
+		db		72,184,178,30
+		db		96,184,112,117
+
+
+TABLA_ANIMACIONES_PAUSA_MAPA_2:
+
+		db		12,188,27,42
+		db		0,188,76,61
+		db		36,184,103,75
+		db		48,184,151,9
+		db		84,184,178,30
+		db		108,184,112,117
+
+
+TABLA_ROTACION_COLORES_MAPA:
+
+		dw		ROTACION_COLORES_MAPA_0
+		dw		ROTACION_COLORES_MAPA_1
+		dw		ROTACION_COLORES_MAPA_2
+
+
+ROTACION_COLORES_MAPA_0:
+
+		db		#70,#00,#72,#02,#51,#02
+
+
+ROTACION_COLORES_MAPA_1:
+
+		db		#72,#02,#51,#02,#70,#00
+
+
+ROTACION_COLORES_MAPA_2:
+
+		db		#51,#02,#70,#00,#72,#02
+
+
+TABLA_DEPH_COPI_MAPA_1:
+
+		db		144,184,27,71
+		db		164,184,122,73
+		db		184,184,165,74
+		db		204,184,86,147
+		db		224,184,152,146
+
+
+TABLA_DEPH_COPI_MAPA_2:
+
+		db		144,208,27,71
+		db		164,208,122,73
+		db		184,208,165,74
+		db		204,208,86,147
+		db		224,208,152,146
 
 
 PALETA_DIAMANTES_FIJA:
