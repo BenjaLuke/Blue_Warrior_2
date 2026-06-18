@@ -991,7 +991,7 @@ CONTROL:
 			cp		22
 			jr		nc,.RESTAURA_Y_TRAS_TILE_FASE3_VAGON
 			ld		(TILE_FASE3_VAGON),a
-			ld		a,20
+			ld		a,4
 			ld		(TILE_FASE3_VAGON_X16),a
 
 .RESTAURA_Y_TRAS_TILE_FASE3_VAGON:

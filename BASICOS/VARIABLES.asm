@@ -21,7 +21,7 @@ SET_PAGE 						#1										; Para el vblank. Siempre será 2 pero a veces ha de 
 FMPAC_DESCONECTADO:				#1										; 0 No está 1 sí
 CONTROL_DE_C_P_U_T:				#2										; Esta es la que cambia y deberá volver o alcanzar CUANDO_PINTAMOS_UN_TILE
 FINAL_DEL_SCROLL				#1										; Nos indica por 0/1 FALSE/TRUE si hemos llegado al final del scroll
-DONDE_VA_LA_INTERRUPCION_LINEAL:#1										; Linea en la que interrumpiremos para poner el marcador
+DONDE_VA_LA_INTERRUPCION_LINEAL: #1										; Linea en la que interrumpiremos para poner el marcador
 Y_LINEA_INT:					#1										; Donde se coloca la linea de sprites en su Y para tapar el salto de la linea de interrupción
 Y_FALSA_PARA_PROYECTILES		#1										; Esta Y calcula el salto del scroll y lo evita
 Y_FALSA_PARA_DEPH				#1
@@ -106,10 +106,6 @@ CAMINO_NUEVA_INT:				#1										; Contador para mover la interrupción
 ESTADO_MARCADOR:				#1										; 1 a vista, 0 escondido
 MARCADOR_PULSADO:				#1										; Controla si se pulsó la vez anterior para no crear un bucle
 MARCADOR_ANULADO:				#1										; Controla si el ordenador decide que no hay MARCADOR
-PALETA_A_FADEAR:				#2										; Aquí ponemos la dirección de memoria que hay que leer en cuestión de paletas
-ACTIVAMOS_FADE:					#1										; Es el contador para activar fade o no
-ESPERA_PALETA:					#1										; Un semaforo de espera para relentizar el fade
-COTEJA_ESPERA_PALETA:			#1
 PARPADEO_CORAZONES:				#1										; Controla el parpadeo de corazones cuando sólo te queda una vida
 TIEMPO_DE_ADJUST:				#1										; Ciclos cambiando el set adjust
 CADENCIA_DEL_DISPARO:			#1										; Cada cuanto puede disparar
@@ -134,8 +130,6 @@ ARMA_USANDO:					#1										; 0 1 2 Flecha 3 4 5 fuego 6 7 8 hacha
 ESTADO_EJERCICIO				#1										; 0 y 2 es neutro. 1 es arriba y 3 es abajo 
 BLOQUE_DE_SPRITES_VARIABLE:		#1										; Nos dice los sprites que están descargados
 ECTO_PARALIZADO:				#1										; 0 No. 1 Si
-LETRA_EXPUESTA:					#1										; Nos dice los sprites que están descargados EN RELACION A LAS LETRAS
-																		; 0 Slime
 TENEMOS_D:						#1										; Se ha cogido la letra D
 TENEMOS_E:						#1										; Se ha cogido la letra E
 TENEMOS_P:						#1										; Se ha cogido la letra P
@@ -158,7 +152,6 @@ POSICION_DERRUMBE_ROCKAGER:		#1										; Nos indica la animación que hay que 
 DATAS_COR_EMPT_MALO:			#16										; Los datos del malo maloso
 CORAZONES_DEPH_EN_BOSSES:		#16										; Datos de los corazones a pintar en blanco de deph durante un boss
 PUNTOS_MAGIA_EN_BOSSES:		#16										; Datos de los puntos de magia a pintar durante pelea con boss
-VALORES_SPRITE_MAREO:			#4										; Valores del mareo. El primero empieza en 57*4
 VALORES_SPRITES_PIEDRAS:		#24										; 0 x
 																		; 1 y
 																		; Patron
@@ -295,8 +288,8 @@ xtempo  #1     															;ds  1
 xsust   #1     															;ds  1
 xbegvm  #9    															;ds  9
 xbegvp  #9     															;ds  9
-xorgp1  #6*8   															;ds  6*8
-xorgnr  #6     															;ds  6
+xorgp1  #6*8+#6   															;ds  6*8
+;xorgnr  #6     															;ds  6
 xsmpkt  #8     															;ds  8
 xdrblk  #15    															;ds  15
 xdrvol  #3     															;ds  3

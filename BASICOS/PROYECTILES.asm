@@ -197,6 +197,8 @@ NUEVO_PROYECTIL:
         call	TROZOS_COMUNES_13
 		ld		hl,COLOR_HACHA_1										; Damos color al sprite en la posición de sprite que le toca	
 		call	PON_COLOR_2
+		call	PAGE_10_A_SEGMENT_2
+
 		jp		.NOS_VAMOS
 
 .NOS_VAMOS:
@@ -544,7 +546,19 @@ PINTA_PROYECTILES_ENEMIGOS:
 		add		4
 		ld		(iy+2),a
 
+		ld		a,(ix+6)
+		cp		3
+		jp		z,.DOBLETE_HACHA
+		cp		6
+		jp		z,.DOBLETE_HACHA
+		cp		7
+		jp		z,.DOBLETE_HACHA
+
 		call	PATRONES_SPRITE_SECUNDARIO
+
+		jp		.PASAMOS_A_LA_SIGUIENTE_POSICION
+
+.DOBLETE_HACHA:
 
 		jp		.PASAMOS_A_LA_SIGUIENTE_POSICION
 
@@ -579,6 +593,14 @@ PINTA_PROYECTILES_ENEMIGOS:
 
 		call	.PINTADO_DE_SPRITE
 
+		ld		a,(ix+6)
+		cp		3
+		jp		z,.PASAMOS_A_LA_SIGUIENTE_POSICION
+		cp		6
+		jp		z,.PASAMOS_A_LA_SIGUIENTE_POSICION
+		cp		7
+		jp		z,.PASAMOS_A_LA_SIGUIENTE_POSICION
+
 		ld		a,(ix+3)
 		cp		7
 		jp		c,.PASAMOS_A_LA_SIGUIENTE_POSICION
@@ -588,6 +610,8 @@ PINTA_PROYECTILES_ENEMIGOS:
 		ld		(iy+2),a
 
 		call	PATRONES_SPRITE_SECUNDARIO
+
+		jp		.PASAMOS_A_LA_SIGUIENTE_POSICION
 
 .PASAMOS_A_LA_SIGUIENTE_POSICION:
 

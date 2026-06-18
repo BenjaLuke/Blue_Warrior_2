@@ -141,138 +141,6 @@ UN_NUEVO_ENEMIGO:
 	ld	hl,COLOR_TITULO_STAGE						; Damos color al sprite en la posición de sprite que le toca	
 	jp      TROZOS_COMUNES_9
 
-.DEFINE_D_PREMIO:
-
-        ld      hl,VALORES_BASICOS_LETRAS_PREMIO_D
-        jp      .COMUN_LETRAS_PREMIO
-
-.DEFINE_E_PREMIO:
-
-        ld      hl,VALORES_BASICOS_LETRAS_PREMIO_E
-        jp      .COMUN_LETRAS_PREMIO
-
-.DEFINE_P_PREMIO:
-
-        ld      hl,VALORES_BASICOS_LETRAS_PREMIO_P
-        jp      .COMUN_LETRAS_PREMIO
-
-.DEFINE_H_PREMIO:
-
-        ld      hl,VALORES_BASICOS_LETRAS_PREMIO_H
-        jp      .COMUN_LETRAS_PREMIO
-
-.COMUN_LETRAS_PREMIO:
-
-        ld      a,b
-
-.COMPARTIDO_CON_LETRAS_AVISO:
-
-        call    STANDAR_LDIR_ENEMIGOS
-        ld      (ix),a
-        call    TROZOS_COMUNES_1
-        ld      a,(DONDE_VA_LA_INTERRUPCION_LINEAL)
-        add     72
-        ld      (ix+7),a
-        ld      a,(ix+1)
-	ld	hl,COLOR_LETRAS_PREMIO	
-	call    TROZOS_COMUNES_7
-
-        jp      .RESOLUCION
-
-.COMUN_DOS_CORAZONES_1:
-
-        call    STANDAR_LDIR_ENEMIGOS
-        ld      (ix),a
-        jp      TROZOS_COMUNES_1
-
-.COMUN_DOS_CORAZONES_2:
-
-	call    TROZOS_COMUNES_7
-   
-        ld      a,1
-        ld      (MIRAMOS_SEGUNDO_SPRITE),a
-        call    MIRAMOS_SI_ESTA_LIBRE_ESE_SPRITE
-
- 	call	STANDAR_DA_EL_VALOR_SPRITE_QUE_TOCA_IX3
-        jp      TROZOS_COMUNES_3
-
-.DEFINE_CORAZON_CONTENEDOR:
-
-        ld      a,(CORAZON_CONTENEDOR_COGIDO)
-        or      a
-        jp      nz,.DEFINE_CORAZON
-
-        xor     a
-        ld      (CORAZON_ACTIVO),a
-
-        ld      a,b
-        ld      hl,VALORES_BASICOS_CORAZON_CONTENEDOR
-        call    .COMUN_DOS_CORAZONES_1
-	ld	hl,COLOR_CORAZON_4	
-        call    .COMUN_DOS_CORAZONES_2
-	ld	hl,COLOR_CORAZON_3
-	call    TROZOS_COMUNES_7
-
-        jp      .RESOLUCION
-
-.DEFINE_CORAZON:
-
-        ld      a,1
-        ld      (CORAZON_ACTIVO),a
-        
-        ld      a,b
-        ld      hl,VALORES_BASICOS_CORAZON
-        call    .COMUN_DOS_CORAZONES_1
-
-
-	ld	hl,COLOR_CORAZON_1	
-
-
-        call    .COMUN_DOS_CORAZONES_2
-
-        push    af
-        ld      a,(FASE)
-        cp      4
-        jp      nz,.DEFINE_CORAZON_TODO_STAGE
-        ld      hl,COLOR_CORAZON_5
-        jp      .UNIMOS_COLORES_CORAZON
-
-.DEFINE_CORAZON_TODO_STAGE:
-
-	ld	hl,COLOR_CORAZON_2
-
-.UNIMOS_COLORES_CORAZON:
-
-        pop     af
-	call    TROZOS_COMUNES_7
-
-        jp      .RESOLUCION
-
-.DEFINE_LETRAS_AVISO_PREMIO_D:
-
-        ld      a,b
-        ld	hl,VALORES_BASICOS_LETRA_AVISO_D
-        jp      .COMPARTIDO_CON_LETRAS_AVISO
-
-
-.DEFINE_LETRAS_AVISO_PREMIO_E:
-
-        ld      a,b
-        ld	hl,VALORES_BASICOS_LETRA_AVISO_E
-        jp      .COMPARTIDO_CON_LETRAS_AVISO
-
-.DEFINE_LETRAS_AVISO_PREMIO_P:
-
-        ld      a,b
-        ld	hl,VALORES_BASICOS_LETRA_AVISO_P
-        jp      .COMPARTIDO_CON_LETRAS_AVISO
-
-.DEFINE_LETRAS_AVISO_PREMIO_H:
-
-        ld      a,b
-        ld	hl,VALORES_BASICOS_LETRA_AVISO_H
-        jp      .COMPARTIDO_CON_LETRAS_AVISO
-
 .COMUN_CHECK_CORRECTO_INCORRECTO_1:
 
         ld      a,17
@@ -1253,7 +1121,7 @@ SECUENCIAS_DE_LOS_ENEMIGOS:
         jp      z,.SECUENCIA_MEGADEATH_7_CABEZA
         dec     a
         ld      (ix+13),a
-        call    NUEVO_PROYECTIL_NORMAL
+        call    NUEVO_PROYECTIL_NORMAL_SI_NO_BLINDADO
 
 .SECUENCIA_MEGADEATH_7_CABEZA:
 

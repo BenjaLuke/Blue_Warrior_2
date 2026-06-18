@@ -158,7 +158,9 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES:
         push    af
         ld      a,4
         ld      c,0
+        push    ix
         call    A_31_DESDE_10       
+        pop     ix
         pop     af
        
         or      a
@@ -168,7 +170,9 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES:
 
         ld      a,5
         ld      c,1
+        push    ix
         call    A_31_DESDE_10       
+        pop     ix
     
 
         ld      l,(ix+14)

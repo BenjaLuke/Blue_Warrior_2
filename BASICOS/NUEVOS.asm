@@ -449,39 +449,6 @@ NUEVO_PROYECTIL_NORMAL:
         ld      a,1
         jp      COMUN_DATOS_A_SACAR_SIN_A
         
-NUEVAS_LETRAS_AVISO_PREMIO:
-
-; nueva_d
-
-        ld      a,(TENEMOS_D)
-        or      a
-        jp      z,.nueva_e
-        ld      hl,NUEVAS_LETRAS_AVISO_PREMIO_D_DATA
-        call    COMUN_DATOS_A_SACAR
-
-.nueva_e:
-
-        ld      a,(TENEMOS_E)
-        or      a
-        jp      z,.nueva_p
-        ld      hl,NUEVAS_LETRAS_AVISO_PREMIO_E_DATA
-        call    COMUN_DATOS_A_SACAR
-
-.nueva_p:
-
-        ld      a,(TENEMOS_P)
-        or      a
-        jp      z,.nueva_h
-        ld      hl,NUEVAS_LETRAS_AVISO_PREMIO_P_DATA
-        call    COMUN_DATOS_A_SACAR
-
-.nueva_h:
-
-        ld      a,(TENEMOS_H)
-        or      a
-        ret     z
-        ld      hl,NUEVAS_LETRAS_AVISO_PREMIO_H_DATA
-        jp      COMUN_DATOS_A_SACAR
 NUEVO_CAMINO_INCORRECTO:
 
         call    COMUN_DATOS_INLINE
@@ -626,7 +593,6 @@ NUEVA_POSICION_FUEGO_13:
         ld      a,13*16
         jr      COMUN_NUEVA_POSICION_FUEGO
 
-NUEVA_POSICION_FUEGO_N11:
 NUEVA_POSICION_FUEGO_11:
 
         ld      a,11*16

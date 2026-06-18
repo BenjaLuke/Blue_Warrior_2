@@ -1,5 +1,4 @@
 ; BIOS
-BDOS        equ     #f37D
 CALSLT      equ     #001C
 RDSLT       equ     #000C                                               ; lee el valor de una dirección en otro slot
 WRSLT       equ     #0014                                               ; Escribe un valor en la dirección de otro slot

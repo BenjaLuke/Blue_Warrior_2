@@ -119,6 +119,12 @@ ENEMIGO_EN_BLINDAJE_NACIMIENTO:
 			scf
 			ret
 
+NUEVO_PROYECTIL_NORMAL_SI_NO_BLINDADO:
+
+			call	ENEMIGO_EN_BLINDAJE_NACIMIENTO
+			ret		c
+			jp		NUEVO_PROYECTIL_NORMAL
+
 PUNTERO_BLINDAJE_NACIMIENTO_ENEMIGO:
 
 			push	de
@@ -773,7 +779,7 @@ CONTROL_FASE3_TILE_145_SECTOR_10:
 			ld		a,(FASE)
 			cp		3
 			jr		nz,.mira_si_pisable
-			ld		a,16
+			ld		a,d
 			ld		(VARIABLE_UN_USO2),a
 			ld		a,b
 			cp		16
@@ -2002,7 +2008,7 @@ PINTA_TRIADA_SALTO_SALE_VAGON:
 .CALCULA_DESTINO:
 
 			push	af
-			call	CALCULA_XY_TILE_FASE3_VAGON_SALIDA_SALTO
+			call	CALCULA_XY_TILE_FASE3_VAGON
 			ld		a,e
 			cp		119
 			jr		z,.RESTA_UN_TILE
@@ -2039,20 +2045,6 @@ PINTA_TRIADA_SALTO_SALE_VAGON:
 
 			pop		af
 			jp		PINTA_TRIADA_FASE3_VAGON
-
-CALCULA_XY_TILE_FASE3_VAGON_SALIDA_SALTO:
-
-			ld		a,(X_DEPH)
-			add		6
-			and		#f0
-			ld		b,a
-			ld		a,(Y_DEPH)
-			ld		d,a
-			ld		a,(TILE_FASE3_VAGON_X16)
-			add		a,d
-			and		#f0
-			ld		c,a
-			ret
 
 PINTA_TRIADA_ENTRADA_FASE3_VAGON_Y_MAS_16:
 
@@ -4107,7 +4099,7 @@ COVIDS:
 
         cp      01111111b
         
-        call    nc,NUEVO_PROYECTIL_NORMAL
+        call    nc,NUEVO_PROYECTIL_NORMAL_SI_NO_BLINDADO
         
         ld      a,(ix+10)
         and     00000111B
@@ -4519,7 +4511,7 @@ SLIMES:
 
 .seguimos_slime:
 
-        call    z,NUEVO_PROYECTIL_NORMAL
+        call    z,NUEVO_PROYECTIL_NORMAL_SI_NO_BLINDADO
         jp      TROZOS_COMUNES_23
 ECTO_PALLERS:
 
@@ -5372,7 +5364,7 @@ GARGOLAS:
 
 .DISPARA:
 
-		call	NUEVO_PROYECTIL_NORMAL
+		call	NUEVO_PROYECTIL_NORMAL_SI_NO_BLINDADO
 
 .NO_DISPARA:
 

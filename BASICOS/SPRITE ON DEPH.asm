@@ -165,15 +165,6 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH:
 
         ld      (hl),1
 
-.COMUN_CARGA_LETRAS:
-
-        call    STANDARD_DEJA_LIBRE_EL_SPRITE
-        ld      a,15
-        ld      c,0
-        call    A_31_DESDE_10
-        call    NUEVAS_LETRAS_AVISO_PREMIO         
-        jp      .SALIMOS
-
 .DANO_DE_PUPA:
 
         push    ix
