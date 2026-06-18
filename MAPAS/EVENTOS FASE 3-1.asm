@@ -162,15 +162,6 @@
 		dw		RETORNO
 		dw		RETORNO
 		dw		RETORNO
-		dw		NUEVA_POSICION_FUEGO_9
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
 		dw		RETORNO
 		dw		RETORNO
 		dw		RETORNO
@@ -184,13 +175,22 @@
 		dw		RETORNO
 		dw		RETORNO
 		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
-		dw		RETORNO
 		dw		NUEVA_POSICION_FUEGO_9
 		dw		RETORNO
 		dw		RETORNO
 		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		RETORNO
+		dw		NUEVA_POSICION_FUEGO_9
 		dw		RETORNO
 		dw		RETORNO
 		dw		RETORNO

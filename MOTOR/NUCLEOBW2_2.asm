@@ -903,6 +903,8 @@ PINTA_TRIADA_ENTRADA_FASE3_VAGON:
 			sub		16
 			ld		(CONTROL_Y),a
 
+COLOCA_X_DEPH_ENTRADA_VAGON_SIN_Y:
+
 			ld		a,e
 			cp		17
 			jr		z,.COLOCA_X_TILE_MENOS_8
@@ -1955,7 +1957,7 @@ RESUELVE_SALTO_FASE3_VAGON:
 			ld		c,6
 			ld		a,(TILE_FASE3_VAGON_X16)
 			ld		(VARIABLE_UN_USO2),a
-			call	PINTA_TRIADA_ENTRADA_FASE3_VAGON_Y_MAS_16
+			call	PINTA_TRIADA_ENTRADA_FASE3_VAGON_SALTO
 			ld		a,2
 			ld		(SUMA_CAMINO),a
 			xor		a
@@ -2051,6 +2053,58 @@ PINTA_TRIADA_ENTRADA_FASE3_VAGON_Y_MAS_16:
 			ld		a,b
 			jp		PINTA_TRIADA_ENTRADA_FASE3_VAGON
 
+PINTA_TRIADA_ENTRADA_FASE3_VAGON_SALTO:
+
+			ld		e,b
+			ld		a,b
+			cp		19
+			jr		nc,.GRUPO_DERECHA
+
+			xor		a
+			ld		(FASE3_VAGON_TIPO_MUERTE),a
+			ld		a,121
+			jr		.CALCULA_DESTINO
+
+.GRUPO_DERECHA:
+
+			ld		a,1
+			ld		(FASE3_VAGON_TIPO_MUERTE),a
+			ld		a,127
+
+.CALCULA_DESTINO:
+
+			push	af
+			call	CALCULA_XY_TILE_FASE3_VAGON_ENTRADA
+			call	COLOCA_X_DEPH_ENTRADA_VAGON_SIN_Y
+			ld		a,e
+			cp		17
+			jr		z,.RESTA_UN_TILE
+			cp		20
+			jr		z,.RESTA_UN_TILE
+			cp		18
+			jr		z,.RESTA_DOS_TILES
+			cp		21
+			jr		z,.RESTA_DOS_TILES
+			jr		.PINTA
+
+.RESTA_UN_TILE:
+
+			ld		a,b
+			sub		16
+			ld		b,a
+			jr		.PINTA
+
+.RESTA_DOS_TILES:
+
+			ld		a,b
+			sub		32
+			ld		b,a
+
+.PINTA:
+
+			pop		af
+			jp		PINTA_TRIADA_FASE3_VAGON
+
 TABLA_SALTO_FASE3_VAGON_X:
 
 			db		2,1,2,1,2,1,2,1,2,1
@@ -2061,7 +2115,7 @@ TABLA_SALTO_FASE3_VAGON_Y:
 
 			db		252,252,252,254,254,254,254,255,255,255
 			db		255,0,0,0,0,0,0,0,0,0
-			db		1,1,1,1,2,2,2,2,4,4
+			db		1,1,1,1,2,2,3,3,5,5
 
 CONTROL_FASE3_TILE_PUNTO_DEPH:
 
@@ -2947,16 +3001,25 @@ FUEGO_AVISO_RAILES:
         ld      (ix+7),a
         ld      (ix+10),a
         ld      (ix+13),a
+        ld      a,112
         ld      (ix+14),a
         ld      a,4
         ld      (ix+9),a
         ld      a,3
         ld      (ix+11),a
         call    TROZOS_COMUNES_4
+        ld      a,1
+        ld      (MIRAMOS_SEGUNDO_SPRITE),a
+        call    MIRAMOS_SI_ESTA_LIBRE_ESE_SPRITE
+        ld      a,(SPRITE_QUE_TOCA)
+        rlc     a
+        rlc     a
+        ld      (ix+15),a
+        xor     a
+        ld      (MIRAMOS_SEGUNDO_SPRITE),a
         ld      a,(DONDE_VA_LA_INTERRUPCION_LINEAL)
         ld      (FUEGO_AVISO_RAILES_LINEA_ANT),a
-        ld      a,#0f
-        call    .PINTA_COLOR_FUEGO_AVISO
+        call    .PINTA_COLOR_NORMAL_FUEGO_AVISO
         jp      UN_NUEVO_ENEMIGO.RESOLUCION
 
 .NO_CREA_FUEGO_AVISO:
@@ -3027,7 +3090,7 @@ FUEGO_AVISO_RAILES:
 
 .MATA_FUEGO_AVISO_ACTIVO:
 
-        call    STANDARD_DEJA_LIBRE_EL_SPRITE
+        call    .LIBERA_SPRITES_FUEGO_AVISO
         ld      a,$FF
         ld      (ix+2),a
 
@@ -3056,7 +3119,7 @@ FUEGO_AVISO_RAILES:
         ld      (ix+1),a
         cp      216
         jp      c,SECUENCIA_PROYECTILES_Y_ENEMIGOS.PASAMOS_A_LA_SIGUIENTE_POSICION
-        call    STANDARD_DEJA_LIBRE_EL_SPRITE
+        call    .LIBERA_SPRITES_FUEGO_AVISO
         ld      a,255
         ld      (ix+2),a
         jp      SECUENCIA_PROYECTILES_Y_ENEMIGOS.PASAMOS_A_LA_SIGUIENTE_POSICION
@@ -3072,8 +3135,7 @@ FUEGO_AVISO_RAILES:
 
 .COLOR_NORMAL_FUEGO_AVISO:
 
-        ld      a,#0f
-        call    .PINTA_COLOR_FUEGO_AVISO
+        call    .PINTA_COLOR_NORMAL_FUEGO_AVISO
         ld      a,(DONDE_VA_LA_INTERRUPCION_LINEAL)
         ld      (FUEGO_AVISO_RAILES_LINEA_ANT),a
         xor     a
@@ -3082,8 +3144,7 @@ FUEGO_AVISO_RAILES:
 
 .ESPERA_EN_OBJETIVO:
 
-        ld      a,#09
-        call    .PINTA_COLOR_FUEGO_AVISO
+        call    .PINTA_COLOR_AVISO_FUEGO_AVISO
         ld      a,(FUEGO_AVISO_RAILES_TIMER)
         or      a
         jr      z,.COLOR_NORMAL_FUEGO_AVISO
@@ -3093,8 +3154,7 @@ FUEGO_AVISO_RAILES:
 
 .A_OBJETIVO:
 
-        ld      a,#09
-        call    .PINTA_COLOR_FUEGO_AVISO
+        call    .PINTA_COLOR_AVISO_FUEGO_AVISO
         ld      a,(FUEGO_AVISO_RAILES_OBJETIVO_X)
         ld      b,a
         ld      c,(ix)
@@ -3171,6 +3231,17 @@ FUEGO_AVISO_RAILES:
 
 .APLICA_VECTOR:
 
+        ld      a,(ix+10)
+        inc     a
+        cp      5
+        jr      nc,.MUEVE_ERRATICO
+        ld      (ix+10),a
+        jp      SECUENCIA_PROYECTILES_Y_ENEMIGOS.PASAMOS_A_LA_SIGUIENTE_POSICION
+
+.MUEVE_ERRATICO:
+
+        xor     a
+        ld      (ix+10),a
         call    .CORRIGE_Y_SET_ADJUST
         ld      b,(ix+9)
         call    .APLICA_X
@@ -3295,26 +3366,108 @@ FUEGO_AVISO_RAILES:
         inc     a
         and     1
         ld      (ix+7),a
-        ret     nz
+        jp      nz,.PINTA_ATRIBUTOS_FUEGO_AVISO
         ld      a,(ix+13)
         inc     a
-        and     3
+        and     1
         ld      (ix+13),a
-        add     a,a
-        add     a,a
-        add     108
+        or      a
+        jr      z,.FOTOGRAMA_0_FUEGO_AVISO
+        ld      a,116
         ld      (ix+8),a
+        ld      a,120
+        jr      .PINTA_SPRITES_FUEGO_AVISO
+
+.FOTOGRAMA_0_FUEGO_AVISO:
+
+        ld      a,108
+        ld      (ix+8),a
+        ld      a,112
+
+.PINTA_SPRITES_FUEGO_AVISO:
+
+        ld      (ix+14),a
+        call    .PINTA_ATRIBUTOS_FUEGO_AVISO
         ret
 
-.PINTA_COLOR_FUEGO_AVISO:
+.PINTA_ATRIBUTOS_FUEGO_AVISO:
 
         push    af
+        push    bc
+        push    de
+        push    hl
+        push    iy
+        ld      iy,PROPIEDADES_PATRON_SPRITE
+        ld      a,(ix+1)
+        ld      (iy),a
+        ld      a,(ix)
+        ld      (iy+1),a
+        ld      a,(ix+8)
+        ld      (iy+2),a
+        ld      e,(ix+12)
+        ld      d,0
+        ld      hl,#4A00
+        add     hl,de
+        ex      de,hl
+        ld      hl,PROPIEDADES_PATRON_SPRITE
+        ld      bc,3
+        call    PON_COLOR_2.sin_bc_impuesta
+        ld      a,(ix+1)
+        ld      (iy),a
+        ld      a,(ix)
+        ld      (iy+1),a
+        ld      a,(ix+14)
+        ld      (iy+2),a
+        ld      e,(ix+15)
+        ld      d,0
+        ld      hl,#4A00
+        add     hl,de
+        ex      de,hl
+        ld      hl,PROPIEDADES_PATRON_SPRITE
+        ld      bc,3
+        call    PON_COLOR_2.sin_bc_impuesta
+        pop     iy
+        pop     hl
+        pop     de
+        pop     bc
+        pop     af
+        ret
+
+.PINTA_COLOR_NORMAL_FUEGO_AVISO:
+
+        ld      d,#0f
+        jr      .PINTA_COLOR_DOS_SPRITES_FUEGO_AVISO
+
+.PINTA_COLOR_AVISO_FUEGO_AVISO:
+
+        ld      d,#09
+
+.PINTA_COLOR_DOS_SPRITES_FUEGO_AVISO:
+
+        push    de
         ld      a,(ix+12)
+        ld      c,#01
+        call    .PINTA_COLOR_UN_SPRITE_FUEGO_AVISO
+        pop     de
+        ld      a,(ix+15)
+        ld      c,d
+
+.PINTA_COLOR_UN_SPRITE_FUEGO_AVISO:
+
         call    PON_COLOR_1
         ex      de,hl
+        ld      a,c
         ld      bc,16
-        pop     af
         jp      FILVRM_RAM
+
+.LIBERA_SPRITES_FUEGO_AVISO:
+
+        ld      a,(ix+15)
+        call    DEJA_LIBRE_SPRITE_EN_RAM
+        call    STANDARD_DEJA_LIBRE_EL_SPRITE
+        xor     a
+        ld      (ix+15),a
+        ret
 
 PREMIO_EXTRA:
 
