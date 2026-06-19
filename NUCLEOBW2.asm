@@ -352,6 +352,10 @@ CARGA_SLOT_MAPA:
 
 REANUDA_MUSICA_DESDE_SLOT1:
 
+            ld      a,(DEMO)
+            or      a
+            ret     nz
+
             ld      a,(MUSICA_ON_OFF)
             or      a
             ret     z
@@ -426,6 +430,9 @@ CARGA_SLOT_REGRESO_A_JUEGO:
 CARGA_SLOT_PARA_GAME_OVER:
 
 		di
+		ld		a,(DEMO)
+		or		a
+		jp		nz,MENU
 
 		ld		a,38
 		ld      (DIRPA1),a											    ; Banco 1, pagina 39 del MEGAROM

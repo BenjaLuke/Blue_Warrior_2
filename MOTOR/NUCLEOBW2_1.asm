@@ -51,14 +51,7 @@ COMIENZA_JUEGO:
 		ld		(PAGE_DATOS_FASE),a
 		ld		(PAGE_DATOS_FASE_SALVADA),a
 
-		ld		a,(FASE)
-		add		a
-		ld		ix,TABLA_DE_TAMANO_DE_FASE
-		ld		e,a
-		ld		d,0
-		add		ix,de
-		ld		l,(ix)
-		ld		h,(ix+1)
+		call	OBTIENE_LINEA_INICIAL_FASE
 		ld		(LINEA_SALVADA),hl
 		xor		a
 		ld		(TILE_ESPECIAL_DEPH_COOLDOWN),a
@@ -218,6 +211,8 @@ VARIABLES_PARA_EMPEZAR_LA_PARTIDA:
 VARIABLES_PARA_EMPEZAR_LA_PARTIDA_1:
 
 
+		ld		hl,0
+		ld		(SCORE_REAL),hl
 		xor		a
 
 		ld		(INMUNE),a
@@ -352,6 +347,18 @@ INICIA_SCROLL:
 		ld		a,40
 		ld		(CADENCIA_DEL_DISPARO),a
 
+		ld		a,(DEMO)
+		or		a
+		jr		z,.NO_CONFIGURA_DEMO_INICIO
+
+		ld		a,1
+		ld		(VIDAS),a
+		ld		(CORAZONES),a
+		ld		(MUSICA_ON_OFF),a
+		call	REINICIA_CONTROL_DEMO
+
+.NO_CONFIGURA_DEMO_INICIO:
+
 		ld		a,100
 		ld		(Y_DEPH),a
 		ld		(CONTROL_Y),a
@@ -367,6 +374,14 @@ INICIA_SCROLL:
 		ld		(Y_PINTA_SCROLL),a										; La posición Y del pintado empieza en 200
 
 		call	PINTA_VIDAS
+		ld		a,(DEMO)
+		or		a
+		jr		z,.NO_AJUSTA_VIDAS_DEMO_TRAS_PINTAR
+		xor		a
+		ld		(VIDAS),a
+
+.NO_AJUSTA_VIDAS_DEMO_TRAS_PINTAR:
+
 		call	PINTA_CORAZONES																				
 		call	PINTA_ARMA
 		call	PINTAMOS_LOS_PUNTOS_DE_MAGIA
@@ -438,6 +453,10 @@ FASE1_PONEMOS_DECORADO_EN_SU_SITIO:
 
 		call	SHOW_STATUS_COMP
 
+		ld		a,(DEMO)
+		or		a
+		jr		nz,.DEMO_SIN_MUSICA_DE_FASE
+
 		ld		hl,M_FANFARE_1
 		ld		(MUSIC_ON),hl
         ld      a,(FASE)
@@ -456,6 +475,16 @@ FASE1_PONEMOS_DECORADO_EN_SU_SITIO:
 
         call    PAGE_10_A_SEGMENT_2
 
+		jr		.MIRA_MUSICA_ON_OFF
+
+.DEMO_SIN_MUSICA_DE_FASE:
+
+		call	stpmus
+        call    PAGE_10_A_SEGMENT_2
+		call	PREPARAMOS_LOS_FX
+        call    PAGE_10_A_SEGMENT_2
+
+.MIRA_MUSICA_ON_OFF:
 
 		ld		a,(MUSICA_ON_OFF)
 		or		a
@@ -466,12 +495,6 @@ FASE1_PONEMOS_DECORADO_EN_SU_SITIO:
 .SEGUIMOS:
 
 			call	RECUPERA_SPRITES_SALUDO									; A veces los pierde por el camino. Aquí garantizamos que los tiene cuando los necesita
-			ld		a,(MUSICA_ON_OFF)
-			or		a
-			jr		nz,PRE_CONTROL
-
-			call	CARGA_DEPH_MUSIC_OFF
-
 PRE_CONTROL:
 
 			call	ENASCR_RAM
@@ -569,6 +592,22 @@ CONTROL:
 			jp		c,.hay_que_sumar
 						
 .si_que_puede:
+
+			ld		a,(DEMO)
+			or		a
+			jr		z,.LEE_CONTROL_REAL
+
+			call	CONTROL_DEMO_HAY_TECLA
+			jp		c,.SALIDA_DEMO_A_MARCA
+			call	CONTROL_DEMO_DIRECCION_CON_GUARDA
+       		ld      de,TABLA_PAD_1
+        	jp      SITUAMOS_PUNTERO_EN_TABLA
+
+.SALIDA_DEMO_A_MARCA:
+
+			jp		MUERTE_POR_TOQUES
+
+.LEE_CONTROL_REAL:
 
 			xor		a												; Comprobando si ha tocado los cursores
 			call	GTSTCK_RAM		
@@ -801,6 +840,10 @@ CONTROL:
 			or		l
 			jp		nz,.FIN_RUTINA_GLOBAL
 
+			ld		a,(DEMO)
+			or		a
+			jp		nz,.PULSA_DEMO
+
 			xor		a
 			call	GTTRIG_RAM   
 			or		a
@@ -851,6 +894,26 @@ CONTROL:
 			jp		z,.FIN_RUTINA_GLOBAL
 			
 			call	MAGIA	
+			jp		.FIN_RUTINA_GLOBAL
+
+.PULSA_DEMO:
+
+			ld		a,(DEMO_CONTROL_DISPARO)
+			or		a
+			jp		z,.LIBERA_TRIG_DEMO
+
+			ld		a,(TRIG_PULSADO)
+			or		a
+			jp		nz,.FIN_RUTINA_GLOBAL
+
+			call	NUEVO_PROYECTIL
+			jp		.FIN_RUTINA_GLOBAL
+
+.LIBERA_TRIG_DEMO:
+
+			xor		a
+			ld		(TRIG_PULSADO),a
+			jp		.FIN_RUTINA_GLOBAL
 
 .FIN_RUTINA_GLOBAL:
 		
@@ -903,10 +966,15 @@ CONTROL:
 
 			inc		(hl)						; SEMAforo pasa de 0 a 1
 			
-			ld		a,39
 			ld		hl,M_PUENTE
+			ld		a,(DEMO)
+			or		a
+			jr		nz,.SIN_MUSICA_EXTRA_PUENTE
+			ld		a,39
 			call    INICIA_MUSICA_EXTRA
 			; include "AUDIOS/INICIA MUSICA_PUENTE.asm"  
+
+.SIN_MUSICA_EXTRA_PUENTE:
 
 			call    BUCLE_PINTA_TILES.VELOCIDAD_DE_FASE_GALOPE
 			jp		.MIRAMOS_SI_HAY_AGUJERO
@@ -924,10 +992,15 @@ CONTROL:
 
 			inc		(hl)	
 
-			ld		a,73
 			ld		hl,M_LABERINT
+			ld		a,(DEMO)
+			or		a
+			jr		nz,.SIN_MUSICA_EXTRA_LABERINTO
+			ld		a,73
 			call    INICIA_MUSICA_EXTRA
 			; include "AUDIOS/INICIA MUSICA_LABERINTO.asm"
+
+.SIN_MUSICA_EXTRA_LABERINTO:
 
 			call    BUCLE_PINTA_TILES.VELOCIDAD_DE_FASE_GALOPE
 
@@ -1266,6 +1339,9 @@ CARGA_COMUN_45:
 CARGA_MUSICA_THE_BEST:
 
 		call	stpmus
+		ld		a,(DEMO)
+		or		a
+		ret		nz
 
 		ld		a,1
 		ld		(MUSICA_BEST_ON),a
@@ -1284,6 +1360,9 @@ CARGA_MUSICA_THE_BEST:
 CARGA_MUSICA_VAGONETA:
 
 		call	stpmus
+		ld		a,(DEMO)
+		or		a
+		ret		nz
 
 		ld		a,1
 		ld		(MUSICA_BEST_ON),a
@@ -1403,9 +1482,6 @@ PINTA_SPRITE_DEPH_VAGON_AJUSTADO:
 		call	ES_FASE3_VAGON_ACTIVO
 		jp		nc,PINTA_SPRITE_DEPH
 		call	PINTA_SPRITE_VAGONETA_TOTAL_SECTOR_10
-		ld		a,(MUSICA_ON_OFF)
-		or		a
-		jp		z,PINTA_COLORES_SPRITE_VAGON_CASCOS
 		jp		PINTA_COLORES_SPRITE_VAGON
 
 MARCA_REAPLICA_VAGON_RET:

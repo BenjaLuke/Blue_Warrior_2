@@ -809,6 +809,10 @@ BUCLE_PINTA_TILES:
 		jp		z,.VELOCIDAD_DE_FASE_TROTE
 
 		call	stpmus
+
+		ld		a,(DEMO)
+		or		a
+		jp		nz,.VELOCIDAD_DE_FASE_TROTE
 	
 		ld		a,(FASE)
 		add		20
@@ -2069,20 +2073,11 @@ HIDE_STATUS_RET_SIN_CONTROL:
 
 CARGA_DEPH_MUSIC_ON:
 
-			ld		hl,TODOS_LOS_SPRITES									; Depositamos los sprites en vram	
-			jp		COMUN_CARGA_DEPH
-
 CARGA_DEPH_MUSIC_OFF:
-
-			ld		hl,SPRITES_DEPH_CASCOS									; Depositamos los sprites en vram	
 
 COMUN_CARGA_DEPH:
 
-		call	PAGE_32_A_SEGMENT_2
-		ld		de,#4020
-		ld		bc,704
-		call	PON_COLOR_2.sin_bc_impuesta
-		jp		PAGE_10_A_SEGMENT_2
+		jp		CONTROL.teclado
 
 EFECTOS_ON_OFF:
 
@@ -2112,41 +2107,6 @@ EFECTOS_ON_OFF:
 		jp		CONTROL.teclado
 MUSIC_ON_OFF:
 
-		ld		a,(MARCADOR_PULSADO)								; Si ya pulsamos el bot??n, no sirve hasta que lo sueltes
-		or		a
-		jp		nz,CONTROL.teclado
-
-		ld		a,(FMPAC_DESCONECTADO)
-		or		a
-		jp		z,CONTROL.teclado
-
-		ld		a,1													; Bloqueamos la posibilidad de pulsar el bot??n para evitar que se pulse dos veces
-		ld		(MARCADOR_PULSADO),a
-
-		ld		a,(MUSICA_ON_OFF)
-		or		a
-		jp		z,.encendemos
-
-.apagamos:
-
-		xor		a
-		ld		(MUSICA_ON_OFF),a
-		call	stpmus
-		call	CARGA_DEPH_MUSIC_OFF
-		jp		CONTROL.teclado
-
-.encendemos:
-
-		ld		a,1
-		ld		(MUSICA_ON_OFF),a
-		ld		a,(FASE)
-		add		20
-		call	CHANGE_BANK_2
-		di
-		call	strmus
-		ei			
-		call	PAGE_10_A_SEGMENT_2
-		call	CARGA_DEPH_MUSIC_ON
 		jp		CONTROL.teclado
 PAUSE:
 
@@ -2251,12 +2211,6 @@ PAUSE:
 		call	CARGA_ECTO_PALLER
 
 .bucle4_2:
-
-		ld		a,(MUSICA_ON_OFF)
-		or		a
-		jp		nz,.bucle4_3
-
-		call	CARGA_DEPH_MUSIC_OFF
 
 .bucle4_3:
 
@@ -2500,6 +2454,10 @@ MUERTE_POR_APLASTAMIENTO_MENOS_RET:
 		jp		MUERTE_POR_APLASTAMIENTO
 
 MUERTE_POR_TOQUES:
+
+		ld		a,(DEMO)
+		or		a
+		jp		nz,FIN_DE_LA_PARTIDA
 
 		xor		a
 		ld		(TIEMPO_DE_ADJUST),a
@@ -2788,6 +2746,9 @@ COMUN_RECUPERA_SPRITES:
 FIN_DE_LA_PARTIDA:
 
 		call	PAGE_10_A_SEGMENT_2
+		ld		a,(DEMO)
+		or		a
+		call	nz,LIMPIA_AUDIO_DEMO_MUERTE
 
 			push	ix														; Pintamos los datos a la variable ATRIBUTOS_DEPH_VARIABLES para luego hacer un copy directo a vram
 			ld		ix,ATRIBUTOS_DEPH_VARIABLES

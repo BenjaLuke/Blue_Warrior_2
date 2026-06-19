@@ -1,4 +1,173 @@
 
+ACTIVA_DEMO_ROTATIVO:
+
+			ld		a,(DEMO_SIGUIENTE)
+			cp		1
+			jr		z,.DEMO_OK
+			cp		3
+			jr		z,.DEMO_OK
+			cp		5
+			jr		z,.DEMO_OK
+			ld		a,1
+
+.DEMO_OK:
+
+			ld		(DEMO),a
+			add		2
+			cp		7
+			jr		c,.GUARDA_SIGUIENTE
+			ld		a,1
+
+.GUARDA_SIGUIENTE:
+
+			ld		(DEMO_SIGUIENTE),a
+			ret
+
+
+LIMPIA_AUDIO_DEMO_MUERTE:
+
+			call	stpmus
+			call	GICINI
+			xor		a
+			ld		(busply),a
+			ld		(LINEA_PSG_QUE_TOCA),a
+			ret
+
+
+OBTIENE_LINEA_INICIAL_FASE:
+
+			ld		ix,TABLA_DE_TAMANO_DE_FASE
+			ld		a,(DEMO)
+			or		a
+			jr		z,.TABLA_LINEA_INICIO_OK
+			ld		ix,TABLA_DE_TAMANO_DE_FASE_DEMO
+
+.TABLA_LINEA_INICIO_OK:
+
+			ld		a,(FASE)
+			add		a
+			ld		e,a
+			ld		d,0
+			add		ix,de
+			ld		l,(ix)
+			ld		h,(ix+1)
+			ret
+
+TABLA_DE_TAMANO_DE_FASE_DEMO:
+
+			dw		0,185,349,460,468,398
+
+
+REINICIA_CONTROL_DEMO:
+
+			xor		a
+			ld		(DEMO_CONTROL_INDICE),a
+			ld		(DEMO_CONTROL_CONTADOR),a
+			ld		(DEMO_CONTROL_DIRECCION),a
+			ld		(DEMO_CONTROL_DISPARO),a
+			ret
+
+
+CONTROL_DEMO_DIRECCION:
+
+			ld		a,(DEMO_CONTROL_CONTADOR)
+			or		a
+			jr		z,.NUEVO_PASO
+			dec		a
+			ld		(DEMO_CONTROL_CONTADOR),a
+			ld		a,(DEMO_CONTROL_DIRECCION)
+			ret
+
+.NUEVO_PASO:
+
+			ld		a,(DEMO_CONTROL_INDICE)
+			ld		e,a
+			add		a
+			add		e
+			ld		e,a
+			ld		d,0
+			ld		hl,TABLA_CONTROL_DEMO
+			add		hl,de
+			ld		a,(hl)
+			or		a
+			jr		nz,.PASO_VALIDO
+			call	REINICIA_CONTROL_DEMO
+			jr		CONTROL_DEMO_DIRECCION
+
+.PASO_VALIDO:
+
+			ld		(DEMO_CONTROL_CONTADOR),a
+			inc		hl
+			ld		a,(hl)
+			ld		(DEMO_CONTROL_DIRECCION),a
+			inc		hl
+			ld		a,(hl)
+			ld		(DEMO_CONTROL_DISPARO),a
+			ld		a,(DEMO_CONTROL_INDICE)
+			inc		a
+			ld		(DEMO_CONTROL_INDICE),a
+			ld		a,(DEMO_CONTROL_DIRECCION)
+			ret
+
+
+CONTROL_DEMO_DIRECCION_CON_GUARDA:
+
+			call	CONTROL_DEMO_DIRECCION
+			or		a
+			ret		z
+
+			ld		b,a
+			ld		a,(GUARDA_STRIG)
+			ld		(GUARDA_STRIG_2),a
+			ld		a,b
+			ld		(GUARDA_STRIG),a
+			ret
+
+
+CONTROL_DEMO_HAY_TECLA:
+
+			ld		c,0
+			ld		b,11
+
+.BUCLE_TECLAS_DEMO:
+
+			ld		a,c
+			call	SNSMAT_RAM
+			cp		#ff
+			jr		nz,.HAY_TECLA_DEMO
+			inc		c
+			djnz	.BUCLE_TECLAS_DEMO
+			or		a
+			ret
+
+.HAY_TECLA_DEMO:
+
+			scf
+			ret
+
+
+TABLA_CONTROL_DEMO:
+
+			db		30,7,0
+			db		6,0,1, 6,0,0, 6,0,1, 6,0,0, 6,0,1, 6,0,0
+			db		20,1,0
+			db		6,0,1, 6,0,0, 6,0,1, 6,0,0, 6,0,1, 6,0,0
+			db		10,3,0
+			db		6,0,1, 6,0,0, 6,0,1, 6,0,0, 6,0,1, 6,0,0
+			db		30,5,0
+			db		6,0,1, 6,0,0, 6,0,1, 6,0,0, 6,0,1, 6,0,0
+			db		10,1,0
+			db		6,0,1, 6,0,0, 6,0,1, 6,0,0, 6,0,1, 6,0,0
+			db		10,3,0
+			db		6,0,1, 6,0,0, 6,0,1, 6,0,0, 6,0,1, 6,0,0
+			db		30,1,0
+			db		6,0,1, 6,0,0, 6,0,1, 6,0,0, 6,0,1, 6,0,0
+			db		10,3,0
+			db		6,0,1, 6,0,0, 6,0,1, 6,0,0, 6,0,1, 6,0,0
+			db		30,5,0
+			db		0,0,0
+
+
 ES_FASE3_VAGON_ACTIVO:
 
 			ld		a,(FASE)
@@ -2597,7 +2766,7 @@ CONTROL_FASE3_TILE_PUNTO_DEPH:
 			ld		(FASE3_VAGON_AJUSTE_TILE_CONTADOR),a
 			dec		a
 			ld		(FASE3_VAGON_INDICE_16_PRE_Y),a
-			call	CARGA_1_A_45_FASE_3
+			call	CARGA_1_A_25_TRAS_PAUSA
 			call	BUCLE_PINTA_TILES.musica_mas_velocidad
 			ret
 

@@ -53,6 +53,10 @@
 		call	WRTVDP_EN_RAM
 		ei
 
+		ld		a,(DEMO)
+		or		a
+		jr		nz,.NOS_VAMOS_AL_JUEGO
+
 		call	MAPA_DE_SITUACION
 
 .NOS_VAMOS_AL_JUEGO:

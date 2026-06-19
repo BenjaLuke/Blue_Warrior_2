@@ -374,6 +374,12 @@ ROTATIVO_MODO_SALIDA_PRESENTACION:           #1      ; 0 leyendo texto, 1 metien
 ROTATIVO_PASOS_SALIDA_PRESENTACION:          #1      ; Espacios de 6 pixeles que faltan para que salga la cola
 DATOS_COPY_SCROLL_ROTATIVO_PRESENTACION:     #15     ; Datos HMMM dinamicos para desplazar el rotativo
 DATOS_NEGRO_DERECHA_ROTATIVO_PRESENTACION:   #15     ; Datos HMMV dinamicos para borrar X=254..255
+DEMO:                                        #1      ; 0 juego normal, 1/3/5 demo automatica
+DEMO_SIGUIENTE:                              #1      ; Siguiente fase demo que lanza el rotativo
+DEMO_CONTROL_INDICE:                         #1      ; Paso actual de la tabla de control demo
+DEMO_CONTROL_CONTADOR:                       #1      ; Ciclos restantes del paso demo
+DEMO_CONTROL_DIRECCION:                      #1      ; Direccion simulada 0..8
+DEMO_CONTROL_DISPARO:                        #1      ; 0 no dispara, 1 dispara
 
 FINAL_FASE_5_VAMOS_A_TERMINAR_DATAS_HMMV:   #15
 FINAL_FASE_5_VAMOS_A_TERMINAR_X_SEED:       #1

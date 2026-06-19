@@ -124,11 +124,11 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH:
         or      a
         jp      nz,.NO_RESTA_CORAZON_POR_TRUCO
 
-        ; ld      a,(CORAZONES)      ; XXXXXX
-        ; dec     a                  ; XXXXXX  truco
-        ; ld      (CORAZONES),a      ; XXXXXX  truco
-        ;jp      z,MUERTE_POR_TOQUES ; XXXXXX  truco
-        ;call    PINTA_CORAZONES     ; XXXXXX
+        ld      a,(CORAZONES)      ; XXXXXX
+        dec     a                  ; XXXXXX  truco
+        ld      (CORAZONES),a      ; XXXXXX  truco
+        jp      z,MUERTE_POR_TOQUES ; XXXXXX  truco
+        call    PINTA_CORAZONES     ; XXXXXX
 
 .NO_RESTA_CORAZON_POR_TRUCO:
 

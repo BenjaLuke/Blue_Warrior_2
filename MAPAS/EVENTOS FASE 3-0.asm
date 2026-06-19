@@ -438,10 +438,10 @@
 		dw		RETORNO
 		dw		RETORNO
 		dw		NUEVO_COVID_2_CENTRO_DISPARA
-		dw		RETORNO
+		dw		BUCLE_PINTA_TILES.PINTA_FADE_IN_1
 		dw		NUEVO_FUEGO_AVISO_RAILES
 		dw		CARGA_1_A_45_FASE_3; Hemos de cargar los sprites pero con vagoneta
-		dw		RETORNO
+		dw		BUCLE_PINTA_TILES.SI_QUE_SE_MUEVE
 		dw		RETORNO
 		dw		RETORNO
 		dw		RETORNO

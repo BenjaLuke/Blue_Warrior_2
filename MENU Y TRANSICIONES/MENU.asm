@@ -126,6 +126,8 @@ COMIENZA_MENU:
 		ei
 
 		call	PAGE_10_A_SEGMENT_2
+		xor		a
+		ld		(DEMO),a
 
 		call	MUESTRA_PRESENTACION_PROVISIONAL
 		jp		PULSA_UNA_TECLA_PARA_EMPEZAR
@@ -2545,16 +2547,10 @@ AVANZA_ESTADO_ROTATIVO_PRESENTACION:
         ld      (ROTATIVO_PASOS_SALIDA_PRESENTACION),a
         ret     nz
 
-        ; Ya ha salido toda la cola. Reiniciamos el texto desde el principio.
+        ; Ya ha salido toda la cola. Si nadie ha tocado nada, lanzamos demo.
 
-        xor     a
-        ld      (ROTATIVO_MODO_SALIDA_PRESENTACION),a
-        ld      (ROTATIVO_REPETICION_LETRA_PRESENTACION),a
-        ld      a,ROTATIVO_ESPACIOS_SALIDA_PRESENTACION
-        ld      (ROTATIVO_PASOS_SALIDA_PRESENTACION),a
-        ld      hl,TEXTO_ROTATIVO_PRESENTACION
-        ld      (ROTATIVO_PUNTERO_TEXTO_PRESENTACION),hl
-        ret
+		call	PAGE_10_A_SEGMENT_2
+		jp		ACTIVA_DEMO_ROTATIVO
 
 
 MUESTRA_PAGE_OCULTA_ROTATIVO:
@@ -2606,7 +2602,7 @@ DATOS_NEGRO_ROTATIVO_EN_PAGE_1:
 
 TEXTO_ROTATIVO_PRESENTACION:
 
-		db		"BLUE WARRIOR II - Beta version 4.11.193 - 18/6/2026 - 96% - (C) Digital Moai",0
+		db		"BLUE WARRIOR II   -   Beta version 4.12.03   -   19/6/2026   -   97%   -   (C) Digital Moai",0
 
 TEXTO_ROTATIVO_PRESENTACION_FIN:
 
@@ -2897,6 +2893,9 @@ PULSA_UNA_TECLA_PARA_EMPEZAR:
 
 		halt
 		call 	ACTUALIZA_ROTATIVO_PRESENTACION
+		ld		a,(DEMO)
+		or		a
+		jp		nz,INICIA_EN_FASE_DIRECTA
 		jp		PULSA_UNA_TECLA_PARA_EMPEZAR
 
 INICIA_EN_FASE_1:
