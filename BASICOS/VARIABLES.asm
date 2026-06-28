@@ -43,6 +43,7 @@ FOTOGRAMA_DEPH_EN_ORDEN:		#1										; Controla la sucesión de poses del 0 al 
 TRIG_PULSADO:					#1										; Domina si el trig está pulsado o no
 MUSICA_ON_OFF:					#1										; 0 Off 1 on
 FX_ON_OFF:						#1										; 0 off 1 on
+LENGUAJE:						#1										; 1 castellano, 2 ingles
 SPRITE_QUE_TOCA:				#1										; Nos indica los atributos de sprite que toca usar
 VARIABLE_CARGA_AGUA:			#1										; 0 es normal, 1 es de lodo
 FASE:							#1										; Fase en la que está jugando

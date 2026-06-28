@@ -199,19 +199,29 @@ PINTA_TEXTO_PUSH_SPACE_KEY:
 
 		call	OBTIENE_DESTINO_Y_PUSH_SPACE_KEY
 		ld		hl,PUSH_SPACE_KEY_X
-		ld		ix,TEXTO_PUSH_SPACE_KEY
+		ld		iy,TEXTO_PUSH_SPACE_KEY
+		ld		a,(LENGUAJE)
+		dec		a
+		jr		nz,.AL_BUCLE
+		ld		iy,TEXTO_PULSA_ESPACIO
+
+.AL_BUCLE:
 		jp		BUCLE_PINTA_TEXTO_PUSH_SPACE_KEY
 
 
 PINTA_TEXTO_PUSH_SPACE_KEY_EN_DOS_PAGES:
 
 		xor		a
-		ld		(ACPAGE),a
-		call	PINTA_TEXTO_PUSH_SPACE_KEY
 
-		ld		a,1
+.BUCLE_PAGES:
+
 		ld		(ACPAGE),a
+		push	af
 		call	PINTA_TEXTO_PUSH_SPACE_KEY
+		pop		af
+		inc		a
+		cp		2
+		jr		nz,.BUCLE_PAGES
 
 		xor		a
 		ld		(ACPAGE),a
@@ -219,21 +229,19 @@ PINTA_TEXTO_PUSH_SPACE_KEY_EN_DOS_PAGES:
 
 BUCLE_PINTA_TEXTO_PUSH_SPACE_KEY:
 
-		ld		a,(ix+0)
+		ld		a,(iy+0)
 		or		a
 		ret		z
 
 		push	de
 		push	hl
-		push	ix
 		call	PINTA_LETRA_MENU_EN_DESTINO
-		pop		ix
 		pop		hl
 		pop		de
 
 		ld		bc,MENU_LETRA_ANCHO
 		add		hl,bc
-		inc		ix
+		inc		iy
 		jp		BUCLE_PINTA_TEXTO_PUSH_SPACE_KEY
 
 
@@ -241,21 +249,25 @@ TEXTO_PUSH_SPACE_KEY:
 
 		db		"PUSH SPACE KEY",0
 
+TEXTO_PULSA_ESPACIO:
+
+		db		"PULSA  ESPACIO",0
+
 OBTIENE_DESTINO_Y_PUSH_SPACE_KEY:
 
+		ld		de,PUSH_SPACE_KEY_Y
 		ld		a,(ACPAGE)
 		or		a
-		ld		de,PUSH_SPACE_KEY_Y
 		ret		z
-		ld		de,#0100+PUSH_SPACE_KEY_Y
+		inc		d
 		ret
 
 OBTIENE_DESTINO_Y_ROTATIVO_DESDE_A:
 
-		or		a
 		ld		de,ROTATIVO_Y_PRESENTACION
+		or		a
 		ret		z
-		ld		de,#0100+ROTATIVO_Y_PRESENTACION
+		inc		d
 		ret
 
 PINTA_LETRA_MENU_EN_DESTINO:
@@ -343,7 +355,15 @@ TABLA_ESPECIALES_MENU:
 
 PINTA_TEXTO_MENU_FORMA_3:
 
+		ld		a,(DIRPA2)
+		push	af
+		ld		a,2
+		ld		(DIRPA2),a
 		ld		a,(ix+0)
+		ld		c,a
+		pop		af
+		ld		(DIRPA2),a
+		ld		a,c
 		or		a
 		ret		z
 
@@ -606,6 +626,14 @@ PINTA_CUATRO_FRASES_CINEMATICA:
 		push	ix
 		pop		hl
 
+		ld		a,(LENGUAJE)
+		cp		2
+		jr		nz,.TEXTOS_CINEMATICA_LISTOS
+		ld		bc,TEXTO_CINEMATICA_1_INGLES-TEXTO_CINEMATICA_1
+		add		hl,bc
+
+.TEXTOS_CINEMATICA_LISTOS:
+
 		ld		de,CINEMATICA_TEXTO_Y_1
 		call	PINTA_FRASE_CINEMATICA_DESDE_TABLA
 		ret		c
@@ -623,10 +651,16 @@ PINTA_CUATRO_FRASES_CINEMATICA:
 
 PINTA_FRASE_CINEMATICA_DESDE_TABLA:
 
+		ld		a,(DIRPA2)
+		push	af
+		ld		a,2
+		ld		(DIRPA2),a
 		ld		c,(hl)
 		inc		hl
 		ld		b,(hl)
 		inc		hl
+		pop		af
+		ld		(DIRPA2),a
 		push	hl
 		push	bc
 		pop		ix
@@ -2151,86 +2185,6 @@ DATOS_COPY_COPI_CINEMATICA_5_2:
 		dw		#0026,#0022
 		db		#00,#00,10010000b
 
-TEXTO_CINEMATICA_1:
-
-		dw		TEXTO_CINEMATICA_1_1
-		dw		TEXTO_CINEMATICA_1_2
-		dw		TEXTO_CINEMATICA_1_3
-		dw		TEXTO_CINEMATICA_1_4
-
-TEXTO_CINEMATICA_2:
-
-		dw		TEXTO_CINEMATICA_2_1
-		dw		TEXTO_CINEMATICA_2_2
-		dw		TEXTO_CINEMATICA_2_3
-		dw		TEXTO_CINEMATICA_2_4
-
-TEXTO_CINEMATICA_3:
-
-		dw		TEXTO_CINEMATICA_3_1
-		dw		TEXTO_CINEMATICA_3_2
-		dw		TEXTO_CINEMATICA_3_3
-		dw		TEXTO_CINEMATICA_3_4
-
-TEXTO_CINEMATICA_4:
-
-		dw		TEXTO_CINEMATICA_4_1
-		dw		TEXTO_CINEMATICA_4_2
-		dw		TEXTO_CINEMATICA_4_3
-		dw		TEXTO_CINEMATICA_4_4
-
-TEXTO_CINEMATICA_5:
-
-		dw		TEXTO_CINEMATICA_5_1
-		dw		TEXTO_CINEMATICA_5_2
-		dw		TEXTO_CINEMATICA_5_3
-		dw		TEXTO_CINEMATICA_5_4
-
-TEXTO_CINEMATICA_1_1:
-		db		"The story of Gamourla isn't exactly as ",0
-TEXTO_CINEMATICA_1_2:
-		db		"you were told. Although it's a ",0
-TEXTO_CINEMATICA_1_3:
-		db		"prosperous village, the fear of the past",0
-TEXTO_CINEMATICA_1_4:
-		db		"still lingers.",0
-
-TEXTO_CINEMATICA_2_1:
-		db		"And Deph Kurgan, hero of past ",0
-TEXTO_CINEMATICA_2_2:
-		db		"adventures, feels in his bones how",0
-TEXTO_CINEMATICA_2_3:
-		db		"evil is approaching once more.",0
-TEXTO_CINEMATICA_2_4:
-		db		"   ",0
-
-TEXTO_CINEMATICA_3_1:
-		db		"And one night, his worst nightmares come",0
-TEXTO_CINEMATICA_3_2:
-		db		"true. Lord Adder floods the sky,",0
-TEXTO_CINEMATICA_3_3:
-		db		"threatening the crops and the lives of",0
-TEXTO_CINEMATICA_3_4:
-		db		"the villagers.",0
-
-TEXTO_CINEMATICA_4_1:
-		db		"But Deph isn't intimidated by this",0				  	
-TEXTO_CINEMATICA_4_2:
-		db		"apocalyptic vision. He knows what he has",0
-TEXTO_CINEMATICA_4_3:
-		db		"to do. He's done it before.",0
-TEXTO_CINEMATICA_4_4:
-		db		"   ",0
-
-TEXTO_CINEMATICA_5_1:
-		db		"Deph will obtain the Earth Goddess Stone",0
-TEXTO_CINEMATICA_5_2:
-		db		"to stop Lord Adder. But this time, he",0
-TEXTO_CINEMATICA_5_3:
-		db		"will also obtain the sacred Diamond that",0
-TEXTO_CINEMATICA_5_4:
-		db		"will break the cycle.",0
-
 ROTATIVO_Y_PRESENTACION                  equ     195
 
 ; Cada cuántos frames se actualiza el rotativo.
@@ -2602,7 +2556,7 @@ DATOS_NEGRO_ROTATIVO_EN_PAGE_1:
 
 TEXTO_ROTATIVO_PRESENTACION:
 
-		db		"BLUE WARRIOR II   -   Beta version 5.00.13  -  28-6-2026 - 98 por ciento - (C) Digital Moai",0
+		db		"BLUE WARRIOR II   -   Beta version 5.01.01  -  28-6-2026 - 98 por ciento - (C) Digital Moai",0
 
 TEXTO_ROTATIVO_PRESENTACION_FIN:
 
@@ -2793,24 +2747,11 @@ LEE_TECLA_ACTUAL_TRUCO_PRESENTACION:
 FLASH_TRUCO_PRESENTACION:
 
 		ld		hl,PALETA_BLANCA_PRESENTACION
-		call	SETPALETE_PRESENTACION_SIN_FORZAR
+		call	SETPALETE_CINEMATICA
 		ld		a,5
 		call	BUCLE_PINTA_TILES.rutina_de_pausa
 		ld		hl,PALETA_MENU_LOCAL_FIJA
-		jp		SETPALETE_PRESENTACION_SIN_FORZAR
-
-
-SETPALETE_PRESENTACION_SIN_FORZAR:
-
-		xor		a
-		di
-		out		(#99),a
-		ld		a,16+128
-		out		(#99),a
-		ld		c,#9A
-[32]	outi
-		ei
-		ret
+		jp		SETPALETE_CINEMATICA
 
 
 TEXTO_TRUCO_ELSLUCKIS:

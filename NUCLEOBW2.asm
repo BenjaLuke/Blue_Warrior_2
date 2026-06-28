@@ -91,7 +91,8 @@ RECONOCEMOS_AL_TURBOR:
 		ld		a,1														; Avisamos que existe FM Pac para su anulación durante la partida
 		ld		(FMPAC_DESCONECTADO),a
 
-   jp      PREPARANDO_FX
+   		jp      PREPARANDO_FX
+
 PREPARANDO_FMPAC:
 
         call    BUSCAMOS_FM_PAC
@@ -144,7 +145,14 @@ REINICIAMOS_MAX_SCORE:
 		ld		hl,0
 		ld		(MAX_SCORE),hl
 
+SELECCION_IDIOMA_INICIAL:
+
+		ld		a,2
+		ld		(DIRPA2),a
+		call	CODIGO_SELECCION_LENGUAJE
+
 MARCA:
+
         include "MENU Y TRANSICIONES/ANIMACION DE MARCA sc7.asm" 
 
         include "AUDIOS/FMPAC FOUND.asm"
@@ -188,7 +196,7 @@ GRAFICOS_MOAI_1:
  ****** SLOT   2 ******    
  **********************/
 		org		#8000													; Esta página está pensada para ir de la dirección $4000 a la $7CCC
-; RESUMEN: 2 - Caambio de page a menú
+; RESUMEN: 2 - Caambio de page a menú Y cambio de lenguaje
 
 CARGA_SLOT_MENU:
 
@@ -196,8 +204,256 @@ CARGA_SLOT_MENU:
 		ld      (DIRPA1),a											    ; Banco 1, pagina 3 del MEGAROM
         jp      COMIENZA_MENU
 
-        ds		#C000-$
 
+IDIOMA_FADE_IN:
+		incbin  "PALETAS/IDIOMA/IDIOMA.fadein"
+
+IDIOMA_PALETE:
+		incbin  "PALETAS/IDIOMA/IDIOMA.palete"
+
+IDIOMA_FADE_OUT:
+		incbin  "PALETAS/IDIOMA/IDIOMA.fadeout"
+
+IDIOMA_GRAFICO:
+		incbin  "GRAFICOS/PRESENTACIONES/IDIOMA.dat"
+
+CODIGO_SELECCION_LENGUAJE:
+		call	DISSCR_RAM
+
+		ld		a,5
+		call	CHGMOD
+
+		ld		hl,IDIOMA_FADE_IN
+		call	SETPALETE
+
+		xor		a
+		call	SETPAGE
+
+		xor		a
+		ld		hl,#0000
+		ld		bc,#8000
+		call	FILVRM_RAM
+
+		xor		a
+		ld		hl,IDIOMA_GRAFICO
+		ld		de,#3200
+		ld		bc,6272
+		call	LDIRVM2
+
+		call	ENASCR_RAM
+
+		ld		hl,IDIOMA_FADE_IN
+		call	FADE_IDIOMA_8_BLOQUES
+
+.ESPERA_TECLA_IDIOMA:
+
+		halt
+		ld		a,0
+		call	SNSMAT_RAM
+		bit		1,a
+		jr		z,.IDIOMA_1
+		bit		2,a
+		jr		z,.IDIOMA_2
+		jr		.ESPERA_TECLA_IDIOMA
+
+.IDIOMA_1:
+
+		ld		a,1
+		jr		.GUARDA_IDIOMA
+
+.IDIOMA_2:
+
+		ld		a,2
+
+.GUARDA_IDIOMA:
+
+		ld		(LENGUAJE),a
+
+		ld		hl,IDIOMA_PALETE
+		call	FADE_IDIOMA_8_BLOQUES
+		ret
+
+FADE_IDIOMA_8_BLOQUES:
+
+		ld		e,8
+
+.BUCLE_FADE_IDIOMA:
+
+		call	SETPALETE
+
+		push	hl
+		push	de
+		ld		a,6
+		call	BUCLE_PINTA_TILES.rutina_de_pausa
+		pop		de
+		pop		hl
+
+		dec		e
+		jr		nz,.BUCLE_FADE_IDIOMA
+
+		ret
+
+TEXTO_CINEMATICA_1:
+
+		dw		TEXTO_CINEMATICA_1_1
+		dw		TEXTO_CINEMATICA_1_2
+		dw		TEXTO_CINEMATICA_1_3
+		dw		TEXTO_CINEMATICA_1_4
+
+TEXTO_CINEMATICA_2:
+
+		dw		TEXTO_CINEMATICA_2_1
+		dw		TEXTO_CINEMATICA_2_2
+		dw		TEXTO_CINEMATICA_2_3
+		dw		TEXTO_CINEMATICA_2_4
+
+TEXTO_CINEMATICA_3:
+
+		dw		TEXTO_CINEMATICA_3_1
+		dw		TEXTO_CINEMATICA_3_2
+		dw		TEXTO_CINEMATICA_3_3
+		dw		TEXTO_CINEMATICA_3_4
+
+TEXTO_CINEMATICA_4:
+
+		dw		TEXTO_CINEMATICA_4_1
+		dw		TEXTO_CINEMATICA_4_2
+		dw		TEXTO_CINEMATICA_4_3
+		dw		TEXTO_CINEMATICA_4_4
+
+TEXTO_CINEMATICA_5:
+
+		dw		TEXTO_CINEMATICA_5_1
+		dw		TEXTO_CINEMATICA_5_2
+		dw		TEXTO_CINEMATICA_5_3
+		dw		TEXTO_CINEMATICA_5_4
+
+TEXTO_CINEMATICA_1_INGLES:
+
+		dw		TEXTO_CINEMATICA_1_1_INGLES
+		dw		TEXTO_CINEMATICA_1_2_INGLES
+		dw		TEXTO_CINEMATICA_1_3_INGLES
+		dw		TEXTO_CINEMATICA_1_4_INGLES
+
+TEXTO_CINEMATICA_2_INGLES:
+
+		dw		TEXTO_CINEMATICA_2_1_INGLES
+		dw		TEXTO_CINEMATICA_2_2_INGLES
+		dw		TEXTO_CINEMATICA_2_3_INGLES
+		dw		TEXTO_CINEMATICA_2_4_INGLES
+
+TEXTO_CINEMATICA_3_INGLES:
+
+		dw		TEXTO_CINEMATICA_3_1_INGLES
+		dw		TEXTO_CINEMATICA_3_2_INGLES
+		dw		TEXTO_CINEMATICA_3_3_INGLES
+		dw		TEXTO_CINEMATICA_3_4_INGLES
+
+TEXTO_CINEMATICA_4_INGLES:
+
+		dw		TEXTO_CINEMATICA_4_1_INGLES
+		dw		TEXTO_CINEMATICA_4_2_INGLES
+		dw		TEXTO_CINEMATICA_4_3_INGLES
+		dw		TEXTO_CINEMATICA_4_4_INGLES
+
+TEXTO_CINEMATICA_5_INGLES:
+
+		dw		TEXTO_CINEMATICA_5_1_INGLES
+		dw		TEXTO_CINEMATICA_5_2_INGLES
+		dw		TEXTO_CINEMATICA_5_3_INGLES
+		dw		TEXTO_CINEMATICA_5_4_INGLES
+
+TEXTO_CINEMATICA_1_1:
+		db		"La historia de Gamourla no fue tal y   ",0
+TEXTO_CINEMATICA_1_2:
+		db		"como te contaron. Aunque es una",0
+TEXTO_CINEMATICA_1_3:
+		db		"aldea prospera, el miedo del pasado     ",0
+TEXTO_CINEMATICA_1_4:
+		db		"sigue latente.",0
+
+TEXTO_CINEMATICA_2_1:
+		db		"Y Deph Kurgan, heroe de otras ",0
+TEXTO_CINEMATICA_2_2:
+		db		"aventuras, siente en sus huesos   ",0
+TEXTO_CINEMATICA_2_3:
+		db		"que el mal se acerca de nuevo.",0
+TEXTO_CINEMATICA_2_4:
+		db		"   ",0
+
+TEXTO_CINEMATICA_3_1:
+		db		"Y una noche, sus peores pesadillas, se  ",0
+TEXTO_CINEMATICA_3_2:
+		db		"cumplen. Lord Adder cubre el    ",0
+TEXTO_CINEMATICA_3_3:
+		db		"cielo, amenazando cosechas y vidas de ",0
+TEXTO_CINEMATICA_3_4:
+		db		"los aldeanos. ",0
+
+TEXTO_CINEMATICA_4_1:
+		db		"Pero Deph no se intimida ante esta",0
+TEXTO_CINEMATICA_4_2:
+		db		"vision apocaliptica. Sabe que debe      ",0
+TEXTO_CINEMATICA_4_3:
+		db		"hacer. Ya lo hizo antes.   ",0
+TEXTO_CINEMATICA_4_4:
+		db		"   ",0
+
+TEXTO_CINEMATICA_5_1:
+		db		"Deph obtendra la Piedra de la Tierra    ",0
+TEXTO_CINEMATICA_5_2:
+		db		"para frenar a Lord Adder. Esta vez   ",0
+TEXTO_CINEMATICA_5_3:
+		db		"tambien obtendra el Diamante sagrado    ",0
+TEXTO_CINEMATICA_5_4:
+		db		"que rompera el ciclo.",0
+
+TEXTO_CINEMATICA_1_1_INGLES:
+		db		"The story of Gamourla isn't exactly as ",0
+TEXTO_CINEMATICA_1_2_INGLES:
+		db		"you were told. Although it's a ",0
+TEXTO_CINEMATICA_1_3_INGLES:
+		db		"prosperous village, the fear of the past",0
+TEXTO_CINEMATICA_1_4_INGLES:
+		db		"still lingers.",0
+
+TEXTO_CINEMATICA_2_1_INGLES:
+		db		"And Deph Kurgan, hero of past ",0
+TEXTO_CINEMATICA_2_2_INGLES:
+		db		"adventures, feels in his bones how",0
+TEXTO_CINEMATICA_2_3_INGLES:
+		db		"evil is approaching once more.",0
+TEXTO_CINEMATICA_2_4_INGLES:
+		db		"   ",0
+
+TEXTO_CINEMATICA_3_1_INGLES:
+		db		"And one night, his worst nightmares come",0
+TEXTO_CINEMATICA_3_2_INGLES:
+		db		"true. Lord Adder floods the sky,",0
+TEXTO_CINEMATICA_3_3_INGLES:
+		db		"threatening the crops and the lives of",0
+TEXTO_CINEMATICA_3_4_INGLES:
+		db		"the villagers.",0
+
+TEXTO_CINEMATICA_4_1_INGLES:
+		db		"But Deph isn't intimidated by this",0
+TEXTO_CINEMATICA_4_2_INGLES:
+		db		"apocalyptic vision. He knows what he has",0
+TEXTO_CINEMATICA_4_3_INGLES:
+		db		"to do. He's done it before.",0
+TEXTO_CINEMATICA_4_4_INGLES:
+		db		"   ",0
+
+TEXTO_CINEMATICA_5_1_INGLES:
+		db		"Deph will obtain the Earth Goddess Stone",0
+TEXTO_CINEMATICA_5_2_INGLES:
+		db		"to stop Lord Adder. But this time, he",0
+TEXTO_CINEMATICA_5_3_INGLES:
+		db		"will also obtain the sacred Diamond that",0
+TEXTO_CINEMATICA_5_4_INGLES:
+		db		"will break the cycle.",0
+		
+		ds		#C000-$
 /**********************
  ****** PAGINA 2 ******
  ******   END    ******
