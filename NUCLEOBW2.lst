@@ -1,4 +1,4 @@
-Sjasm Z80 Assembler v0.42c - www.xl2s.tk             [2026.06.28 - 18:15:36]
+Sjasm Z80 Assembler v0.42c - www.xl2s.tk             [2026.06.28 - 18:22:24]
 
 NUCLEOBW2.asm
 Errors: 0
@@ -118293,52 +118293,52 @@ Errors: 0
      219.  00:410E                      
      220.  00:410E                      PONE_PRIMERA_PALETA_CINEMATICA_FINAL_5_6:
      221.  00:410E                      
-     222.  00:410E  21 46 4A            		ld		hl,FADE_IN_DATOS_CINEMATICA_FINAL_5_6
+     222.  00:410E  21 70 4A            		ld		hl,FADE_IN_DATOS_CINEMATICA_FINAL_5_6
      223.  00:4111  C3 58 41            		jp		SETPALETE_CINEMATICA_FINAL
      224.  00:4114                      
      225.  00:4114                      
      226.  00:4114                      PONE_PRIMERA_PALETA_CINEMATICA_FINAL_7_8:
      227.  00:4114                      
-     228.  00:4114  21 26 4C            		ld		hl,FADE_IN_DATOS_CINEMATICA_FINAL_7_8
+     228.  00:4114  21 50 4C            		ld		hl,FADE_IN_DATOS_CINEMATICA_FINAL_7_8
      229.  00:4117  C3 58 41            		jp		SETPALETE_CINEMATICA_FINAL
      230.  00:411A                      
      231.  00:411A                      
      232.  00:411A                      PONE_PALETA_FINAL_CINEMATICA_FINAL_5_6:
      233.  00:411A                      
-     234.  00:411A  21 26 4A            		ld		hl,PALETA_DATOS_CINEMATICA_FINAL_5_6
+     234.  00:411A  21 50 4A            		ld		hl,PALETA_DATOS_CINEMATICA_FINAL_5_6
      235.  00:411D  C3 58 41            		jp		SETPALETE_CINEMATICA_FINAL
      236.  00:4120                      
      237.  00:4120                      
      238.  00:4120                      PONE_PALETA_FINAL_CINEMATICA_FINAL_7_8:
      239.  00:4120                      
-     240.  00:4120  21 06 4C            		ld		hl,PALETA_DATOS_CINEMATICA_FINAL_7_8
+     240.  00:4120  21 30 4C            		ld		hl,PALETA_DATOS_CINEMATICA_FINAL_7_8
      241.  00:4123  C3 58 41            		jp		SETPALETE_CINEMATICA_FINAL
      242.  00:4126                      
      243.  00:4126                      
      244.  00:4126                      FADE_IN_CINEMATICA_FINAL_5_6:
      245.  00:4126                      
-     246.  00:4126  21 66 4A            		ld		hl,FADE_IN_DATOS_CINEMATICA_FINAL_5_6+32
+     246.  00:4126  21 90 4A            		ld		hl,FADE_IN_DATOS_CINEMATICA_FINAL_5_6+32
      247.  00:4129  1E 06               		ld		e,6
      248.  00:412B  C3 46 41            		jp		BUCLE_FADE_CINEMATICA_FINAL
      249.  00:412E                      
      250.  00:412E                      
      251.  00:412E                      FADE_IN_CINEMATICA_FINAL_7_8:
      252.  00:412E                      
-     253.  00:412E  21 46 4C            		ld		hl,FADE_IN_DATOS_CINEMATICA_FINAL_7_8+32
+     253.  00:412E  21 70 4C            		ld		hl,FADE_IN_DATOS_CINEMATICA_FINAL_7_8+32
      254.  00:4131  1E 06               		ld		e,6
      255.  00:4133  C3 46 41            		jp		BUCLE_FADE_CINEMATICA_FINAL
      256.  00:4136                      
      257.  00:4136                      
      258.  00:4136                      FADE_OUT_CINEMATICA_FINAL_5_6:
      259.  00:4136                      
-     260.  00:4136  21 26 4B            		ld		hl,FADE_OUT_DATOS_CINEMATICA_FINAL_5_6
+     260.  00:4136  21 50 4B            		ld		hl,FADE_OUT_DATOS_CINEMATICA_FINAL_5_6
      261.  00:4139  1E 07               		ld		e,7
      262.  00:413B  C3 46 41            		jp		BUCLE_FADE_CINEMATICA_FINAL
      263.  00:413E                      
      264.  00:413E                      
      265.  00:413E                      FADE_OUT_CINEMATICA_FINAL_7_8:
      266.  00:413E                      
-     267.  00:413E  21 06 4D            		ld		hl,FADE_OUT_DATOS_CINEMATICA_FINAL_7_8
+     267.  00:413E  21 30 4D            		ld		hl,FADE_OUT_DATOS_CINEMATICA_FINAL_7_8
      268.  00:4141  1E 07               		ld		e,7
      269.  00:4143  C3 46 41            		jp		BUCLE_FADE_CINEMATICA_FINAL
      270.  00:4146                      
@@ -118621,7 +118621,7 @@ Errors: 0
      543.  00:4301  ED 5B F3 C5         		ld		de,(CINEMATICA_FINAL_CREDITOS_Y_ACTUAL)
      544.  00:4305  CD 60 43            		call	PINTA_LINEAS_CREDITOS_CINEMATICA_FINAL
      545.  00:4308                      
-     546.  00:4308  DD 21 E0 49         		ld		ix,TEXTO_CREDITO_COPYRIGHT
+     546.  00:4308  DD 21 0A 4A         		ld		ix,TEXTO_CREDITO_COPYRIGHT
      547.  00:430C  11 60 00            		ld		de,CINEMATICA_FINAL_CREDITOS_Y_CENTRO
      548.  00:430F                      
      549.  00:430F  3A F7 C5            		ld		a,(CINEMATICA_FINAL_CREDITOS_PAGE)
@@ -118817,19 +118817,19 @@ Errors: 0
      739.  00:43E0                      
      740.  00:43E0                      PONE_PALETA_NEGRA_CREDITOS_CINEMATICA_FINAL:
      741.  00:43E0                      
-     742.  00:43E0  21 F6 49            		ld		hl,PALETA_NEGRA_CREDITOS_CINEMATICA_FINAL
+     742.  00:43E0  21 20 4A            		ld		hl,PALETA_NEGRA_CREDITOS_CINEMATICA_FINAL
      743.  00:43E3  C3 58 41            		jp		SETPALETE_CINEMATICA_FINAL
      744.  00:43E6                      
      745.  00:43E6                      
      746.  00:43E6                      PONE_COLOR_15_BLANCO_CREDITOS_CINEMATICA_FINAL:
      747.  00:43E6                      
-     748.  00:43E6  21 14 4A            		ld		hl,COLOR_15_CREDITOS_BLANCO
+     748.  00:43E6  21 3E 4A            		ld		hl,COLOR_15_CREDITOS_BLANCO
      749.  00:43E9  C3 01 44            		jp		PONE_COLOR_15_CREDITOS_DESDE_HL
      750.  00:43EC                      
      751.  00:43EC                      
      752.  00:43EC                      FADE_OUT_COLOR_15_CREDITOS_CINEMATICA_FINAL:
      753.  00:43EC                      
-     754.  00:43EC  21 16 4A            		ld		hl,FADE_OUT_COLOR_15_CREDITOS
+     754.  00:43EC  21 40 4A            		ld		hl,FADE_OUT_COLOR_15_CREDITOS
      755.  00:43EF  1E 08               		ld		e,8
      756.  00:43F1                      
      757.  00:43F1                      .BUCLE:
@@ -119171,68 +119171,68 @@ Errors: 0
     1060.  00:4701  FC 47               		dw		TEXTO_CREDITO_009
     1061.  00:4703  FD 47               		dw		TEXTO_CREDITO_010
     1062.  00:4705  FE 47               		dw		TEXTO_CREDITO_011
-    1063.  00:4707  20 48               		dw		TEXTO_CREDITO_012
-    1064.  00:4709  46 48               		dw		TEXTO_CREDITO_013
-    1065.  00:470B  47 48               		dw		TEXTO_CREDITO_014
-    1066.  00:470D  57 48               		dw		TEXTO_CREDITO_015
-    1067.  00:470F  58 48               		dw		TEXTO_CREDITO_016
-    1068.  00:4711  59 48               		dw		TEXTO_CREDITO_017
-    1069.  00:4713  62 48               		dw		TEXTO_CREDITO_018
-    1070.  00:4715  63 48               		dw		TEXTO_CREDITO_019
-    1071.  00:4717  73 48               		dw		TEXTO_CREDITO_020
-    1072.  00:4719  74 48               		dw		TEXTO_CREDITO_021
-    1073.  00:471B  75 48               		dw		TEXTO_CREDITO_022
-    1074.  00:471D  76 48               		dw		TEXTO_CREDITO_023
-    1075.  00:471F  99 48               		dw		TEXTO_CREDITO_024
-    1076.  00:4721  9A 48               		dw		TEXTO_CREDITO_025
-    1077.  00:4723  A7 48               		dw		TEXTO_CREDITO_026
-    1078.  00:4725  A8 48               		dw		TEXTO_CREDITO_027
-    1079.  00:4727  A9 48               		dw		TEXTO_CREDITO_028
-    1080.  00:4729  B3 48               		dw		TEXTO_CREDITO_029
-    1081.  00:472B  B4 48               		dw		TEXTO_CREDITO_030
-    1082.  00:472D  B8 48               		dw		TEXTO_CREDITO_031
-    1083.  00:472F  B9 48               		dw		TEXTO_CREDITO_032
-    1084.  00:4731  CC 48               		dw		TEXTO_CREDITO_033
-    1085.  00:4733  CD 48               		dw		TEXTO_CREDITO_034
-    1086.  00:4735  D1 48               		dw		TEXTO_CREDITO_035
-    1087.  00:4737  D2 48               		dw		TEXTO_CREDITO_036
-    1088.  00:4739  E4 48               		dw		TEXTO_CREDITO_037
-    1089.  00:473B  E5 48               		dw		TEXTO_CREDITO_038
-    1090.  00:473D  F2 48               		dw		TEXTO_CREDITO_039
-    1091.  00:473F  FB 48               		dw		TEXTO_CREDITO_040
-    1092.  00:4741  05 49               		dw		TEXTO_CREDITO_041
-    1093.  00:4743  0F 49               		dw		TEXTO_CREDITO_042
-    1094.  00:4745  10 49               		dw		TEXTO_CREDITO_043
-    1095.  00:4747  20 49               		dw		TEXTO_CREDITO_044
-    1096.  00:4749  21 49               		dw		TEXTO_CREDITO_045
-    1097.  00:474B  31 49               		dw		TEXTO_CREDITO_046
-    1098.  00:474D  41 49               		dw		TEXTO_CREDITO_047
-    1099.  00:474F  42 49               		dw		TEXTO_CREDITO_048
-    1100.  00:4751  43 49               		dw		TEXTO_CREDITO_049
-    1101.  00:4753  61 49               		dw		TEXTO_CREDITO_050
-    1102.  00:4755  78 49               		dw		TEXTO_CREDITO_051
-    1103.  00:4757  97 49               		dw		TEXTO_CREDITO_052
-    1104.  00:4759  98 49               		dw		TEXTO_CREDITO_053
-    1105.  00:475B  A6 49               		dw		TEXTO_CREDITO_054
-    1106.  00:475D  A7 49               		dw		TEXTO_CREDITO_055
-    1107.  00:475F  BF 49               		dw		TEXTO_CREDITO_056
-    1108.  00:4761  C0 49               		dw		TEXTO_CREDITO_057
-    1109.  00:4763  D2 49               		dw		TEXTO_CREDITO_058
-    1110.  00:4765  D3 49               		dw		TEXTO_CREDITO_059
-    1111.  00:4767  D4 49               		dw		TEXTO_CREDITO_060
-    1112.  00:4769  D5 49               		dw		TEXTO_CREDITO_061
-    1113.  00:476B  D6 49               		dw		TEXTO_CREDITO_062
-    1114.  00:476D  D7 49               		dw		TEXTO_CREDITO_063
-    1115.  00:476F  D8 49               		dw		TEXTO_CREDITO_064
-    1116.  00:4771  D9 49               		dw		TEXTO_CREDITO_065
-    1117.  00:4773  DA 49               		dw		TEXTO_CREDITO_066
-    1118.  00:4775  DB 49               		dw		TEXTO_CREDITO_067
-    1119.  00:4777  DC 49               		dw		TEXTO_CREDITO_068
-    1120.  00:4779  DD 49               		dw		TEXTO_CREDITO_069
-    1121.  00:477B  DE 49               		dw		TEXTO_CREDITO_070
-    1122.  00:477D  DF 49               		dw		TEXTO_CREDITO_071
+    1063.  00:4707  22 48               		dw		TEXTO_CREDITO_012
+    1064.  00:4709  48 48               		dw		TEXTO_CREDITO_013
+    1065.  00:470B  49 48               		dw		TEXTO_CREDITO_014
+    1066.  00:470D  59 48               		dw		TEXTO_CREDITO_015
+    1067.  00:470F  5A 48               		dw		TEXTO_CREDITO_016
+    1068.  00:4711  5B 48               		dw		TEXTO_CREDITO_017
+    1069.  00:4713  64 48               		dw		TEXTO_CREDITO_018
+    1070.  00:4715  65 48               		dw		TEXTO_CREDITO_019
+    1071.  00:4717  75 48               		dw		TEXTO_CREDITO_020
+    1072.  00:4719  76 48               		dw		TEXTO_CREDITO_021
+    1073.  00:471B  77 48               		dw		TEXTO_CREDITO_022
+    1074.  00:471D  78 48               		dw		TEXTO_CREDITO_023
+    1075.  00:471F  9B 48               		dw		TEXTO_CREDITO_024
+    1076.  00:4721  9C 48               		dw		TEXTO_CREDITO_025
+    1077.  00:4723  A9 48               		dw		TEXTO_CREDITO_026
+    1078.  00:4725  AA 48               		dw		TEXTO_CREDITO_027
+    1079.  00:4727  AB 48               		dw		TEXTO_CREDITO_028
+    1080.  00:4729  B5 48               		dw		TEXTO_CREDITO_029
+    1081.  00:472B  B6 48               		dw		TEXTO_CREDITO_030
+    1082.  00:472D  C7 48               		dw		TEXTO_CREDITO_031
+    1083.  00:472F  C8 48               		dw		TEXTO_CREDITO_032
+    1084.  00:4731  DB 48               		dw		TEXTO_CREDITO_033
+    1085.  00:4733  DC 48               		dw		TEXTO_CREDITO_034
+    1086.  00:4735  EF 48               		dw		TEXTO_CREDITO_035
+    1087.  00:4737  F0 48               		dw		TEXTO_CREDITO_036
+    1088.  00:4739  02 49               		dw		TEXTO_CREDITO_037
+    1089.  00:473B  03 49               		dw		TEXTO_CREDITO_038
+    1090.  00:473D  10 49               		dw		TEXTO_CREDITO_039
+    1091.  00:473F  1E 49               		dw		TEXTO_CREDITO_040
+    1092.  00:4741  2F 49               		dw		TEXTO_CREDITO_041
+    1093.  00:4743  39 49               		dw		TEXTO_CREDITO_042
+    1094.  00:4745  3A 49               		dw		TEXTO_CREDITO_043
+    1095.  00:4747  4A 49               		dw		TEXTO_CREDITO_044
+    1096.  00:4749  4B 49               		dw		TEXTO_CREDITO_045
+    1097.  00:474B  5B 49               		dw		TEXTO_CREDITO_046
+    1098.  00:474D  6B 49               		dw		TEXTO_CREDITO_047
+    1099.  00:474F  6C 49               		dw		TEXTO_CREDITO_048
+    1100.  00:4751  6D 49               		dw		TEXTO_CREDITO_049
+    1101.  00:4753  8B 49               		dw		TEXTO_CREDITO_050
+    1102.  00:4755  A2 49               		dw		TEXTO_CREDITO_051
+    1103.  00:4757  C1 49               		dw		TEXTO_CREDITO_052
+    1104.  00:4759  C2 49               		dw		TEXTO_CREDITO_053
+    1105.  00:475B  D0 49               		dw		TEXTO_CREDITO_054
+    1106.  00:475D  D1 49               		dw		TEXTO_CREDITO_055
+    1107.  00:475F  E9 49               		dw		TEXTO_CREDITO_056
+    1108.  00:4761  EA 49               		dw		TEXTO_CREDITO_057
+    1109.  00:4763  FC 49               		dw		TEXTO_CREDITO_058
+    1110.  00:4765  FD 49               		dw		TEXTO_CREDITO_059
+    1111.  00:4767  FE 49               		dw		TEXTO_CREDITO_060
+    1112.  00:4769  FF 49               		dw		TEXTO_CREDITO_061
+    1113.  00:476B  00 4A               		dw		TEXTO_CREDITO_062
+    1114.  00:476D  01 4A               		dw		TEXTO_CREDITO_063
+    1115.  00:476F  02 4A               		dw		TEXTO_CREDITO_064
+    1116.  00:4771  03 4A               		dw		TEXTO_CREDITO_065
+    1117.  00:4773  04 4A               		dw		TEXTO_CREDITO_066
+    1118.  00:4775  05 4A               		dw		TEXTO_CREDITO_067
+    1119.  00:4777  06 4A               		dw		TEXTO_CREDITO_068
+    1120.  00:4779  07 4A               		dw		TEXTO_CREDITO_069
+    1121.  00:477B  08 4A               		dw		TEXTO_CREDITO_070
+    1122.  00:477D  09 4A               		dw		TEXTO_CREDITO_071
     1123.  00:477F                      
-    1124.  00:477F  E0 49               		dw		TEXTO_CREDITO_COPYRIGHT
+    1124.  00:477F  0A 4A               		dw		TEXTO_CREDITO_COPYRIGHT
     1125.  00:4781                      
     1126.  00:4781                      TEXTO_CREDITO_001:	db		"A DIGITAL MOAI PRODUCTION",0
     1126.  00:4781  41 20 44 49 47 49 54 41 4C 20 4D 4F 41 49 20 50 
@@ -119254,144 +119254,149 @@ Errors: 0
     1133.  00:47EE  4D 41 4E 55 45 4C 20 44 4F 50 49 43 4F 00 
     1134.  00:47FC  00                  TEXTO_CREDITO_009:	db		0
     1135.  00:47FD  00                  TEXTO_CREDITO_010:	db		0
-    1136.  00:47FE                      TEXTO_CREDITO_011:	db		"PROGRAMMING - SPRITES - SCRIPTING",0
+    1136.  00:47FE                      TEXTO_CREDITO_011:	db		"PROGRAMMING - SPRITES - GAME WRITER",0
     1136.  00:47FE  50 52 4F 47 52 41 4D 4D 49 4E 47 20 2D 20 53 50 
-    1136.  00:480E  52 49 54 45 53 20 2D 20 53 43 52 49 50 54 49 4E 
-    1136.  00:481E  47 00 
-    1137.  00:4820                      TEXTO_CREDITO_012:	db		"PIXEL ART CORRECTIONS - SOUND EFFECTS",0
-    1137.  00:4820  50 49 58 45 4C 20 41 52 54 20 43 4F 52 52 45 43 
-    1137.  00:4830  54 49 4F 4E 53 20 2D 20 53 4F 55 4E 44 20 45 46 
-    1137.  00:4840  46 45 43 54 53 00 
-    1138.  00:4846  00                  TEXTO_CREDITO_013:	db		0
-    1139.  00:4847                      TEXTO_CREDITO_014:	db		"BENJAMIN MIGUEL",0
-    1139.  00:4847  42 45 4E 4A 41 4D 49 4E 20 4D 49 47 55 45 4C 00 
-    1140.  00:4857  00                  TEXTO_CREDITO_015:	db		0
-    1141.  00:4858  00                  TEXTO_CREDITO_016:	db		0
-    1142.  00:4859                      TEXTO_CREDITO_017:	db		"GRAPHICS",0
-    1142.  00:4859  47 52 41 50 48 49 43 53 00 
-    1143.  00:4862  00                  TEXTO_CREDITO_018:	db		0
-    1144.  00:4863                      TEXTO_CREDITO_019:	db		"LUCAS SERA PIAO",0
-    1144.  00:4863  4C 55 43 41 53 20 53 45 52 41 20 50 49 41 4F 00 
-    1145.  00:4873  00                  TEXTO_CREDITO_020:	db		0
-    1146.  00:4874  00                  TEXTO_CREDITO_021:	db		0
-    1147.  00:4875  00                  TEXTO_CREDITO_022:	db		0
-    1148.  00:4876                      TEXTO_CREDITO_023:	db		"LEAD BETA TESTER - QUALITY CONTROL",0
-    1148.  00:4876  4C 45 41 44 20 42 45 54 41 20 54 45 53 54 45 52 
-    1148.  00:4886  20 2D 20 51 55 41 4C 49 54 59 20 43 4F 4E 54 52 
-    1148.  00:4896  4F 4C 00 
-    1149.  00:4899  00                  TEXTO_CREDITO_024:	db		0
-    1150.  00:489A                      TEXTO_CREDITO_025:	db		"XAVI SORINAS",0
-    1150.  00:489A  58 41 56 49 20 53 4F 52 49 4E 41 53 00 
-    1151.  00:48A7  00                  TEXTO_CREDITO_026:	db		0
-    1152.  00:48A8  00                  TEXTO_CREDITO_027:	db		0
-    1153.  00:48A9                      TEXTO_CREDITO_028:	db		"PACKAGING",0
-    1153.  00:48A9  50 41 43 4B 41 47 49 4E 47 00 
-    1154.  00:48B3  00                  TEXTO_CREDITO_029:	db		0
-    1155.  00:48B4  58 58 58 00         TEXTO_CREDITO_030:	db		"XXX",0
-    1156.  00:48B8  00                  TEXTO_CREDITO_031:	db		0
-    1157.  00:48B9                      TEXTO_CREDITO_032:	db		"COVER ILLUSTRATION",0
-    1157.  00:48B9  43 4F 56 45 52 20 49 4C 4C 55 53 54 52 41 54 49 
-    1157.  00:48C9  4F 4E 00 
-    1158.  00:48CC  00                  TEXTO_CREDITO_033:	db		0
-    1159.  00:48CD  58 58 58 00         TEXTO_CREDITO_034:	db		"XXX",0
-    1160.  00:48D1  00                  TEXTO_CREDITO_035:	db		0
-    1161.  00:48D2                      TEXTO_CREDITO_036:	db		"BETA TESTERS TEAM",0
-    1161.  00:48D2  42 45 54 41 20 54 45 53 54 45 52 53 20 54 45 41 
-    1161.  00:48E2  4D 00 
-    1162.  00:48E4  00                  TEXTO_CREDITO_037:	db		0
-    1163.  00:48E5                      TEXTO_CREDITO_038:	db		"XAVI SORINAS",0
-    1163.  00:48E5  58 41 56 49 20 53 4F 52 49 4E 41 53 00 
-    1164.  00:48F2                      TEXTO_CREDITO_039:	db		"FULANITO",0
-    1164.  00:48F2  46 55 4C 41 4E 49 54 4F 00 
-    1165.  00:48FB                      TEXTO_CREDITO_040:	db		"MENGANITO",0
-    1165.  00:48FB  4D 45 4E 47 41 4E 49 54 4F 00 
-    1166.  00:4905                      TEXTO_CREDITO_041:	db		"DANI TEAR",0
-    1166.  00:4905  44 41 4E 49 20 54 45 41 52 00 
-    1167.  00:490F  00                  TEXTO_CREDITO_042:	db		0
-    1168.  00:4910                      TEXTO_CREDITO_043:	db		"ACKNOWLEDGMENTS",0
-    1168.  00:4910  41 43 4B 4E 4F 57 4C 45 44 47 4D 45 4E 54 53 00 
-    1169.  00:4920  00                  TEXTO_CREDITO_044:	db		0
-    1170.  00:4921                      TEXTO_CREDITO_045:	db		"VICTOR MARTINEZ",0
-    1170.  00:4921  56 49 43 54 4F 52 20 4D 41 52 54 49 4E 45 5A 00 
-    1171.  00:4931                      TEXTO_CREDITO_046:	db		"FERNANDO GARCIA",0
-    1171.  00:4931  46 45 52 4E 41 4E 44 4F 20 47 41 52 43 49 41 00 
-    1172.  00:4941  00                  TEXTO_CREDITO_047:	db		0
-    1173.  00:4942  00                  TEXTO_CREDITO_048:	db		0
-    1174.  00:4943                      TEXTO_CREDITO_049:	db		"DIGITAL MOAI SINCERELY THANKS",0
-    1174.  00:4943  44 49 47 49 54 41 4C 20 4D 4F 41 49 20 53 49 4E 
-    1174.  00:4953  43 45 52 45 4C 59 20 54 48 41 4E 4B 53 00 
-    1175.  00:4961                      TEXTO_CREDITO_050:	db		"THE FOLLOWING ENTITIES",0
-    1175.  00:4961  54 48 45 20 46 4F 4C 4C 4F 57 49 4E 47 20 45 4E 
-    1175.  00:4971  54 49 54 49 45 53 00 
-    1176.  00:4978                      TEXTO_CREDITO_051:	db		"FOR HELPING KEEP THE MSX ALIVE",0
-    1176.  00:4978  46 4F 52 20 48 45 4C 50 49 4E 47 20 4B 45 45 50 
-    1176.  00:4988  20 54 48 45 20 4D 53 58 20 41 4C 49 56 45 00 
-    1177.  00:4997  00                  TEXTO_CREDITO_052:	db		0
-    1178.  00:4998                      TEXTO_CREDITO_053:	db		"AAMSX (SPAIN)",0
-    1178.  00:4998  41 41 4D 53 58 20 28 53 50 41 49 4E 29 00 
-    1179.  00:49A6  00                  TEXTO_CREDITO_054:	db		0
-    1180.  00:49A7                      TEXTO_CREDITO_055:	db		"MSX BOIXOS CLUB (SPAIN)",0
-    1180.  00:49A7  4D 53 58 20 42 4F 49 58 4F 53 20 43 4C 55 42 20 
-    1180.  00:49B7  28 53 50 41 49 4E 29 00 
-    1181.  00:49BF  00                  TEXTO_CREDITO_056:	db		0
-    1182.  00:49C0                      TEXTO_CREDITO_057:	db		"MSX.ORG (HOLLAND)",0
-    1182.  00:49C0  4D 53 58 2E 4F 52 47 20 28 48 4F 4C 4C 41 4E 44 
-    1182.  00:49D0  29 00 
-    1183.  00:49D2  00                  TEXTO_CREDITO_058:	db		0
-    1184.  00:49D3  00                  TEXTO_CREDITO_059:	db		0
-    1185.  00:49D4  00                  TEXTO_CREDITO_060:	db		0
-    1186.  00:49D5  00                  TEXTO_CREDITO_061:	db		0
-    1187.  00:49D6  00                  TEXTO_CREDITO_062:	db		0
-    1188.  00:49D7  00                  TEXTO_CREDITO_063:	db		0
-    1189.  00:49D8  00                  TEXTO_CREDITO_064:	db		0
-    1190.  00:49D9  00                  TEXTO_CREDITO_065:	db		0
-    1191.  00:49DA  00                  TEXTO_CREDITO_066:	db		0
-    1192.  00:49DB  00                  TEXTO_CREDITO_067:	db		0
-    1193.  00:49DC  00                  TEXTO_CREDITO_068:	db		0
-    1194.  00:49DD  00                  TEXTO_CREDITO_069:	db		0
-    1195.  00:49DE  00                  TEXTO_CREDITO_070:	db		0
-    1196.  00:49DF  00                  TEXTO_CREDITO_071:	db		0
-    1197.  00:49E0                      
-    1198.  00:49E0                      TEXTO_CREDITO_COPYRIGHT:
-    1199.  00:49E0                      		db		"(C) DIGITAL MOAI 2026",0
-    1199.  00:49E0  28 43 29 20 44 49 47 49 54 41 4C 20 4D 4F 41 49 
-    1199.  00:49F0  20 32 30 32 36 00 
-    1200.  00:49F6                      
-    1201.  00:49F6                      
-    1202.  00:49F6                      PALETA_NEGRA_CREDITOS_CINEMATICA_FINAL:
-    1203.  00:49F6                      
-    1204.  00:49F6                      [15]	db		#00,#00
-    1204.  00:49F6  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-    1204.  00:4A06  00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-    1205.  00:4A14                      COLOR_15_CREDITOS_BLANCO:
-    1206.  00:4A14  77 07               		db		#77,#07
-    1207.  00:4A16                      
-    1208.  00:4A16                      FADE_OUT_COLOR_15_CREDITOS:
-    1209.  00:4A16                      
-    1210.  00:4A16  77 07               		db		#77,#07
-    1211.  00:4A18  66 06               		db		#66,#06
-    1212.  00:4A1A  55 05               		db		#55,#05
-    1213.  00:4A1C  44 04               		db		#44,#04
-    1214.  00:4A1E  33 03               		db		#33,#03
-    1215.  00:4A20  22 02               		db		#22,#02
-    1216.  00:4A22  11 01               		db		#11,#01
-    1217.  00:4A24  00 00               		db		#00,#00
-    1218.  00:4A26                      
-    1219.  00:4A26                      PALETA_DATOS_CINEMATICA_FINAL_5_6:
-    1220.  00:4A26  (0020)                     	incbin  "../PALETAS/PRESENTACION/CINEMATICA56.palete"
-    1221.  00:4A46                      FADE_IN_DATOS_CINEMATICA_FINAL_5_6:
-    1222.  00:4A46  (00E0)              		incbin  "../PALETAS/PRESENTACION/CINEMATICA56.fadein"
-    1223.  00:4B26                      FADE_OUT_DATOS_CINEMATICA_FINAL_5_6:
-    1224.  00:4B26  (00E0)              		incbin  "../PALETAS/PRESENTACION/CINEMATICA56.fadeout"
-    1225.  00:4C06                      
-    1226.  00:4C06                      PALETA_DATOS_CINEMATICA_FINAL_7_8:
-    1227.  00:4C06  (0020)                      incbin  "../PALETAS/PRESENTACION/CINEMATICA78.palete"
-    1228.  00:4C26                      FADE_IN_DATOS_CINEMATICA_FINAL_7_8:
-    1229.  00:4C26  (00E0)                      incbin  "../PALETAS/PRESENTACION/CINEMATICA78.fadein"
-    1230.  00:4D06                      FADE_OUT_DATOS_CINEMATICA_FINAL_7_8:
-    1231.  00:4D06  (00E0)                      incbin  "../PALETAS/PRESENTACION/CINEMATICA78.fadeout"
-    2817   00:4DE6                      
-    2818   00:4DE6  00 (4122)                   ds      #8000-$-#2200   
+    1136.  00:480E  52 49 54 45 53 20 2D 20 47 41 4D 45 20 57 52 49 
+    1136.  00:481E  54 45 52 00 
+    1137.  00:4822                      TEXTO_CREDITO_012:	db		"PIXEL ART CORRECTIONS - SOUND EFFECTS",0
+    1137.  00:4822  50 49 58 45 4C 20 41 52 54 20 43 4F 52 52 45 43 
+    1137.  00:4832  54 49 4F 4E 53 20 2D 20 53 4F 55 4E 44 20 45 46 
+    1137.  00:4842  46 45 43 54 53 00 
+    1138.  00:4848  00                  TEXTO_CREDITO_013:	db		0
+    1139.  00:4849                      TEXTO_CREDITO_014:	db		"BENJAMIN MIGUEL",0
+    1139.  00:4849  42 45 4E 4A 41 4D 49 4E 20 4D 49 47 55 45 4C 00 
+    1140.  00:4859  00                  TEXTO_CREDITO_015:	db		0
+    1141.  00:485A  00                  TEXTO_CREDITO_016:	db		0
+    1142.  00:485B                      TEXTO_CREDITO_017:	db		"GRAPHICS",0
+    1142.  00:485B  47 52 41 50 48 49 43 53 00 
+    1143.  00:4864  00                  TEXTO_CREDITO_018:	db		0
+    1144.  00:4865                      TEXTO_CREDITO_019:	db		"LUCAS SERA PIAO",0
+    1144.  00:4865  4C 55 43 41 53 20 53 45 52 41 20 50 49 41 4F 00 
+    1145.  00:4875  00                  TEXTO_CREDITO_020:	db		0
+    1146.  00:4876  00                  TEXTO_CREDITO_021:	db		0
+    1147.  00:4877  00                  TEXTO_CREDITO_022:	db		0
+    1148.  00:4878                      TEXTO_CREDITO_023:	db		"LEAD BETA TESTER - QUALITY CONTROL",0
+    1148.  00:4878  4C 45 41 44 20 42 45 54 41 20 54 45 53 54 45 52 
+    1148.  00:4888  20 2D 20 51 55 41 4C 49 54 59 20 43 4F 4E 54 52 
+    1148.  00:4898  4F 4C 00 
+    1149.  00:489B  00                  TEXTO_CREDITO_024:	db		0
+    1150.  00:489C                      TEXTO_CREDITO_025:	db		"XAVI SORINAS",0
+    1150.  00:489C  58 41 56 49 20 53 4F 52 49 4E 41 53 00 
+    1151.  00:48A9  00                  TEXTO_CREDITO_026:	db		0
+    1152.  00:48AA  00                  TEXTO_CREDITO_027:	db		0
+    1153.  00:48AB                      TEXTO_CREDITO_028:	db		"PACKAGING",0
+    1153.  00:48AB  50 41 43 4B 41 47 49 4E 47 00 
+    1154.  00:48B5  00                  TEXTO_CREDITO_029:	db		0
+    1155.  00:48B6                      TEXTO_CREDITO_030:	db		"CHUMINI FLAGCIDI",0
+    1155.  00:48B6  43 48 55 4D 49 4E 49 20 46 4C 41 47 43 49 44 49 
+    1155.  00:48C6  00 
+    1156.  00:48C7  00                  TEXTO_CREDITO_031:	db		0
+    1157.  00:48C8                      TEXTO_CREDITO_032:	db		"COVER ILLUSTRATION",0
+    1157.  00:48C8  43 4F 56 45 52 20 49 4C 4C 55 53 54 52 41 54 49 
+    1157.  00:48D8  4F 4E 00 
+    1158.  00:48DB  00                  TEXTO_CREDITO_033:	db		0
+    1159.  00:48DC                      TEXTO_CREDITO_034:	db		"POLLITRON REDOMADO",0
+    1159.  00:48DC  50 4F 4C 4C 49 54 52 4F 4E 20 52 45 44 4F 4D 41 
+    1159.  00:48EC  44 4F 00 
+    1160.  00:48EF  00                  TEXTO_CREDITO_035:	db		0
+    1161.  00:48F0                      TEXTO_CREDITO_036:	db		"BETA TESTERS TEAM",0
+    1161.  00:48F0  42 45 54 41 20 54 45 53 54 45 52 53 20 54 45 41 
+    1161.  00:4900  4D 00 
+    1162.  00:4902  00                  TEXTO_CREDITO_037:	db		0
+    1163.  00:4903                      TEXTO_CREDITO_038:	db		"XAVI SORINAS",0
+    1163.  00:4903  58 41 56 49 20 53 4F 52 49 4E 41 53 00 
+    1164.  00:4910                      TEXTO_CREDITO_039:	db		"PENE ALICAIDO",0
+    1164.  00:4910  50 45 4E 45 20 41 4C 49 43 41 49 44 4F 00 
+    1165.  00:491E                      TEXTO_CREDITO_040:	db		"CHOCHO INFECTADO",0
+    1165.  00:491E  43 48 4F 43 48 4F 20 49 4E 46 45 43 54 41 44 4F 
+    1165.  00:492E  00 
+    1166.  00:492F                      TEXTO_CREDITO_041:	db		"DANI TEAR",0
+    1166.  00:492F  44 41 4E 49 20 54 45 41 52 00 
+    1167.  00:4939  00                  TEXTO_CREDITO_042:	db		0
+    1168.  00:493A                      TEXTO_CREDITO_043:	db		"ACKNOWLEDGMENTS",0
+    1168.  00:493A  41 43 4B 4E 4F 57 4C 45 44 47 4D 45 4E 54 53 00 
+    1169.  00:494A  00                  TEXTO_CREDITO_044:	db		0
+    1170.  00:494B                      TEXTO_CREDITO_045:	db		"VICTOR MARTINEZ",0
+    1170.  00:494B  56 49 43 54 4F 52 20 4D 41 52 54 49 4E 45 5A 00 
+    1171.  00:495B                      TEXTO_CREDITO_046:	db		"FERNANDO GARCIA",0
+    1171.  00:495B  46 45 52 4E 41 4E 44 4F 20 47 41 52 43 49 41 00 
+    1172.  00:496B  00                  TEXTO_CREDITO_047:	db		0
+    1173.  00:496C  00                  TEXTO_CREDITO_048:	db		0
+    1174.  00:496D                      TEXTO_CREDITO_049:	db		"DIGITAL MOAI SINCERELY THANKS",0
+    1174.  00:496D  44 49 47 49 54 41 4C 20 4D 4F 41 49 20 53 49 4E 
+    1174.  00:497D  43 45 52 45 4C 59 20 54 48 41 4E 4B 53 00 
+    1175.  00:498B                      TEXTO_CREDITO_050:	db		"THE FOLLOWING ENTITIES",0
+    1175.  00:498B  54 48 45 20 46 4F 4C 4C 4F 57 49 4E 47 20 45 4E 
+    1175.  00:499B  54 49 54 49 45 53 00 
+    1176.  00:49A2                      TEXTO_CREDITO_051:	db		"FOR HELPING KEEP THE MSX ALIVE",0
+    1176.  00:49A2  46 4F 52 20 48 45 4C 50 49 4E 47 20 4B 45 45 50 
+    1176.  00:49B2  20 54 48 45 20 4D 53 58 20 41 4C 49 56 45 00 
+    1177.  00:49C1  00                  TEXTO_CREDITO_052:	db		0
+    1178.  00:49C2                      TEXTO_CREDITO_053:	db		"AAMSX (SPAIN)",0
+    1178.  00:49C2  41 41 4D 53 58 20 28 53 50 41 49 4E 29 00 
+    1179.  00:49D0  00                  TEXTO_CREDITO_054:	db		0
+    1180.  00:49D1                      TEXTO_CREDITO_055:	db		"MSX BOIXOS CLUB (SPAIN)",0
+    1180.  00:49D1  4D 53 58 20 42 4F 49 58 4F 53 20 43 4C 55 42 20 
+    1180.  00:49E1  28 53 50 41 49 4E 29 00 
+    1181.  00:49E9  00                  TEXTO_CREDITO_056:	db		0
+    1182.  00:49EA                      TEXTO_CREDITO_057:	db		"MSX.ORG (HOLLAND)",0
+    1182.  00:49EA  4D 53 58 2E 4F 52 47 20 28 48 4F 4C 4C 41 4E 44 
+    1182.  00:49FA  29 00 
+    1183.  00:49FC  00                  TEXTO_CREDITO_058:	db		0
+    1184.  00:49FD  00                  TEXTO_CREDITO_059:	db		0
+    1185.  00:49FE  00                  TEXTO_CREDITO_060:	db		0
+    1186.  00:49FF  00                  TEXTO_CREDITO_061:	db		0
+    1187.  00:4A00  00                  TEXTO_CREDITO_062:	db		0
+    1188.  00:4A01  00                  TEXTO_CREDITO_063:	db		0
+    1189.  00:4A02  00                  TEXTO_CREDITO_064:	db		0
+    1190.  00:4A03  00                  TEXTO_CREDITO_065:	db		0
+    1191.  00:4A04  00                  TEXTO_CREDITO_066:	db		0
+    1192.  00:4A05  00                  TEXTO_CREDITO_067:	db		0
+    1193.  00:4A06  00                  TEXTO_CREDITO_068:	db		0
+    1194.  00:4A07  00                  TEXTO_CREDITO_069:	db		0
+    1195.  00:4A08  00                  TEXTO_CREDITO_070:	db		0
+    1196.  00:4A09  00                  TEXTO_CREDITO_071:	db		0
+    1197.  00:4A0A                      
+    1198.  00:4A0A                      TEXTO_CREDITO_COPYRIGHT:
+    1199.  00:4A0A                      		db		"(C) DIGITAL MOAI 2026",0
+    1199.  00:4A0A  28 43 29 20 44 49 47 49 54 41 4C 20 4D 4F 41 49 
+    1199.  00:4A1A  20 32 30 32 36 00 
+    1200.  00:4A20                      
+    1201.  00:4A20                      
+    1202.  00:4A20                      PALETA_NEGRA_CREDITOS_CINEMATICA_FINAL:
+    1203.  00:4A20                      
+    1204.  00:4A20                      [15]	db		#00,#00
+    1204.  00:4A20  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+    1204.  00:4A30  00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+    1205.  00:4A3E                      COLOR_15_CREDITOS_BLANCO:
+    1206.  00:4A3E  77 07               		db		#77,#07
+    1207.  00:4A40                      
+    1208.  00:4A40                      FADE_OUT_COLOR_15_CREDITOS:
+    1209.  00:4A40                      
+    1210.  00:4A40  77 07               		db		#77,#07
+    1211.  00:4A42  66 06               		db		#66,#06
+    1212.  00:4A44  55 05               		db		#55,#05
+    1213.  00:4A46  44 04               		db		#44,#04
+    1214.  00:4A48  33 03               		db		#33,#03
+    1215.  00:4A4A  22 02               		db		#22,#02
+    1216.  00:4A4C  11 01               		db		#11,#01
+    1217.  00:4A4E  00 00               		db		#00,#00
+    1218.  00:4A50                      
+    1219.  00:4A50                      PALETA_DATOS_CINEMATICA_FINAL_5_6:
+    1220.  00:4A50  (0020)                     	incbin  "../PALETAS/PRESENTACION/CINEMATICA56.palete"
+    1221.  00:4A70                      FADE_IN_DATOS_CINEMATICA_FINAL_5_6:
+    1222.  00:4A70  (00E0)              		incbin  "../PALETAS/PRESENTACION/CINEMATICA56.fadein"
+    1223.  00:4B50                      FADE_OUT_DATOS_CINEMATICA_FINAL_5_6:
+    1224.  00:4B50  (00E0)              		incbin  "../PALETAS/PRESENTACION/CINEMATICA56.fadeout"
+    1225.  00:4C30                      
+    1226.  00:4C30                      PALETA_DATOS_CINEMATICA_FINAL_7_8:
+    1227.  00:4C30  (0020)                      incbin  "../PALETAS/PRESENTACION/CINEMATICA78.palete"
+    1228.  00:4C50                      FADE_IN_DATOS_CINEMATICA_FINAL_7_8:
+    1229.  00:4C50  (00E0)                      incbin  "../PALETAS/PRESENTACION/CINEMATICA78.fadein"
+    1230.  00:4D30                      FADE_OUT_DATOS_CINEMATICA_FINAL_7_8:
+    1231.  00:4D30  (00E0)                      incbin  "../PALETAS/PRESENTACION/CINEMATICA78.fadeout"
+    2817   00:4E10                      
+    2818   00:4E10  00 (4080)                   ds      #8000-$-#2200   
     2819   00:5E00                      			                                        ; Colocamos el resto del programa siempre en el mismo sitio    
     2820   00:5E00                      		include "BASICOS/RUTINAS CERRADAS (sin etiquetas).asm"				            ; Incluímos las referencias a la BIOS
        1.  00:5E00                      ; ROMAN: PAR
@@ -139155,76 +139160,76 @@ Errors: 0
 00:000047FC   TEXTO_CREDITO_009
 00:000047FD   TEXTO_CREDITO_010
 00:000047FE   TEXTO_CREDITO_011
-00:00004820   TEXTO_CREDITO_012
-00:00004846   TEXTO_CREDITO_013
-00:00004847   TEXTO_CREDITO_014
-00:00004857   TEXTO_CREDITO_015
-00:00004858   TEXTO_CREDITO_016
-00:00004859   TEXTO_CREDITO_017
-00:00004862   TEXTO_CREDITO_018
-00:00004863   TEXTO_CREDITO_019
-00:00004873   TEXTO_CREDITO_020
-00:00004874   TEXTO_CREDITO_021
-00:00004875   TEXTO_CREDITO_022
-00:00004876   TEXTO_CREDITO_023
-00:00004899   TEXTO_CREDITO_024
-00:0000489A   TEXTO_CREDITO_025
-00:000048A7   TEXTO_CREDITO_026
-00:000048A8   TEXTO_CREDITO_027
-00:000048A9   TEXTO_CREDITO_028
-00:000048B3   TEXTO_CREDITO_029
-00:000048B4   TEXTO_CREDITO_030
-00:000048B8   TEXTO_CREDITO_031
-00:000048B9   TEXTO_CREDITO_032
-00:000048CC   TEXTO_CREDITO_033
-00:000048CD   TEXTO_CREDITO_034
-00:000048D1   TEXTO_CREDITO_035
-00:000048D2   TEXTO_CREDITO_036
-00:000048E4   TEXTO_CREDITO_037
-00:000048E5   TEXTO_CREDITO_038
-00:000048F2   TEXTO_CREDITO_039
-00:000048FB   TEXTO_CREDITO_040
-00:00004905   TEXTO_CREDITO_041
-00:0000490F   TEXTO_CREDITO_042
-00:00004910   TEXTO_CREDITO_043
-00:00004920   TEXTO_CREDITO_044
-00:00004921   TEXTO_CREDITO_045
-00:00004931   TEXTO_CREDITO_046
-00:00004941   TEXTO_CREDITO_047
-00:00004942   TEXTO_CREDITO_048
-00:00004943   TEXTO_CREDITO_049
-00:00004961   TEXTO_CREDITO_050
-00:00004978   TEXTO_CREDITO_051
-00:00004997   TEXTO_CREDITO_052
-00:00004998   TEXTO_CREDITO_053
-00:000049A6   TEXTO_CREDITO_054
-00:000049A7   TEXTO_CREDITO_055
-00:000049BF   TEXTO_CREDITO_056
-00:000049C0   TEXTO_CREDITO_057
-00:000049D2   TEXTO_CREDITO_058
-00:000049D3   TEXTO_CREDITO_059
-00:000049D4   TEXTO_CREDITO_060
-00:000049D5   TEXTO_CREDITO_061
-00:000049D6   TEXTO_CREDITO_062
-00:000049D7   TEXTO_CREDITO_063
-00:000049D8   TEXTO_CREDITO_064
-00:000049D9   TEXTO_CREDITO_065
-00:000049DA   TEXTO_CREDITO_066
-00:000049DB   TEXTO_CREDITO_067
-00:000049DC   TEXTO_CREDITO_068
-00:000049DD   TEXTO_CREDITO_069
-00:000049DE   TEXTO_CREDITO_070
-00:000049DF   TEXTO_CREDITO_071
-00:000049E0   TEXTO_CREDITO_COPYRIGHT
-00:000049F6   PALETA_NEGRA_CREDITOS_CINEMATICA_FINAL
-00:00004A14   COLOR_15_CREDITOS_BLANCO
-00:00004A16   FADE_OUT_COLOR_15_CREDITOS
-00:00004A26   PALETA_DATOS_CINEMATICA_FINAL_5_6
-00:00004A46   FADE_IN_DATOS_CINEMATICA_FINAL_5_6
-00:00004B26   FADE_OUT_DATOS_CINEMATICA_FINAL_5_6
-00:00004C06   PALETA_DATOS_CINEMATICA_FINAL_7_8
-00:00004C26   FADE_IN_DATOS_CINEMATICA_FINAL_7_8
-00:00004D06   FADE_OUT_DATOS_CINEMATICA_FINAL_7_8
+00:00004822   TEXTO_CREDITO_012
+00:00004848   TEXTO_CREDITO_013
+00:00004849   TEXTO_CREDITO_014
+00:00004859   TEXTO_CREDITO_015
+00:0000485A   TEXTO_CREDITO_016
+00:0000485B   TEXTO_CREDITO_017
+00:00004864   TEXTO_CREDITO_018
+00:00004865   TEXTO_CREDITO_019
+00:00004875   TEXTO_CREDITO_020
+00:00004876   TEXTO_CREDITO_021
+00:00004877   TEXTO_CREDITO_022
+00:00004878   TEXTO_CREDITO_023
+00:0000489B   TEXTO_CREDITO_024
+00:0000489C   TEXTO_CREDITO_025
+00:000048A9   TEXTO_CREDITO_026
+00:000048AA   TEXTO_CREDITO_027
+00:000048AB   TEXTO_CREDITO_028
+00:000048B5   TEXTO_CREDITO_029
+00:000048B6   TEXTO_CREDITO_030
+00:000048C7   TEXTO_CREDITO_031
+00:000048C8   TEXTO_CREDITO_032
+00:000048DB   TEXTO_CREDITO_033
+00:000048DC   TEXTO_CREDITO_034
+00:000048EF   TEXTO_CREDITO_035
+00:000048F0   TEXTO_CREDITO_036
+00:00004902   TEXTO_CREDITO_037
+00:00004903   TEXTO_CREDITO_038
+00:00004910   TEXTO_CREDITO_039
+00:0000491E   TEXTO_CREDITO_040
+00:0000492F   TEXTO_CREDITO_041
+00:00004939   TEXTO_CREDITO_042
+00:0000493A   TEXTO_CREDITO_043
+00:0000494A   TEXTO_CREDITO_044
+00:0000494B   TEXTO_CREDITO_045
+00:0000495B   TEXTO_CREDITO_046
+00:0000496B   TEXTO_CREDITO_047
+00:0000496C   TEXTO_CREDITO_048
+00:0000496D   TEXTO_CREDITO_049
+00:0000498B   TEXTO_CREDITO_050
+00:000049A2   TEXTO_CREDITO_051
+00:000049C1   TEXTO_CREDITO_052
+00:000049C2   TEXTO_CREDITO_053
+00:000049D0   TEXTO_CREDITO_054
+00:000049D1   TEXTO_CREDITO_055
+00:000049E9   TEXTO_CREDITO_056
+00:000049EA   TEXTO_CREDITO_057
+00:000049FC   TEXTO_CREDITO_058
+00:000049FD   TEXTO_CREDITO_059
+00:000049FE   TEXTO_CREDITO_060
+00:000049FF   TEXTO_CREDITO_061
+00:00004A00   TEXTO_CREDITO_062
+00:00004A01   TEXTO_CREDITO_063
+00:00004A02   TEXTO_CREDITO_064
+00:00004A03   TEXTO_CREDITO_065
+00:00004A04   TEXTO_CREDITO_066
+00:00004A05   TEXTO_CREDITO_067
+00:00004A06   TEXTO_CREDITO_068
+00:00004A07   TEXTO_CREDITO_069
+00:00004A08   TEXTO_CREDITO_070
+00:00004A09   TEXTO_CREDITO_071
+00:00004A0A   TEXTO_CREDITO_COPYRIGHT
+00:00004A20   PALETA_NEGRA_CREDITOS_CINEMATICA_FINAL
+00:00004A3E   COLOR_15_CREDITOS_BLANCO
+00:00004A40   FADE_OUT_COLOR_15_CREDITOS
+00:00004A50   PALETA_DATOS_CINEMATICA_FINAL_5_6
+00:00004A70   FADE_IN_DATOS_CINEMATICA_FINAL_5_6
+00:00004B50   FADE_OUT_DATOS_CINEMATICA_FINAL_5_6
+00:00004C30   PALETA_DATOS_CINEMATICA_FINAL_7_8
+00:00004C50   FADE_IN_DATOS_CINEMATICA_FINAL_7_8
+00:00004D30   FADE_OUT_DATOS_CINEMATICA_FINAL_7_8
 00:00005F95   FADE_OUT_DATOS_CINEMATICA_FINAL_7_8.sin_carry
 00:00006F00   FADE_OUT_DATOS_CINEMATICA_FINAL_7_8.MUERE_DEPH_EN_BOSS_COMUN
 00:00004000   MUESTRA_MAPA
