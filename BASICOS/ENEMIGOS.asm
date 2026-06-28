@@ -338,7 +338,25 @@ UN_NUEVO_ENEMIGO:
 
 
         call    CALCULAMOS_PROYECTILES_ENEMIGOS
+        ld      b,a
+        ld      a,(MEGADEATH_OFFSET_DISPARO)
+        add     b
+        ld      b,a
+        xor     a
+        ld      (MEGADEATH_OFFSET_DISPARO),a
+        ld      a,b
         ld      (ix+3),a
+        ld      a,(MEGADEATH_PROYECTIL_SUBE)
+        or      a
+        jr      z,.PROYECTIL_NORMAL_SIN_SUBIDA_MEGA
+        xor     a
+        ld      (MEGADEATH_PROYECTIL_SUBE),a
+        ld      a,37
+        ld      (ix+6),a
+        ld      a,40
+        ld      (ix+13),a
+
+.PROYECTIL_NORMAL_SIN_SUBIDA_MEGA:
 
         pop     hl
         pop     bc
@@ -1011,15 +1029,15 @@ SECUENCIAS_DE_LOS_ENEMIGOS:
 .SECUENCIA_MEGADEATH:
 
         call    TROZOS_COMUNES_18
-        jp      z,.SECUENCIA_MEGADEATH_4
+        jr      z,.SECUENCIA_MEGADEATH_4
         
         call    TROZOS_COMUNES_19
-        jp      c,.SECUENCIA_MEGADEATH_2
+        jr      c,.SECUENCIA_MEGADEATH_2
 
 .SECUENCIA_MEGADEATH_1:
 
         call    TROZOS_COMUNES_16
-        jp      .SECUENCIA_MEGADEATH_CONTINUA
+        jr      .SECUENCIA_MEGADEATH_CONTINUA
 
 .SECUENCIA_MEGADEATH_2:
 
@@ -1028,7 +1046,7 @@ SECUENCIAS_DE_LOS_ENEMIGOS:
 .SECUENCIA_MEGADEATH_CONTINUA:
 
         call    TROZOS_COMUNES_20
-        jp      nz,.FIN_SECUENCIA_MEGADEATH
+        jr      nz,.FIN_SECUENCIA_MEGADEATH
 
 .SECUENCIA_MEGADEATH_3
 
@@ -1045,27 +1063,27 @@ SECUENCIAS_DE_LOS_ENEMIGOS:
 .SECUENCIA_MEGADEATH_4:
 
         call    TROZOS_COMUNES_24
-        jp      nz,.FINAL_MEGADEATH
+        jr      nz,.FINAL_MEGADEATH
         xor     a
         ld      (ix+7),a
-        jp      .FINAL_MEGADEATH
+        jr      .FINAL_MEGADEATH
 
 .SECUENCIA_MEGADEATH_CABEZA:
 
         call    TROZOS_COMUNES_18
-        jp      nc,.SECUENCIA_MEGADEATH_4_CABEZA
+        jr      nc,.SECUENCIA_MEGADEATH_4_CABEZA
 
         call    TROZOS_COMUNES_19
-        jp      z,.SECUENCIA_MEGADEATH_2_CABEZA
+        jr      z,.SECUENCIA_MEGADEATH_2_CABEZA
         cp      30
-        jp      nz,.SECUENCIA_MEGADEATH_CONTINUA_CABEZA
+        jr      nz,.SECUENCIA_MEGADEATH_CONTINUA_CABEZA
 
 .SECUENCIA_MEGADEATH_1_CABEZA:
 
         ld      a,(ix)
         inc     a
         ld      (ix),a
-        jp      .SECUENCIA_MEGADEATH_CONTINUA_CABEZA
+        jr      .SECUENCIA_MEGADEATH_CONTINUA_CABEZA
 
 .SECUENCIA_MEGADEATH_2_CABEZA:
 
@@ -1076,7 +1094,7 @@ SECUENCIAS_DE_LOS_ENEMIGOS:
 .SECUENCIA_MEGADEATH_CONTINUA_CABEZA:
 
         call    TROZOS_COMUNES_20
-        jp      nz,.FIN_SECUENCIA_MEGADEATH_CABEZA
+        jr      nz,.FIN_SECUENCIA_MEGADEATH_CABEZA
 
 .SECUENCIA_MEGADEATH_3_CABEZA:
 
@@ -1093,12 +1111,12 @@ SECUENCIAS_DE_LOS_ENEMIGOS:
 .SECUENCIA_MEGADEATH_4_CABEZA:
 
         cp      200
-        jp      c,.FIN_SECUENCIA_MEGADEATH_CABEZA
+        jr      c,.FIN_SECUENCIA_MEGADEATH_CABEZA
 
 .SECUENCIA_MEGADEATH_5_CABEZA
 
         cp      210
-        jp      nc,.SECUENCIA_MEGADEATH_6_CABEZA
+        jr      nc,.SECUENCIA_MEGADEATH_6_CABEZA
 
         ld      a,21
         ld      c,1
@@ -1107,35 +1125,35 @@ SECUENCIAS_DE_LOS_ENEMIGOS:
         ld      a,(ix+1)
         sub     3
         ld      (ix+1),a
-        jp      .FIN_SECUENCIA_MEGADEATH_CABEZA
+        jr      .FIN_SECUENCIA_MEGADEATH_CABEZA
 
 .SECUENCIA_MEGADEATH_6_CABEZA:
 
         cp      255
-        jp      nz,.FIN_SECUENCIA_MEGADEATH_CABEZA
+        jr      nz,.FIN_SECUENCIA_MEGADEATH_CABEZA
         ld      a,(ix+10)
         and     00000001b
-        jp      z,.SECUENCIA_MEGADEATH_7_CABEZA
+        jr      z,.SECUENCIA_MEGADEATH_7_CABEZA
         ld      a,(ix+13)
         or      a
-        jp      z,.SECUENCIA_MEGADEATH_7_CABEZA
-        dec     a
+        jr      z,.SECUENCIA_MEGADEATH_7_CABEZA
+        xor     a
         ld      (ix+13),a
-        call    NUEVO_PROYECTIL_NORMAL_SI_NO_BLINDADO
+        call    NUEVO_TRIPLE_PROYECTIL_MEGADEATH
 
 .SECUENCIA_MEGADEATH_7_CABEZA:
 
         ld      a,210
         ld      (ix+7),a
-        jp      .FIN_SECUENCIA_MEGADEATH_CABEZA
+        jr      .FIN_SECUENCIA_MEGADEATH_CABEZA
 
 .SECUENCIA_EXPLOSION:
 
         ld      a,(ix+10)
         cp      10
-        jp      c,.termina_la_secuencia_explosion
+        jr      c,.termina_la_secuencia_explosion
         cp      20
-        jp      c,.segundo_fotograma_de_la_explosion
+        jr      c,.segundo_fotograma_de_la_explosion
         
         call    STANDARD_DEJA_LIBRE_EL_SPRITE
         jp      SECUENCIA_PROYECTILES_Y_ENEMIGOS.PASAMOS_A_LA_SIGUIENTE_POSICION   
@@ -1343,7 +1361,7 @@ TROZOS_COMUNES_22:
 TROZOS_COMUNES_23:
 
         call    TROZOS_COMUNES_31
-        jp      nc,.partido
+        jr      nc,.partido
 
 .entero:
 
@@ -1381,7 +1399,7 @@ TROZOS_COMUNES_24:
 TROZOS_COMUNES_28:
 
         call    TROZOS_COMUNES_31
-        jp      nc,.partido
+        jr      nc,.partido
 
 .entero:
 
@@ -1390,31 +1408,39 @@ TROZOS_COMUNES_28:
 
         ld      a,b
         cp      c
-        jp      nc,TROZOS_COMUNES_29
+        jr      nc,TROZOS_COMUNES_29
         jp      SECUENCIA_PROYECTILES_Y_ENEMIGOS.PASAMOS_A_LA_SIGUIENTE_POSICION
 
 .partido:
 
         cp      c
-        jp      c,TROZOS_COMUNES_29
+        jr      c,TROZOS_COMUNES_29
         ld      a,b
         cp      c
         jp      c,SECUENCIA_PROYECTILES_Y_ENEMIGOS.PASAMOS_A_LA_SIGUIENTE_POSICION
 
         ld      a,(ix+8)
         cp      35*4
-        jp      nz,TROZOS_COMUNES_29
+        jr      nz,TROZOS_COMUNES_29
 
         xor     a
         ld      (CORAZON_ACTIVO),a
 
 TROZOS_COMUNES_29:
 
+        ld      a,(ix+6)
+        cp      32
+        jr      z,.fireworks_sin_blindaje
         call    ENEMIGO_EN_BLINDAJE_NACIMIENTO
         jp      c,SECUENCIA_PROYECTILES_Y_ENEMIGOS.PASAMOS_A_LA_SIGUIENTE_POSICION
         call    STANDARD_DEJA_LIBRE_EL_SPRITE
         xor     a
         ld      (ix+3),a                                ; Nos aseguramos que no va a interpretar este sprite como doble a la hora de borrar
+        jr      TROZOS_COMUNES_30
+
+.fireworks_sin_blindaje:
+
+        call    STANDARD_DEJA_LIBRE_EL_SPRITE
 
 TROZOS_COMUNES_30:
 

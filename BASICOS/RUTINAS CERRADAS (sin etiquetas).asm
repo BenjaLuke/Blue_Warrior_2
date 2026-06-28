@@ -1764,26 +1764,13 @@
 
 		ld		a,(MUSICA_BEST_ON)
 		or		a
-		jr		nz,PALETA_ESCOGIDA.musica_inusual
+		jr		nz,PALETA_ESCOGIDA.resolucion_musica
 
 ;.musica_normal:
 
 		ld		a,(FASE)
 		add		20
 		jr		PALETA_ESCOGIDA.resolucion_musica
-
-
-;.musica_inusual:
-
-		ld		a,(FASE)
-		cp		4
-		jr		nc,PALETA_ESCOGIDA.resolucion_musica_inusual_menor_5
-
-		ld		a,39
-		jr		PALETA_ESCOGIDA.resolucion_musica
-
-;.resolucion_musica_inusual_menor_5:
-		ld		a,73
 
 ;.resolucion_musica:
 
@@ -2842,6 +2829,11 @@
 		call	z,DANO_MAGIA_EN_DAVEANIX_BOSS_2
 		jp		z,MAGIA_MATA_DAVEANIX_BOSS_2
 
+		ld		a,(PAGINA_DE_REGRESO)
+		cp		28
+		call	z,DANO_MAGIA_EN_CHUMIINIX_BOSS_3
+		jp		z,MAGIA_MATA_CHUMIINIX_BOSS_3
+
 				ld		a,(PAGINA_DE_REGRESO)
 		cp		29
 		call	z,DANO_MAGIA_EN_ERRECENYX_BOSS_4
@@ -2857,6 +2849,15 @@
 		pop		bc
 		pop     af
 		jp		MUERTE_DE_DAVEANIX_BOSS_2
+
+
+;MAGIA_MATA_CHUMIINIX_BOSS_3:
+
+		pop		ix
+		pop		de
+		pop		bc
+		pop     af
+		jp		MUERTE_DE_CHUMINIX_BOSS_3
 
 
 ;MAGIA_MATA_ERRECENYX_BOSS_4:

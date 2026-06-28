@@ -270,6 +270,7 @@ SECUENCIA_PROYECTILES_Y_ENEMIGOS:
 		dw		PREMIO_EXTRA.SECUENCIA_PREMIO_EXTRA							; 34
 		dw		SECUENCIA_PROYECTILES_Y_ENEMIGOS.PASAMOS_A_LA_SIGUIENTE_POSICION	; 35
 		dw		FUEGO_AVISO_RAILES.SECUENCIA_FUEGO_AVISO_RAILES					; 36
+		dw		SECUENCIA_PROYECTIL_MEGADEATH_SUBE									; 37
 
 .FLECHA_FRENTE_FUEGO_FRENTE:
 
@@ -323,21 +324,21 @@ SECUENCIA_PROYECTILES_Y_ENEMIGOS:
 
 		ld		a,(ARMA_USANDO)
 		cp		7
-		jp		z,.carga_parabola_2
+		jr		z,.carga_parabola_2
 		cp		8
-		jp		z,.carga_parabola_3
+		jr		z,.carga_parabola_3
 
 .carga_parabola_1:
 
 		ld		a,(ix+10)
 		ld		ix,TABLA_PARABOLA_HACHA_1
-		jp		.seguimos_cargando
+		jr		.seguimos_cargando
 
 .carga_parabola_2:
 
 		ld		a,(ix+10)
 		ld		ix,TABLA_PARABOLA_HACHA_2
-		jp		.seguimos_cargando
+		jr		.seguimos_cargando
 
 .carga_parabola_3:
 
@@ -358,13 +359,13 @@ SECUENCIA_PROYECTILES_Y_ENEMIGOS:
 
 		ld		a,(ARMA_USANDO)
 		cp		8
-		jp		z,.rectifica_x_hacha_3
+		jr		z,.rectifica_x_hacha_3
 
 .rectifica_x_hacha_1:
 
 		ld		a,(X_DEPH)
 		sub		30
-		jp		.termina_rectificacion_x
+		jr		.termina_rectificacion_x
 
 .rectifica_x_hacha_3:
 
@@ -379,13 +380,13 @@ SECUENCIA_PROYECTILES_Y_ENEMIGOS:
 		ld		(ix),a
 		ld		a,(ARMA_USANDO)
 		cp		7
-		jp		nc,.rectifica_y_hacha_3
+		jr		nc,.rectifica_y_hacha_3
 
 .rectifica_y_hacha_1:
 
 		ld		a,(Y_DEPH)
 		sub		34
-		jp		.termina_rectificacion_y
+		jr		.termina_rectificacion_y
 
 .rectifica_y_hacha_3:
 
@@ -404,13 +405,13 @@ SECUENCIA_PROYECTILES_Y_ENEMIGOS:
 
 		LD		a,(ix+9)
 		cp		8
-		jp		nc,.SEGUNDO_FOTOGRAMA
+		jr		nc,.SEGUNDO_FOTOGRAMA
 		
 .PRIMER_FOTOGRAMA:
 
 		ld		a,164
 		ld		(ix+8),a
-		jp		.MIRAMOS_SI_ESTA_FUERA_DE_LIMITES
+		jr		.MIRAMOS_SI_ESTA_FUERA_DE_LIMITES
 				
 .SEGUNDO_FOTOGRAMA:
 
@@ -421,21 +422,21 @@ SECUENCIA_PROYECTILES_Y_ENEMIGOS:
 
 		ld		a,(ix+10)
 		cp		45
-		jp		c,.cuidado_con_la_derecha
+		jr		c,.cuidado_con_la_derecha
 
 .cuidado_con_la_izquierda:
 
 		ld		a,(ix)
 		cp		250
-		jp		c,.MIRAMOS_SI_DESAPARECE_EL_HACHA
+		jr		c,.MIRAMOS_SI_DESAPARECE_EL_HACHA
 
-		jp		.DESAPARECE
+		jr		.DESAPARECE
 
 .cuidado_con_la_derecha:
 
 		ld		a,(ix)
 		cp		2
-		jp		c,.DESAPARECE
+		jr		c,.DESAPARECE
 				
 .MIRAMOS_SI_DESAPARECE_EL_HACHA:
 
@@ -482,7 +483,7 @@ PINTA_PROYECTILES_ENEMIGOS:
 
 		ld		a,(ix+1)								; Si está en la linea 216, lo pasaremos a la 217 para que no se oculte él y los siguientes
 		cp		216
-		jp		nz,.pintando_1
+		jr		nz,.pintando_1
 
 		ld		a,217
 		ld		(ix+1),a
@@ -495,26 +496,30 @@ PINTA_PROYECTILES_ENEMIGOS:
 		jp		z,.VAMOS_TERMINANDO_EL_CICLO
 
 		cp		25*4
-		jp		z,.pintando_2
+		jr		z,.pintando_2
 		cp		37*4
-		jp		nz,.pintando_3
+		jr		nz,.pintando_3
 
 .pintando_2:
 
 		ld		a,(CHECKPOINT_ACTIVO)
 		or		a
-		jp		nz,.DOBLETE
+		jr		nz,.DOBLETE
 
 .pintando_3:
 
 		cp		35*4
-		jp		nz,.pintando_4
+		jr		nz,.pintando_4
 
 		ld		a,(CORAZON_ACTIVO)
 		or		a
-		jp		nz,.DOBLETE
+		jr		nz,.DOBLETE
 
 .pintando_4:
+
+		ld		a,(ix+6)
+		cp		32
+		jr		z,.DOBLETE
 
 		ld		a,(ix+8)
 		cp		46*4
@@ -522,22 +527,22 @@ PINTA_PROYECTILES_ENEMIGOS:
 		
 		ld		a,(FASE)
 		cp		2
-		jp		z,.medidas_2_5
+		jr		z,.medidas_2_5
 		cp		5
-		jp		z,.medidas_2_5
+		jr		z,.medidas_2_5
 
 .medidas_1_4:
 
 		ld		a,(ix+8)
 		cp		54*4
-		jp		c,.DOBLETE
+		jr		c,.DOBLETE
 		jp		.PASAMOS_A_LA_SIGUIENTE_POSICION
 
 .medidas_2_5:
 
 		ld		a,(ix+8)
 		cp		60*4
-		jp		c,.DOBLETE
+		jr		c,.DOBLETE
 		jp		.PASAMOS_A_LA_SIGUIENTE_POSICION
 
 .DOBLETE:
@@ -548,19 +553,19 @@ PINTA_PROYECTILES_ENEMIGOS:
 
 		ld		a,(ix+6)
 		cp		3
-		jp		z,.DOBLETE_HACHA
+		jr		z,.DOBLETE_HACHA
 		cp		6
-		jp		z,.DOBLETE_HACHA
+		jr		z,.DOBLETE_HACHA
 		cp		7
-		jp		z,.DOBLETE_HACHA
+		jr		z,.DOBLETE_HACHA
 
 		call	PATRONES_SPRITE_SECUNDARIO
 
-		jp		.PASAMOS_A_LA_SIGUIENTE_POSICION
+		jr		.PASAMOS_A_LA_SIGUIENTE_POSICION
 
 .DOBLETE_HACHA:
 
-		jp		.PASAMOS_A_LA_SIGUIENTE_POSICION
+		jr		.PASAMOS_A_LA_SIGUIENTE_POSICION
 
 .PINTADO_DE_SPRITE:
 
@@ -595,23 +600,29 @@ PINTA_PROYECTILES_ENEMIGOS:
 
 		ld		a,(ix+6)
 		cp		3
-		jp		z,.PASAMOS_A_LA_SIGUIENTE_POSICION
+		jr		z,.PASAMOS_A_LA_SIGUIENTE_POSICION
 		cp		6
-		jp		z,.PASAMOS_A_LA_SIGUIENTE_POSICION
+		jr		z,.PASAMOS_A_LA_SIGUIENTE_POSICION
 		cp		7
-		jp		z,.PASAMOS_A_LA_SIGUIENTE_POSICION
+		jr		z,.PASAMOS_A_LA_SIGUIENTE_POSICION
 
 		ld		a,(ix+3)
 		cp		7
-		jp		c,.PASAMOS_A_LA_SIGUIENTE_POSICION
+		jr		c,.PASAMOS_A_LA_SIGUIENTE_POSICION
 
 		ld		iy,PROPIEDADES_PATRON_SPRITE
 		xor		a
 		ld		(iy+2),a
 
 		call	PATRONES_SPRITE_SECUNDARIO
+        ld      a,(ix+6)
+        cp      32
+        jr      nz,.PASAMOS_A_LA_SIGUIENTE_POSICION
+        call    SOLO_EL_SEGUNDO
+        xor     a
+        ld      (ix+3),a
 
-		jp		.PASAMOS_A_LA_SIGUIENTE_POSICION
+		jr		.PASAMOS_A_LA_SIGUIENTE_POSICION
 
 .PASAMOS_A_LA_SIGUIENTE_POSICION:
 
@@ -765,10 +776,10 @@ CALCULAMOS_PROYECTILES_ENEMIGOS:
         ld      a,(X_FALSA_PARA_DEPH)
         add     3
         cp      b
-        jp      c,.p3
+        jr      c,.p3
         sub     5
         cp      b
-        jp      nc,.p2
+        jr      nc,.p2
 
 .p1:
 
@@ -785,10 +796,10 @@ CALCULAMOS_PROYECTILES_ENEMIGOS:
         ld      a,(Y_FALSA_PARA_DEPH)
         add     11
         cp      b
-        jp      c,.p2_3
+        jr      c,.p2_3
         sub     21
         cp      b
-        jp      nc,.p2_2
+        jr      nc,.p2_2
 
 .p2_1:
 
@@ -798,9 +809,9 @@ CALCULAMOS_PROYECTILES_ENEMIGOS:
 .p2_2:
 
         call    .rutina_de_comparacion_xb_menos_xa_yb_menos_ya
-        jp      z,.p2_2_1
-        jp      nc,.p2_2_2
-        jp      c,.p2_2_3
+        jr      z,.p2_2_1
+        jr      nc,.p2_2_2
+        jr      c,.p2_2_3
 
 .p2_2_1:
 
@@ -826,9 +837,9 @@ CALCULAMOS_PROYECTILES_ENEMIGOS:
 .p2_3:
 
         call    .rutina_de_comparacion_xb_menos_xa_ya_menos_yb
-        jp      z,.p2_3_1
-        jp      nc,.p2_3_2
-        jp      c,.p2_3_3
+        jr      z,.p2_3_1
+        jr      nc,.p2_3_2
+        jr      c,.p2_3_3
 
 .p2_3_1:
 
@@ -858,10 +869,10 @@ CALCULAMOS_PROYECTILES_ENEMIGOS:
         ld      a,(Y_FALSA_PARA_DEPH)
         add     11
         cp      b
-        jp      c,.p3_3
+        jr      c,.p3_3
         sub     21
         cp      b
-        jp      nc,.p3_2
+        jr      nc,.p3_2
 
 .p3_1:
 
@@ -871,9 +882,9 @@ CALCULAMOS_PROYECTILES_ENEMIGOS:
 .p3_2:
 
         call    .rutina_de_comparacion_xa_menos_xb_yb_menos_ya
-        jp      z,.p3_2_1
-        jp      nc,.p3_2_2
-        jp      c,.p3_2_3
+        jr      z,.p3_2_1
+        jr      nc,.p3_2_2
+        jr      c,.p3_2_3
 
 .p3_2_1:
 
@@ -899,9 +910,9 @@ CALCULAMOS_PROYECTILES_ENEMIGOS:
 .p3_3:
 
         call    .rutina_de_comparacion_xa_menos_xb_ya_menos_yb
-        jp      z,.p3_3_1
-        jp      nc,.p3_3_2
-        jp      c,.p3_3_3
+        jr      z,.p3_3_1
+        jr      nc,.p3_3_2
+        jr      c,.p3_3_3
 
 .p3_3_1:
 
@@ -1278,9 +1289,12 @@ MAGIA_GRATIS:
 
 		ld		hl,COPIA_RAYOS_A_1
 		call	NOP_50
-		call	DOCOPY
 		call	NOP_50
 		call	DOCOPY
+		call	NOP_50
+		call	NOP_50
+		call	DOCOPY
+		call	NOP_50
 		call	NOP_50
 		call	DOCOPY
 
@@ -1482,6 +1496,9 @@ MAGIA_GRATIS:
 .repintamos_puntos_de_magia:
 
 		call	PINTAMOS_LOS_PUNTOS_DE_MAGIA
+		ld		a,(DEMO)
+		or		a
+		jr		nz,.DEMO_SIN_REANUDAR_MUSICA_MAGIA
        	ld      a,(FASE)
         add     20
         call    CHANGE_BANK_2
@@ -1491,9 +1508,15 @@ MAGIA_GRATIS:
 
         ld		a,10
 		call	CHANGE_BANK_2
+		jr		.VUELVE_A_PINTAR_TRES_EN_NEGRO
+
+.DEMO_SIN_REANUDAR_MUSICA_MAGIA:
+
+		call	PAGE_10_A_SEGMENT_2
 
 .VUELVE_A_PINTAR_TRES_EN_NEGRO:
 
+		call	NOP_50
 		call	NOP_50
 
         ld      hl,COPIA_NEGRO_EN_3
@@ -1520,6 +1543,17 @@ MAGIA_GRATIS:
 		ret
 
 PATRONES_SPRITE_SECUNDARIO:
+
+        ld      a,(ix+6)
+        cp      32
+        jr      nz,.sin_offset_fireworks
+        ld      a,(iy+1)
+        cp      $FF
+        jr      z,.sin_offset_fireworks
+        add     16
+        ld      (iy+1),a
+
+.sin_offset_fireworks:
 
         ld      a,(ix+3)
         ld      e,a
@@ -1558,7 +1592,7 @@ SOLO_EL_SEGUNDO:
 NOP_50;
 
 		push	bc
-		ld		b,200
+		ld		b,255
 .bucle:
 
 		nop

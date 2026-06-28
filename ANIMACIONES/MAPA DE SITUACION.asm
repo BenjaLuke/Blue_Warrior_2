@@ -316,7 +316,7 @@ INICIA_MUSICA_MAPA_DE_SITUACION:
 
 		call	stpmus
 
-		ld		a,1
+		ld		a,39
 		ld		(MUSICA_BEST_ON),a
 
 		ld		a,39

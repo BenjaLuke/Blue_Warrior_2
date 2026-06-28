@@ -114,6 +114,7 @@ MAGIA_ROCK:
 .TROZO_1_EN_UNA_PIEZA:
 
     ld      hl,ATRIBUTOS_NUMERO_DE_VIDAS_O_PUNTOS
+	call	NOP_50_MAGIA_ROCK
 	call   	DOCOPY
 
 .VUELCA_TROZOS_DE_DOS_2:
@@ -127,6 +128,7 @@ MAGIA_ROCK:
 .TROZO_2_EN_UNA_PIEZA:
 
     ld      hl,ATRIBUTOS_NUMERO_DE_VIDAS_O_PUNTOS
+	call	NOP_50_MAGIA_ROCK
 	call   	DOCOPY
 
 .VUELCA_TROZOS_DE_DOS_3:
@@ -140,6 +142,7 @@ MAGIA_ROCK:
 .TROZO_3_EN_UNA_PIEZA:
 
     ld      hl,ATRIBUTOS_NUMERO_DE_VIDAS_O_PUNTOS
+	call	NOP_50_MAGIA_ROCK
 	call   	DOCOPY
 
 .RESTO_DE_COPIAS:
@@ -151,6 +154,7 @@ MAGIA_ROCK:
 .bucle_de_copys_1:
 
 	push	bc
+	call	NOP_50_MAGIA_ROCK
 	call	DOCOPY
 	pop		bc
 	djnz	.bucle_de_copys_1
@@ -166,8 +170,14 @@ MAGIA_ROCK:
 .COPIA_RAYOS_EN_FOTOGRAMAS_ADECUADOS_Y_ANIMACION:
 
 	ld		hl,COPIA_RAYOS_A_1
+	call	NOP_50_MAGIA_ROCK
+	call	NOP_50_MAGIA_ROCK
 	call	DOCOPY
+	call	NOP_50_MAGIA_ROCK
+	call	NOP_50_MAGIA_ROCK
 	call	DOCOPY
+	call	NOP_50_MAGIA_ROCK
+	call	NOP_50_MAGIA_ROCK
 	call	DOCOPY
 
     xor      a
@@ -200,6 +210,7 @@ MAGIA_ROCK:
 .RAYOS_EN_UNO:
 
 	ld		hl,ATRIBUTOS_NUMERO_DE_VIDAS_O_PUNTOS
+	call	NOP_50_MAGIA_ROCK
 	call	DOCOPY
 	
 .regreso_de_bucle:
@@ -272,6 +283,8 @@ MAGIA_ROCK:
 
 .VUELVE_A_PINTAR_TRES_EN_NEGRO:
 
+	call	NOP_50_MAGIA_ROCK
+	call	NOP_50_MAGIA_ROCK
     ld      hl,COPIA_NEGRO_EN_3
 [2] call    DOCOPY
 
@@ -289,6 +302,18 @@ MAGIA_ROCK:
 		pop		ix
 		pop		iy
 		ret
+
+NOP_50_MAGIA_ROCK:
+
+	push	bc
+	ld		b,255
+
+.bucle:
+
+	nop
+	djnz	.bucle
+	pop		bc
+	ret
 
 CALCULA_DANO_MAGIA_ROCKAGER_PART2_SEMIBOSS_2:
 

@@ -294,6 +294,56 @@ NUEVO_PROYECTIL_NORMAL_SI_NO_BLINDADO:
 			ret		c
 			jp		NUEVO_PROYECTIL_NORMAL
 
+NUEVO_TRIPLE_PROYECTIL_MEGADEATH:
+
+			ld		a,(ix)
+			dec		a
+			ld		(ix),a
+			ld		a,253
+			ld		(MEGADEATH_OFFSET_DISPARO),a
+			ld		a,1
+			ld		(MEGADEATH_PROYECTIL_SUBE),a
+			call	NUEVO_PROYECTIL_NORMAL_SI_NO_BLINDADO
+
+			ld		a,(ix)
+			inc		a
+			ld		(ix),a
+			xor		a
+			ld		(MEGADEATH_OFFSET_DISPARO),a
+			inc		a
+			ld		(MEGADEATH_PROYECTIL_SUBE),a
+			call	NUEVO_PROYECTIL_NORMAL_SI_NO_BLINDADO
+
+			ld		a,(ix)
+			inc		a
+			ld		(ix),a
+			ld		a,3
+			ld		(MEGADEATH_OFFSET_DISPARO),a
+			ld		a,1
+			ld		(MEGADEATH_PROYECTIL_SUBE),a
+			call	NUEVO_PROYECTIL_NORMAL_SI_NO_BLINDADO
+
+			ld		a,(ix)
+			dec		a
+			ld		(ix),a
+			xor		a
+			ld		(MEGADEATH_OFFSET_DISPARO),a
+			ld		(MEGADEATH_PROYECTIL_SUBE),a
+			ret
+
+SECUENCIA_PROYECTIL_MEGADEATH_SUBE:
+
+			ld		a,(ix+1)
+			dec		a
+			ld		(ix+1),a
+			ld		a,(ix+13)
+			dec		a
+			ld		(ix+13),a
+			jp		nz,TROZOS_COMUNES_28
+			ld		a,17
+			ld		(ix+6),a
+			jp		TROZOS_COMUNES_28
+
 PUNTERO_BLINDAJE_NACIMIENTO_ENEMIGO:
 
 			push	de
@@ -1806,7 +1856,7 @@ RUTINA_ESPECIAL_FASE_3:
 			ret		nz
 			call	ES_FASE3_VAGON_ACTIVO
 			ret		nc
-			ld		a,(VARIABLE_UN_USO3)
+			ld		a,(FASE3_VAGON_SALTO_PENDIENTE)
 			cp		255
 			jp		z,RESUELVE_SALTO_FASE3_VAGON
 			call	CONTROL_SALTO_FASE3_VAGON
@@ -1860,8 +1910,9 @@ CONTROL_SALTO_FASE3_VAGON:
 			ld		c,0
 			call	A_31_DESDE_10
 			call	.EJECUTA_PARABOLA_FASE3_VAGON
+			call	CORRIGE_Y_DEPH_SOLO_FASE3_VAGON.GUARDA_INDICE_16_PRE_CORRIGE_Y
 			ld		a,255
-			ld		(VARIABLE_UN_USO3),a
+			ld		(FASE3_VAGON_SALTO_PENDIENTE),a
 			scf
 			ret
 
@@ -2119,7 +2170,7 @@ COLOR_SPRITES_PARTE_INFERIOR_DEPH_SALTO_VAGONETA_SECTOR_10:
 RESUELVE_SALTO_FASE3_VAGON:
 
 			xor		a
-			ld		(VARIABLE_UN_USO3),a
+			ld		(FASE3_VAGON_SALTO_PENDIENTE),a
 			ld		a,(TILE_FASE3_VAGON)
 			cp		16
 			jr		c,.MIRA_MARGEN_Y_SALTO_FASE3_VAGON
@@ -2878,31 +2929,10 @@ CONTROL_FASE3_TILE_PUNTO_DEPH:
 
 .PUEDE_INICIAR_DESVIO_DERECHA_FASE3_VAGON:
 
-			ld		e,15
-			jr		.PUEDE_INICIAR_DESVIO_FASE3_VAGON
-
-.PUEDE_INICIAR_DESVIO_IZQUIERDA_FASE3_VAGON:
-
-			ld		e,4
-
-.PUEDE_INICIAR_DESVIO_FASE3_VAGON:
-
-			push	bc
-			ld		a,(Y_DEPH)
-			add		32
-			ld		b,a
-			ld		a,(Y_PINTA_SCROLL)
-			ld		c,a
-			ld		a,b
-			sub		c
-			and		00001111b
-			cp		e
-			pop		bc
-			jr		z,.SI_PUEDE_INICIAR_DESVIO_FASE3_VAGON
-			or		a
+			scf
 			ret
 
-.SI_PUEDE_INICIAR_DESVIO_FASE3_VAGON:
+.PUEDE_INICIAR_DESVIO_IZQUIERDA_FASE3_VAGON:
 
 			scf
 			ret
@@ -3206,7 +3236,7 @@ FUEGO_AVISO_RAILES:
         ld      hl,VALORES_BASICOS_FUEGO_AVISO_RAILES
         call    STANDAR_LDIR_ENEMIGOS
         ld      (ix),a
-        call    TROZOS_COMUNES_1
+        call    STANDAR_Y_FUERA_PANTALLA
         xor     a
         ld      (ix+7),a
         ld      (ix+10),a
@@ -4092,7 +4122,7 @@ CORRIGE_Y_DEPH_SOLO_FASE3_VAGON:
 			or		a
 			ret		nz
 
-			ld		a,(VARIABLE_UN_USO3)
+			ld		a,(FASE3_VAGON_SALTO_PENDIENTE)
 			cp		255
 			ret		z
 
@@ -4105,16 +4135,8 @@ CORRIGE_Y_DEPH_SOLO_FASE3_VAGON:
 			ld		c,a
 			ld		a,b
 			sub		c
-			cp		100
-			jr		c,.SUMA_Y_DEPH_VAGON
 			cp		185
 			ret		nc
-
-			ld		a,(FASE3_VAGON_CORRIGE_Y_CADENCIA)
-			xor		1
-			and		1
-			ld		(FASE3_VAGON_CORRIGE_Y_CADENCIA),a
-			ret		z
 
 .SUMA_Y_DEPH_VAGON:
 
@@ -5450,43 +5472,14 @@ FIREWORKS:
 		ld		(ix),a
 
 		ld		hl,COLOR_FIREWORKS						; Damos color al sprite en la posición de sprite que le toca	
-		jp      TROZOS_COMUNES_9
+		call    TROZOS_COMUNES_7
 
-.DEFINE_FIREWORKS_1:
-
-
-        ld      a,b
-        ld		hl,VALORES_BASICOS_FIREWORKS
-
-       	call    STANDAR_LDIR_ENEMIGOS
-
-
-        call    TROZOS_COMUNES_1
-		ld		a,r
-		ld		b,a
-		ld		a,i
-		add		b
-		rla
-		ld		(ix+1),a
-		ld		a,r
-		ld		b,a
-		ld		a,i
-		add		b
-		rla
-		add		32		
-		ld		(ix),a
-		ld		a,(ix+1)
-		add		16
-		ld		(ix+1),a
-		ld		a,(ix+8)
-		add		4
-		ld		(ix+8),a
-
-        ld      a,23
-        ld      c,1
-        call    A_31_DESDE_10 
-
-		ld		hl,COLOR_FIREWORKS						; Damos color al sprite en la posición de sprite que le toca	
+        ld      a,1
+        ld      (MIRAMOS_SEGUNDO_SPRITE),a
+        call    MIRAMOS_SI_ESTA_LIBRE_ESE_SPRITE
+        call    STANDAR_DA_EL_VALOR_SPRITE_QUE_TOCA_IX3
+        call    TROZOS_COMUNES_3
+		ld		hl,COLOR_FIREWORKS
 		jp      TROZOS_COMUNES_9
 
 .SECUENCIA_FIREWORKS:
@@ -5500,7 +5493,7 @@ FIREWORKS:
 		ld		a,(ix+8)
 		add		8
 		ld		(ix+8),a
-		cp		55*4
+		cp		156
 		jp		nc,TROZOS_COMUNES_29
         jp      TROZOS_COMUNES_28
 

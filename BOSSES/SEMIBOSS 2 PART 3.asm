@@ -235,8 +235,8 @@ SPRITES_COVID_TAM_PART3_SEMIBOSS_2				equ		2*8*4
 
 .SECUENCIA_2_CONT:
 
-        xor     a
-        ld      (VELOCIDAD_ROCKAGER),a
+        ;xor     a
+        ;ld      (VELOCIDAD_ROCKAGER),a
 
 .ACTIVA_ROCAS_FASE_2:
 

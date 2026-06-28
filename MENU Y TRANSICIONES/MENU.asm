@@ -339,7 +339,7 @@ CALCULA_ORIGEN_X_LETRA_MENU:
 
 TABLA_ESPECIALES_MENU:
 
-		db		"-/,)1234567890'."
+		db		"-(,)1234567890'."
 
 PINTA_TEXTO_MENU_FORMA_3:
 
@@ -1789,7 +1789,7 @@ INICIA_MUSICA_MENU_PRESENTACION:
 
 		call	stpmus
 
-		ld		a,1
+		ld		a,39
 		ld		(MUSICA_BEST_ON),a
 		
         ld      a,39
@@ -2602,7 +2602,7 @@ DATOS_NEGRO_ROTATIVO_EN_PAGE_1:
 
 TEXTO_ROTATIVO_PRESENTACION:
 
-		db		"BLUE WARRIOR II   -   Beta version 4.12.03   -   19/6/2026   -   97%   -   (C) Digital Moai",0
+		db		"BLUE WARRIOR II   -   Beta version 5.00.13  -  28-6-2026 - 98 por ciento - (C) Digital Moai",0
 
 TEXTO_ROTATIVO_PRESENTACION_FIN:
 

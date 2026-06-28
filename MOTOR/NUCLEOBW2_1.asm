@@ -315,6 +315,13 @@ INICIA_SCROLL:
 		LD		(SEMAFORO_LABERINTO),a
 		ld		(MUSICA_BEST_ON),a
 		ld		(SUMA_CAMINO),a
+		ld		(FASE3_VAGON_CORRIGE_Y_CADENCIA),a
+		ld		(FASE3_VAGON_ARRASTRE_X),a
+		ld		(FASE3_VAGON_AJUSTE_TILE_CONTADOR),a
+		ld		(FASE3_VAGON_TIPO_MUERTE),a
+		ld		(FASE3_VAGON_SALTO_PENDIENTE),a
+		ld		(TILE_FASE3_VAGON),a
+		ld		(TILE_FASE3_VAGON_X16),a
 		ld		(ECTO_HUEVOS_GOLPES),a
 		ld		(ECTO_HUEVOS_EXPLOSION),a
 		ld		(ECTO_HUEVOS_RESPAWN),a
@@ -325,6 +332,9 @@ INICIA_SCROLL:
 		ld		(FUEGO_AVISO_RAILES_OBJETIVO_X),a
 		ld		(FUEGO_AVISO_RAILES_OBJETIVO_Y),a
 		ld		(FUEGO_AVISO_RAILES_LINEA_ANT),a
+		dec		a
+		ld		(FASE3_VAGON_INDICE_16_PRE_Y),a
+		inc		a
 		inc		a
 		ld		(FINAL_DEL_SCROLL),a									; Activamos el scroll
 		ld		(AVANCE_BLOQUEADO),a
@@ -1087,7 +1097,7 @@ CONTROL:
 
 .CONTROL_SALTO_TILE_FASE3_VAGON:
 
-			ld		a,(VARIABLE_UN_USO3)
+			ld		a,(FASE3_VAGON_SALTO_PENDIENTE)
 			cp		255
 			jr		nz,.RESTAURA_Y_TRAS_TILE_FASE3_VAGON
 			ld		a,(TILE_FASE3_VAGON)
@@ -1196,7 +1206,9 @@ CARGA_FIREWORKS:
 			ld		a,1
 			ld		(FIREWORKS_ACTIVO),a
 			ld		hl,SPRITES_FIREWORK
-			jp		CARGA_COMUN_24
+			ld		de,#4000+27*8*4
+			ld		bc,12*8*4
+			jp		TROZOS_COMUNES_15
 
 CARGA_SKRULLEX:
 
@@ -1343,7 +1355,7 @@ CARGA_MUSICA_THE_BEST:
 		or		a
 		ret		nz
 
-		ld		a,1
+		ld		a,39
 		ld		(MUSICA_BEST_ON),a
 			
 		ld		a,39
@@ -1364,7 +1376,7 @@ CARGA_MUSICA_VAGONETA:
 		or		a
 		ret		nz
 
-		ld		a,1
+		ld		a,39
 		ld		(MUSICA_BEST_ON),a
 			
 		ld		a,39
@@ -1398,57 +1410,7 @@ AJUSTA_TILE_ENTRADA_VAGON_X:
 
 		call	.ES_TILE_ENTRADA_VAGON_X
 		ret		c
-
-		push	af
-		push	ix
-		ld		a,(PAGE_DATOS_FASE)
-		call	CHANGE_BANK_2
-
-		call	SITUA_LA_X_E_Y
-		add		c
-		add		16
-		call	SITUA_LA_X_E_Y_2
-		ld		a,(ix)
-		call	.ES_TILE_ENTRADA_VAGON_X
-		jr		c,.ENCUENTRA_ENTRADA_VAGON_DERECHA
-
-		call	SITUA_LA_X_E_Y
-		add		c
-		sub		16
-		call	SITUA_LA_X_E_Y_2
-		ld		a,(ix)
-		call	.ES_TILE_ENTRADA_VAGON_X
-		jr		c,.ENCUENTRA_ENTRADA_VAGON_IZQUIERDA
-
-		pop		ix
-		call	PAGE_10_A_SEGMENT_2
-		pop		af
-		ret
-
-.ENCUENTRA_ENTRADA_VAGON_DERECHA:
-
-		ld		b,a
-		ld		a,c
-		add		16
-		ld		c,a
-		ld		a,b
-		jr		.ENCUENTRA_ENTRADA_VAGON
-
-.ENCUENTRA_ENTRADA_VAGON_IZQUIERDA:
-
-		ld		b,a
-		ld		a,c
-		sub		16
-		ld		c,a
-		ld		a,b
-
-.ENCUENTRA_ENTRADA_VAGON:
-
-		pop		ix
-		push	af
-		call	PAGE_10_A_SEGMENT_2
-		pop		af
-		pop		hl
+		or		a
 		ret
 
 .ES_TILE_ENTRADA_VAGON_X:

@@ -1,6 +1,6 @@
 		call	stpmus
 
-		ld		a,1
+		ld		a,73
 		ld		(MUSICA_BEST_ON),a
 		
         ld      a,73

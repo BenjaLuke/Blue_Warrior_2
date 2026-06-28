@@ -466,7 +466,7 @@ MUERTE_POR_TOQUES_DESDE_BOSS:
 
 AGILIZA_MAPA:
 
-		ld		hl,40
+		ld		hl,84
 		ld		(LINEA_A_LEER),hl
 		jp		CONTROL.teclado
 

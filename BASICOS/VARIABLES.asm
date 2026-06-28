@@ -51,7 +51,7 @@ TRUCO_CORAZONES_ACTIVO:			#1										; Evita perder corazones por enemigos fuer
 TRUCO_ELSLUCKIS_POS:			#1										; Posicion de lectura del truco ELSLUCKIS
 TRUCO_CARAMBALAN_POS:			#1										; Posicion de lectura del truco CARAMBALAN
 TRUCO_TECLA_PRESENTACION:		#1										; Ultima tecla leida para no repetir mientras se mantiene pulsada
-MUSICA_BEST_ON:					#1										; 0 - Pagína de musicas de la fase 1 - página de the best 2 - pagina de puente
+MUSICA_BEST_ON:					#1										; 0 - pagina de musicas de la fase / distinto de 0 - pagina real de musica especial
 DESACTIVA_PUPA:					#1										; Se desactiva para alguna zona concreta que usa los tiles de pupa
 PAGE_A_GUARDAR:					#1
 HAY_CORAZONES:					#1										; Nos dice si los spries de SKRULLEX son ahora de corazones
@@ -59,6 +59,8 @@ CHECKPOINT_ACTIVO:				#1										; Hay check point en pantalla
 CORAZON_ACTIVO:					#1										; Hay corazón en pantalla
 FIREWORKS_ACTIVO:				#1										; Hay fuegos artificiales en pantalla
 MEGADEATH_ACTIVO:				#1										; Hay megadeath en pantalla
+MEGADEATH_OFFSET_DISPARO:		#1										; Ajuste de direccion para disparo triple
+MEGADEATH_PROYECTIL_SUBE:		#1										; El siguiente proyectil sube antes de dispararse
 ECTOPALLERS_ACTIVO:				#1										; Hay ectopallers en pantalla
 ECTOPALLERS_NUEVO_NECESARIO:	#1										; controla si no está en pantalla
 ECTOPALLER_ROMPE_HORIZONTAL:	#1										; Ecto del circulo que cruza de izquierda a derecha
@@ -357,6 +359,7 @@ FASE3_VAGON_TIPO_MUERTE:                #1
 FASE3_VAGON_CORRIGE_Y_CADENCIA:         #1
 FASE3_VAGON_JUMP_ACTIVO:                #1
 FASE3_VAGON_INDICE_16_PRE_Y:            #1
+FASE3_VAGON_SALTO_PENDIENTE:            #1
 FUEGO_AVISO_RAILES_OBJETIVO_X:          #1
 FUEGO_AVISO_RAILES_OBJETIVO_Y:          #1
 FUEGO_AVISO_RAILES_TIMER:               #1

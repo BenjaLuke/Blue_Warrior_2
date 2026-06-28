@@ -21,11 +21,9 @@
 
 		call	stpmus
 
-		ld		a,1
-		ld		(MUSICA_BEST_ON),a
-
 		pop		hl
 		pop		af
+		ld		(MUSICA_BEST_ON),a
 
 		call	CHANGE_BANK_2
 
