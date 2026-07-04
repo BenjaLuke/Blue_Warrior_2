@@ -1297,6 +1297,57 @@ PINTA_TILE_FASE3_VAGON_PAGE2:
 			pop		af
 			ret
 
+SUSTITUYE_TILE_LETRA_RECOGIDA_EN_SCROLL:
+
+			push	af
+			call	CONTROL_TILES_ESPECIALES_DEPH.BUSCA_TILE_ESPECIAL_DEPH
+			jr		nc,.devuelve_original
+			ld		c,a
+			ld		a,e
+			sub		2
+			cp		4
+			jr		nc,.devuelve_original
+			ld		d,a
+			ld		a,(FASE)
+			dec		a
+			add		a
+			add		a
+			add		d
+			ld		b,a
+			rrca
+			rrca
+			rrca
+			and		00000011b
+			ld		e,a
+			ld		d,0
+			ld		hl,LETRAS_FASES_BITS
+			add		hl,de
+			ld		a,b
+			and		00000111b
+			ld		b,a
+			inc		b
+			xor		a
+			scf
+
+.bucle_mascara_letra_scroll:
+
+			rla
+			djnz	.bucle_mascara_letra_scroll
+			ld		e,a
+			ld		a,(hl)
+			and		e
+			jr		z,.devuelve_original
+			pop		af
+			ld		a,c
+			scf
+			ret
+
+.devuelve_original:
+
+			pop		af
+			or		a
+			ret
+
 CONTROL_TILES_ESPECIALES_DEPH_COOLDOWN:
 
 			ld		a,(TILE_ESPECIAL_DEPH_COOLDOWN)
@@ -1337,6 +1388,10 @@ CONTROL_TILES_ESPECIALES_DEPH:
 
 .CONTROLA_TILE_ESPECIAL_DEPH:
 
+			push	bc
+			call	SUSTITUYE_TILE_LETRA_RECOGIDA_EN_SCROLL
+			pop		bc
+			ret		c
 			call	.BUSCA_TILE_ESPECIAL_DEPH
 			ret		nc
 			call	.EFECTO_TILE_ESPECIAL_BLOQUEADO

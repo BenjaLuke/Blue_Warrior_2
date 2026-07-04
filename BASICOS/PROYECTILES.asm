@@ -1298,6 +1298,7 @@ MAGIA_GRATIS:
 		ld		hl,COPIA_RAYOS_A_VRAM
 		ld		de,RAYOS_EN_PACK
 		call	PAGE_32_A_SEGMENT_2
+		call	NOP_50
 		call	HMMC
 		call	PAGE_10_A_SEGMENT_2
 
@@ -1536,7 +1537,11 @@ MAGIA_GRATIS:
 		call	NOP_50
 
         ld      hl,COPIA_NEGRO_EN_3
-    [2] call    DOCOPY
+        call    DOCOPY
+		call	NOP_50
+		call	NOP_50
+        ld      hl,COPIA_NEGRO_EN_3
+        call    DOCOPY
 
 		ld		a,(VARIABLE_UN_USO3)
 		or		a
@@ -1613,5 +1618,10 @@ NOP_50;
 
 		nop
 		djnz	.bucle
+		ld		b,255
+.bucle_2:
+
+		nop
+		djnz	.bucle_2
 		pop		bc
 		ret

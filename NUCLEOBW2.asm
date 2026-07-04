@@ -786,12 +786,6 @@ MUERTE_POR_TOQUES_DESDE_BOSS:
 		ld      (DIRPA1),a
 		jp		MUERTE_POR_TOQUES
 
-AGILIZA_MAPA:
-
-		ld		hl,84
-		ld		(LINEA_A_LEER),hl
-		jp		CONTROL.teclado
-
 HACIA_CINEMATICAS_FINALES:
 
 		; CAMBIA EL SLOT 1 Y PONE EL SECTOR 67
@@ -813,7 +807,7 @@ MENU:
 		ld		c,0
 		call	WRTVDP_EN_RAM
 
-		ld		a,0
+		xor		a
 		ld      (DIRPA1),a
 
 		jp		MARCA
@@ -832,7 +826,7 @@ VOLVEMOS_TRAS_ROCKAGER:
 
 		ret
 
-        ds		#C000-$
+        ds		1
 
 
 

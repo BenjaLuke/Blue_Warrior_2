@@ -932,6 +932,7 @@
 		pop		af
 		ld		a,(ix)
         call    PAGE_10_A_SEGMENT_2
+		call	SUSTITUYE_TILE_LETRA_RECOGIDA_EN_SCROLL
 
 		ret
 
@@ -2565,6 +2566,10 @@
 
 		jp		SALTO_AL_FADEAR_EN_GRISES
 ;MUERTE_POR_APLASTAMIENTO:
+
+		ld		a,(DEMO)
+		or		a
+		jp		nz,FIN_DE_LA_PARTIDA
 
 		xor		a
 		ld		(ESTADO_MARCADOR),a

@@ -164,6 +164,7 @@ MAGIA_ROCK:
 	ld		hl,COPIA_RAYOS_A_VRAM
 	ld		de,RAYOS_EN_PACK
 	call	PAGE_32_A_SEGMENT_2
+	call	NOP_50_MAGIA_ROCK
 	call	HMMC
 	call	PAGE_10_A_SEGMENT_2
 
@@ -286,7 +287,11 @@ MAGIA_ROCK:
 	call	NOP_50_MAGIA_ROCK
 	call	NOP_50_MAGIA_ROCK
     ld      hl,COPIA_NEGRO_EN_3
-[2] call    DOCOPY
+	call    DOCOPY
+	call	NOP_50_MAGIA_ROCK
+	call	NOP_50_MAGIA_ROCK
+    ld      hl,COPIA_NEGRO_EN_3
+	call    DOCOPY
 
 	ld		a,(VARIABLE_UN_USO3)
 	or		a
@@ -312,6 +317,11 @@ NOP_50_MAGIA_ROCK:
 
 	nop
 	djnz	.bucle
+	ld		b,255
+.bucle_2:
+
+	nop
+	djnz	.bucle_2
 	pop		bc
 	ret
 
@@ -987,6 +997,7 @@ PINTAMOS_LOS_PUNTOS_DE_MAGIA_ROCK:
 	add		c
 	ld		(ix),a
 	ld		hl,PUNTOS_MAGIA_EN_BOSSES
+	call	NOP_50_MAGIA_ROCK
 	jp		DOCOPY
 
 PREPARACION_ROCKAGER:
