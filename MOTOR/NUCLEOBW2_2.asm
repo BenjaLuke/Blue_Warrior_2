@@ -1308,6 +1308,17 @@ SUSTITUYE_TILE_LETRA_RECOGIDA_EN_SCROLL:
 			cp		4
 			jr		nc,.devuelve_original
 			ld		d,a
+			cp		3
+			jr		nz,.mira_letra_recogida_scroll
+			ld		a,(FASE)
+			cp		4
+			jr		nz,.mira_letra_recogida_scroll
+			ld		a,(SUMA_BUCLE)
+			cp		3
+			jr		nz,.devuelve_tile_tapado_scroll
+
+.mira_letra_recogida_scroll:
+
 			ld		a,(FASE)
 			dec		a
 			add		a
@@ -1337,6 +1348,9 @@ SUSTITUYE_TILE_LETRA_RECOGIDA_EN_SCROLL:
 			ld		a,(hl)
 			and		e
 			jr		z,.devuelve_original
+
+.devuelve_tile_tapado_scroll:
+
 			pop		af
 			ld		a,c
 			scf
