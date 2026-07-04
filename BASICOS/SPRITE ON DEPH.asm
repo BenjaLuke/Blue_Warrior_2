@@ -67,17 +67,6 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH:
 
 .EXCEPCIONES_2:
 
-; �ES LETRA?
-
-        cp      27*4
-        jp      z,.CARGA_LA_D
-        cp      28*4
-        jp      z,.CARGA_LA_E
-        cp      29*4
-        jp      z,.CARGA_LA_P
-        cp      30*4
-        jp      z,.CARGA_LA_H
-
 ; �ES UN PROYECTIL?
 
         cp      40*4
@@ -141,29 +130,6 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH:
         ld      a,30
         ld      (TIEMPO_DE_ADJUST),a
         jp      .SALIMOS
-
-.CARGA_LA_D:
-
-        ld      hl,TENEMOS_D
-        jp      .MARCA_LETRA_RECOGIDA
-
-.CARGA_LA_E:
-
-        ld      hl,TENEMOS_E
-        jp      .MARCA_LETRA_RECOGIDA
-
-.CARGA_LA_P:
-
-        ld      hl,TENEMOS_P
-        jp      .MARCA_LETRA_RECOGIDA
-
-.CARGA_LA_H:
-
-        ld      hl,TENEMOS_H
-
-.MARCA_LETRA_RECOGIDA:
-
-        ld      (hl),1
 
 .DANO_DE_PUPA:
 

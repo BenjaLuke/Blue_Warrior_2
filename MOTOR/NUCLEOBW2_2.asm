@@ -5809,25 +5809,6 @@ ACTIVAMOS_INTERRUPCIONES_DE_LINEA_REAL:
 		ei
 		ret
 
-REVISA_LETRAS_DE_LA_FASE_REAL:
-
-		ld		a,(TENEMOS_D)
-		or		a
-		ret		z
-		ld		a,(TENEMOS_E)
-		or		a
-		ret		z
-		ld		a,(TENEMOS_P)
-		or		a
-		ret		z
-		ld		a,(TENEMOS_H)
-		or		a
-		ret		z
-		ld		a,(TENEMOS_TODAS)
-		inc		a
-		ld		(TENEMOS_TODAS),a
-		ret
-
 REVISA_LETRAS_DE_TODAS_LAS_FASES_REAL:
 
 		ld		a,(LETRAS_FASES_BITS)

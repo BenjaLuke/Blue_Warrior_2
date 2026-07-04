@@ -826,7 +826,7 @@ VOLVEMOS_TRAS_ROCKAGER:
 
 		ret
 
-        ds		1
+        ds		#C000-$
 
 
 
