@@ -599,7 +599,22 @@ CARGA_SLOT_MAPA:
 
 		include "MOTOR/NUCLEOBW2_1.asm"				                            ; Incluímos el motor del juego 1
 
+MIRA_SI_PINTAMOS_COVID_OPTIMIZADO:
+
+            ld      a,(ix+10)
+            and     00000001B
+            ret     nz
+            ld      a,(ix+4)
+            or      a
+            ret     z
+            scf
+            ret
+
+FIN_MIRA_SI_PINTAMOS_COVID_OPTIMIZADO:
+
         ds      #8000-$-#2200 
+
+CONTINUA_PAGINA_9_TRAS_COVID_OPTIMIZADO:
 
 		include "BASICOS/RUTINAS CERRADAS (sin etiquetas).asm"				            ; Incluímos las referencias a la BIOS
 		include "AUDIOS/LANZADOR EFECTOS PSG (sin etiquetas).asm"
@@ -628,6 +643,57 @@ REANUDA_MUSICA_DESDE_SLOT1:
 INICIA_MUSICA_EXTRA:
 
 			include "AUDIOS/INICIA MUSICA_EXTRA.asm"
+
+MIRA_SI_PINTAMOS_ENEMIGO_OPTIMIZADO:
+
+            ld      a,(ix+8)
+            or      a
+            jr      z,.pintar
+
+            ld      a,(ix+6)
+            cp      5
+            jr      z,.premio
+            cp      10
+            jr      z,.explosion
+            cp      13
+            jr      z,.slime_quieto
+
+.pintar:
+
+            or      a
+            ret
+
+.premio:
+
+            ld      a,(ix+13)
+            or      a
+            jr      nz,.no_pintar
+            ret
+
+.explosion:
+
+            ld      a,(ix+10)
+            cp      1
+            ret     z
+            cp      11
+            ret     z
+            jr      .no_pintar
+
+.slime_quieto:
+
+            ld      a,(ix+10)
+            or      a
+            ret     z
+            cp      1
+            ret     z
+            cp      31
+            ret     z
+
+.no_pintar:
+
+            scf
+            ret
+
         ds		#8000-$
 
 /**********************

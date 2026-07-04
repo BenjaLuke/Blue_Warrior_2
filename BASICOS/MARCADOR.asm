@@ -272,6 +272,10 @@ PINTA_ARMA:
 
 SUMA_SCORE:
 
+        ld      a,(DEMO)
+        or      a
+        ret     nz
+
         push    de                                                                      ; Salvamos en la pila los valores de DE y HL
         push    hl
         ld      de,(SCORE_A_SUMAR)                                                      ; Sumamos los puntos que vienen de fuera a nuestro score

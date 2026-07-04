@@ -348,6 +348,9 @@ MAPA_SITUACION_RIGHT_X_PAGE_0:	#1
 MAPA_SITUACION_LEFT_X_PAGE_1:	#1
 MAPA_SITUACION_RIGHT_X_PAGE_1:	#1
 MAPA_SITUACION_PALETA_ROTACION:	#1
+MAPA_COPI_OSC_A_ESTADO:	#13
+MAPA_COPI_OSC_B_ESTADO:	#13
+MAPA_COPI_OSC_VISIBLE_PAGE:	#1
 TRAMO_FASE_3:					#1										; 0,1,2 para las tres paginas de datos de la fase 3
 PAGE_DATOS_FASE:				#1										; Pagina ROM de constantes, eventos y paletas de fase
 PAGE_DATOS_FASE_SALVADA:		#1										; Page de datos guardada por check point

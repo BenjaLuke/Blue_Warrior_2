@@ -1790,10 +1790,10 @@ SE_PUEDE_MOVER_Y_EFES_VARIOS:
 			bit		5,a											; Si pulsa f1 pausamos
 			jp		z,.PAUSE_VAGON		
 			
-			ld		a,7
-			call	SNSMAT_RAM
-			bit		1,a	
-			jp		z,AGILIZA_MAPA									; Si pulsa f5 avanza 20 lineas en el mapa			
+			;ld		a,7
+			;call	SNSMAT_RAM
+			;bit		1,a	
+			;jp		z,AGILIZA_MAPA									; XXXXXX Si pulsa f5 avanza 20 lineas en el mapa			
 			xor		a
 			ld		(MARCADOR_PULSADO),a
 			ld		a,(SUMA_CAMINO)

@@ -850,10 +850,12 @@ SECUENCIAS_DE_LOS_ENEMIGOS:
 
         ld      a,(CONTROL_DE_C_R)
         cp      2
-        jp      nz,SECUENCIA_PROYECTILES_Y_ENEMIGOS.PASAMOS_A_LA_SIGUIENTE_POSICION
+        jp      nz,.premio_sin_cambios
 
 .SUMAMOS:
 
+        xor     a
+        ld      (ix+13),a
         push    iy
         ld      iy,TABLA_MOVIMIENTO_PREMIOS
         ld      e,(ix+10)
@@ -910,6 +912,12 @@ SECUENCIAS_DE_LOS_ENEMIGOS:
 .ultima_vuelta_al_premio:
 
         jp      TROZOS_COMUNES_28
+
+.premio_sin_cambios:
+
+        ld      a,1
+        ld      (ix+13),a
+        jp      SECUENCIA_PROYECTILES_Y_ENEMIGOS.PASAMOS_A_LA_SIGUIENTE_POSICION
 
 .AUDIO_RULETA:
 

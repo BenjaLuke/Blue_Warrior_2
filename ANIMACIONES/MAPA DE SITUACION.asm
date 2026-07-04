@@ -658,6 +658,7 @@ PAUSA_CON_DEPH_MAPA_DE_SITUACION:
 
 		xor		a
 		ld		(MAPA_SITUACION_PALETA_ROTACION),a
+		call	INICIALIZA_COPIS_OSCILANTES_MAPA
 
 		ld		d,25
 
@@ -743,7 +744,7 @@ PINTA_ANIMACIONES_DURANTE_PAUSA_MAPA:
 
 .BUCLE:
 
-		ld		b,6
+		ld		b,5
 		xor		a
 
 .COPI:
@@ -800,7 +801,337 @@ PINTA_ANIMACIONES_DURANTE_PAUSA_MAPA:
 		pop		af
 		inc		a
 		djnz	.COPI
+		jp		PINTA_COPIS_OSCILANTES_MAPA
+
+
+INICIALIZA_COPIS_OSCILANTES_MAPA:
+
+		ld		iy,MAPA_COPI_OSC_A_ESTADO
+		ld		(iy+0),29
+		ld		(iy+1),102
+		ld		(iy+2),1
+		ld		(iy+3),0
+		ld		(iy+4),1
+		ld		(iy+5),29
+		ld		(iy+6),102
+		ld		(iy+7),29
+		ld		(iy+8),102
+		ld		(iy+9),29
+		ld		(iy+10),121
+		ld		(iy+11),102
+		ld		(iy+12),196
+
+		ld		iy,MAPA_COPI_OSC_B_ESTADO
+		ld		(iy+0),105
+		ld		(iy+1),121
+		ld		(iy+2),0
+		ld		(iy+3),0
+		ld		(iy+4),1
+		ld		(iy+5),105
+		ld		(iy+6),121
+		ld		(iy+7),105
+		ld		(iy+8),121
+		ld		(iy+9),40
+		ld		(iy+10),105
+		ld		(iy+11),121
+		ld		(iy+12),208
 		ret
+
+
+PINTA_COPIS_OSCILANTES_MAPA:
+
+		ld		iy,MAPA_COPI_OSC_A_ESTADO
+		call	PINTA_COPI_OSCILANTE_MAPA
+		ld		iy,MAPA_COPI_OSC_B_ESTADO
+		jp		PINTA_COPI_OSCILANTE_MAPA
+
+
+PINTA_COPI_OSCILANTE_MAPA:
+
+		call	OBTIENE_PAGE_VISIBLE_MAPA_DE_SITUACION
+		ld		(MAPA_COPI_OSC_VISIBLE_PAGE),a
+
+		call	RESTAURA_FONDO_ANTERIOR_COPI_OSCILANTE_MAPA
+		call	COPIA_FONDO_NUEVO_A_BUFFER_COPI_OSCILANTE_MAPA
+		call	DUPLICA_FONDO_EN_BUFFER_COPI_OSCILANTE_MAPA
+		call	MEZCLA_ORIGEN_EN_BUFFER_COPI_OSCILANTE_MAPA
+		call	COPIA_BUFFER_A_DESTINO_COPI_OSCILANTE_MAPA
+		call	GUARDA_DESTINO_COPI_OSCILANTE_MAPA
+		jp		AVANZA_COPI_OSCILANTE_MAPA
+
+
+OBTIENE_PAGE_VISIBLE_MAPA_DE_SITUACION:
+
+		ld		a,(MAPA_SITUACION_BUFFER_PAGE)
+		cp		1
+		jr		z,.VISIBLE_PAGE_3
+		ld		a,1
+		ret
+
+.VISIBLE_PAGE_3:
+
+		ld		a,3
+		ret
+
+
+RESTAURA_FONDO_ANTERIOR_COPI_OSCILANTE_MAPA:
+
+		ld		a,(MAPA_COPI_OSC_VISIBLE_PAGE)
+		cp		1
+		jr		z,.PAGE_1
+
+		ld		b,(iy+7)
+		ld		c,(iy+8)
+		jr		.CON_POSICION
+
+.PAGE_1:
+
+		ld		b,(iy+5)
+		ld		c,(iy+6)
+
+.CON_POSICION:
+
+		ld		ix,DATOS_DEL_TILE_PARA_COPY
+		ld		(ix+0),b
+		ld		(ix+1),0
+		ld		(ix+2),c
+		ld		(ix+3),2
+		ld		(ix+4),b
+		ld		(ix+5),0
+		ld		(ix+6),c
+		ld		a,(MAPA_COPI_OSC_VISIBLE_PAGE)
+		ld		(ix+7),a
+		jp		EJECUTA_COPI_OSCILANTE_MAPA_NORMAL
+
+
+COPIA_FONDO_NUEVO_A_BUFFER_COPI_OSCILANTE_MAPA:
+
+		ld		ix,DATOS_DEL_TILE_PARA_COPY
+		ld		a,(iy+0)
+		ld		(ix+0),a
+		ld		(ix+1),0
+		ld		a,(iy+1)
+		ld		(ix+2),a
+		ld		(ix+3),2
+		ld		(ix+4),0
+		ld		(ix+5),0
+		ld		a,(iy+12)
+		ld		(ix+6),a
+		ld		a,(MAPA_SITUACION_BUFFER_PAGE)
+		ld		(ix+7),a
+		jp		EJECUTA_COPI_OSCILANTE_MAPA_NORMAL
+
+
+DUPLICA_FONDO_EN_BUFFER_COPI_OSCILANTE_MAPA:
+
+		ld		ix,DATOS_DEL_TILE_PARA_COPY
+		ld		(ix+0),0
+		ld		(ix+1),0
+		ld		a,(iy+12)
+		ld		(ix+2),a
+		ld		a,(MAPA_SITUACION_BUFFER_PAGE)
+		ld		(ix+3),a
+		ld		(ix+4),11
+		ld		(ix+5),0
+		ld		a,(iy+12)
+		ld		(ix+6),a
+		ld		a,(MAPA_SITUACION_BUFFER_PAGE)
+		ld		(ix+7),a
+		jp		EJECUTA_COPI_OSCILANTE_MAPA_NORMAL
+
+
+MEZCLA_ORIGEN_EN_BUFFER_COPI_OSCILANTE_MAPA:
+
+		ld		ix,DATOS_DEL_TILE_PARA_COPY
+		ld		a,(iy+2)
+		or		a
+		ld		a,108
+		jr		z,.ORIGEN_LISTO
+		ld		a,96
+
+.ORIGEN_LISTO:
+
+		ld		(ix+0),a
+		ld		(ix+1),0
+		ld		(ix+2),184
+		ld		(ix+3),2
+		ld		(ix+4),11
+		ld		(ix+5),0
+		ld		a,(iy+12)
+		ld		(ix+6),a
+		ld		a,(MAPA_SITUACION_BUFFER_PAGE)
+		ld		(ix+7),a
+		jp		EJECUTA_COPI_OSCILANTE_MAPA_TRANSPARENTE
+
+
+COPIA_BUFFER_A_DESTINO_COPI_OSCILANTE_MAPA:
+
+		ld		ix,DATOS_DEL_TILE_PARA_COPY
+		ld		(ix+0),11
+		ld		(ix+1),0
+		ld		a,(iy+12)
+		ld		(ix+2),a
+		ld		a,(MAPA_SITUACION_BUFFER_PAGE)
+		ld		(ix+3),a
+		ld		a,(iy+0)
+		ld		(ix+4),a
+		ld		(ix+5),0
+		ld		a,(iy+1)
+		ld		(ix+6),a
+		ld		a,(MAPA_COPI_OSC_VISIBLE_PAGE)
+		ld		(ix+7),a
+		jp		EJECUTA_COPI_OSCILANTE_MAPA_NORMAL
+
+
+GUARDA_DESTINO_COPI_OSCILANTE_MAPA:
+
+		ld		a,(MAPA_COPI_OSC_VISIBLE_PAGE)
+		cp		1
+		jr		z,.PAGE_1
+
+		ld		a,(iy+0)
+		ld		(iy+7),a
+		ld		a,(iy+1)
+		ld		(iy+8),a
+		ret
+
+.PAGE_1:
+
+		ld		a,(iy+0)
+		ld		(iy+5),a
+		ld		a,(iy+1)
+		ld		(iy+6),a
+		ret
+
+
+AVANZA_COPI_OSCILANTE_MAPA:
+
+		call	AVANZA_X_COPI_OSCILANTE_MAPA
+		jp		AVANZA_Y_COPI_OSCILANTE_MAPA
+
+
+AVANZA_X_COPI_OSCILANTE_MAPA:
+
+		ld		a,(iy+2)
+		or		a
+		jr		z,.DECRECE
+
+		ld		a,(iy+0)
+		cp		(iy+10)
+		jr		nc,.CAMBIA_A_DECRECER
+		inc		a
+		ld		(iy+0),a
+		ret
+
+.CAMBIA_A_DECRECER:
+
+		xor		a
+		ld		(iy+2),a
+		ld		a,(iy+0)
+		dec		a
+		ld		(iy+0),a
+		ret
+
+.DECRECE:
+
+		ld		a,(iy+0)
+		cp		(iy+9)
+		jr		z,.CAMBIA_A_CRECER
+		dec		a
+		ld		(iy+0),a
+		ret
+
+.CAMBIA_A_CRECER:
+
+		ld		a,1
+		ld		(iy+2),a
+		ld		a,(iy+0)
+		inc		a
+		ld		(iy+0),a
+		ret
+
+
+AVANZA_Y_COPI_OSCILANTE_MAPA:
+
+		ld		a,(iy+4)
+		or		a
+		jr		z,.DECRECE
+
+		ld		a,(iy+3)
+		cp		7
+		jr		nc,.CAMBIA_A_DECRECER
+		inc		a
+		jr		.GUARDA_INDICE
+
+.CAMBIA_A_DECRECER:
+
+		xor		a
+		ld		(iy+4),a
+		ld		a,6
+		jr		.GUARDA_INDICE
+
+.DECRECE:
+
+		ld		a,(iy+3)
+		or		a
+		jr		z,.CAMBIA_A_CRECER
+		dec		a
+		jr		.GUARDA_INDICE
+
+.CAMBIA_A_CRECER:
+
+		ld		a,1
+		ld		(iy+4),a
+
+.GUARDA_INDICE:
+
+		ld		(iy+3),a
+		ld		e,a
+		ld		d,0
+		ld		hl,TABLA_Y_COPI_OSCILANTE_MAPA
+		add		hl,de
+		ld		a,(iy+11)
+		add		a,(hl)
+		ld		(iy+1),a
+		ret
+
+
+EJECUTA_COPI_OSCILANTE_MAPA_NORMAL:
+
+		push	iy
+		call	PONE_TAMANO_COPI_OSCILANTE_MAPA
+		ld		(ix+14),10010000b
+		call	HL_DATOS_DEL_COPY
+		call	VDPREADY
+		pop		iy
+		ret
+
+
+EJECUTA_COPI_OSCILANTE_MAPA_TRANSPARENTE:
+
+		push	iy
+		call	PONE_TAMANO_COPI_OSCILANTE_MAPA
+		ld		(ix+14),10011000b
+		call	HL_DATOS_DEL_COPY
+		call	VDPREADY
+		pop		iy
+		ret
+
+
+PONE_TAMANO_COPI_OSCILANTE_MAPA:
+
+		ld		(ix+8),11
+		ld		(ix+9),0
+		ld		(ix+10),11
+		ld		(ix+11),0
+		ld		(ix+12),#00
+		ld		(ix+13),#00
+		ret
+
+
+TABLA_Y_COPI_OSCILANTE_MAPA:
+
+		db		0,1,3,6,9,12,14,15
 
 
 PONE_PAGE_VISIBLE_DESTINO_MAPA_DE_SITUACION:

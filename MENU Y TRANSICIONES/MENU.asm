@@ -126,7 +126,14 @@ COMIENZA_MENU:
 		ei
 
 		call	PAGE_10_A_SEGMENT_2
+		ld		hl,0
 		xor		a
+		ld		(SCORE_REAL),hl
+		ld		(V_DECEN_MIL),a
+		ld		(V_UNIDA_MIL),a
+		ld		(V_CENTENAS),a
+		ld		(V_DECENAS),a
+		ld		(V_UNIDADES),a
 		ld		(DEMO),a
 
 		call	MUESTRA_PRESENTACION_PROVISIONAL
@@ -2556,7 +2563,7 @@ DATOS_NEGRO_ROTATIVO_EN_PAGE_1:
 
 TEXTO_ROTATIVO_PRESENTACION:
 
-		db		"BLUE WARRIOR II   -   Beta version 5.01.01  -  28-6-2026 - 98 por ciento - (C) Digital Moai",0
+		db		"BLUE WARRIOR II   -   Beta version 5.01.20  -  04-07-2026 - 98 por ciento - (C) Digital Moai",0
 
 TEXTO_ROTATIVO_PRESENTACION_FIN:
 

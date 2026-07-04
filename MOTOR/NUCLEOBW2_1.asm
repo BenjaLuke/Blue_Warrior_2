@@ -84,19 +84,6 @@ RECARGAMOS_GRAFICOS_JUEGO_TRAS_MUERTE:
 
         ld		hl,#8000
         ld		de,#c000
-
-		ld		a,(FASE)
-		dec		a
-		jr		nz,.fin_de_carga
-
-		ld		a,(ESTADO_COLOR_PERM)
-		cp		11
-		jr		z,.fin_de_carga
-
-		push	hl
-		ld		hl,0
-		ld		(SCORE_REAL),hl
-		pop		hl
 		
 .fin_de_carga:		
 
@@ -192,27 +179,32 @@ ACTIVAMOS_INTERRUPCIONES_DE_LINEA:
 
 VARIABLES_PARA_EMPEZAR_LA_PARTIDA:	
 																			; Cuando empieza el juego pero que luego no hay que recuperar si muere.
+		ld		hl,(SCORE_REAL)
+		ld		(SCORE_A_SUMAR),hl
+
 		ld		hl,(MAX_SCORE)
 		ld		a,h
 		or		l
 		jp		z,VARIABLES_PARA_EMPEZAR_LA_PARTIDA_1
-		ld		(SCORE_A_SUMAR),hl
-		dec		hl
-		ld		(MAX_SCORE),hl
 
-		call	SUMA_SCORE
-		ld		hl,0
-		ld		(SCORE_A_SUMAR),hl
-		call	SUMA_SCORE
+		ld		(SCORE_REAL),hl
+		ld		hl,.tras_pintar_max_score
+[2]		push	hl
+		call	PINTA_SCORE
 
-		ld      hl,COPIA_SOLO_SCORE
-		call    DOCOPY
+.tras_pintar_max_score:
+
+		ld		hl,(SCORE_A_SUMAR)
+		ld		(SCORE_REAL),hl
+		ld		hl,.tras_pintar_score_real
+[2]		push	hl
+		call	PINTA_SCORE
+
+.tras_pintar_score_real:
 
 VARIABLES_PARA_EMPEZAR_LA_PARTIDA_1:
 
 
-		ld		hl,0
-		ld		(SCORE_REAL),hl
 		xor		a
 
 		ld		(INMUNE),a

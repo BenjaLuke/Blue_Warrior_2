@@ -2,13 +2,13 @@ NUEVO_PROYECTIL:
 
 		ld		a,(ARMA_USANDO)
 		cp		3
-		jp		c,.NUEVO_PROYECTIL_2
+		jr		c,.NUEVO_PROYECTIL_2
 		cp		6
-		jp		nc,.NUEVO_PROYECTIL_2
+		jr		nc,.NUEVO_PROYECTIL_2
 
 		ld		a,(FUEGO_QUE_TOCA)
 		cp		1
-		jp		nz,.NUEVO_PROYECTIL_3
+		jr		nz,.NUEVO_PROYECTIL_3
 
 
 .NUEVO_PROYECTIL_2:
@@ -39,7 +39,7 @@ NUEVO_PROYECTIL:
 
 		ld		a,(ix+15)
 		or		a
-		jp		z,.seguimos_con_comparacion
+		jr		z,.seguimos_con_comparacion
 
 		dec		a
 		ld		(ix+15),a
@@ -100,16 +100,16 @@ NUEVO_PROYECTIL:
 		ld		a,(FUEGO_QUE_TOCA)
 		inc		a
 		and		00000011b
-		jp		nz,.FUEGO_2
+		jr		nz,.FUEGO_2
 		inc		a
 
 .FUEGO_2:
 
 		ld		(FUEGO_QUE_TOCA),a
 		cp		2
-		jp		z,.TOCA_FUEGO_2
+		jr		z,.TOCA_FUEGO_2
 		cp		3
-		jp		z,.TOCA_FUEGO_3
+		jr		z,.TOCA_FUEGO_3
 
 .TOCA_FUEGO_1:
 
@@ -122,7 +122,7 @@ NUEVO_PROYECTIL:
 		jp		nc,.NOS_VAMOS
 
 		ld		hl,VALORES_BASICOS_FUEGO_DERECHA
-		jp		.FUEGO_3
+		jr		.FUEGO_3
 
 .TOCA_FUEGO_2:
 
@@ -131,13 +131,13 @@ NUEVO_PROYECTIL:
 		ld		(CADENCIA_DEL_DISPARO),a
 
 		ld		hl,VALORES_BASICOS_FUEGO
-		jp		.FUEGO_3
+		jr		.FUEGO_3
 
 .TOCA_FUEGO_3:
 
 		ld		a,(ARMA_USANDO)
 		cp		3
-		jp		nz,.TOCA_FUEGO_3_2
+		jr		nz,.TOCA_FUEGO_3_2
 
 .TOCA_FUEGO_3_1:
 
@@ -151,7 +151,7 @@ NUEVO_PROYECTIL:
 
 		ld		a,(X_DEPH)
 		cp		10
-		jp		c,.NOS_VAMOS
+		jr		c,.NOS_VAMOS
 
 .FUEGO_3:
 
@@ -199,7 +199,7 @@ NUEVO_PROYECTIL:
 		call	PON_COLOR_2
 		call	PAGE_10_A_SEGMENT_2
 
-		jp		.NOS_VAMOS
+		jr		.NOS_VAMOS
 
 .NOS_VAMOS:
 
@@ -215,7 +215,7 @@ NUEVO_PROYECTIL:
 		push	ix
 		pop		de
 		call	XOR_Z_RAM
-		jp		z,.NOS_VAMOS
+		jr		z,.NOS_VAMOS
 		jp		.COMPARAMOS_EL_PROYECTIL_O_ENEMIGO_MIRADO
 		
 SECUENCIA_PROYECTILES_Y_ENEMIGOS:
@@ -490,6 +490,16 @@ PINTA_PROYECTILES_ENEMIGOS:
 
 .pintando_1:
 
+        ld      a,(ix+6)
+        cp      8
+        jp      z,.mira_covid_sin_cambios
+        cp      9
+        jp      z,.mira_covid_sin_cambios
+        call    MIRA_SI_PINTAMOS_ENEMIGO_OPTIMIZADO
+        jp      c,.PASAMOS_A_LA_SIGUIENTE_POSICION
+
+.pintando_sprite_obligatorio:
+
 		call	.PINTADO_DE_SPRITE
 		ld		a,(ix+8)
 		or		a
@@ -632,7 +642,7 @@ PINTA_PROYECTILES_ENEMIGOS:
 		push	ix
 		pop		de
 		call	XOR_Z_RAM
-		jp		z,.NOS_VAMOS
+		jr		z,.NOS_VAMOS
 		jp		.COMPARAMOS_EL_PROYECTIL_O_ENEMIGO_MIRADO
 		
 .NOS_VAMOS:
@@ -640,6 +650,12 @@ PINTA_PROYECTILES_ENEMIGOS:
 		pop		ix
 		
 		ret
+
+.mira_covid_sin_cambios:
+
+        call    MIRA_SI_PINTAMOS_COVID_OPTIMIZADO
+        jp      c,.PASAMOS_A_LA_SIGUIENTE_POSICION
+        jp      .pintando_sprite_obligatorio
 		
 MIRAMOS_SI_ESTA_LIBRE_ESE_SPRITE:
 
