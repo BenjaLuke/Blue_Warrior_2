@@ -368,12 +368,12 @@ TEXTO_CINEMATICA_1_1:
 TEXTO_CINEMATICA_1_2:
 		db		"como te contaron. Aunque es una",0
 TEXTO_CINEMATICA_1_3:
-		db		"aldea prospera, el miedo del pasado     ",0
+        db      "aldea pr",#F3,"spera, el miedo del pasado     ",0
 TEXTO_CINEMATICA_1_4:
 		db		"sigue latente.",0
 
 TEXTO_CINEMATICA_2_1:
-		db		"Y Deph Kurgan, heroe de otras ",0
+        db      "Y Deph Kurgan, h",#E9,"roe de otras ",0
 TEXTO_CINEMATICA_2_2:
 		db		"aventuras, siente en sus huesos   ",0
 TEXTO_CINEMATICA_2_3:
@@ -393,20 +393,20 @@ TEXTO_CINEMATICA_3_4:
 TEXTO_CINEMATICA_4_1:
 		db		"Pero Deph no se intimida ante esta",0
 TEXTO_CINEMATICA_4_2:
-		db		"vision apocaliptica. Sabe que debe      ",0
+        db      "visi",#F3,"n apocal",#ED,"ptica. Sabe qu",#E9," debe      ",0
 TEXTO_CINEMATICA_4_3:
 		db		"hacer. Ya lo hizo antes.   ",0
 TEXTO_CINEMATICA_4_4:
 		db		"   ",0
 
 TEXTO_CINEMATICA_5_1:
-		db		"Deph obtendra la Piedra de la Tierra    ",0
+        db      "Deph obtendr",#E1," la Piedra de la Tierra    ",0
 TEXTO_CINEMATICA_5_2:
 		db		"para frenar a Lord Adder. Esta vez   ",0
 TEXTO_CINEMATICA_5_3:
-		db		"tambien obtendra el Diamante sagrado    ",0
+        db      "tambi",#E9,"n obtendr",#E1," el Diamante sagrado    ",0
 TEXTO_CINEMATICA_5_4:
-		db		"que rompera el ciclo.",0
+        db      "que romper",#E1," el ciclo.",0
 
 TEXTO_CINEMATICA_1_1_INGLES:
 		db		"The story of Gamourla isn't exactly as ",0
@@ -452,6 +452,19 @@ TEXTO_CINEMATICA_5_3_INGLES:
 		db		"will also obtain the sacred Diamond that",0
 TEXTO_CINEMATICA_5_4_INGLES:
 		db		"will break the cycle.",0
+
+PALETA_CINEMATICA_2_4:
+       	incbin  "PALETAS/PRESENTACION/CINEMATICA24.palete"
+FADE_IN_CINEMATICA_2_4:
+		incbin  "PALETAS/PRESENTACION/CINEMATICA24.fadein"
+FADE_OUT_CINEMATICA_2_4:
+		incbin  "PALETAS/PRESENTACION/CINEMATICA24.fadeout"
+PALETA_CINEMATICA_5:
+       	incbin  "PALETAS/PRESENTACION/CINEMATICA5.palete"
+FADE_IN_CINEMATICA_5:
+		incbin  "PALETAS/PRESENTACION/CINEMATICA5.fadein"
+FADE_OUT_CINEMATICA_5:
+		incbin  "PALETAS/PRESENTACION/CINEMATICA5.fadeout"
 		
 		ds		#C000-$
 /**********************
