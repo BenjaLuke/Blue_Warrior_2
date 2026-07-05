@@ -1,4 +1,4 @@
-Sjasm Z80 Assembler v0.42c - www.xl2s.tk             [2026.07.05 - 11:32:20]
+Sjasm Z80 Assembler v0.42c - www.xl2s.tk             [2026.07.05 - 11:35:22]
 
 NUCLEOBW2.asm
 Errors: 0
@@ -9603,11 +9603,11 @@ Errors: 0
     2798.  00:50BE                      
     2799.  00:50BE                      TEXTO_ROTATIVO_PRESENTACION:
     2800.  00:50BE                      
-    2801.  00:50BE                      		db		"BLUE WARRIOR II   -   Beta version 5.01.27  -  04-07-2026 - 98 por ciento - (C) Digital Moai",0
+    2801.  00:50BE                      		db		"BLUE WARRIOR II   -   Beta version 5.01.35  -  05-07-2026 - 98 por ciento - (C) Digital Moai",0
     2801.  00:50BE  42 4C 55 45 20 57 41 52 52 49 4F 52 20 49 49 20 
     2801.  00:50CE  20 20 2D 20 20 20 42 65 74 61 20 76 65 72 73 69 
-    2801.  00:50DE  6F 6E 20 35 2E 30 31 2E 32 37 20 20 2D 20 20 30 
-    2801.  00:50EE  34 2D 30 37 2D 32 30 32 36 20 2D 20 39 38 20 70 
+    2801.  00:50DE  6F 6E 20 35 2E 30 31 2E 33 35 20 20 2D 20 20 30 
+    2801.  00:50EE  35 2D 30 37 2D 32 30 32 36 20 2D 20 39 38 20 70 
     2801.  00:50FE  6F 72 20 63 69 65 6E 74 6F 20 2D 20 28 43 29 20 
     2801.  00:510E  44 69 67 69 74 61 6C 20 4D 6F 61 69 00 
     2802.  00:511B                      
