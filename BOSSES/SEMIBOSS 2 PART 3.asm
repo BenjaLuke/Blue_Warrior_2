@@ -94,24 +94,24 @@ SPRITES_COVID_TAM_PART3_SEMIBOSS_2				equ		2*8*4
         ex      af,af'
         ld      a,(PAUSA_EN_ANIMACION_ROCKAGER)
         cp      PAUSA_ACTIVA_ROCAS_PART3_SEMIBOSS_2
-        jp      nz,.REVISION_PAUSAS
+        jr      nz,.REVISION_PAUSAS
 
         ld      ix,VALORES_SPRITES_PIEDRAS
 
         ld      a,(FOTOGRAMA_SECUENCIA_ROCKAGER_1)
         cp      FOTOGRAMA_ACTIVA_ROCA_1_PART3_SEMIBOSS_2
-        jp      z,.ACTIVANDO_COMUN
+        jr      z,.ACTIVANDO_COMUN
         cp      FOTOGRAMA_ACTIVA_ROCA_1_PART3_SEMIBOSS_2+FOTOGRAMA_ACTIVA_ROCA_PASO_PART3_SEMIBOSS_2
-        jp      z,.ACTIVANDO_2
+        jr      z,.ACTIVANDO_2
         cp      FOTOGRAMA_ACTIVA_ROCA_1_PART3_SEMIBOSS_2+FOTOGRAMA_ACTIVA_ROCA_PASO_PART3_SEMIBOSS_2+FOTOGRAMA_ACTIVA_ROCA_PASO_PART3_SEMIBOSS_2
-        jp      z,.ACTIVANDO_3
+        jr      z,.ACTIVANDO_3
      
-        jp      .REVISION_PAUSAS
+        jr      .REVISION_PAUSAS
 
 .ACTIVANDO_2:
 
         ld      de,PIEDRAS_FASE_1_PASO_PART3_SEMIBOSS_2
-        jp      .ACTIVANDO_COMUN_PRE
+        jr      .ACTIVANDO_COMUN_PRE
 
 .ACTIVANDO_3:
 
@@ -137,13 +137,13 @@ SPRITES_COVID_TAM_PART3_SEMIBOSS_2				equ		2*8*4
 
         ld      c,(ix)
         cp      c
-        jp      z,.PAUSA_DE_ANIMACION_1
+        jr      z,.PAUSA_DE_ANIMACION_1
         inc     ix
         djnz    .BUCLE_REVISION_PAUSAS
 
         inc     a
         cp      FOTOGRAMA_FIN_SECUENCIA_1_PART3_SEMIBOSS_2
-        jp      nz,.SALVAMOS_FOTOGRAMA_1
+        jr      nz,.SALVAMOS_FOTOGRAMA_1
         ld      a,FOTOGRAMA_INICIAL_PART3_SEMIBOSS_2
 
 .SALVAMOS_FOTOGRAMA_1:
@@ -162,7 +162,7 @@ SPRITES_COVID_TAM_PART3_SEMIBOSS_2				equ		2*8*4
         jp      nz,.PINTAMOS_FOTOGRAMA
         ld      a,(FOTOGRAMA_SECUENCIA_ROCKAGER_1)
         inc     a
-        jp      .SALVAMOS_FOTOGRAMA_1
+        jr      .SALVAMOS_FOTOGRAMA_1
 
 .MUERE_PRIMER_ROCKAGER:
 
@@ -243,25 +243,25 @@ SPRITES_COVID_TAM_PART3_SEMIBOSS_2				equ		2*8*4
         ld      ix,VALORES_SPRITES_PIEDRAS
         ld      a,(FOTOGRAMA_SECUENCIA_ROCKAGER_3)
         cp      FOTOGRAMA_ACTIVA_ROCA_1_PART3_SEMIBOSS_2
-        jp      z,.ACTIVANDO_COMUN_2
+        jr      z,.ACTIVANDO_COMUN_2
         cp      FOTOGRAMA_ACTIVA_ROCA_1_PART3_SEMIBOSS_2+FOTOGRAMA_ACTIVA_ROCA_PASO_PART3_SEMIBOSS_2
-        jp      z,.ACTIVANDO_2_2
+        jr      z,.ACTIVANDO_2_2
         cp      FOTOGRAMA_ACTIVA_ROCA_1_PART3_SEMIBOSS_2+FOTOGRAMA_ACTIVA_ROCA_PASO_PART3_SEMIBOSS_2+FOTOGRAMA_ACTIVA_ROCA_PASO_PART3_SEMIBOSS_2
-        jp      z,.ACTIVANDO_3_2
+        jr      z,.ACTIVANDO_3_2
         cp      FOTOGRAMA_ACTIVA_ROCA_1_PART3_SEMIBOSS_2+FOTOGRAMA_ACTIVA_ROCA_PASO_PART3_SEMIBOSS_2+FOTOGRAMA_ACTIVA_ROCA_PASO_PART3_SEMIBOSS_2+FOTOGRAMA_ACTIVA_ROCA_PASO_PART3_SEMIBOSS_2
-        jp      z,.ACTIVANDO_4_2
+        jr      z,.ACTIVANDO_4_2
      
-        jp      .SECUENCIA_2_CONT_2
+        jr      .SECUENCIA_2_CONT_2
 
 .ACTIVANDO_2_2:
 
         ld      de,PIEDRAS_FASE_2_PASO_PART3_SEMIBOSS_2
-        jp      .ACTIVANDO_COMUN_PRE_2
+        jr      .ACTIVANDO_COMUN_PRE_2
 
 .ACTIVANDO_3_2:
 
         ld      de,PIEDRAS_FASE_2_PASO_PART3_SEMIBOSS_2*2
-        jp      .ACTIVANDO_COMUN_PRE_2
+        jr      .ACTIVANDO_COMUN_PRE_2
 
 .ACTIVANDO_4_2:
 
@@ -286,11 +286,11 @@ SPRITES_COVID_TAM_PART3_SEMIBOSS_2				equ		2*8*4
         ld      a,(AGUJERO_INTOCABLE)
         cp      c
         ld      a,c
-        jp      nz,.SEGUIMOS_CON_EL_FOTOGRAMA
+        jr      nz,.SEGUIMOS_CON_EL_FOTOGRAMA
         cp      FOTOGRAMA_AGUJERO_ULTIMO_PART3_SEMIBOSS_2
-        jp      z,.CAMBIO_DE_FOTOGRAMA_A_CERO
+        jr      z,.CAMBIO_DE_FOTOGRAMA_A_CERO
         add     FOTOGRAMA_AGUJERO_PASO_PART3_SEMIBOSS_2
-        jp      .CAMBIO_DE_FOTOGRAMA
+        jr      .CAMBIO_DE_FOTOGRAMA
 
 .CAMBIO_DE_FOTOGRAMA_A_CERO:
 
@@ -316,14 +316,14 @@ SPRITES_COVID_TAM_PART3_SEMIBOSS_2				equ		2*8*4
         ld      a,(FOTOGRAMA_SECUENCIA_ROCKAGER_3)
         inc     a
         cp      FOTOGRAMA_FIN_SECUENCIA_2_PART3_SEMIBOSS_2
-        jp      nz,.SALVAMOS_FOTOGRAMA_2
+        jr      nz,.SALVAMOS_FOTOGRAMA_2
         ld      a,FOTOGRAMA_INICIAL_PART3_SEMIBOSS_2
 
 .SALVAMOS_FOTOGRAMA_2:
 
         ld      (FOTOGRAMA_SECUENCIA_ROCKAGER_3),a
         
-        jp      .PINTAMOS_FOTOGRAMA
+        jr      .PINTAMOS_FOTOGRAMA
 
 .RUTINA_STANDAR_PASA_DATOS_COPY_ROCKAGER:
 
@@ -349,25 +349,36 @@ SPRITES_COVID_TAM_PART3_SEMIBOSS_2				equ		2*8*4
         and     PAUSA_ANIMACION_MASK_PART3_SEMIBOSS_2
         ld      (PAUSA_EN_ANIMACION_ROCKAGER),a
         or      a
-        jp      nz,.PINTAMOS_FOTOGRAMA
+        jr      nz,.PINTAMOS_FOTOGRAMA
         ld      a,(FOTOGRAMA_SECUENCIA_ROCKAGER_3)
         inc     a
-        jp      .SALVAMOS_FOTOGRAMA_2
+        jr      .SALVAMOS_FOTOGRAMA_2
 
 .PINTAMOS_FOTOGRAMA:
 
  	ld	hl,DATAS_COPY_RECUP_SCROLL
-	call	DOCOPY
-        ret
+	jp	DOCOPY
 
 .RECARGAMOS_GRAFICOS_STAGE_2:
 
         pop     hl
 
-        di                  ; protegemos cambios de banco largos
+        di                  ; protegemos cambios de banco y desactivamos interrupciones VDP
+        ld      a,(RG0SAV)
+        push    af
+        and     11101111b
+        ld      b,a
+        ld      c,0
+        call    WRTVDP_EN_RAM
+        ld      a,(RG1SAV)
+        push    af
+        and     11011111b
+        ld      b,a
+        ld      c,1
+        call    WRTVDP_EN_RAM
 
         ld      a,BANCO_STAGE_2_A_PART3_SEMIBOSS_2
-        call    CHANGE_BANK_2
+        call    .CAMBIA_BANCO_2_SIN_INTERRUPCIONES
 
         call    VDPREADY
         ld      hl,VRAM_GRAFICOS_ORIGEN_PART3_SEMIBOSS_2
@@ -377,7 +388,7 @@ SPRITES_COVID_TAM_PART3_SEMIBOSS_2				equ		2*8*4
         call    VDPREADY
 
         ld      a,BANCO_STAGE_2_B_PART3_SEMIBOSS_2
-        call    CHANGE_BANK_2
+        call    .CAMBIA_BANCO_2_SIN_INTERRUPCIONES
 
         ld      hl,VRAM_GRAFICOS_ORIGEN_PART3_SEMIBOSS_2
         ld      de,VRAM_GRAFICOS_DESTINO_2_PART3_SEMIBOSS_2
@@ -386,9 +397,7 @@ SPRITES_COVID_TAM_PART3_SEMIBOSS_2				equ		2*8*4
         call    VDPREADY
 
         ld      a,BANCO_COMUN_PART3_SEMIBOSS_2
-        call    CHANGE_BANK_2
-
-        ei
+        call    .CAMBIA_BANCO_2_SIN_INTERRUPCIONES
 
 .BORRAMOS_PIEDRAS_Y_EXPLOSIONES
 
@@ -399,25 +408,42 @@ SPRITES_COVID_TAM_PART3_SEMIBOSS_2				equ		2*8*4
 
 .CARGAMOS_SPRITES_PERDIDOS:
 
+        ld      a,32
+        call    .CAMBIA_BANCO_2_SIN_INTERRUPCIONES
+
 	ld	hl,SPRITES_ALPHONSERRYX
 	ld	de,SPRITES_ALPHONSERRYX_DESTINO_PART3_SEMIBOSS_2
         ld      bc,SPRITES_ALPHONSERRYX_TAM_PART3_SEMIBOSS_2
-        call    PINTADO_DE_VRAM
+        call    PON_COLOR_2.sin_bc_impuesta
 
 	ld	hl,SPRITES_COVID
 	ld	de,SPRITES_COVID_DESTINO_PART3_SEMIBOSS_2
 	ld	bc,SPRITES_COVID_TAM_PART3_SEMIBOSS_2
-        call    PINTADO_DE_VRAM
+        call    PON_COLOR_2.sin_bc_impuesta
+
+        ld      a,BANCO_COMUN_PART3_SEMIBOSS_2
+        call    .CAMBIA_BANCO_2_SIN_INTERRUPCIONES
 
 .RECUPERAMOS_SECCION_DE_PANTALLA_DEL_STATUS:
 
         ld      hl,.COPIA_PARTE_PAGE_0_DE_STATUS
-	call	DOCOPY 
+	call	DOCOPY
+        call    VDPREADY
 
 .BORRAMOS_ESA_PARTE_DE_PAGE_0:
 
         ld      hl,.BORRA_PARTE_DE_STATUS_PAGE_0
-	call	DOCOPY 
+	call	DOCOPY
+        call    VDPREADY
+
+        pop     af
+        ld      b,a
+        ld      c,1
+        call    WRTVDP_EN_RAM
+        pop     af
+        ld      b,a
+        ld      c,0
+        call    WRTVDP_EN_RAM
 
 .REGRESAMOS:
 
@@ -442,6 +468,12 @@ SPRITES_COVID_TAM_PART3_SEMIBOSS_2				equ		2*8*4
         inc     hl
         djnz    .LIMPIA_SPRITES_ACTIVOS_ROCKAGER_FIN
         jp      VOLVEMOS_TRAS_ROCKAGER
+
+.CAMBIA_BANCO_2_SIN_INTERRUPCIONES:
+
+        ld      (PAGE_A_GUARDAR),a
+        ld      (DIRPA2),a
+        ret
 
 .TEMBLEQUE:
 

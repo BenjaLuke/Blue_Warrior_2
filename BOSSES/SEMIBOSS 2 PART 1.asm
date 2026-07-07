@@ -252,6 +252,8 @@ ROCKAGER:
         ld      hl,.COPIA_PARTE_PAGE_2_DE_STATUS
 	call	DOCOPY 
 
+        call    .PREPARA_CORAZONES_MAXIMOS_DEPH
+
         ld      b,DATAS_COPY_TAM_SEMIBOSS_2
         ld      hl,.COPIA_STATUS_BOSS_A_PAGE_2
 	call	DOCOPY 
@@ -259,18 +261,33 @@ ROCKAGER:
 .BORRA_CORAZONES_QUE_SOBRAN:
 
         ld      a,(CORAZONES)
-        ld      b,CORAZONES_MAX_BOSS_SEMIBOSS_2
-        
+        push    af
+        ld      a,(CORAZONES_MAXIMOS)
+        dec     a
+        ld      b,a
+
+.COMPRUEBA_SI_BORRA_CORAZONES:
+
+        pop     af
+        inc     b
+        cp      b
+        jr      nc,.FINAL_BUCLE_CORAZONES
+        dec     b
+        push    af
+
+.INICIA_BUCLE_BORRA_CORAZONES_DE_MAS:
+
 .BUCLE_BORRA_CORAZONES_DE_MAS:
 
-        ex      af,af'
         ld      a,b
         ld      (CORAZONES),a
         call    PAGE44_A_SEGMENT_1_PINTA_CORAZONES_VIDA_DEPH_ADECUADOS
-        ex      af,af'
+        pop     af
         cp      b
-        jp      z,.FINAL_BUCLE_CORAZONES
+        jr      z,.FINAL_BUCLE_CORAZONES
+        push    af
         djnz    .BUCLE_BORRA_CORAZONES_DE_MAS
+        pop     af
 
 .FINAL_BUCLE_CORAZONES:
 
@@ -286,7 +303,7 @@ ROCKAGER:
         ld      iy,DATAS_COPY_RECUP_SCROLL
         call    .BUCLE_PINTA_DATAS
 
-        jp      .BUCLE
+        jr      .BUCLE
 
 .BUCLE_PINTA_DATAS:
 
@@ -296,11 +313,71 @@ ROCKAGER:
 
         ld      a,(ix)
         ld      (iy),a
-        ld      de,1
-        add     ix,de
-        add     iy,de
+        inc     ix
+        inc     iy
         djnz    .BUCLE_PINTA_DATAS_1
         ret
+
+.PREPARA_CORAZONES_MAXIMOS_DEPH:
+
+	ld		a,(CORAZONES_MAXIMOS)
+	cp		3
+	jr		z,.CORAZONES_MAXIMOS_3_DEPH
+	cp		4
+	jr		z,.CORAZONES_MAXIMOS_4_DEPH
+	ret
+
+.CORAZONES_MAXIMOS_3_DEPH:
+
+	ld		c,72
+	ld		b,20
+	jr		.CORAZONES_MAXIMOS_DEPH_OK
+
+.CORAZONES_MAXIMOS_4_DEPH:
+
+	ld		c,82
+	ld		b,10
+
+.CORAZONES_MAXIMOS_DEPH_OK:
+
+	call	.PREPARA_DATAS_CUADRO_CORAZONES_FUERA_MAX
+	ld		hl,DATAS_COPY_RECUP_SCROLL
+	call	DOCOPY
+
+	ld		hl,DATAS_COPY_RECUP_SCROLL+6
+	ld		(hl),29+200
+	ld		hl,DATAS_COPY_RECUP_SCROLL
+	jp		DOCOPY
+
+.PREPARA_DATAS_CUADRO_CORAZONES_FUERA_MAX:
+
+	ld		hl,DATAS_COPY_RECUP_SCROLL+3
+	xor		a
+	ld		(hl),a
+	inc		hl
+	ld		(hl),c
+	inc		hl
+	ld		(hl),a
+	inc		hl
+	ld		(hl),200+6
+	inc		hl
+	ld		(hl),a
+	inc		hl
+	ld		(hl),b
+	inc		hl
+	ld		(hl),a
+	inc		hl
+	ld		(hl),8
+	inc		hl
+	ld		(hl),a
+	inc		hl
+	ld		(hl),#EE
+	inc		hl
+	ld		(hl),a
+	inc		hl
+	ld		(hl),11000000b
+	ret
+
 .BUCLE:
 
         call    MOVIMIENTO_DEPH_EN_ROCKAGER
@@ -316,8 +393,7 @@ ROCKAGER:
         inc     a                                       ;  [
         and     00000011B                               ;  [
         ld      (VELOCIDAD_ROCKAGER),a                  ;  [
-        or      a                                       ;  [
-        jp      nz,.CONTROL_POST_BUCLE_1                ;  [
+        jr      nz,.CONTROL_POST_BUCLE_1                ;  [
 
         call    RUTINA_ROCKAGER
         call    PAGE_44_A_SEGMENT_1_RUTINA_ROCAS
@@ -327,10 +403,10 @@ ROCKAGER:
 
         ld      a,(TIEMPO_DE_ADJUST)
         or      a
-        jp      z,.CONTROL_POST_BUCLE_2
+        jr      z,.CONTROL_POST_BUCLE_2
         dec     a
         ld      (TIEMPO_DE_ADJUST),a        
-        jp      nz,.CONTROL_POST_BUCLE_2
+        jr      nz,.CONTROL_POST_BUCLE_2
         xor     a
         ld      (COLOR_ALEATORIO),a
 
@@ -338,12 +414,12 @@ ROCKAGER:
 
         ld      a,(PAUSA_TOQUE_ROCA_HACHA)
         or      a
-        jp      z,.BUCLE
+        jr      z,.BUCLE
 
         dec     a
         ld      (PAUSA_TOQUE_ROCA_HACHA),a
 
-        jp      .BUCLE
+        jr      .BUCLE
 
 .PAGE_2_A_PAGE_1_COMPLETA:
 
@@ -413,13 +489,13 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK:
         push    bc
         ld      a,(iy+2)
         cp      #FF
-        jp      z,.PASAMOS_AL_SIGUIENTE_PROYECTIL
+        jr      z,.PASAMOS_AL_SIGUIENTE_PROYECTIL
 
-        jp      .revision_1 ; Revisamos arma con cabeza
+        jr      .revision_1 ; Revisamos arma con cabeza
 
 .REVISION_CHOQUE_CON_ROCAS:
 
-        jp      .revision_4 ; Revisamos arma con piedra
+        jr      .revision_4 ; Revisamos arma con piedra
 
 .PASAMOS_AL_SIGUIENTE_PROYECTIL:
 
@@ -450,13 +526,13 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK:
 
 .revision_rocas:
 
-        jp      .REVISION_CHOQUE_CON_ROCAS
+        jr      .REVISION_CHOQUE_CON_ROCAS
 
 .revision_4:
 
         ld      a,(ARMA_USANDO)                 ; Nos aseguramos de que es un hacha
         cp      ARMA_HACHA_MIN_SEMIBOSS_2
-        jp      c,.PASAMOS_AL_SIGUIENTE_PROYECTIL
+        jr      c,.PASAMOS_AL_SIGUIENTE_PROYECTIL
 	push    bc
         ld      b,PIEDRAS_HACHA_CANT_SEMIBOSS_2
 
@@ -468,9 +544,9 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK:
         ex      af,af'
         ld      a,(PAUSA_TOQUE_ROCA_HACHA)
         or      a
-        jp      z,.SIN_PAUSA_TOQUE_ROCA_HACHA
+        jr      z,.SIN_PAUSA_TOQUE_ROCA_HACHA
         ex      af,af'
-        jp      .SIGUIENTE_EN_EL_BUCLE
+        jr      .SIGUIENTE_EN_EL_BUCLE
 
 .SIN_PAUSA_TOQUE_ROCA_HACHA:
 
@@ -488,14 +564,14 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK:
 	ld	a,(iy)
 	add	PROYECTIL_COLISION_ANCHO_SEMIBOSS_2
 	cp	c
-	jp	c,.SIGUIENTE_EN_EL_BUCLE
+	jr	c,.SIGUIENTE_EN_EL_BUCLE
 
 	ld	a,(ix)
 	add	8
 	ld	c,a
 	ld	a,(iy)
 	cp	c
-	jp	nc,.SIGUIENTE_EN_EL_BUCLE
+	jr	nc,.SIGUIENTE_EN_EL_BUCLE
 
 	ld	a,(ix+1)
 	sub	8
@@ -503,14 +579,14 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK:
 	ld	a,(iy+1)
 	add	PROYECTIL_COLISION_ANCHO_SEMIBOSS_2
 	cp	c
-	jp	c,.SIGUIENTE_EN_EL_BUCLE
+	jr	c,.SIGUIENTE_EN_EL_BUCLE
 
 	ld	a,(ix+1)
 	add	8
 	ld	c,a
 	ld	a,(iy+1)
 	cp	c
-	jp	nc,.SIGUIENTE_EN_EL_BUCLE
+	jr	nc,.SIGUIENTE_EN_EL_BUCLE
 	
         ld      a,27
         ld      (ix+3),a
@@ -520,11 +596,9 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK:
         push    bc
         call    SUMA_SCORE
 
-	call    PAGE_31_A_SEGMENT_2
 	ld	a,FX_ROCA_HACHA_SEMIBOSS_2
 	ld	c,FX_CANAL_0_SEMIBOSS_2
-	call	ayFX_INIT
-        call    PAGE_10_A_SEGMENT_2
+	call	TIRA_FX
 
         ld      a,PAUSA_TOQUE_ROCA_HACHA_SEMIBOSS_2
         ld      (PAUSA_TOQUE_ROCA_HACHA),a
@@ -584,7 +658,7 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK:
 
         ld      a,(SECUENCIA_DE_ROCKAGER)
         cp      2
-        jp      z,.revision_bloque_3
+        jr      z,.revision_bloque_3
  
 .revision_bloque_2:
         
@@ -596,7 +670,7 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK:
 
         ld      a,(iy)
         cp      105
-        jp      nc,.descuenta_2
+        jr      nc,.descuenta_2
 
 .descuenta_1:
 
@@ -604,7 +678,7 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK:
         dec     a
         ld      (VIDA_ROCKAGER_1),a
 
-        jp      .sobre_el_proyectil
+        jr      .sobre_el_proyectil
 
 .descuenta_2:
 
@@ -612,7 +686,7 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK:
         dec     a
         ld      (VIDA_ROCKAGER_2),a
 
-        jp      .sobre_el_proyectil
+        jr      .sobre_el_proyectil
 
 .revision_bloque_3:
 
@@ -624,7 +698,7 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK:
 
         ld      a,(VIDA_ROCKAGER_1)
         or      a
-        jp      z,.revision_bloque_4
+        jr      z,.revision_bloque_4
 
         dec     a
         ld      (VIDA_ROCKAGER_1),a
@@ -672,17 +746,15 @@ REVISAMOS_SI_MUERE_UN_ROCKAGER:
 
         ld      a,(VIDA_ROCKAGER_1)
         or      a
-        jp      nz,.UNO_SEGUNDO
+        jr      nz,.UNO_SEGUNDO
 
-        ld      a,(SECUENCIA_DE_ROCKAGER)
-        inc     a
-        ld      (SECUENCIA_DE_ROCKAGER),a
+        call    .AVANZA_SECUENCIA_DE_ROCKAGER
 
         ld      a,(FOTOGRAMA_SECUENCIA_ROCKAGER_1)
         cp      85
-        jp      nc,.UNO_PRIMERO_3
+        jr      nc,.UNO_PRIMERO_3
         cp      49
-        jp      nc,.UNO_PRIMERO_2
+        jr      nc,.UNO_PRIMERO_2
 
 .UNO_PRIMERO_1:
 
@@ -692,7 +764,7 @@ REVISAMOS_SI_MUERE_UN_ROCKAGER:
         add     37
         ld      (FOTOGRAMA_SECUENCIA_ROCKAGER_3),a
         xor     a
-        jp      .UNO_COMUN
+        jr      .UNO_COMUN
 
 .UNO_PRIMERO_2:
 
@@ -702,7 +774,7 @@ REVISAMOS_SI_MUERE_UN_ROCKAGER:
         add     74
         ld      (FOTOGRAMA_SECUENCIA_ROCKAGER_3),a
         ld      a,1
-        jp      .UNO_COMUN
+        jr      .UNO_COMUN
 
 .UNO_PRIMERO_3:
 
@@ -712,7 +784,7 @@ REVISAMOS_SI_MUERE_UN_ROCKAGER:
         add     111
         ld      (FOTOGRAMA_SECUENCIA_ROCKAGER_3),a
         ld      a,2
-        jp      .UNO_COMUN
+        jr      .UNO_COMUN
 
 .UNO_COMUN:
 
@@ -720,8 +792,13 @@ REVISAMOS_SI_MUERE_UN_ROCKAGER:
 
 	ld	hl,SCORE_ROCKAGER_MUERTO_SEMIBOSS_2
         ld      (SCORE_A_SUMAR),hl
-        call    SUMA_SCORE
+        jp      SUMA_SCORE
 
+.AVANZA_SECUENCIA_DE_ROCKAGER:
+
+        ld      a,(SECUENCIA_DE_ROCKAGER)
+        inc     a
+        ld      (SECUENCIA_DE_ROCKAGER),a
         ret
 
 .UNO_SEGUNDO:
@@ -730,15 +807,13 @@ REVISAMOS_SI_MUERE_UN_ROCKAGER:
         or      a
         ret     nz
 
-        ld      a,(SECUENCIA_DE_ROCKAGER)
-        inc     a
-        ld      (SECUENCIA_DE_ROCKAGER),a
+        call    .AVANZA_SECUENCIA_DE_ROCKAGER
 
         ld      a,(FOTOGRAMA_SECUENCIA_ROCKAGER_1)
         cp      85
-        jp      nc,.UNO_SEGUNDO_3
+        jr      nc,.UNO_SEGUNDO_3
         cp      49
-        jp      nc,.UNO_SEGUNDO_2
+        jr      nc,.UNO_SEGUNDO_2
 
 .UNO_SEGUNDO_1:
 
@@ -747,7 +822,7 @@ REVISAMOS_SI_MUERE_UN_ROCKAGER:
         ld      a,(FOTOGRAMA_SECUENCIA_ROCKAGER_1)
         ld      (FOTOGRAMA_SECUENCIA_ROCKAGER_3),a
         ld      a,3
-        jp      .UNO_COMUN
+        jr      .UNO_COMUN
 
 .UNO_SEGUNDO_2:
 
@@ -757,7 +832,7 @@ REVISAMOS_SI_MUERE_UN_ROCKAGER:
         add     37
         ld      (FOTOGRAMA_SECUENCIA_ROCKAGER_3),a
         ld      a,4
-        jp      .UNO_COMUN
+        jr      .UNO_COMUN
 
 .UNO_SEGUNDO_3:
 
@@ -767,7 +842,7 @@ REVISAMOS_SI_MUERE_UN_ROCKAGER:
         add     37+37
         ld      (FOTOGRAMA_SECUENCIA_ROCKAGER_3),a
         ld      a,5
-        jp      .UNO_COMUN
+        jr      .UNO_COMUN
 
 .DOS:
 
@@ -781,50 +856,52 @@ REVISAMOS_SI_MUERE_UN_ROCKAGER:
         or      a
         ret     nz
 
-        ld      a,(SECUENCIA_DE_ROCKAGER)
-        inc     a
-        ld      (SECUENCIA_DE_ROCKAGER),a
+        call    .AVANZA_SECUENCIA_DE_ROCKAGER
 
         ld      a,(FOTOGRAMA_SECUENCIA_ROCKAGER_3)
         cp      183
-        jp      nc,.DOS_PRIMERO_6
+        jr      nc,.DOS_PRIMERO_6
         cp      147
-        jp      nc,.DOS_PRIMERO_5
+        jr      nc,.DOS_PRIMERO_5
         cp      111
-        jp      nc,.DOS_PRIMERO_4
+        jr      nc,.DOS_PRIMERO_4
         cp      85
-        jp      nc,.DOS_PRIMERO_3
+        jr      nc,.DOS_PRIMERO_3
         cp      49
-        jp      nc,.DOS_PRIMERO_2
+        jr      nc,.DOS_PRIMERO_2
 
 .DOS_PRIMERO_1:
 
         xor     a
-        jp      .UNO_COMUN
+        jr      .DOS_A_UNO_COMUN
 
 .DOS_PRIMERO_2:
 
         ld      a,3
-        jp      .UNO_COMUN
+        jr      .DOS_A_UNO_COMUN
 
 .DOS_PRIMERO_3:
 
         ld      a,1
-        jp      .UNO_COMUN
+        jr      .DOS_A_UNO_COMUN
 
 .DOS_PRIMERO_4:
 
         ld      a,4
-        jp      .UNO_COMUN
+        jr      .DOS_A_UNO_COMUN
 
 .DOS_PRIMERO_5:
 
         ld      a,2
-        jp      .UNO_COMUN
+        jr      .DOS_A_UNO_COMUN
 
 .DOS_PRIMERO_6:
 
         ld      a,5
+        jr      .DOS_A_UNO_COMUN
+
+.DOS_A_UNO_COMUN:
+
         jp      .UNO_COMUN
 
 PINTA_MARCADORES_VIDA_ROCK:
@@ -838,7 +915,7 @@ PINTA_EXPLOSION:
         or      a
         ret     z
         cp      SPRITE_EXPLOSION_PATRON_FIN_SEMIBOSS_2
-        jp      nz,.PINTAMOS
+        jr      nz,.PINTAMOS
 
         xor     a
         ld      (ix+2),a
@@ -870,12 +947,6 @@ PINTA_EXPLOSION:
 
 	DB      $03,$03,$03,$03,$03,$03,$03,$03
 	DB      $03,$03,$03,$03,$03,$03,$03,$03
-
-PINTADO_DE_VRAM:
-
-        call    PAGE_32_A_SEGMENT_2
-	call	PON_COLOR_2.sin_bc_impuesta
-        jp      PAGE_10_A_SEGMENT_2
 
 TIRA_FX:
 

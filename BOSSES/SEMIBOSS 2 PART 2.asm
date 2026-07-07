@@ -228,7 +228,7 @@ MAGIA_ROCK:
 
 	ld		a,b
 	cp		RAYO_CAMBIA_ADJUST_EN_B_PART2_SEMIBOSS_2
-	jp		nz,.sin_cambio_en_Adjust
+	jr		nz,.sin_cambio_en_Adjust
 
     ld      a,ADJUST_ACTIVO_PART2_SEMIBOSS_2
     ld      (TIEMPO_DE_ADJUST),a		
@@ -252,7 +252,7 @@ MAGIA_ROCK:
 	ld		(VIDA_ROCKAGER_1),a
 
 	cp		VIDA_INICIAL_ROCKAGER_PART2_SEMIBOSS_2
-	jp		c,.segundo_rockager
+	jr		c,.segundo_rockager
 
 	xor		a
 	ld		(VIDA_ROCKAGER_1),a
@@ -264,7 +264,7 @@ MAGIA_ROCK:
 	ld		(VIDA_ROCKAGER_2),a
 
 	cp		VIDA_INICIAL_ROCKAGER_PART2_SEMIBOSS_2
-	jp		c,.repintamos_puntos_de_magia
+	jr		c,.repintamos_puntos_de_magia
 
 	xor		a
 	ld		(VIDA_ROCKAGER_2),a
@@ -295,7 +295,7 @@ MAGIA_ROCK:
 
 	ld		a,(VARIABLE_UN_USO3)
 	or		a
-	jp		z,.final
+	jr		z,.final
 	
 .final:
 
@@ -343,7 +343,7 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH_ROCK:
 
 		ld		a,(INMUNE)
 		or		a
-		jp		z,.adelante
+		jr		z,.adelante
 		dec		a
 		ld		(INMUNE),a
 
@@ -358,15 +358,15 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH_ROCK:
 		ld		a,(ix)						; 19
 		ld		de,(X_DEPH)					; 20
 		cp		e							; 4
-		jp		nc,.fin_bucle				; 10
+		jr		nc,.fin_bucle				; 10
 		add		a,ROCKAGER_ANCHO_COLISION_PART2_SEMIBOSS_2	; 7
 		cp		e							; 4
-		jp		c,.fin_bucle				; 10
+		jr		c,.fin_bucle				; 10
 											; Total 74 20,43% + rápido
 		ld		a,(SECUENCIA_DE_ROCKAGER)
 		cp		SECUENCIA_ROCKAGER_DOS_PART2_SEMIBOSS_2
-		jp		z,.control_y_2
-		jp		.control_y_1
+		jr		z,.control_y_2
+		jr		.control_y_1
 
 .fin_bucle:
 
@@ -382,24 +382,24 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH_ROCK:
 		ld		c,(ix+3)
 		ld		a,(FOTOGRAMA_SECUENCIA_ROCKAGER_1)
 		cp		c
-		jp		nc,.fin_bucle
+		jr		nc,.fin_bucle
 		ld		c,(ix+2)
 
-		jp		.control_y_1_2
+		jr		.control_y_1_2
 
 .control_y_2:
 
 		ld		c,(ix+5)
 		ld		a,(FOTOGRAMA_SECUENCIA_ROCKAGER_3)
 		cp		c
-		jp		nc,.fin_bucle
+		jr		nc,.fin_bucle
 		ld		c,(ix+4)
 
 
 .control_y_1_2:
 
 		cp		c
-		jp		c,.fin_bucle
+		jr		c,.fin_bucle
 		sub		c
 		ld		e,a
 		ld		d,0
@@ -412,13 +412,13 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH_ROCK:
 		ld		a,(Y_DEPH)
 		cp		d
 		ld		iy,.LIMITE_VARIABLE_Y_SUPERIOR
-		jp		c,.fin_bucle
+		jr		c,.fin_bucle
 
 		ld		c,(ix+1)
 		cp		c
-		jp		nc,.fin_bucle
+		jr		nc,.fin_bucle
 
-		jp		.recibe_un_toque
+		jr		.recibe_un_toque
 
 .LIMITES_ROCKAGERS:
 
@@ -492,7 +492,7 @@ RUTINA_ROCAS:
 
 .BUCLE_6_PIEDRAS:
 
-	jp		.BUCLE_6_PIEDRAS_EXT
+	jr		.BUCLE_6_PIEDRAS_EXT
 
 .DESAPARECE:
 
@@ -528,7 +528,7 @@ RUTINA_ROCAS:
 	sub		PIEDRA_REBOTE_PASO_PART2_SEMIBOSS_2
 	ld		(ix),a
 	cp		PIEDRA_LIMITE_X_REBOTE_PART2_SEMIBOSS_2
-	jp		nc,.SALE_DISPARADA_1
+	jr		nc,.SALE_DISPARADA_1
 
 	ld		a,(ix+1)
 	sub		PIEDRA_REBOTE_PASO_PART2_SEMIBOSS_2
@@ -540,13 +540,13 @@ RUTINA_ROCAS:
 
 	ld		a,PIEDRA_ESTADO_REBOTA_PART2_SEMIBOSS_2
 	ld		(ix+3),a
-	JP		.SALTO_DESDE_REBOTA
+	jp		.SALTO_DESDE_REBOTA
 
 .BUCLE_6_PIEDRAS_EXT:
 
 	ld		a,(SECUENCIA_DE_ROCKAGER)
 	or		a
-	jp		nz,.SEGUIMOS_SIN_PARON
+	jr		nz,.SEGUIMOS_SIN_PARON
 
 	ld		a,(VARIABLE_UN_USO3)
 	ld		ix,VALORES_SPRITES_PIEDRAS
@@ -556,15 +556,15 @@ RUTINA_ROCAS:
 	add		ix,de
 	ld		a,(ix+3)
 	cp		PIEDRA_ESTADO_QUIETA_PART2_SEMIBOSS_2
-	jp		nc,.SEGUIMOS_SIN_PARON
+	jr		nc,.SEGUIMOS_SIN_PARON
 
 	ld		a,(FOTOGRAMA_SECUENCIA_ROCKAGER_1)
 	cp		PIEDRA_PARON_FOTOGRAMA_1_PART2_SEMIBOSS_2
-	jp		z,.VOLVEMOS
+	jr		z,.VOLVEMOS
 	cp		PIEDRA_PARON_FOTOGRAMA_2_PART2_SEMIBOSS_2
-	jp		z,.VOLVEMOS
+	jr		z,.VOLVEMOS
 	cp		PIEDRA_PARON_FOTOGRAMA_3_PART2_SEMIBOSS_2
-	jp		z,.VOLVEMOS
+	jr		z,.VOLVEMOS
 
 .SEGUIMOS_SIN_PARON:
 
@@ -924,14 +924,14 @@ ON_SPRITE_CON_ROCAS:
 	ld	a,(X_DEPH)
 	add	PROTA_COLISION_ANCHO_PART2_SEMIBOSS_2
 	cp	c
-	jp	c,.SIGUIENTE_EN_EL_BUCLE
+	jr	c,.SIGUIENTE_EN_EL_BUCLE
 
 	ld	a,(ix)
 	add	PIEDRA_COLISION_MARGEN_PART2_SEMIBOSS_2
 	ld	c,a
 	ld	a,(X_DEPH)
 	cp	c
-	jp	nc,.SIGUIENTE_EN_EL_BUCLE
+	jr	nc,.SIGUIENTE_EN_EL_BUCLE
 
 	ld	a,(ix+1)
 	sub	PIEDRA_COLISION_MARGEN_PART2_SEMIBOSS_2
@@ -939,14 +939,14 @@ ON_SPRITE_CON_ROCAS:
 	ld	a,(Y_DEPH)
 	add	PROTA_COLISION_ANCHO_PART2_SEMIBOSS_2
 	cp	c
-	jp	c,.SIGUIENTE_EN_EL_BUCLE
+	jr	c,.SIGUIENTE_EN_EL_BUCLE
 
 	ld	a,(ix+1)
 	add	PIEDRA_COLISION_MARGEN_PART2_SEMIBOSS_2
 	ld	c,a
 	ld	a,(Y_DEPH)
 	cp	c
-	jp	nc,.SIGUIENTE_EN_EL_BUCLE
+	jr	nc,.SIGUIENTE_EN_EL_BUCLE
 	
 	call	REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH.DANO_DE_PUPA
 

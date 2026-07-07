@@ -358,6 +358,8 @@ RUTINA_BOSS_1:
         ld      hl,BOSS_1_COPIA_PARTE_PAGE_2_DE_STATUS
 		call	DOCOPY 
 
+		call	.PREPARA_CORAZONES_MAXIMOS_DEPH
+
         ld      b,15
         ld      hl,BOSS_1_COPIA_STATUS_BOSS_A_PAGE_2
 		call	DOCOPY 
@@ -366,18 +368,50 @@ RUTINA_BOSS_1:
 .BORRA_CORAZONES_QUE_SOBRAN:
 
         ld      a,(CORAZONES)
+        push    af
+        ld      a,(CORAZONES_MAXIMOS)
+        cp      3
+        jr      z,.BORRA_DESDE_CORAZON_MAXIMO
+        cp      4
+        jr      z,.BORRA_DESDE_CORAZON_MAXIMO
+        cp      5
+        jr      nc,.BORRA_DESDE_QUINTO_CORAZON
+        pop     af
+        jr      .FINAL_BUCLE_CORAZONES
+
+.BORRA_DESDE_CORAZON_MAXIMO:
+
+        dec     a
+        ld      b,a
+        jr      .COMPRUEBA_SI_BORRA_CORAZONES
+
+.BORRA_DESDE_QUINTO_CORAZON:
+
         ld      b,4
+
+.COMPRUEBA_SI_BORRA_CORAZONES:
+
+        pop     af
+        push    af
+        cp      b
+        jr      z,.INICIA_BUCLE_BORRA_CORAZONES_DE_MAS
+        jr      c,.INICIA_BUCLE_BORRA_CORAZONES_DE_MAS
+        pop     af
+        jr      .FINAL_BUCLE_CORAZONES
+
+.INICIA_BUCLE_BORRA_CORAZONES_DE_MAS:
         
 .BUCLE_BORRA_CORAZONES_DE_MAS:
 
-        ex      af,af'
         ld      a,b
         ld      (CORAZONES),a
         call    .PINTA_CORAZONES_VIDA_DEPH_ADECUADOS
-        ex      af,af'
+        pop     af
         cp      b
-        jp      z,.FINAL_BUCLE_CORAZONES
+        jr      z,.FINAL_BUCLE_CORAZONES
+        push    af
         djnz    .BUCLE_BORRA_CORAZONES_DE_MAS
+        pop     af
 
 .FINAL_BUCLE_CORAZONES:
 
@@ -604,6 +638,53 @@ RUTINA_BOSS_1:
 		ld      a,50
 		ld		b,51
 		jp		.CARGA_PANTALLA_COMPLETA_PAGE_3
+
+.PREPARA_CORAZONES_MAXIMOS_DEPH:
+
+	ld		a,(CORAZONES_MAXIMOS)
+	cp		3
+	jr		z,.CORAZONES_MAXIMOS_3_DEPH
+	cp		4
+	jr		z,.CORAZONES_MAXIMOS_4_DEPH
+	ret
+
+.CORAZONES_MAXIMOS_3_DEPH:
+
+	ld		c,72
+	ld		b,20
+	jr		.CORAZONES_MAXIMOS_DEPH_OK
+
+.CORAZONES_MAXIMOS_4_DEPH:
+
+	ld		c,82
+	ld		b,10
+
+.CORAZONES_MAXIMOS_DEPH_OK:
+
+	ld		ix,BOSS_1_CUADRO_CORAZONES_FUERA_MAX_STATUS
+	call	.PINTA_CUADRO_CORAZONES_FUERA_MAX
+
+	ld		ix,BOSS_1_CUADRO_CORAZONES_FUERA_MAX_EMPTY
+	call	.PINTA_CUADRO_CORAZONES_FUERA_MAX
+	ret
+
+.PINTA_CUADRO_CORAZONES_FUERA_MAX:
+
+	push	bc
+	ld		iy,DATAS_COPY_RECUP_SCROLL
+	call	.BUCLE_PINTA_DATAS
+	pop		bc
+	ld		ix,DATAS_COPY_RECUP_SCROLL
+
+	ld		a,c
+	ld		(ix+4),a
+	ld		a,b
+	ld		(ix+8),a
+	push	bc
+	ld		hl,DATAS_COPY_RECUP_SCROLL
+	call	DOCOPY
+	pop		bc
+	ret
 
 .PINTA_CORAZONES_VIDA_DEPH_ADECUADOS:
 

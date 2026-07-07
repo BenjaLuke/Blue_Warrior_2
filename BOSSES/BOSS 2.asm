@@ -253,6 +253,8 @@ RUTINA_BOSS_2:
         ld      hl,BOSS_2_COPIA_PARTE_PAGE_2_DE_STATUS
 		call	DOCOPY 
 
+		call	.PREPARA_CORAZONES_MAXIMOS_DEPH
+
         ld      b,15
         ld      hl,BOSS_2_COPIA_STATUS_BOSS_A_PAGE_2
 		call	DOCOPY 
@@ -261,18 +263,50 @@ RUTINA_BOSS_2:
 .BORRA_CORAZONES_QUE_SOBRAN:
 
         ld      a,(CORAZONES)
+        push    af
+        ld      a,(CORAZONES_MAXIMOS)
+        cp      3
+        jr      z,.BORRA_DESDE_CORAZON_MAXIMO
+        cp      4
+        jr      z,.BORRA_DESDE_CORAZON_MAXIMO
+        cp      5
+        jr      nc,.BORRA_DESDE_QUINTO_CORAZON
+        pop     af
+        jr      .FINAL_BUCLE_CORAZONES
+
+.BORRA_DESDE_CORAZON_MAXIMO:
+
+        dec     a
+        ld      b,a
+        jr      .COMPRUEBA_SI_BORRA_CORAZONES
+
+.BORRA_DESDE_QUINTO_CORAZON:
+
         ld      b,4
-        
+
+.COMPRUEBA_SI_BORRA_CORAZONES:
+
+        pop     af
+        push    af
+        cp      b
+        jr      z,.INICIA_BUCLE_BORRA_CORAZONES_DE_MAS
+        jr      c,.INICIA_BUCLE_BORRA_CORAZONES_DE_MAS
+        pop     af
+        jr      .FINAL_BUCLE_CORAZONES
+
+.INICIA_BUCLE_BORRA_CORAZONES_DE_MAS:
+
 .BUCLE_BORRA_CORAZONES_DE_MAS:
 
-        ex      af,af'
         ld      a,b
         ld      (CORAZONES),a
         call    .PINTA_CORAZONES_VIDA_DEPH_ADECUADOS
-        ex      af,af'
+        pop     af
         cp      b
-        jp      z,.FINAL_BUCLE_CORAZONES
+        jr      z,.FINAL_BUCLE_CORAZONES
+        push    af
         djnz    .BUCLE_BORRA_CORAZONES_DE_MAS
+        pop     af
 
 .FINAL_BUCLE_CORAZONES:
 
@@ -361,7 +395,7 @@ RUTINA_BOSS_2:
 		call	.ANIMACION_COMUN_2
 		cp		16
 		ld		(FOTOGRAMA_SECUENCIA_DAV),a
-		jp		nz,.ANIMACION_AGUJEROS_SUELO
+		jr		nz,.ANIMACION_AGUJEROS_SUELO
 
 .CARGA_DAV_1:
 
@@ -383,7 +417,7 @@ RUTINA_BOSS_2:
 		call	.ANIMACION_COMUN_2
 		cp		9
 		ld		(FOTOGRAMA_SECUENCIA_DAV),a
-		jp		nz,.BUCLE_DAV_1
+		jr		nz,.BUCLE_DAV_1
 
 ; Se abre pared y ... 
 .CARGA_DAV_2:
@@ -406,7 +440,7 @@ RUTINA_BOSS_2:
 		call	.ANIMACION_COMUN_2
 		cp		12
 		ld		(FOTOGRAMA_SECUENCIA_DAV),a
-		jp		nz,.BUCLE_DAV_2
+		jr		nz,.BUCLE_DAV_2
 
 ; ...aparece Daveatnyx con gran terremoto
 .EMPIEZA_LA_MUSICA:
@@ -517,8 +551,55 @@ RUTINA_BOSS_2:
         call	PON_COLOR_2.sin_bc_impuesta
 		call	VDPREADY
 
-		ld		a,10
+        ld		a,10
         jp		CHANGE_BANK_2
+
+.PREPARA_CORAZONES_MAXIMOS_DEPH:
+
+	ld		a,(CORAZONES_MAXIMOS)
+	cp		3
+	jr		z,.CORAZONES_MAXIMOS_3_DEPH
+	cp		4
+	jr		z,.CORAZONES_MAXIMOS_4_DEPH
+	ret
+
+.CORAZONES_MAXIMOS_3_DEPH:
+
+	ld		c,72
+	ld		b,20
+	jr		.CORAZONES_MAXIMOS_DEPH_OK
+
+.CORAZONES_MAXIMOS_4_DEPH:
+
+	ld		c,82
+	ld		b,10
+
+.CORAZONES_MAXIMOS_DEPH_OK:
+
+	ld		ix,BOSS_2_CUADRO_CORAZONES_FUERA_MAX_STATUS
+	call	.PINTA_CUADRO_CORAZONES_FUERA_MAX
+
+	ld		ix,BOSS_2_CUADRO_CORAZONES_FUERA_MAX_EMPTY
+	call	.PINTA_CUADRO_CORAZONES_FUERA_MAX
+	ret
+
+.PINTA_CUADRO_CORAZONES_FUERA_MAX:
+
+	push	bc
+	ld		iy,DATAS_COPY_RECUP_SCROLL
+	call	.BUCLE_PINTA_DATAS
+	pop		bc
+	ld		ix,DATAS_COPY_RECUP_SCROLL
+
+	ld		a,c
+	ld		(ix+4),a
+	ld		a,b
+	ld		(ix+8),a
+	push	bc
+	ld		hl,DATAS_COPY_RECUP_SCROLL
+	call	DOCOPY
+	pop		bc
+	ret
 
 .PINTA_CORAZONES_VIDA_DEPH_ADECUADOS:
 
@@ -556,8 +637,16 @@ BUCLE_PELEA_BOSS_2:
 		ld		a,(CORAZONES)
 		or		a
 		jp		z,MUERTE_DEPH_EN_BOSS_2
-		call	NUCLEO_DE_LA_PELEA_BOSS_2
-		call	CONTROLA_INMUNIDAD_DEPH_BOSS_2
+		call	ACTIVA_PROYECTIL_BOSS_2
+		call	SECUENCIA_PROYECTIL_BOSS_2
+
+		ld		a,(INMUNE)
+		or		a
+		jr		z,.SIN_INMUNIDAD_BOSS_2
+		dec		a
+		ld		(INMUNE),a
+
+.SIN_INMUNIDAD_BOSS_2:
 		
 		call	MOVIMIENTO_DEPH_EN_BOSS_2
 		call	SECUENCIA_PROYECTILES_PROPIOS_EN_BOSS_2
@@ -597,21 +686,6 @@ BUCLE_PELEA_BOSS_2:
 
 		call	PINTA_PROYECTIL_BOSS_2
 		jp	BUCLE_PELEA_BOSS_2
-
-NUCLEO_DE_LA_PELEA_BOSS_2:
-
-		call	ACTIVA_PROYECTIL_BOSS_2
-		call	SECUENCIA_PROYECTIL_BOSS_2
-		ret
-
-CONTROLA_INMUNIDAD_DEPH_BOSS_2:
-
-		ld		a,(INMUNE)
-		or		a
-		ret		z
-		dec		a
-		ld		(INMUNE),a
-		ret
 
 INICIALIZA_POOL_PROYECTILES_BOSS_2:
 
@@ -705,8 +779,7 @@ ACTIVA_PROYECTIL_BOSS_2:
 		call	OBTIENE_PUNTERO_DIRECCION_PROYECTIL_BOSS_2_ACTUAL
 		pop		af
 		ld		(hl),a
-		call	CARGA_COLOR_PROYECTIL_BOSS_2_ACTUAL
-		ret
+		jp		CARGA_COLOR_PROYECTIL_BOSS_2_ACTUAL
 
 PINTA_OJOS_DE_DISPARO_BOSS_2:
 
@@ -825,29 +898,25 @@ COMPRUEBA_LIMITES_PROYECTIL_BOSS_2:
 		call	OBTIENE_PUNTERO_Y_PROYECTIL_BOSS_2_ACTUAL
 		ld		a,(hl)
 		cp		5
-		jp		c,DESACTIVA_PROYECTIL_BOSS_2
+		jr		c,DESACTIVA_PROYECTIL_BOSS_2
 		cp		192
-		jp		nc,DESACTIVA_PROYECTIL_BOSS_2
+		jr		nc,DESACTIVA_PROYECTIL_BOSS_2
 		call	OBTIENE_PUNTERO_X_PROYECTIL_BOSS_2_ACTUAL
 		ld		a,(hl)
 		cp		251
-		jp		nc,DESACTIVA_PROYECTIL_BOSS_2
+		jr		nc,DESACTIVA_PROYECTIL_BOSS_2
 		ret
 
 DESACTIVA_PROYECTIL_BOSS_2:
 
-		xor		a
-		push	af
 		call	OBTIENE_PUNTERO_DIRECCION_PROYECTIL_BOSS_2_ACTUAL
-		pop		af
+		xor		a
 		ld		(hl),a
-		push	af
 		call	OBTIENE_PUNTERO_PASO_TABLA_PROYECTIL_BOSS_2_ACTUAL
-		pop		af
+		xor		a
 		ld		(hl),a
-		push	af
 		call	OBTIENE_PUNTERO_X_PROYECTIL_BOSS_2_ACTUAL
-		pop		af
+		xor		a
 		ld		(hl),a
 		call	OBTIENE_PUNTERO_SPRITES_ACTIVOS_PROYECTIL_BOSS_2
 		xor		a
@@ -855,8 +924,7 @@ DESACTIVA_PROYECTIL_BOSS_2:
 		call	OBTIENE_PUNTERO_Y_PROYECTIL_BOSS_2_ACTUAL
 		ld		a,PROYECTIL_BOSS_2_Y_OCULTO
 		ld		(hl),a
-		call	OCULTA_SPRITE_PROYECTIL_BOSS_2_EN_VRAM
-		ret
+		jp		OCULTA_SPRITE_PROYECTIL_BOSS_2_EN_VRAM
 
 PINTA_PROYECTIL_BOSS_2:
 
@@ -881,7 +949,7 @@ PINTA_UN_PROYECTIL_BOSS_2:
 		ld		a,(hl)
 		or		a
 		ret		z
-		jp		CARGA_ATRIBUTOS_PROYECTIL_BOSS_2
+		jr		CARGA_ATRIBUTOS_PROYECTIL_BOSS_2
 
 PINTA_PROYECTIL_BOSS_2_1:
 
@@ -889,8 +957,7 @@ PINTA_PROYECTIL_BOSS_2_1:
 		call	OBTIENE_DIRECCION_ATRIBUTOS_PROYECTIL_BOSS_2
 		ld		hl,PROPIEDADES_PATRON_SPRITE
 		ld		bc,3
-		call	PON_COLOR_2.sin_bc_impuesta
-		ret
+		jp		PON_COLOR_2.sin_bc_impuesta
 
 CARGA_ATRIBUTOS_PROYECTIL_BOSS_2:
 
@@ -912,8 +979,7 @@ CARGA_COLOR_PROYECTIL_BOSS_2_ACTUAL:
 		call	OBTIENE_DIRECCION_COLOR_PROYECTIL_BOSS_2
 		ld		hl,TABLA_COLOR_SPRITE_CENTRAL_BOSS_2
 		ld		bc,16
-		call	PON_COLOR_2.sin_bc_impuesta
-		ret
+		jp		PON_COLOR_2.sin_bc_impuesta
 
 OCULTA_SPRITE_PROYECTIL_BOSS_2_EN_VRAM:
 
@@ -928,8 +994,7 @@ OCULTA_SPRITE_PROYECTIL_BOSS_2_EN_VRAM:
 		call	OBTIENE_DIRECCION_ATRIBUTOS_PROYECTIL_BOSS_2
 		ld		hl,PROPIEDADES_PATRON_SPRITE
 		ld		bc,3
-		call	PON_COLOR_2.sin_bc_impuesta
-		ret
+		jp		PON_COLOR_2.sin_bc_impuesta
 
 OBTIENE_OFFSET_PROYECTIL_BOSS_2_ACTUAL:
 
@@ -1261,14 +1326,14 @@ BUCLE_REVISION_4_PIEDRAS_BOSS_2:
 	ld	a,(X_DEPH)
 	add	20
 	cp	c
-	jp	c,.SIGUIENTE_EN_EL_BUCLE
+	jr	c,.SIGUIENTE_EN_EL_BUCLE
 
 	ld	a,(ix)
 	add	8
 	ld	c,a
 	ld	a,(X_DEPH)
 	cp	c
-	jp	nc,.SIGUIENTE_EN_EL_BUCLE
+	jr	nc,.SIGUIENTE_EN_EL_BUCLE
 
 	ld	a,(ix+1)
 	sub	8
@@ -1276,17 +1341,17 @@ BUCLE_REVISION_4_PIEDRAS_BOSS_2:
 	ld	a,(Y_DEPH)
 	add	20
 	cp	c
-	jp	c,.SIGUIENTE_EN_EL_BUCLE
+	jr	c,.SIGUIENTE_EN_EL_BUCLE
 
 	ld	a,(ix+1)
 	add	8
 	ld	c,a
 	ld	a,(Y_DEPH)
 	cp	c
-	jp	nc,.SIGUIENTE_EN_EL_BUCLE
+	jr	nc,.SIGUIENTE_EN_EL_BUCLE
 	
 	pop		bc
-	jp	DANO_DEPH_EN_BOSS_2
+	jr	DANO_DEPH_EN_BOSS_2
 
 .SIGUIENTE_EN_EL_BUCLE:
 
@@ -1303,8 +1368,7 @@ BUCLE_REVISION_4_PIEDRAS_BOSS_2:
 DANO_DEPH_EN_BOSS_2:
 
 	call	DANO_DEPH_EN_BOSS_COMUN
-	call	RUTINA_BOSS_2.PINTA_CORAZONES_VIDA_DEPH_ADECUADOS
-	ret
+	jp	RUTINA_BOSS_2.PINTA_CORAZONES_VIDA_DEPH_ADECUADOS
 
 MUERTE_DEPH_EN_BOSS_2:
 
@@ -1528,8 +1592,7 @@ REVISAMOS_SI_MUERE_ROCKAGER_BOSS_2:
 		ld		(FOTOGRAMA_SECUENCIA_ROCKAGER_2),a
 		ld		hl,30
 		ld		(SCORE_A_SUMAR),hl
-		call	SUMA_SCORE
-		ret
+		jp		SUMA_SCORE
 
 REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH_ROCK_BOSS_2:
 
@@ -1550,12 +1613,12 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH_ROCK_BOSS_2:
 		ld	a,(ix)					; 19
 		ld	de,(X_DEPH)				; 20
 		cp	e					; 4
-		jp	nc,.fin_bucle				; 10
+		jr	nc,.fin_bucle				; 10
 		add	a,37					; 7
 		cp	e					; 4
-		jp	c,.fin_bucle				; 10
+		jr	c,.fin_bucle				; 10
 								; Total 74 20,43% + rápido
-		jp	.control_y_2
+		jr	.control_y_2
 
 .fin_bucle:
 
@@ -1574,13 +1637,13 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH_ROCK_BOSS_2:
                                         ; 4 - Y INFERIOR
 		ld	a,(FOTOGRAMA_SECUENCIA_ROCKAGER_3)
 		cp	c
-		jp	nc,.fin_bucle
+		jr	nc,.fin_bucle
 		ld	c,(ix+2)
 
 .control_y_1_2:
 
 		cp	c
-		jp	c,.fin_bucle
+		jr	c,.fin_bucle
 		sub	c
 		ld	e,a
 		ld	d,0
@@ -1593,13 +1656,13 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH_ROCK_BOSS_2:
 		ld	a,(Y_DEPH)
 		cp	d
 		ld	iy,BOSS_2_LIMITE_VARIABLE_Y_SUPERIOR
-		jp	c,.fin_bucle
+		jr	c,.fin_bucle
 
 		ld	c,(ix+1)
 		cp	c
-		jp	nc,.fin_bucle
+		jr	nc,.fin_bucle
 
-		jp	.recibe_un_toque
+		jr	.recibe_un_toque
 
 .recibe_un_toque:
 
@@ -1689,8 +1752,7 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK_BOSS_2:
 		ld		de,#4800+17*16
 		ld		hl,BOSS_2_COLOR_EXPLOSION_ROCK
 		ld		bc,16
-		call	PON_COLOR_2.sin_bc_impuesta
-		ret
+		jp		PON_COLOR_2.sin_bc_impuesta
 
 .SIGUIENTE_REVISION_ROCK_BOSS_2:
 
@@ -1746,7 +1808,7 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK_BOSS_2:
         call    PINTA_MARCADORES_VIDA_FINAL_BOSS_2
         pop     af
         or      a
-        jp      z,.SOBRE_EL_PROYECTIL_MUERTE_DAVEANIX_BOSS_2
+        jr      z,.SOBRE_EL_PROYECTIL_MUERTE_DAVEANIX_BOSS_2
         jp      .SOBRE_EL_PROYECTIL_ROCK_BOSS_2
 
 .SIGUIENTE_REVISION_DAVEANIX_BOSS_2:
@@ -1813,25 +1875,25 @@ ANIMA_ROCKAGERS_EN_BOSS_2:
         ld      ix,VALORES_SPRITES_PIEDRAS
         ld      a,(FOTOGRAMA_SECUENCIA_ROCKAGER_3)
         cp      6
-        jp      z,.ACTIVANDO_COMUN_2
+        jr      z,.ACTIVANDO_COMUN_2
         cp      6+32
-        jp      z,.ACTIVANDO_2_2
+        jr      z,.ACTIVANDO_2_2
         cp      6+32+32
-        jp      z,.ACTIVANDO_3_2
+        jr      z,.ACTIVANDO_3_2
         cp      6+32+32+32
-        jp      z,.ACTIVANDO_4_2
+        jr      z,.ACTIVANDO_4_2
      
-        jp      .SECUENCIA_2_CONT_2
+        jr      .SECUENCIA_2_CONT_2
 
 .ACTIVANDO_2_2:
 
         ld      de,4
-        jp      .ACTIVANDO_COMUN_PRE_2
+        jr      .ACTIVANDO_COMUN_PRE_2
 
 .ACTIVANDO_3_2:
 
         ld      de,8
-        jp      .ACTIVANDO_COMUN_PRE_2
+        jr      .ACTIVANDO_COMUN_PRE_2
 
 .ACTIVANDO_4_2:
 
@@ -1858,8 +1920,8 @@ ANIMA_ROCKAGERS_EN_BOSS_2:
 .MIRAMOS_SI_SALTA_AGUJERO:
 
         cp      32+32+32+32
-        jp      z,.CAMBIO_DE_FOTOGRAMA_A_CERO
-        jp      .CAMBIO_DE_FOTOGRAMA
+        jr      z,.CAMBIO_DE_FOTOGRAMA_A_CERO
+        jr      .CAMBIO_DE_FOTOGRAMA
 
 .CAMBIO_DE_FOTOGRAMA_A_CERO:
 
@@ -1885,14 +1947,14 @@ ANIMA_ROCKAGERS_EN_BOSS_2:
         ld      a,(FOTOGRAMA_SECUENCIA_ROCKAGER_3)
         inc     a
         cp      128
-        jp      c,.SALVAMOS_FOTOGRAMA_2
+        jr      c,.SALVAMOS_FOTOGRAMA_2
         xor     a
 
 .SALVAMOS_FOTOGRAMA_2:
 
         ld      (FOTOGRAMA_SECUENCIA_ROCKAGER_3),a
         
-        jp      .PINTAMOS_FOTOGRAMA
+        jr      .PINTAMOS_FOTOGRAMA
 
 .RUTINA_STANDAR_PASA_DATOS_COPY_ROCKAGER:
 
@@ -1915,8 +1977,7 @@ ANIMA_ROCKAGERS_EN_BOSS_2:
 .PINTAMOS_FOTOGRAMA:
 
  		ld		hl,DATAS_COPY_RECUP_SCROLL
-		call	DOCOPY
-        ret
+		jp		DOCOPY
 
 .ANIMA_MUERTE_ROCKAGER_BOSS_2:
 
@@ -1956,9 +2017,7 @@ ANIMA_ROCKAGERS_EN_BOSS_2:
 		ld		hl,BOSS_2_VACIO_SPRITES_ROCAS_ROCKAGER_BOSS_2
 		ld		de,#4A00+18*4
 		ld		bc,16
-		call	PON_COLOR_2.sin_bc_impuesta
-
-		ret
+		jp		PON_COLOR_2.sin_bc_impuesta
 
 .SALVA_FOTOGRAMA_MUERTE_BOSS_2:
 
@@ -2147,8 +2206,7 @@ RUTINA_ROCAS_EN_BOSS_2:
 	add		8
 	ld		(VARIABLE_UN_USO+2),a
 [4]	inc		l
-	call	.MAS_DE_UN_USO_2
-	ret
+	jp	.MAS_DE_UN_USO_2
 
 
 .TOCA_SUELO:
