@@ -2215,7 +2215,16 @@ TABLA_PASOS_FADE_OUT_BOSS:
 
 		include	"BOSSES/SEMIBOSS 2 PART 1.asm"
 
-        ds      #8000-$-#2200                                           ; Colocamos el resto del programa siempre en el mismo sitio    
+WRTVDP_ROCKAGER_SIN_EI:
+
+		ld		a,b
+		out		(#99),a
+		ld		a,c
+		add		a,128
+		out		(#99),a
+		ret
+
+        ds      16                                                      ; Colocamos el resto del programa siempre en el mismo sitio    
 
 		include "BASICOS/RUTINAS CERRADAS (sin etiquetas).asm"				            ; Incluímos las referencias a la BIOS
 		include "AUDIOS/LANZADOR EFECTOS PSG (sin etiquetas).asm"

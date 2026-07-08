@@ -119,6 +119,7 @@ MAGIAS:							#1										; La cantidad de puntos de magia que tiene
 SCORE_A_SUMAR:					#2										; Los puntos que suma el score tras hacer algo
 SCORE_REAL:						#2										; Score del juego
 MAX_SCORE:						#2										; La máxima puntuación
+PINTA_SCORE_PENDIENTE:			#1										; Difiere el pintado del score un frame
 V_DECEN_MIL:					#1
 V_UNIDA_MIL:					#1
 V_CENTENAS:						#1

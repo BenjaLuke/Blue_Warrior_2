@@ -252,7 +252,7 @@ ACTIVA_BLINDAJE_NACIMIENTO_ENEMIGO:
 
 			push	af
 			call	PUNTERO_BLINDAJE_NACIMIENTO_ENEMIGO
-			ld		a,16
+			ld		a,32
 			ld		(hl),a
 			pop		af
 			ret
@@ -805,60 +805,37 @@ AHORA_SI_EL_AGUJERO:
 .tile_agujero_1:
 
 			ld		a,(TILE_CENTRO)
-			cp		61
-			jp		nz,.tile_agujero_2
-			
-			call	.control_de_y_a_menos
-			
-			call	.x_divide_16
-
-			add		8	
-	 		jp		.paralizamos_a_deph
-
-.tile_agujero_2:
-
-			ld		a,(TILE_CENTRO)
-			cp		62
-			jp		nz,.tile_agujero_3
-			
-			call	.control_de_y_a_menos
-			
-			call	.x_divide_16
-
-			sub		8	
-	 		jp		.paralizamos_a_deph
-
-.tile_agujero_3:
-
-			ld		a,(TILE_CENTRO)
 			cp		59
-			jp		nz,.tile_agujero_4
-			
-			call	.control_de_y_a_mas
-			
-			call	.x_divide_16
-
-			add		8	
-	 		jp		.paralizamos_a_deph
-
-.tile_agujero_4:
+			jp		c,CONTROL_TILES_PUPA
+			cp		63
+			jp		nc,CONTROL_TILES_PUPA
+			call	.hitbox_agujero
 
 			ld		a,(TILE_CENTRO)
-			cp		60
-			jp		nz,CONTROL_TILES_PUPA
-			
+			cp		61
+			jr		nc,.agujero_y_menos
 			call	.control_de_y_a_mas
-			
+			jr		.agujero_x
+
+.agujero_y_menos:
+
+			call	.control_de_y_a_menos
+
+.agujero_x:
+
 			call	.x_divide_16
+			ld		b,a
+			ld		a,(TILE_CENTRO)
+			bit		0,a
+			ld		a,b
+			jr		z,.agujero_x_derecha
+			add		8
+			jr		.paralizamos_a_deph
 
-			sub		8	
-	 		jp		.paralizamos_a_deph
+.agujero_x_derecha:
 
-.y_divide_16:
-
-			ld		a,(Y_DEPH)
-			
-			jp		.B11110000
+			sub		8
+			jr		.paralizamos_a_deph
 
 .x_divide_16:
 
@@ -869,27 +846,65 @@ AHORA_SI_EL_AGUJERO:
 			and		11110000b
 			ret
 
+.hitbox_agujero:
+
+			ld		b,a
+			ld		a,(X_DEPH)
+			and		00001111b
+			cp		8
+			jr		c,.hitbox_x_menor_8
+
+			bit		0,b
+			jr		nz,.hitbox_x_ok
+			jp		CONTROL_TILES_PUPA
+
+.hitbox_x_menor_8:
+
+			bit		0,b
+			jr		z,.hitbox_x_ok
+			jp		CONTROL_TILES_PUPA
+
+.hitbox_x_ok:
+
+			ld		a,(Y_DEPH)
+			and		00001111b
+			cp		8
+			jr		c,.hitbox_y_menor_8
+
+			ld		a,b
+			cp		61
+			ret		nc
+			jp		CONTROL_TILES_PUPA
+
+.hitbox_y_menor_8:
+
+			ld		a,b
+			cp		61
+			ret		c
+			jp		CONTROL_TILES_PUPA
+
 .control_de_y_a_menos:
 
-			call	.y_divide_16
-			call	.control_comun_de_y
-			ld		(CONTROL_Y),a
-			ret
+			ld		a,(Y_DEPH)
+			ld		b,a
+			and		11110000b
+			jp		.control_de_y_con_delta
 
 .control_de_y_a_mas:
 
-			call	.y_divide_16
+			ld		a,(Y_DEPH)
+			ld		b,a
+			and		11110000b
 			add		16
-			call	.control_comun_de_y
-			add		16
-			ld		(CONTROL_Y),a
-			ret
 
-.control_comun_de_y:
+.control_de_y_con_delta:
 
 			ld		(Y_DEPH),a
+			sub		b
+			ld		b,a
 			ld		a,(CONTROL_Y)
-			and		11110000b
+			add		b
+			ld		(CONTROL_Y),a
 			ret
 
 .paralizamos_a_deph:

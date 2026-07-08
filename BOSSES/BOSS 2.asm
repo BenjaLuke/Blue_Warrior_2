@@ -529,6 +529,10 @@ RUTINA_BOSS_2:
 		ld		(iy+9),a
         ld      a,(ix+4)
         ld      (iy+10),a
+		xor		a
+		ld		(iy+12),a
+		ld		(iy+13),a
+		ld		(iy+14),COPY_LOGICA_NORMAL_BOSS_2
 
         ret
 
@@ -1971,6 +1975,10 @@ ANIMA_ROCKAGERS_EN_BOSS_2:
         ld      (iy+8),a
         ld      a,(ix+5)
         ld      (iy+10),a
+		xor		a
+		ld		(iy+12),a
+		ld		(iy+13),a
+		ld		(iy+14),COPY_LOGICA_NORMAL_BOSS_2
 
         ret
 

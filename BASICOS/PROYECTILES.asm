@@ -1116,17 +1116,18 @@ MAGIA_GRATIS:
 		xor		a
 		ld		(ESTADO_MARCADOR),a
 		
-        ld      a,1
-        ld      (TIEMPO_DE_ADJUST),a
+;        ld      a,1
+;        ld      (TIEMPO_DE_ADJUST),a
 
 		push	iy
 		push	ix
 		
 .PALETA_A_GRISES:
 
-		ld		a,(ESTADO_COLOR_PERM)
-		push	af
-		call	BUCLE_PINTA_TILES.PINTA_PALETA_GRIS
+;		ld		a,(ESTADO_COLOR_PERM)
+;		push	af
+;		call	BUCLE_PINTA_TILES.PINTA_PALETA_GRIS
+		call	NOP_50
 
 .VUELCA_TROZOS_DE_DOS_1:
 
@@ -1152,8 +1153,8 @@ MAGIA_GRATIS:
 
 .BUCLE_DE_COPIA_DE_DATOS_SALVADOS:
         ld      hl,ATRIBUTOS_NUMERO_DE_VIDAS_O_PUNTOS
-		call	NOP_50
 		jp    	DOCOPY
+		call	NOP_50
 
 .BUCLE_PARA_INICAR_DATOS_A_COPIAR:
 
@@ -1288,8 +1289,8 @@ MAGIA_GRATIS:
 .bucle_de_copys_1:
 
 		push	bc
-		call	NOP_50
 		call	DOCOPY
+		call	NOP_50
 		pop		bc
 		djnz	.bucle_de_copys_1
 
@@ -1305,8 +1306,6 @@ MAGIA_GRATIS:
 .COPIA_RAYOS_EN_FOTOGRAMAS_ADECUADOS_Y_ANIMACION:
 
 		ld		hl,COPIA_RAYOS_A_1
-		call	NOP_50
-		call	NOP_50
 		call	DOCOPY
 		call	NOP_50
 		call	NOP_50
@@ -1314,9 +1313,11 @@ MAGIA_GRATIS:
 		call	NOP_50
 		call	NOP_50
 		call	DOCOPY
+		call	NOP_50
+		call	NOP_50
 
-        xor      a
-        ld      (TIEMPO_DE_ADJUST),a
+;        xor      a
+;        ld      (TIEMPO_DE_ADJUST),a
 
 		ld		b,2
 
@@ -1354,8 +1355,8 @@ MAGIA_GRATIS:
 
 		call	.standard_destino_y
 		ld		hl,ATRIBUTOS_NUMERO_DE_VIDAS_O_PUNTOS
-		call	NOP_50
 		call	DOCOPY
+		call	NOP_50
 		
 .regreso_de_bucle:
 
@@ -1372,8 +1373,9 @@ MAGIA_GRATIS:
 		cp		7
 		jp		nz,.sin_cambio_en_Adjust
 
-        ld      a,1
-        ld      (TIEMPO_DE_ADJUST),a		
+;        ld      a,1
+;        ld      (TIEMPO_DE_ADJUST),a		
+		call	NOP_50
 
 .sin_cambio_en_Adjust:
 
@@ -1398,8 +1400,8 @@ MAGIA_GRATIS:
 		push	hl
 ; copia
 		ld		hl,ATRIBUTOS_NUMERO_DE_VIDAS_O_PUNTOS
-		call	NOP_50
 		call	DOCOPY
+		call	NOP_50
 
 ; corrige alto y 2
 		pop		de
@@ -1422,10 +1424,10 @@ MAGIA_GRATIS:
 		call	.marca_origen_y	
 ; copia
 
-		call	NOP_50
 
 		ld		hl,ATRIBUTOS_NUMERO_DE_VIDAS_O_PUNTOS
 		call	DOCOPY
+		call	NOP_50
 
 		jp		.regreso_de_bucle
 
@@ -1512,6 +1514,7 @@ MAGIA_GRATIS:
 
 .repintamos_puntos_de_magia:
 
+		call	NOP_50
 		call	PINTAMOS_LOS_PUNTOS_DE_MAGIA
 		ld		a,(DEMO)
 		or		a
@@ -1533,15 +1536,12 @@ MAGIA_GRATIS:
 
 .VUELVE_A_PINTAR_TRES_EN_NEGRO:
 
-		call	NOP_50
-		call	NOP_50
-
         ld      hl,COPIA_NEGRO_EN_3
         call    DOCOPY
 		call	NOP_50
 		call	NOP_50
-        ld      hl,COPIA_NEGRO_EN_3
-        call    DOCOPY
+		call	NOP_50
+		call	NOP_50
 
 		ld		a,(VARIABLE_UN_USO3)
 		or		a
@@ -1552,12 +1552,13 @@ MAGIA_GRATIS:
 		
 .final:
 
-		pop		af
-		ld		(ESTADO_COLOR_PERM),a
+;		pop		af
+;		ld		(ESTADO_COLOR_PERM),a
 
 		ld		hl,50
         ld      (SCORE_A_SUMAR),hl
         call    SUMA_SCORE
+		call	NOP_50
 
 		pop		ix
 		pop		iy

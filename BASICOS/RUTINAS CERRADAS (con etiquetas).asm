@@ -82,9 +82,9 @@ SETPAGE:     															; Cambiar la p??gina en screen 5
 
 SETPALETE_MARCADOR_PARCIAL:
 
-		ld			hl,PALETA_MARCADOR_STAGE_1+10						; Cambia solo los colores 5-C
+		ld			hl,PALETA_MARCADOR_STAGE_1+10						; Cambia los colores 5-F
 		ld			a,5
-		ld			b,16
+		ld			b,22
 		jr			SETPALETE_DESDE_A_Y_B
 
 SETPALETE:		

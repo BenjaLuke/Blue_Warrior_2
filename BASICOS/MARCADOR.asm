@@ -270,6 +270,16 @@ PINTA_ARMA:
         ld      hl,COPIA_MARCADOR_0_A_MARCADOR_3
         jp      DOCOPY        
 
+PINTA_SCORE_SI_PENDIENTE:
+
+        ld      a,(PINTA_SCORE_PENDIENTE)
+        or      a
+        ret     z
+        xor     a
+        ld      (PINTA_SCORE_PENDIENTE),a
+        push    af
+        call    PINTA_SCORE
+
 SUMA_SCORE:
 
         ld      a,(DEMO)
@@ -315,8 +325,17 @@ SUMA_SCORE:
         ld      de,(MAX_SCORE)
         ld      hl,(SCORE_REAL)
 	call    DCOMPR_RAM     
-        jp      c,PINTA_SCORE
+        jp      c,MARCA_PINTA_SCORE_PENDIENTE
         ld      (MAX_SCORE),hl
+
+MARCA_PINTA_SCORE_PENDIENTE:
+
+        ld      a,1
+        ld      (PINTA_SCORE_PENDIENTE),a
+        pop     hl
+        pop     de
+        ret
+
 PINTA_SCORE:
 
 .DIVIDIMOS_LA_PUNTUACION:

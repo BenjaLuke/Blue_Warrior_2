@@ -100,9 +100,10 @@ MAGIA_ROCK:
 		
 .PALETA_A_GRISES:
 
-	ld		a,(ESTADO_COLOR_PERM)
-	push	af
-	call	BUCLE_PINTA_TILES.PINTA_PALETA_GRIS
+;	ld		a,(ESTADO_COLOR_PERM)
+;	push	af
+;	call	BUCLE_PINTA_TILES.PINTA_PALETA_GRIS
+	call	NOP_50_MAGIA_ROCK
 
 .VUELCA_TROZOS_DE_DOS_1:
 
@@ -181,8 +182,8 @@ MAGIA_ROCK:
 	call	NOP_50_MAGIA_ROCK
 	call	DOCOPY
 
-    xor      a
-    ld      (TIEMPO_DE_ADJUST),a
+;    xor      a
+;    ld      (TIEMPO_DE_ADJUST),a
 
 	ld	b,RAYO_BUCLES_EXTERIORES_PART2_SEMIBOSS_2
 
@@ -230,8 +231,9 @@ MAGIA_ROCK:
 	cp		RAYO_CAMBIA_ADJUST_EN_B_PART2_SEMIBOSS_2
 	jr		nz,.sin_cambio_en_Adjust
 
-    ld      a,ADJUST_ACTIVO_PART2_SEMIBOSS_2
-    ld      (TIEMPO_DE_ADJUST),a		
+;    ld      a,ADJUST_ACTIVO_PART2_SEMIBOSS_2
+;    ld      (TIEMPO_DE_ADJUST),a		
+	call	NOP_50_MAGIA_ROCK
 
 .sin_cambio_en_Adjust:
 
@@ -284,14 +286,12 @@ MAGIA_ROCK:
 
 .VUELVE_A_PINTAR_TRES_EN_NEGRO:
 
-	call	NOP_50_MAGIA_ROCK
-	call	NOP_50_MAGIA_ROCK
     ld      hl,COPIA_NEGRO_EN_3
 	call    DOCOPY
 	call	NOP_50_MAGIA_ROCK
 	call	NOP_50_MAGIA_ROCK
-    ld      hl,COPIA_NEGRO_EN_3
-	call    DOCOPY
+	call	NOP_50_MAGIA_ROCK
+	call	NOP_50_MAGIA_ROCK
 
 	ld		a,(VARIABLE_UN_USO3)
 	or		a
@@ -299,10 +299,10 @@ MAGIA_ROCK:
 	
 .final:
 
-		pop		af
-		ld		(ESTADO_COLOR_PERM),a
-		xor		a
-		ld		(TIEMPO_DE_ADJUST),a
+;		pop		af
+;		ld		(ESTADO_COLOR_PERM),a
+;		xor		a
+;		ld		(TIEMPO_DE_ADJUST),a
 		
 		pop		ix
 		pop		iy

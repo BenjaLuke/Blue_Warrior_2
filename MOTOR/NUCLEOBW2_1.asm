@@ -209,6 +209,7 @@ VARIABLES_PARA_EMPEZAR_LA_PARTIDA_1:
 		ld		(HAY_CORAZONES),a
 		ld		(DONDE_VA_LA_INTERRUPCION_LINEAL),a
 		ld		(MARCADOR_ANULADO),a
+		ld		(PINTA_SCORE_PENDIENTE),a
 		ld		(FASE3_VAGON_JUMP_ACTIVO),a
 		ld		(TILE_ESPECIAL_DEPH_COOLDOWN),a
 		ld		(TILE_ESPECIAL_DEPH_BLOQUEOS),a
@@ -504,6 +505,7 @@ CONTROL:
 		call	BUCLE_PINTA_TILES
 						
 		call	INTRODUCIMOS_LINEA_DE_INTERRUPCION_NUEVA
+		call	PINTA_SCORE_SI_PENDIENTE
 
 		ld		a,(CORAZONES)
 		or		a
@@ -705,11 +707,10 @@ CONTROL:
 .avance_con_reservas:
 
 			ld		a,(CONTROL_Y)
-			cp		65
-			jp		c,.hay_que_sumar
+			cp		66
+			jp		c,.pre_sigue_comun
 			cp		220
 			jp		c,.hay_que_restar
-
 
 .hay_que_restar:
 

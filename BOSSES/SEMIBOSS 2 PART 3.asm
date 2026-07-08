@@ -369,13 +369,13 @@ SPRITES_COVID_TAM_PART3_SEMIBOSS_2				equ		2*8*4
         and     11101111b
         ld      b,a
         ld      c,0
-        call    WRTVDP_EN_RAM
+        call    WRTVDP_ROCKAGER_SIN_EI
         ld      a,(RG1SAV)
         push    af
         and     11011111b
         ld      b,a
         ld      c,1
-        call    WRTVDP_EN_RAM
+        call    WRTVDP_ROCKAGER_SIN_EI
 
         ld      a,BANCO_STAGE_2_A_PART3_SEMIBOSS_2
         call    .CAMBIA_BANCO_2_SIN_INTERRUPCIONES
@@ -439,18 +439,19 @@ SPRITES_COVID_TAM_PART3_SEMIBOSS_2				equ		2*8*4
         pop     af
         ld      b,a
         ld      c,1
-        call    WRTVDP_EN_RAM
+        call    WRTVDP_ROCKAGER_SIN_EI
         pop     af
         ld      b,a
         ld      c,0
-        call    WRTVDP_EN_RAM
+        call    WRTVDP_ROCKAGER_SIN_EI
+        ei
 
 .REGRESAMOS:
 
         ld      hl,0
         ld      (SCORE_A_SUMAR),hl
         call    SUMA_SCORE
-	call	PINTAMOS_LOS_PUNTOS_DE_MAGIA
+;	call	PINTAMOS_LOS_PUNTOS_DE_MAGIA
         call    PINTA_CORAZONES
 
         pop     de
@@ -481,7 +482,7 @@ SPRITES_COVID_TAM_PART3_SEMIBOSS_2				equ		2*8*4
 
         ld      a,(PRIMERA_APERTURA_SUELO)
         cp      APERTURA_SUELO_TEMBLEQUES_MAX_PART3_SEMIBOSS_2
-        jp      z,.SALIMOS_TEMBLEQUE_SIN_TEMBLEQUE
+        jr      z,.SALIMOS_TEMBLEQUE_SIN_TEMBLEQUE
         inc     a
         ld      (PRIMERA_APERTURA_SUELO),a
 
