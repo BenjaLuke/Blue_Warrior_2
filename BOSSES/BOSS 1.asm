@@ -2727,6 +2727,7 @@ LOCALIZA_Y_INICIO_REJAS_BOSS_1:
 
 LEE_COLOR_REJAS_BOSS_1:
 
+		push	af
 		call	VDPREADY
 
         ld      ix,BOSS_1_POINT_REJAS_PAGE_2
@@ -2736,6 +2737,7 @@ LEE_COLOR_REJAS_BOSS_1:
 		ld		iy,DATAS_COPY_RECUP_SCROLL
 		ld		(iy),REJAS_SUBEN_X_BOSS_1
 		ld		(iy+1),0
+		pop		af
 		ld		(iy+2),a
 		ld		(iy+3),PAGE_2_VRAM_Y_BOSS_1 / 256
 

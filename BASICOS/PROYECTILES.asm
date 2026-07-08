@@ -211,10 +211,14 @@ NUEVO_PROYECTIL:
 
 		ld		de,16
 		add		ix,de
-		ld		hl,VARIABLE_UN_USO
+		ld		hl,PROYECTILES+16*6
 		push	ix
 		pop		de
-		call	XOR_Z_RAM
+		ld		a,l
+		xor		e
+		jp		nz,.COMPARAMOS_EL_PROYECTIL_O_ENEMIGO_MIRADO
+		ld		a,h
+		xor		d
 		jr		z,.NOS_VAMOS
 		jp		.COMPARAMOS_EL_PROYECTIL_O_ENEMIGO_MIRADO
 		
@@ -456,10 +460,14 @@ SECUENCIA_PROYECTILES_Y_ENEMIGOS:
 
 		ld		de,16
 		add		ix,de
-		ld		hl,VARIABLE_UN_USO
+		ld		hl,PROYECTILES+16*6
 		push	ix
 		pop		de
-		call	XOR_Z_RAM
+		ld		a,l
+		xor		e
+		jp		nz,.COMPARAMOS_EL_PROYECTIL_O_ENEMIGO_MIRADO
+		ld		a,h
+		xor		d
 		jp		z,.NOS_VAMOS
 		jp		.COMPARAMOS_EL_PROYECTIL_O_ENEMIGO_MIRADO
 		
@@ -638,10 +646,14 @@ PINTA_PROYECTILES_ENEMIGOS:
 
 		ld		de,16
 		add		ix,de
-		ld		hl,VARIABLE_UN_USO
+		ld		hl,PROYECTILES+16*6
 		push	ix
 		pop		de
-		call	XOR_Z_RAM
+		ld		a,l
+		xor		e
+		jp		nz,.COMPARAMOS_EL_PROYECTIL_O_ENEMIGO_MIRADO
+		ld		a,h
+		xor		d
 		jr		z,.NOS_VAMOS
 		jp		.COMPARAMOS_EL_PROYECTIL_O_ENEMIGO_MIRADO
 		
@@ -1590,17 +1602,12 @@ PATRONES_SPRITE_SECUNDARIO:
 DIRECCIONES_DE_PROYECTIL:
 
         ld      a,(ix+3)
-        push    iy
-        ld      iy,TABLA_DE_DIRECCIONES_DE_PROYECTILES
+        add     a,(ix+5)
         ld      e,a
         ld      d,0
-        add     iy,de
-        ld      a,(ix+5)
-        ld      e,a
-        ld      d,0
-        add     iy,de
-        ld      a,(iy)
-        pop     iy
+        ld      hl,TABLA_DE_DIRECCIONES_DE_PROYECTILES
+        add     hl,de
+        ld      a,(hl)
 		ret
 
 LIBERA_DOS_SPRITES:
