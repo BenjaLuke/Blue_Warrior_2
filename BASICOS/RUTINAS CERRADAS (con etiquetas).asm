@@ -420,7 +420,6 @@ BUCLE_PINTA_TILES:
 		call	SITUAMOS_PUNTERO_EN_TABLA_DESDE_HL_YA_MARCADA			; Vamos a ver el suceso que le toca a esa linea
         call    PAGE_10_A_SEGMENT_2
 
-
 .RECOLOCAMOS_Y:
 
 		ld		a,(Y_PINTA_SCROLL)
@@ -1057,51 +1056,18 @@ PINTA_SPRITE_DEPH:
 		jp		z,.COLORES_POSE_3
 		
 .COLORES_POSE_0_2:
-
-		ld		a,(MUSICA_ON_OFF)
-		or		a
-		jp		z,.COLORES_POSE_0_2_CON_CASCOS
-
-.COLORES_POSE_0_2_SIN_CASCOS:		
 		
 		ld		hl,COLOR_POSE_0_Y_2
 		jp		.SIGUE_TRAS_COLORES
 
-.COLORES_POSE_0_2_CON_CASCOS:
-
-		ld		hl,COLORES_DEPH_CASCOS_POSE_0_Y_2
-		jp		.SIGUE_TRAS_COLORES
-
 .COLORES_POSE_1:
-
-		ld		a,(MUSICA_ON_OFF)
-		or		a
-		jp		z,.COLORES_POSE_1_CON_CASCOS
-
-.COLORES_POSE_1_SIN_CASCOS:		
 
 		ld		hl,COLOR_POSE_1
 		jp		.SIGUE_TRAS_COLORES
 
-.COLORES_POSE_1_CON_CASCOS:
-
-		ld		hl,COLORES_DEPH_CASCOS_POSE_1
-		jp		.SIGUE_TRAS_COLORES
-
 .COLORES_POSE_3:
 
-		ld		a,(MUSICA_ON_OFF)
-		or		a
-		jp		z,.COLORES_POSE_3_CON_CASCOS
-
-.COLORES_POSE_3_SIN_CASCOS:		
-
 		ld		hl,COLOR_POSE_3
-		jp		.SIGUE_TRAS_COLORES
-
-.COLORES_POSE_3_CON_CASCOS:
-
-		ld		hl,COLORES_DEPH_CASCOS_POSE_3
 
 .SIGUE_TRAS_COLORES:
 
@@ -1115,12 +1081,6 @@ PINTA_SPRITE_DEPH:
 		ld		a,(MUSICA_ON_OFF)
 		or		a
 		jp		nz,.cabeza_normal
-
-
-.cabeza_cascos:
-
-		ld		hl,COLOR_DEPH_CASCOS
-		jp		.final_color_cabeza
 
 .cabeza_normal:
 
@@ -2059,14 +2019,6 @@ HIDE_STATUS_RET_SIN_CONTROL:
 
 		ret
 
-CARGA_DEPH_MUSIC_ON:
-
-CARGA_DEPH_MUSIC_OFF:
-
-COMUN_CARGA_DEPH:
-
-		jp		CONTROL.teclado
-
 EFECTOS_ON_OFF:
 
 		ld		a,(MARCADOR_PULSADO)								; Si ya pulsamos el bot??n, no sirve hasta que lo sueltes
@@ -2093,9 +2045,7 @@ EFECTOS_ON_OFF:
 		ld		a,1
 		ld		(FX_ON_OFF),a
 		jp		CONTROL.teclado
-MUSIC_ON_OFF:
 
-		jp		CONTROL.teclado
 PAUSE:
 
 		ld		a,(BLOQUE_DE_SPRITES_VARIABLE)
@@ -2282,18 +2232,6 @@ PAUSE:
 		add		4
 		add		ix,de
 		djnz	.bucle_de_arriba
-
-		ld		a,(MUSICA_ON_OFF)
-		or		a
-		jp		nz,.color_arriba_normal
-
-.color_arriba_cascos:
-
-		ld		hl,COLOR_EJERCICIO_1_CASCOS
-		jp		.ejecuta_el_color
-
-.color_arriba_normal:
-
 		ld		hl,COLOR_EJERCICIO_1
 
 .ejecuta_el_color:
@@ -2582,7 +2520,7 @@ SALTO_AL_FADEAR_EN_GRISES:
 		xor		a
 		ld		(ARMA_USANDO),a											; 0 1 2 para flecha 3 4 5 para fuego 6 7 8 para hacha
 
-		ld		a,(VIDAS)     ; XXXXXXXX Quitar esto para evitar vidas infinitas
+		ld		a,(VIDAS)     ;XXXXXXXXXX Quitar esto para tener vidas infinitas
 		dec		a
 		ld		(VIDAS),a
 
@@ -2596,6 +2534,7 @@ SALTO_AL_FADEAR_EN_GRISES:
 		ld		a,100
 		call	BUCLE_PINTA_TILES.rutina_de_pausa
 		call	DISSCR_RAM		
+		call	LIMPIA_ATRIBUTOS_SPRITE_13
 
 		ld		a,2
 		ld		(CORAZONES),a
@@ -2689,13 +2628,6 @@ VUELCA_DATOS_COLORES_DEPH_A_VRAM:
 		ld		a,(MUSICA_ON_OFF)
 		or		a
 		jp		nz,.color_normal
-
-.color_cascos:
-
-		ld		hl,COLOR_DEPH_CASCOS
-        call    PAGE_32_A_SEGMENT_2
-
-		jp		VUELCA_DATOS_COLORES_DEPH_A_VRAM_SIN_HL
 
 .color_normal:
 

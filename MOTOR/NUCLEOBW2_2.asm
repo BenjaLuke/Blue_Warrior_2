@@ -868,19 +868,21 @@ AHORA_SI_EL_AGUJERO:
 
 			ld		a,(Y_DEPH)
 			and		00001111b
-			cp		8
-			jr		c,.hitbox_y_menor_8
-
+			ld		c,a
 			ld		a,b
 			cp		61
-			ret		nc
+			jr		nc,.hitbox_y_mayor_igual_6
+
+			ld		a,c
+			cp		10
+			ret		c
 			jp		CONTROL_TILES_PUPA
 
-.hitbox_y_menor_8:
+.hitbox_y_mayor_igual_6:
 
-			ld		a,b
-			cp		61
-			ret		c
+			ld		a,c
+			cp		6
+			ret		nc
 			jp		CONTROL_TILES_PUPA
 
 .control_de_y_a_menos:
@@ -1874,10 +1876,6 @@ SE_PUEDE_MOVER_Y_EFES_VARIOS:
 			bit		5,a											; Si pulsa f1 pausamos
 			jp		z,.PAUSE_VAGON		
 			
-			;ld		a,7
-			;call	SNSMAT_RAM
-			;bit		1,a	
-			;jp		z,AGILIZA_MAPA									; XXXXXX Si pulsa f5 avanza 20 lineas en el mapa			
 			xor		a
 			ld		(MARCADOR_PULSADO),a
 			ld		a,(SUMA_CAMINO)
@@ -2363,11 +2361,6 @@ PINTA_TRIADA_SALTO_SALE_VAGON:
 
 			pop		af
 			jp		PINTA_TRIADA_FASE3_VAGON
-
-PINTA_TRIADA_ENTRADA_FASE3_VAGON_Y_MAS_16:
-
-			ld		a,b
-			jp		PINTA_TRIADA_ENTRADA_FASE3_VAGON
 
 PINTA_TRIADA_ENTRADA_FASE3_VAGON_SALTO:
 
@@ -4440,7 +4433,7 @@ COVIDS:
 .comun_covids_seguimos:
 
         call    TROZOS_COMUNES_1
-		ld		hl,COLOR_COVID_1_1						; Damos color al sprite en la posición de sprite que le toca	
+		ld		hl,COLOR_COVID_1						; Damos color al sprite en la posición de sprite que le toca	
 		jp      TROZOS_COMUNES_9
 
 .comun_covids_variante:
@@ -5788,7 +5781,7 @@ GARGOLAS:
 		ld		(ix+1),a
 
         call    TROZOS_COMUNES_1
-		ld		hl,COLOR_COVID_1_1						; Damos color al sprite en la posición de sprite que le toca	
+		ld		hl,COLOR_COVID_1						; Damos color al sprite en la posición de sprite que le toca	
 		jp      TROZOS_COMUNES_9
 
 .SECUENCIA_GARGOLA:

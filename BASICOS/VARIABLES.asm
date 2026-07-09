@@ -36,7 +36,6 @@ FOTOGRAMA_DEPH:					#1
 ATRIBUTOS_DEPH_VARIABLES:		#40
 ATRIBUTOS_VAGONETA_VARIABLES:	#48
 SEMAFORO_CHECK_POINT:			#1										; Nos indica si ya podemos mostrar el check-pint
-SEMAFORO_VIDA_EXTRA:			#1										; Nos indica si ya hemos dado una vida extra por pasar de 50000 puntos
 ATRIBUTOS_NUMERO_DE_VIDAS_O_PUNTOS:		#15								; Los datos para el copy de las vidas que tiene
 CAMBIO_POSE:					#1										; Controla cada cuantos ciclos del scroll se pasa al siguiente fotograma
 FOTOGRAMA_DEPH_EN_ORDEN:		#1										; Controla la sucesión de poses del 0 al 4
@@ -134,11 +133,6 @@ ARMA_USANDO:					#1										; 0 1 2 Flecha 3 4 5 fuego 6 7 8 hacha
 ESTADO_EJERCICIO				#1										; 0 y 2 es neutro. 1 es arriba y 3 es abajo 
 BLOQUE_DE_SPRITES_VARIABLE:		#1										; Nos dice los sprites que están descargados
 ECTO_PARALIZADO:				#1										; 0 No. 1 Si
-TENEMOS_D:						#1										; Se ha cogido la letra D
-TENEMOS_E:						#1										; Se ha cogido la letra E
-TENEMOS_P:						#1										; Se ha cogido la letra P
-TENEMOS_H:						#1										; Se ha cogido la letra H
-TENEMOS_TODAS:					#1
 
 VELOCIDAD_ROCKAGER:				#1										; Velocidad variable de la animación del rockager
 FOTOGRAMA_SECUENCIA_ROCKAGER_1:	#1										; Fotograma en el que está de la primera secuencia

@@ -822,7 +822,7 @@ PINTA_CUATRO_FRASES_CINEMATICA:
 		ld		a,(LENGUAJE)
 		cp		2
 		jr		nz,.TEXTOS_CINEMATICA_LISTOS
-		ld		bc,TEXTO_CINEMATICA_1_INGLES-TEXTO_CINEMATICA_1
+		ld		bc,TEXTO_CINEMATICAS_INGLES-TEXTO_CINEMATICA_1
 		add		hl,bc
 
 .TEXTOS_CINEMATICA_LISTOS:
@@ -2798,7 +2798,7 @@ DATOS_NEGRO_ROTATIVO_EN_PAGE_1:
 
 TEXTO_ROTATIVO_PRESENTACION:
 
-		db		"BLUE WARRIOR II   -   Beta version 5.01.68  -  08-07-2026 - 98 por ciento - (C) Digital Moai",0
+		db		"BLUE WARRIOR II   -   Beta version 5.01.76  -  09-07-2026 - 98 por ciento - (C) Digital Moai",0
 
 TEXTO_ROTATIVO_PRESENTACION_FIN:
 
@@ -3048,9 +3048,9 @@ PULSA_UNA_TECLA_PARA_EMPEZAR:
 		bit		1,a
 		jp		z,INICIA_EN_FASE_1
 
-		; ld		a,(TRUCO_FASES_ACTIVO)		; XXXXX
-		; or		a							; XXXXX truco
-		; jp		z,.NO_MIRA_FASES_DIRECTAS	; XXXXX
+		; ld		a,(TRUCO_FASES_ACTIVO)		;XXXXXXXXXX Sin esto se libera el ir a fase directo con números
+		; or		a							
+		; jp		z,.NO_MIRA_FASES_DIRECTAS	
 
 		ld		a,0
 		call	SNSMAT_RAM

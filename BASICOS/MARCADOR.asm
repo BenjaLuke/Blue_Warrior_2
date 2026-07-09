@@ -294,34 +294,6 @@ SUMA_SCORE:
         adc     hl,de
         ld      (SCORE_REAL),hl
 
-        ld      de,5000                                                                 ; Si nuestro score >= este valor, hay que dar un corazón extra
-        call    DCOMPR_RAM
-        jp      c,.miramos_si_hay_que_subir_hi_score
-
-        ld      a,(SEMAFORO_VIDA_EXTRA)                                                 ; Si este semaforo está en rojo es que ya se dió
-        or      a
-        jp      z,.miramos_si_hay_que_subir_hi_score
-
-        xor      a                                                                      ; Ponemos el semáforo en rojo porque ya hemos entrado en la rutina
-        ld      (SEMAFORO_VIDA_EXTRA),a
-        
-        ld      a,(VIDAS)                                                               ; Si ya tenemos tantos corazones como el máximo que podemos, no entregaremos nada
-        ld      c,10
-        cp      c
-        jp      nc,.miramos_si_hay_que_subir_hi_score
-
-        inc     a
-        ld      (VIDAS),a
-       
-        ld      a,15
-        ld      c,0
-        call    A_31_DESDE_10       
-      
-
-        call    PINTA_VIDAS
-
-.miramos_si_hay_que_subir_hi_score:
-
         ld      de,(MAX_SCORE)
         ld      hl,(SCORE_REAL)
 	call    DCOMPR_RAM     

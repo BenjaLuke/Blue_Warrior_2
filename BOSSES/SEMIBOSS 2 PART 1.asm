@@ -1,4 +1,5 @@
 VIDA_INICIAL_ROCKAGER_SEMIBOSS_2:			equ	40
+VIDA_CAMBIO_UN_ROCKAGER_SEMIBOSS_2:		        equ	10
 PAGINA_REGRESO_SEMIBOSS_2:			        equ	38
 
 SPRITES_ACTIVOS_ROCKAGER_OFS_SEMIBOSS_2:		equ	5
@@ -674,19 +675,15 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK:
 
 .descuenta_1:
 
-        ld      a,(VIDA_ROCKAGER_1)
-        dec     a
-        ld      (VIDA_ROCKAGER_1),a
-
-        jr      .sobre_el_proyectil
+        ld      hl,VIDA_ROCKAGER_1
+        call    DESCUENTA_VIDA_ROCKAGER_SI_TOCA
+        jp      .sobre_el_proyectil
 
 .descuenta_2:
 
-        ld      a,(VIDA_ROCKAGER_2)
-        dec     a
-        ld      (VIDA_ROCKAGER_2),a
-
-        jr      .sobre_el_proyectil
+        ld      hl,VIDA_ROCKAGER_2
+        call    DESCUENTA_VIDA_ROCKAGER_SI_TOCA
+        jp      .sobre_el_proyectil
 
 .revision_bloque_3:
 
@@ -740,13 +737,22 @@ REVISAMOS_SI_MUERE_UN_ROCKAGER:
         or      a
         ret     nz
 
+        call    VIDA_TOTAL_ROCKAGER_EN_RANGO_DE_UNO
+        ret     nc
+
 .UNO:
 
 .UNO_PRIMERO:
 
         ld      a,(VIDA_ROCKAGER_1)
         or      a
-        jr      nz,.UNO_SEGUNDO
+        jr      z,.UNO_PRIMERO_ACTIVA
+
+        xor     a
+        ld      (VIDA_ROCKAGER_2),a
+        jr      .UNO_SEGUNDO_ACTIVA
+
+.UNO_PRIMERO_ACTIVA:
 
         call    .AVANZA_SECUENCIA_DE_ROCKAGER
 
@@ -803,9 +809,7 @@ REVISAMOS_SI_MUERE_UN_ROCKAGER:
 
 .UNO_SEGUNDO:
 
-        ld      a,(VIDA_ROCKAGER_2)
-        or      a
-        ret     nz
+.UNO_SEGUNDO_ACTIVA:
 
         call    .AVANZA_SECUENCIA_DE_ROCKAGER
 

@@ -47,7 +47,7 @@ NUEVO_PROYECTIL:
 .seguimos_con_comparacion:
 
 		ld		a,(ix+2)
-		cp		$FF
+		inc		a
 		jp		nz,.PASAMOS_A_LA_SIGUIENTE_POSICION
 		
 		ld		a,(ARMA_USANDO)
@@ -231,7 +231,7 @@ SECUENCIA_PROYECTILES_Y_ENEMIGOS:
 .COMPARAMOS_EL_PROYECTIL_O_ENEMIGO_MIRADO:
 		
 		ld		a,(ix+2)
-		cp		$FF
+		inc		a
 		jp		z,.PASAMOS_A_LA_SIGUIENTE_POSICION
 		
 		ld		a,(ix+6)
@@ -486,7 +486,7 @@ PINTA_PROYECTILES_ENEMIGOS:
 .COMPARAMOS_EL_PROYECTIL_O_ENEMIGO_MIRADO:
 		
 		ld		a,(ix+2)								; Si su byte 3 es 255 significa que no hay que pintarlo
-		cp		$FF
+		inc		a
 		jp		z,.PASAMOS_A_LA_SIGUIENTE_POSICION
 
 		ld		a,(ix+1)								; Si está en la linea 216, lo pasaremos a la 217 para que no se oculte él y los siguientes
@@ -571,17 +571,13 @@ PINTA_PROYECTILES_ENEMIGOS:
 
 		ld		a,(ix+6)
 		cp		3
-		jr		z,.DOBLETE_HACHA
+		jr		z,.PASAMOS_A_LA_SIGUIENTE_POSICION
 		cp		6
-		jr		z,.DOBLETE_HACHA
+		jr		z,.PASAMOS_A_LA_SIGUIENTE_POSICION
 		cp		7
-		jr		z,.DOBLETE_HACHA
+		jr		z,.PASAMOS_A_LA_SIGUIENTE_POSICION
 
 		call	PATRONES_SPRITE_SECUNDARIO
-
-		jr		.PASAMOS_A_LA_SIGUIENTE_POSICION
-
-.DOBLETE_HACHA:
 
 		jr		.PASAMOS_A_LA_SIGUIENTE_POSICION
 
@@ -771,9 +767,28 @@ APARTAMOS_SPRITES_QUE_MOLESTAN:
         call    APARTA_SPRITE_LIBERADO
 		djnz	.bucle_molestias
 
+        call    LIMPIA_ATRIBUTOS_SPRITE_13
+
 .saliendo_de_la_rutina:
 
 		pop		ix
+		ret
+
+LIMPIA_ATRIBUTOS_SPRITE_13:
+
+        push    hl
+        ld      hl,#4A00+(4*13)
+        call    SetVdp_Write
+        xor     a
+        out     (#98),a
+        out     (#98),a
+        out     (#98),a
+        out     (#98),a
+        ld      (RG14SAV),a
+        out     (#99),a
+        ld      a,14+128
+        out     (#99),a
+        pop     hl
 		ret
 
 CALCULAMOS_PROYECTILES_ENEMIGOS:
@@ -1580,11 +1595,11 @@ PATRONES_SPRITE_SECUNDARIO:
 
         ld      a,(ix+6)
         cp      32
-        jr      nz,.sin_offset_fireworks
+        jp      nz,.sin_offset_fireworks
         ld      a,(iy+1)
-        cp      $FF
+        inc     a
         jr      z,.sin_offset_fireworks
-        add     16
+        add     15
         ld      (iy+1),a
 
 .sin_offset_fireworks:

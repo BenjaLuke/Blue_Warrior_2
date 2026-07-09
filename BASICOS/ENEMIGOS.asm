@@ -202,7 +202,7 @@ UN_NUEVO_ENEMIGO:
         ld      (ix),a
         ld      (ix+4),c
         call    TROZOS_COMUNES_1
-	ld	hl,COLOR_SKRULLEX_QUE_DA_COSAS_1_1						; Damos color al sprite en la posición de sprite que le toca	
+	ld	hl,COLOR_SKRULLEX_QUE_DA_COSAS_1						; Damos color al sprite en la posición de sprite que le toca	
 	call    TROZOS_COMUNES_7
 
         ld      a,1
@@ -211,7 +211,7 @@ UN_NUEVO_ENEMIGO:
 
  	call	STANDAR_DA_EL_VALOR_SPRITE_QUE_TOCA_IX3
         call    TROZOS_COMUNES_3
-	ld	hl,COLOR_SKRULLEX_QUE_DA_COSAS_1_2						; Damos color al sprite en la posición de sprite que le toca	
+	ld	hl,COLOR_SKRULLEX_QUE_DA_COSAS_2						; Damos color al sprite en la posición de sprite que le toca	
 	jp      TROZOS_COMUNES_9
 
 .DEFINE_INMUNIDAD:

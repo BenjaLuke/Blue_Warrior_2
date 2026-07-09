@@ -25,7 +25,7 @@
 		ld		(V_DECENAS),a
 		ld		(V_UNIDADES),a
 		ld		(SCORE_REAL),hl
-		add		2
+		ld		a,2
 		ld		(MAGIAS),a
 		ld		(VIDAS),a
 		ld		(CORAZONES),a

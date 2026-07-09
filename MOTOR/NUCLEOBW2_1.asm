@@ -220,7 +220,6 @@ VARIABLES_PARA_EMPEZAR_LA_PARTIDA_1:
 		ld		(ESTADO_MARCADOR),a
 		ld		(MUSICA_ON_OFF),a
 		ld		(FX_ON_OFF),a
-		ld		(SEMAFORO_VIDA_EXTRA),a
 
 		inc		a
 		ld		(SET_PAGE),a
@@ -1145,7 +1144,7 @@ CONTROL:
 
 .RECUPERANDO_SPRITES_DEPH:
 
-			ld		hl,SPRITE_DEPH_AGUJERO_1
+			ld		hl,SPRITE_DEPH_AGUJERO
 			ld		de,#4020
 			ld		bc,704
 			call	PAGE_32_A_SEGMENT_2
@@ -1270,29 +1269,32 @@ CARGA_COMUN_1_FLECHA:
 			ld		de,#4000+39*8*4
 			ld		bc,1*8*4
 			jp		TROZOS_COMUNES_15
+
 CARGA_COMUN_2:
 
 			ld		bc,2*8*4
 			jp		TROZOS_COMUNES_15
+
 CARGA_COMUN_4:
 
 			ld		bc,4*8*4
 			jp		TROZOS_COMUNES_15
+
 CARGA_COMUN_6:
 
 			ld		bc,6*8*4
-			jp		TROZOS_COMUNES_15			
+			jp		TROZOS_COMUNES_15	
+
 CARGA_COMUN_8:
+
 			ld		bc,8*8*4
 			jp		TROZOS_COMUNES_15
+
 CARGA_COMUN_10:
+
 			ld		bc,10*8*4
 			jp		TROZOS_COMUNES_15
-CARGA_COMUN_24:
 
-			ld		de,#4000+25*8*4
-			ld		bc,24*8*4
-			jp		TROZOS_COMUNES_15
 CARGA_COMUN_26:
 
 			ld		de,#4000+23*8*4
@@ -1304,15 +1306,7 @@ CARGA_1_A_25_TRAS_PAUSA:
 			call    PAGE_10_A_SEGMENT_2
 			ld		hl,TODOS_LOS_SPRITES
 			call	CARGA_COMUN_25_TRAS_PAUSA
-
-		ld		hl,COLORES_DEPH_CASCOS_POSE_3
-
-        call    PAGE_32_A_SEGMENT_2
-
-		ld		de,#4840
-		ld		bc,96
-		call	PON_COLOR_2.sin_bc_impuesta
-        jp    	PAGE_10_A_SEGMENT_2
+        	jp    	PAGE_10_A_SEGMENT_2
 
 CARGA_COMUN_25_TRAS_PAUSA:
 
@@ -1327,15 +1321,7 @@ CARGA_COMUN_45:
 			ld		de,#4000+1*8*4
 			ld		bc,45*8*4
 			call	TROZOS_COMUNES_15
-
-		ld		hl,COLORES_DEPH_CASCOS_POSE_3
-
-        call    PAGE_32_A_SEGMENT_2
-
-		ld		de,#4840
-		ld		bc,96
-		call	PON_COLOR_2.sin_bc_impuesta
-        jp    	PAGE_10_A_SEGMENT_2
+        	jp    	PAGE_10_A_SEGMENT_2
 
 CARGA_MUSICA_THE_BEST:
 
@@ -1487,25 +1473,6 @@ PINTA_COLORES_SPRITE_VAGON_DESDE_PAGE32:
 		ld		hl,COLOR_SPRITE_VAGONETA_TOTAL
 		ld		de,#4800
 		ld		bc,8*16
-		call	PON_COLOR_2.sin_bc_impuesta
-		jp		PAGE_10_A_SEGMENT_2
-
-PINTA_COLORES_SPRITE_VAGON_CASCOS:
-
-		call	PAGE_32_A_SEGMENT_2
-		ld		hl,COLOR_SPRITES_VAGONETA_CASCOS
-		ld		de,#4800
-		ld		bc,2*16
-		call	PON_COLOR_2.sin_bc_impuesta
-
-		ld		hl,COLOR_SPRITES_VAGONETA_CASCOS+3*16
-		ld		de,#4820
-		ld		bc,2*16
-		call	PON_COLOR_2.sin_bc_impuesta
-
-		ld		hl,COLOR_SPRITE_VAGONETA_TOTAL+4*16
-		ld		de,#4840
-		ld		bc,4*16
 		call	PON_COLOR_2.sin_bc_impuesta
 		jp		PAGE_10_A_SEGMENT_2
 

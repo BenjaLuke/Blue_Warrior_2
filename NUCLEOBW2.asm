@@ -328,36 +328,32 @@ TEXTO_CINEMATICA_5:
 		dw		TEXTO_CINEMATICA_5_3
 		dw		TEXTO_CINEMATICA_5_4
 
-TEXTO_CINEMATICA_1_INGLES:
-
+TEXTO_CINEMATICAS_INGLES:
+		; CINEMATICA 1
 		dw		TEXTO_CINEMATICA_1_1_INGLES
 		dw		TEXTO_CINEMATICA_1_2_INGLES
 		dw		TEXTO_CINEMATICA_1_3_INGLES
 		dw		TEXTO_CINEMATICA_1_4_INGLES
 
-TEXTO_CINEMATICA_2_INGLES:
-
+		; CINEMATICA 2
 		dw		TEXTO_CINEMATICA_2_1_INGLES
 		dw		TEXTO_CINEMATICA_2_2_INGLES
 		dw		TEXTO_CINEMATICA_2_3_INGLES
 		dw		TEXTO_CINEMATICA_2_4_INGLES
 
-TEXTO_CINEMATICA_3_INGLES:
-
+		; CINEMATICA 3
 		dw		TEXTO_CINEMATICA_3_1_INGLES
 		dw		TEXTO_CINEMATICA_3_2_INGLES
 		dw		TEXTO_CINEMATICA_3_3_INGLES
 		dw		TEXTO_CINEMATICA_3_4_INGLES
 
-TEXTO_CINEMATICA_4_INGLES:
-
+		; CINEMATICA 4
 		dw		TEXTO_CINEMATICA_4_1_INGLES
 		dw		TEXTO_CINEMATICA_4_2_INGLES
 		dw		TEXTO_CINEMATICA_4_3_INGLES
 		dw		TEXTO_CINEMATICA_4_4_INGLES
 
-TEXTO_CINEMATICA_5_INGLES:
-
+		; CINEMATICA 5
 		dw		TEXTO_CINEMATICA_5_1_INGLES
 		dw		TEXTO_CINEMATICA_5_2_INGLES
 		dw		TEXTO_CINEMATICA_5_3_INGLES
@@ -622,8 +618,6 @@ MIRA_SI_PINTAMOS_COVID_OPTIMIZADO:
             ret     z
             scf
             ret
-
-FIN_MIRA_SI_PINTAMOS_COVID_OPTIMIZADO:
 
         ds      #8000-$-#2200 
 
@@ -2224,12 +2218,45 @@ WRTVDP_ROCKAGER_SIN_EI:
 		out		(#99),a
 		ret
 
-        ds      16                                                      ; Colocamos el resto del programa siempre en el mismo sitio    
+        ds      11                                                      ; Colocamos el resto del programa siempre en el mismo sitio    
 
 		include "BASICOS/RUTINAS CERRADAS (sin etiquetas).asm"				            ; Incluímos las referencias a la BIOS
 		include "AUDIOS/LANZADOR EFECTOS PSG (sin etiquetas).asm"
         include "PALETAS/PALETAS (sin etiquetas).asm"
 		include "AUDIOS/LANZADOR FMPACK Y MUSIC MODULE (sin etiquetas).asm"        
+
+VIDA_TOTAL_ROCKAGER_EN_RANGO_DE_UNO:
+
+        ld      a,(VIDA_ROCKAGER_1)
+        ld      b,a
+        ld      a,(VIDA_ROCKAGER_2)
+        add     b
+        cp      VIDA_CAMBIO_UN_ROCKAGER_SEMIBOSS_2
+        ret
+
+DESCUENTA_VIDA_ROCKAGER_SI_TOCA:
+
+        ld      a,(hl)
+        or      a
+        jr      nz,.DESCUENTA
+        ld      de,VIDA_ROCKAGER_1
+        or      a
+        sbc     hl,de
+        ld      hl,VIDA_ROCKAGER_2
+        jr      z,.MIRA_EL_OTRO
+        ld      hl,VIDA_ROCKAGER_1
+
+.MIRA_EL_OTRO:
+
+        ld      a,(hl)
+        or      a
+        ret     z
+
+.DESCUENTA:
+
+        dec     a
+        ld      (hl),a
+        ret
 
         ds		#8000-$
 

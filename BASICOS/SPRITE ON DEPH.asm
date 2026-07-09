@@ -19,6 +19,12 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH:
         ld      a,(ix+6)
         cp      36
         jp      z,.NO_HAY_COLISION
+        cp      17
+        jr      z,.COLISION_PROYECTIL_ENEMIGO
+        cp      37
+        jr      z,.COLISION_PROYECTIL_ENEMIGO
+        cp      33
+        jr      z,.COLISION_PROYECTIL_ENEMIGO
 
         ld      c,(ix+0)
         ld      a,(X_DEPH)
@@ -32,6 +38,28 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH:
         add     32                                                          ; Correcci�n para que ajusten
         sub     c                                                           ; Se restan
         cp      32                                                          ; El margen para que colapsen en este caso es 32
+        jp      nc,.NO_HAY_COLISION
+
+        jp      .EXCEPCIONES_1
+
+.COLISION_PROYECTIL_ENEMIGO:
+
+        ld      a,(ix+0)
+        add     8
+        ld      c,a
+        ld      a,(X_DEPH)
+        add     16
+        sub     c
+        cp      20
+        jp      nc,.NO_HAY_COLISION
+
+        ld      a,(ix+1)
+        add     8
+        ld      c,a
+        ld      a,(Y_DEPH)
+        add     32
+        sub     c
+        cp      32
         jp      nc,.NO_HAY_COLISION
 
         jp      .EXCEPCIONES_1
@@ -113,11 +141,11 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH:
         or      a
         jp      nz,.NO_RESTA_CORAZON_POR_TRUCO
 
-        ld      a,(CORAZONES)      ; XXXXXX
-        dec     a                  ; XXXXXX  truco
-        ld      (CORAZONES),a      ; XXXXXX  truco
-        jp      z,MUERTE_POR_TOQUES ; XXXXXX  truco
-        call    PINTA_CORAZONES     ; XXXXXX
+        ld      a,(CORAZONES)     
+        dec     a                  
+        ld      (CORAZONES),a      
+        jp      z,MUERTE_POR_TOQUES 
+        call    PINTA_CORAZONES     
 
 .NO_RESTA_CORAZON_POR_TRUCO:
 
@@ -346,4 +374,3 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH:
 
         call    LIBERA_DOS_SPRITES
         jp      .SALIMOS
-
