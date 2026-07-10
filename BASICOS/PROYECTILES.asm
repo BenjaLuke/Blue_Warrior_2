@@ -602,39 +602,25 @@ PINTA_PROYECTILES_ENEMIGOS:
 
 .VAMOS_TERMINANDO_EL_CICLO:
 
+		ld		a,(ix+6)
+		cp		3
+		jr		z,.sin_segundo_sprite_final
+		cp		6
+		jr		z,.sin_segundo_sprite_final
+		cp		7
+		jr		z,.sin_segundo_sprite_final
+		ld		a,(ix+3)
+		cp		7
+		jr		c,.sin_segundo_sprite_final
+		call	SOLO_EL_SEGUNDO
+		xor		a
+		ld		(ix+3),a
+
+.sin_segundo_sprite_final:
+
 		ld		a,$FF
 		ld		(ix+2),a
 		ld		(ix),a
-		ld		a,(DEJA_EL_SPRITE)
-		add		16
-		ld		(DEJA_EL_SPRITE),a
-		ld		(ix+1),a
-
-		call	.PINTADO_DE_SPRITE
-
-		ld		a,(ix+6)
-		cp		3
-		jr		z,.PASAMOS_A_LA_SIGUIENTE_POSICION
-		cp		6
-		jr		z,.PASAMOS_A_LA_SIGUIENTE_POSICION
-		cp		7
-		jr		z,.PASAMOS_A_LA_SIGUIENTE_POSICION
-
-		ld		a,(ix+3)
-		cp		7
-		jr		c,.PASAMOS_A_LA_SIGUIENTE_POSICION
-
-		ld		iy,PROPIEDADES_PATRON_SPRITE
-		xor		a
-		ld		(iy+2),a
-
-		call	PATRONES_SPRITE_SECUNDARIO
-        ld      a,(ix+6)
-        cp      32
-        jr      nz,.PASAMOS_A_LA_SIGUIENTE_POSICION
-        call    SOLO_EL_SEGUNDO
-        xor     a
-        ld      (ix+3),a
 
 		jr		.PASAMOS_A_LA_SIGUIENTE_POSICION
 
@@ -685,7 +671,7 @@ MIRAMOS_SI_ESTA_LIBRE_ESE_SPRITE_BUCLE:
 		ld		a,(SPRITE_QUE_TOCA)
 		inc		a
 		ld		(SPRITE_QUE_TOCA),a
-		cp		32
+		cp		30
 		jp		c,MIRAMOS_SI_ESTA_LIBRE_ESE_SPRITE_BUCLE
 		pop		ix	
 		pop		af
@@ -710,7 +696,7 @@ DEJA_LIBRE_SPRITE_EN_RAM:
 
         rrca
         rrca
-        cp      32
+        cp      30
         ret     nc
         sub     10
         ret     c
@@ -724,7 +710,67 @@ DEJA_LIBRE_SPRITE_EN_RAM:
         ld      (ix),a
         pop     ix
         pop     af
+        call    OCULTA_SPRITE_LIBERADO
+        jp      APARTA_TRAS_ULTIMO_SPRITE_ACTIVO
+
+APARTA_TRAS_ULTIMO_SPRITE_ACTIVO:
+
+        push    bc
+        push    hl
+        ld      hl,SPRITES_ACTIVOS+19
+        ld      b,20
+        ld      c,19
+
+.busca_ultimo_sprite_ocupado:
+
+        ld      a,(hl)
+        or      a
+        jr      nz,.ultimo_sprite_encontrado
+        dec     hl
+        dec     c
+        djnz    .busca_ultimo_sprite_ocupado
+        xor     a
+        jr      .pon_terminador
+
+.ultimo_sprite_encontrado:
+
+        ld      a,c
+        inc     a
+
+.pon_terminador:
+
+        pop     hl
+        pop     bc
         jp      APARTA_SPRITE_LIBERADO
+
+OCULTA_SPRITE_LIBERADO:
+
+        push    bc
+        push    de
+        push    hl
+
+        ld      e,a
+        ld      d,0
+        ld      hl,#4A00+(4*10)
+    [4] add     hl,de
+
+        ld      a,217
+        call    SetVdp_Write
+        out     (#98),a
+        ld      a,255
+        out     (#98),a
+        xor     a
+        out     (#98),a
+
+        ld      (RG14SAV),a
+        ld      b,a
+        ld      c,14
+        call    WRTVDP_EN_RAM
+
+        pop     hl
+        pop     de
+        pop     bc
+        ret
 
 APARTA_SPRITE_LIBERADO:
 
@@ -737,17 +783,18 @@ APARTA_SPRITE_LIBERADO:
         ld      hl,#4A00+(4*10)
     [4] add     hl,de
 
-        add     192
+        ld      a,216
         call    SetVdp_Write
         out     (#98),a
-        ld      a,255
+        xor     a
+        out     (#98),a
         out     (#98),a
 
         xor     a
         ld      (RG14SAV),a
-        out     (#99),a
-        ld      a,14+128
-        out     (#99),a
+        ld      b,a
+        ld      c,14
+        call    WRTVDP_EN_RAM
 
         pop     hl
         pop     de
@@ -785,9 +832,9 @@ LIMPIA_ATRIBUTOS_SPRITE_13:
         out     (#98),a
         out     (#98),a
         ld      (RG14SAV),a
-        out     (#99),a
-        ld      a,14+128
-        out     (#99),a
+        ld      b,a
+        ld      c,14
+        call    WRTVDP_EN_RAM
         pop     hl
 		ret
 
