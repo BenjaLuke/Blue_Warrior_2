@@ -1142,6 +1142,7 @@ MAGIA_GRATIS:
 		
 		xor		a
 		ld		(ESTADO_MARCADOR),a
+		call	.NORMALIZA_VDP_JUEGO_MAGIA
 		
 ;        ld      a,1
 ;        ld      (TIEMPO_DE_ADJUST),a
@@ -1180,7 +1181,7 @@ MAGIA_GRATIS:
 
 .BUCLE_DE_COPIA_DE_DATOS_SALVADOS:
         ld      hl,ATRIBUTOS_NUMERO_DE_VIDAS_O_PUNTOS
-		jp    	DOCOPY
+		jp    	DOCOPY_RAYOS_PROTEGIDO
 		call	NOP_50
 
 .BUCLE_PARA_INICAR_DATOS_A_COPIAR:
@@ -1316,7 +1317,7 @@ MAGIA_GRATIS:
 .bucle_de_copys_1:
 
 		push	bc
-		call	DOCOPY
+		call	DOCOPY_RAYOS_PROTEGIDO
 		call	NOP_50
 		pop		bc
 		djnz	.bucle_de_copys_1
@@ -1333,13 +1334,13 @@ MAGIA_GRATIS:
 .COPIA_RAYOS_EN_FOTOGRAMAS_ADECUADOS_Y_ANIMACION:
 
 		ld		hl,COPIA_RAYOS_A_1
-		call	DOCOPY
+		call	DOCOPY_RAYOS_PROTEGIDO
 		call	NOP_50
 		call	NOP_50
-		call	DOCOPY
+		call	DOCOPY_RAYOS_PROTEGIDO
 		call	NOP_50
 		call	NOP_50
-		call	DOCOPY
+		call	DOCOPY_RAYOS_PROTEGIDO
 		call	NOP_50
 		call	NOP_50
 
@@ -1382,7 +1383,7 @@ MAGIA_GRATIS:
 
 		call	.standard_destino_y
 		ld		hl,ATRIBUTOS_NUMERO_DE_VIDAS_O_PUNTOS
-		call	DOCOPY
+		call	DOCOPY_RAYOS_PROTEGIDO
 		call	NOP_50
 		
 .regreso_de_bucle:
@@ -1427,7 +1428,7 @@ MAGIA_GRATIS:
 		push	hl
 ; copia
 		ld		hl,ATRIBUTOS_NUMERO_DE_VIDAS_O_PUNTOS
-		call	DOCOPY
+		call	DOCOPY_RAYOS_PROTEGIDO
 		call	NOP_50
 
 ; corrige alto y 2
@@ -1453,7 +1454,7 @@ MAGIA_GRATIS:
 
 
 		ld		hl,ATRIBUTOS_NUMERO_DE_VIDAS_O_PUNTOS
-		call	DOCOPY
+		call	DOCOPY_RAYOS_PROTEGIDO
 		call	NOP_50
 
 		jp		.regreso_de_bucle
@@ -1564,7 +1565,7 @@ MAGIA_GRATIS:
 .VUELVE_A_PINTAR_TRES_EN_NEGRO:
 
         ld      hl,COPIA_NEGRO_EN_3
-        call    DOCOPY
+        call    DOCOPY_RAYOS_PROTEGIDO
 		call	NOP_50
 		call	NOP_50
 		call	NOP_50
@@ -1589,6 +1590,31 @@ MAGIA_GRATIS:
 
 		pop		ix
 		pop		iy
+		ret
+
+.NORMALIZA_VDP_JUEGO_MAGIA:
+
+		ld		a,(SET_PAGE)
+		add		a,a
+		add		a,a
+		add		a,a
+		add		a,a
+		add		a,a
+		add		a,31
+		ld		(VDP+2),a
+		di
+		out		(#99),a
+		ld		a,2+128
+		out		(#99),a
+		xor		a
+		out		(#99),a
+		ld		a,18+128
+		out		(#99),a
+		ld		a,(PUNTO_DEL_SCROLL)
+		out		(#99),a
+		ld		a,23+128
+		out		(#99),a
+		ei
 		ret
 
 PATRONES_SPRITE_SECUNDARIO:

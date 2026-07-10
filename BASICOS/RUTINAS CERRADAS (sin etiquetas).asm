@@ -56,12 +56,43 @@
 		out		(#99),a									; Loop si el VDP no est?? listo
 		ei
 		jp		c,VDPREADY
-		
+				
 		dw		#A3ED,#A3ED,#A3ED,#A3ED	  				; 15x OUTI
 		dw		#A3ED,#A3ED,#A3ED,#A3ED	  				; Es m??s r??pido que un OTIR
 		dw		#A3ED,#A3ED,#A3ED,#A3ED
 		dw		#A3ED,#A3ED,#A3ED;,#A3ED
+
+		ret
+
+;DOCOPY_RAYOS_PROTEGIDO:
+
+		di
+		ld		a,32
+		out		(#99),a
+		ld		a,17+128
+		out		(#99),a
+		ld		c,#9B
+
+;VDPREADY_RAYOS_PROTEGIDO:
+	
+		ld		a,2
+		out		(#99),a									; Selecciona s#2
+		ld		a,15+128
+		out		(#99),a
+		in		a,(#99)
+		rra
+		ld 		a,0										; Regresa a s#0, activa interrupciones
+		out		(#99),a
+		ld		a,15+128
+		out		(#99),a									; Loop si el VDP no est?? listo
+		jp		c,VDPREADY_RAYOS_PROTEGIDO
 				
+		dw		#A3ED,#A3ED,#A3ED,#A3ED	  				; 15x OUTI
+		dw		#A3ED,#A3ED,#A3ED,#A3ED	  				; Es m??s r??pido que un OTIR
+		dw		#A3ED,#A3ED,#A3ED,#A3ED
+		dw		#A3ED,#A3ED,#A3ED;,#A3ED
+
+		ei
 		ret
 ;SETPAGE:     															; Cambiar la p??gina en screen 5 	
 	

@@ -1499,35 +1499,37 @@ BUCLE_REVISION_TODOS_LOS_PROYECTILES_OJO_BOSS_2:
 
         ; --- Comprobar X ---
         ; Miramos si el centro dañino del proyectil entra dentro
-        ; de la caja aproximada de Deph: X_DEPH .. X_DEPH+19
+        ; Deph: X_DEPH+4 .. X_DEPH+17
 
         ld      a,(ix+0)        ; X proyectil
-        add     a,7             ; centro aproximado del proyectil
+        add     a,6             ; inicio de los 4 px centrales del proyectil
         ld      c,a
 
         ld      a,(X_DEPH)
+        inc     a
         ld      d,a
 
         ld      a,c
         sub     d               ; centroX_proyectil - X_DEPH
-        cp      20              ; dentro de caja 20 px
+        cp      17              ; Deph X+4..X+17 compensado con proyectil 4 px
         jr      nc,.SIGUIENTE_PROYECTIL_OJO_BOSS_2
 
 
         ; --- Comprobar Y ---
         ; Miramos si el centro dañino del proyectil entra dentro
-        ; de la caja aproximada de Deph: Y_DEPH .. Y_DEPH+19
+        ; Deph: Y_DEPH+10 .. Y_DEPH+30
 
         ld      a,(iy+0)        ; Y proyectil
-        add     a,6             ; centro aproximado del proyectil
+        add     a,6             ; inicio de los 4 px centrales del proyectil
         ld      c,a
 
         ld      a,(Y_DEPH)
+        add     a,7
         ld      d,a
 
         ld      a,c
         sub     d               ; centroY_proyectil - Y_DEPH
-        cp      20              ; dentro de caja 20 px
+        cp      24              ; Deph Y+10..Y+30 compensado con proyectil 4 px
         jr      nc,.SIGUIENTE_PROYECTIL_OJO_BOSS_2
 
         ; Si llega aquí, hay colisión

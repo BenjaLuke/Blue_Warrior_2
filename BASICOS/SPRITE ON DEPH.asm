@@ -45,21 +45,25 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH:
 .COLISION_PROYECTIL_ENEMIGO:
 
         ld      a,(ix+0)
-        add     8
+        add     6
         ld      c,a
         ld      a,(X_DEPH)
-        add     16
-        sub     c
-        cp      20
+        inc     a
+        ld      d,a
+        ld      a,c
+        sub     d
+        cp      17
         jp      nc,.NO_HAY_COLISION
 
         ld      a,(ix+1)
-        add     8
+        add     6
         ld      c,a
         ld      a,(Y_DEPH)
-        add     32
-        sub     c
-        cp      32
+        add     7
+        ld      d,a
+        ld      a,c
+        sub     d
+        cp      24
         jp      nc,.NO_HAY_COLISION
 
         jp      .EXCEPCIONES_1

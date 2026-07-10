@@ -2402,17 +2402,27 @@ BUCLE_REVISION_TODOS_LOS_PROYECTILES_OJO_BOSS_4:
         jr      z,.SIGUIENTE_PROYECTIL_OJO_BOSS_4
 
         ; --- Comprobar X ---
+        ld      a,(ix+0)
+        add     a,6
+        ld      c,a
         ld      a,(X_DEPH)
-        add     a,20
-        sub     (ix+0)          ; A = X_DEPH + 20 - X_PROYECTIL
-        cp      36              ; 20 + 16
+        inc     a
+        ld      d,a
+        ld      a,c
+        sub     d
+        cp      17
         jr      nc,.SIGUIENTE_PROYECTIL_OJO_BOSS_4
 
         ; --- Comprobar Y ---
+        ld      a,(iy+0)
+        add     a,6
+        ld      c,a
         ld      a,(Y_DEPH)
-        add     a,20
-        sub     (iy+0)          ; A = Y_DEPH + 20 - Y_PROYECTIL
-        cp      36              ; 20 + 16
+        add     a,7
+        ld      d,a
+        ld      a,c
+        sub     d
+        cp      24
         jr      nc,.SIGUIENTE_PROYECTIL_OJO_BOSS_4
 
         ; Si llega aquí, hay colisión
