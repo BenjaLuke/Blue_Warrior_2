@@ -1146,7 +1146,7 @@ CONTROL:
 
 			ld		hl,SPRITE_DEPH_AGUJERO
 			ld		de,#4020
-			ld		bc,704
+			ld		bc,16*8*4
 			call	PAGE_32_A_SEGMENT_2
 			call	PON_COLOR_2.sin_bc_impuesta
 			
@@ -1298,7 +1298,7 @@ CARGA_COMUN_10:
 CARGA_COMUN_26:
 
 			ld		de,#4000+23*8*4
-			ld		bc,26*8*4
+			ld		bc,10*8*4
 			jp		TROZOS_COMUNES_15
 
 CARGA_1_A_25_TRAS_PAUSA:

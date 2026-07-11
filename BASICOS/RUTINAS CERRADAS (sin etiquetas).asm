@@ -560,12 +560,12 @@
 		
 ;.POSE1:
 
-		ld		a,44
+		ld		a,36
 		jp		BUCLE_PINTA_TILES.FINAL_FOTOGRAMA
 
 ;.POSE3:
 
-		ld		a,68
+		ld		a,52
 			
 ;.FINAL_FOTOGRAMA:
 				
@@ -745,7 +745,7 @@
 		push	ix
 		ld		ix,ATRIBUTOS_DEPH_VARIABLES
 
-		ld		b,10
+		ld		b,8
 		ld		de,4
 		ld		a,23*4
 		
@@ -770,11 +770,11 @@
 		
 ;.bucle_pinta_saludo:
 
-		ld		a,33*4
+		ld		a,31*4
 		call	BUCLE_PINTA_TILES.pinta_sprite_3	
 		ld		a,20
 		call	BUCLE_PINTA_TILES.rutina_de_pausa	
-		ld		a,36*4
+		ld		a,27*4
 		call	BUCLE_PINTA_TILES.pinta_sprite_3		
 		ld		a,20
 		call	BUCLE_PINTA_TILES.rutina_de_pausa
@@ -782,7 +782,7 @@
 
 		ld		ix,ATRIBUTOS_DEPH_VARIABLES
 
-		ld		b,10
+		ld		b,8
 		ld		de,4
 		ld		a,1*4
 		
@@ -888,8 +888,6 @@
 		ld		(ix+18),a
 		add		4
 		ld		(ix+22),a
-		add		4
-		ld		(ix+26),a
 
 		call	VUELCA_DATOS_DEPH_A_VRAM
 
@@ -999,31 +997,30 @@
 
 		ld		(ix+9),a		
 		ld		(ix+13),a
+		ld		(ix+25),a
 		ld		(ix+29),a
-		ld		(ix+33),a		
-		ld		(ix+37),a
 		pop		af
 		ld		(ix+1),a
 		ld		(ix+5),a
 		ld		(ix+17),a
 		ld		(ix+21),a
-		ld		(ix+25),a
 		pop		af
 		ld		(ix+16),a
 		ld		(ix+20),a		
 		ld		(ix+24),a
 		ld		(ix+28),a
-		ld		(ix+32),a		
-		ld		(ix+36),a
 		pop		af
 		ld		(ix),a
 		ld		(ix+4),a
 		ld		(ix+8),a
 		ld		(ix+12),a
+		ld		a,217
+		ld		(ix+32),a
+		ld		(ix+36),a
 				
 		ld		a,(FOTOGRAMA_DEPH)
 		ld		de,4
-		ld		b,6
+		ld		b,4
 		
 
 ;.PATRONES:
@@ -1069,7 +1066,7 @@
 ;.SIGUE_TRAS_COLORES_AGUJERO:
 
 		ld		de,#4840
-		ld		bc,96
+		ld		bc,64
         call   	PAGE_32_A_SEGMENT_2
 		call	PON_COLOR_2.sin_bc_impuesta
 
@@ -2111,23 +2108,7 @@
 		ld		hl,SPRITES_EJERCICIO
 		call	PAGE_32_A_SEGMENT_2
 		ld		de,#4160
-		ld		bc,480
-		call	PON_COLOR_2.sin_bc_impuesta
-		call	PAGE_10_A_SEGMENT_2
-
-		ld		a,(MUSICA_ON_OFF)
-		or		a
-		jp		nz,PAUSE.bucle1
-
-		ld		hl,SPRITES_DEPH_CASCOS
-		call	PAGE_32_A_SEGMENT_2
-		ld		de,#4160
-		ld		bc,128
-		call	PON_COLOR_2.sin_bc_impuesta
-
-		ld		hl,SPRITES_DEPH_CASCOS_EJERCICIO_MANOS_ARRIBA
-		ld		de,#41E0
-		ld		bc,192
+		ld		bc,12*8*4
 		call	PON_COLOR_2.sin_bc_impuesta
 		call	PAGE_10_A_SEGMENT_2
 
@@ -2255,7 +2236,7 @@
 
 		ld		a,11*4
 		ld		de,4
-		ld		b,10
+		ld		b,8
 
 ;.bucle_de_arriba:
 
@@ -2269,7 +2250,10 @@
 
         call    PAGE_32_A_SEGMENT_2
 
-		call	VUELCA_DATOS_COLORES_DEPH_A_VRAM_SIN_HL
+		ld		de,#4800
+		ld		bc,8*8*2
+		call	PON_COLOR_2.sin_bc_impuesta
+        call    PAGE_10_A_SEGMENT_2
 
 		call	VUELCA_DATOS_DEPH_A_VRAM
 
@@ -2279,7 +2263,6 @@
 ;.abajo:		
 
 		xor		a
-		ld		(ix+38),a
 		ld		de,4
 		ld		b,4
 
@@ -2288,23 +2271,21 @@
 		ld		(ix+2),a
 		add		ix,de		
 		djnz	PAUSE.bucle_de_abajo_ceros
-		ld		ix,ATRIBUTOS_DEPH_VARIABLES
-
-		ld		a,84
-		ld		b,5
+		ld		a,19*4
+		ld		b,4
 
 ;.bucle_de_abajo_cinco:
 
-		ld		(ix+18),a
+		ld		(ix+2),a
 		add		4
 		add		ix,de
 		djnz	PAUSE.bucle_de_abajo_cinco
 
 		ld		hl,COLOR_EJERCICIO_2
-        call    PAGE_32_A_SEGMENT_2
+		call    PAGE_32_A_SEGMENT_2
 
 		ld		de,#4800+(4*8*2)
-		ld		bc,80
+		ld		bc,4*8*2
 		call	PON_COLOR_2.sin_bc_impuesta
         call    PAGE_10_A_SEGMENT_2
 
@@ -2603,7 +2584,7 @@
 		ld		ix,ATRIBUTOS_DEPH_VARIABLES
 
 		ld		a,4
-		LD		B,10
+		LD		B,8
 		ld		de,4
 
 ;.bucle_de_pintado:
@@ -2612,6 +2593,9 @@
 		add		4
 		add		ix,de
 		djnz	PINTA_DEPH_NEUTRO.bucle_de_pintado
+		ld		a,217
+		ld		(ix),a
+		ld		(ix+4),a
 		ld		ix,ATRIBUTOS_DEPH_VARIABLES
 		call	VUELCA_DATOS_DEPH_A_VRAM
 

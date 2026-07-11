@@ -6,10 +6,10 @@ POSICION_PARTIDA_DEPH:
 		dw	#6090,#0010
 		dw	#50A0,#0014
 		dw	#50A0,#2018
-		dw	#50A0,#001c
+		dw	#60A0,#001c
 		dw	#60A0,#0020
-		dw	#60A0,#0024
-		dw	#60A0,#0028
+		dw	#FFD9,#0000
+		dw	#FFD9,#0000
 
 POSICION_COPIA_MARCADOR_1:
 

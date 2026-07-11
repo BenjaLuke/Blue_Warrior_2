@@ -45,12 +45,12 @@
 		
 .POSE1:
 
-		ld		a,44
+		ld		a,36
 		jp		.FINAL_FOTOGRAMA
 
 .POSE3:
 
-		ld		a,68
+		ld		a,52
 			
 .FINAL_FOTOGRAMA:
 				

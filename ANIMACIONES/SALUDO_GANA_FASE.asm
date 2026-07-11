@@ -3,7 +3,7 @@
 		push	ix
 		ld		ix,ATRIBUTOS_DEPH_VARIABLES
 
-		ld		b,10
+		ld		b,8
 		ld		de,4
 		ld		a,23*4
 		
@@ -18,7 +18,7 @@
 
 		ld		hl,DEPH_DE_FRENTE
 		ld		de,#4000+23*8*4
-		ld		bc,26*8*4
+		ld		bc,10*8*4
 		call	PON_COLOR_2.sin_bc_impuesta
 		
 		ld		hl,COLOR_FRONT_DEPH
@@ -29,11 +29,11 @@
 		
 .bucle_pinta_saludo:
 
-		ld		a,33*4
+		ld		a,31*4
 		call	.pinta_sprite	
 		ld		a,10
 		call	.rutina_de_pausa	
-		ld		a,36*4
+		ld		a,27*4
 		call	.pinta_sprite		
 		ld		a,10
 		call	.rutina_de_pausa
@@ -64,8 +64,6 @@
 		ld		(ix+18),a
 		add		4
 		ld		(ix+22),a
-		add		4
-		ld		(ix+26),a
 
 		call	VUELCA_DATOS_DEPH_A_VRAM
 
