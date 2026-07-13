@@ -44,19 +44,21 @@ MUSICA_ON_OFF:					#1										; 0 Off 1 on
 FX_ON_OFF:						#1										; 0 off 1 on
 LENGUAJE:						#1										; 1 castellano, 2 ingles
 SPRITE_QUE_TOCA:				#1										; Nos indica los atributos de sprite que toca usar
+VBLANK_REAL:					#1										; Se activa al entrar en la interrupción real de VBlank
 VARIABLE_CARGA_AGUA:			#1										; 0 es normal, 1 es de lodo
 FASE:							#1										; Fase en la que está jugando
 TRUCO_FASES_ACTIVO:				#1										; Permite empezar directamente en fase 1-5 desde la presentacion
 TRUCO_CORAZONES_ACTIVO:			#1										; Evita perder corazones por enemigos fuera de bosses
+TRUCO_MAGIAS_ACTIVO:				#1										; Permite empezar con 10 puntos de magia desde la presentacion
 TRUCO_ELSLUCKIS_POS:			#1										; Posicion de lectura del truco ELSLUCKIS
 TRUCO_CARAMBALAN_POS:			#1										; Posicion de lectura del truco CARAMBALAN
+TRUCO_DIGIMOAI_POS:				#1										; Posicion de lectura del truco DIGIMOAI
 TRUCO_TECLA_PRESENTACION:		#1										; Ultima tecla leida para no repetir mientras se mantiene pulsada
 MUSICA_BEST_ON:					#1										; 0 - pagina de musicas de la fase / distinto de 0 - pagina real de musica especial
 DESACTIVA_PUPA:					#1										; Se desactiva para alguna zona concreta que usa los tiles de pupa
 PAGE_A_GUARDAR:					#1
 HAY_CORAZONES:					#1										; Nos dice si los spries de SKRULLEX son ahora de corazones
 CHECKPOINT_ACTIVO:				#1										; Hay check point en pantalla
-CORAZON_ACTIVO:					#1										; Hay corazón en pantalla
 FIREWORKS_ACTIVO:				#1										; Hay fuegos artificiales en pantalla
 MEGADEATH_ACTIVO:				#1										; Hay megadeath en pantalla
 MEGADEATH_OFFSET_DISPARO:		#1										; Ajuste de direccion para disparo triple
@@ -164,7 +166,7 @@ RECORRIDO_ROCA:					#1										; Qué recorrido hace la roca de los 3 posibles
 SUMA_CAMINO:					#1										; Controla si se han cumplido ciertas condiciones para avanzar en el mapa
 DATOS_A_SACAR:					#1										; Nos indica la cantidad de datos a sacar de la pila si no se puede definir el sprite
 PROPIEDADES_PATRON_SPRITE:		#3
-SPRITES_ACTIVOS:				#20										; Guarda si están ocupados los sprites del 10 al 31
+SPRITES_ACTIVOS:				#22										; Guarda si están ocupados los sprites del 8 al 29
 MIRAMOS_SEGUNDO_SPRITE:			#1										; Se activa si estamos mirando el segundo sprite, para poder borrar el primero si no hay sitio para el segundo
 ENEMIGOS:						#16*10									; 16 Bytes de información * 10 posibles proyectiles (incluye bases de armas y proyectiles enemigos)
 																		; 0 X

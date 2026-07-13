@@ -245,13 +245,6 @@
         cp      c
         jr      c,.PASAMOS_A_LA_SIGUIENTE_POSICION
 
-        ld      a,(ix+8)
-        cp      35*4
-        jr      nz,.TROZOS_COMUNES_29
-
-        xor     a
-        ld      (CORAZON_ACTIVO),a
-
 .TROZOS_COMUNES_29:
 
         call    .STANDARD_DEJA_LIBRE_EL_SPRITE
@@ -282,12 +275,12 @@
 .DEJA_LIBRE_SPRITE_EN_RAM:
 
 	or	a
-	cp	10*4
+	cp	8*4
 	ret	c
-	cp	32*4
+	cp	30*4
 	ret	nc
 [2]	rrc	a
-	sub	10
+	sub	8
 	push	ix
 	ld	ix,SPRITES_ACTIVOS
 	ld	e,a

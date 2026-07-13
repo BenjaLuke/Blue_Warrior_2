@@ -1014,9 +1014,6 @@ PINTA_SPRITE_DEPH:
 		ld		(ix+4),a
 		ld		(ix+8),a
 		ld		(ix+12),a
-		ld		a,217
-		ld		(ix+32),a
-		ld		(ix+36),a
 				
 		ld		a,(FOTOGRAMA_DEPH)
 		ld		de,4
@@ -1102,7 +1099,7 @@ PINTA_SPRITE_DEPH:
         call    PAGE_32_A_SEGMENT_2
 
 		ld		de,#4840
-		ld		bc,96
+		ld		bc,64
 		call	PON_COLOR_2.sin_bc_impuesta
         call    PAGE_10_A_SEGMENT_2
 
@@ -1130,7 +1127,7 @@ PINTA_SPRITE_DEPH:
 		
 		ld		hl,ATRIBUTOS_DEPH_VARIABLES	
 		ld		de,#4A00												; Pinta al prota
-		ld		bc,40
+		ld		bc,32
 		jp		PON_COLOR_2.sin_bc_impuesta
 
 PUNTERO_EN_TABLA_SIN_DE:
@@ -1459,6 +1456,9 @@ NUESTRAS_INT:
 		ret
 			
 INTERRUPCION_DE_VBLANK:
+
+		ld		a,1
+		ld		(VBLANK_REAL),a
 
 		ld		a,(SET_PAGE)
 		call	SETPAGE
@@ -2165,8 +2165,9 @@ PAUSE:
 .bucle4_3:
 
 		ld		a,(ARMA_USANDO)
+		dec		a
 		cp		2
-		jp		nz,PAUSE.bucle4_4
+		jp		nc,PAUSE.bucle4_4
 
 		call	CARGA_FLECHA_DOBLE
 .bucle4_4:
@@ -2498,7 +2499,7 @@ MUERTE_POR_TOQUES:
         call    PAGE_32_A_SEGMENT_2
 
 		ld		de,#4840
-		ld		bc,96
+		ld		bc,64
 		call	PON_COLOR_2.sin_bc_impuesta
         call    PAGE_10_A_SEGMENT_2
 
@@ -2558,7 +2559,7 @@ SALTO_AL_FADEAR_EN_GRISES:
 		di		
 		ld		hl,POSICION_PARTIDA_DEPH	
 		ld		de,ATRIBUTOS_DEPH_VARIABLES							; Pinta al prota
-		ld		bc,40
+		ld		bc,32
 		ldir		
 		ei
 
@@ -2566,7 +2567,7 @@ SALTO_AL_FADEAR_EN_GRISES:
 
 BORRA_SPRITES_ACTIVOS:
 
-		ld		b,20
+		ld		b,22
 		ld		ix,SPRITES_ACTIVOS
 		xor		a
 		ld		de,1
@@ -2593,9 +2594,6 @@ PINTA_DEPH_NEUTRO:
 		add		4
 		add		ix,de
 		djnz	.bucle_de_pintado
-		ld		a,217
-		ld		(ix),a
-		ld		(ix+4),a
 		ld		ix,ATRIBUTOS_DEPH_VARIABLES
 		call	VUELCA_DATOS_DEPH_A_VRAM
 
@@ -2615,13 +2613,28 @@ RECUPERA_SPRITES_SALUDO:
 		di		
 		ld		hl,POSICION_PARTIDA_DEPH	
 		ld		de,ATRIBUTOS_DEPH_VARIABLES							; Pinta al prota
-		ld		bc,40
+		ld		bc,32
 		ldir		
 		ei
 
 RETORNO:
 
 		ret														; Cuando una sentencia debe ser enviada de vuelta pero tenemos que dar una direcci??n por narices
+
+ESPERA_VBLANK_REAL:
+
+		xor		a
+		ld		(VBLANK_REAL),a
+
+.bucle_espera_vblank_real:
+
+		ei
+		halt
+		ld		a,(VBLANK_REAL)
+		or		a
+		jr		z,.bucle_espera_vblank_real
+		ret
+
 RECUPERA_SPRITES_SALUDO_TRAS_PAUSA:
 
 		halt
@@ -2632,7 +2645,7 @@ VUELCA_DATOS_DEPH_A_VRAM:
 		call	PAGE_32_A_SEGMENT_2
 		ld		hl,ATRIBUTOS_DEPH_VARIABLES	
 		ld		de,#4A00												; Pinta al prota
-		ld		bc,40
+		ld		bc,32
 		jp		PON_COLOR_2.sin_bc_impuesta
 
 VUELCA_DATOS_COLORES_DEPH_A_VRAM:
@@ -2651,7 +2664,7 @@ VUELCA_DATOS_COLORES_DEPH_A_VRAM:
 VUELCA_DATOS_COLORES_DEPH_A_VRAM_SIN_HL:
 
 		ld		de,#4800
-		ld		bc,160
+		ld		bc,128
 		di
 		jp		COMUN_RECUPERA_SPRITES
 

@@ -90,6 +90,13 @@ NUEVO_PROYECTIL:
 
         call	TROZOS_COMUNES_13
 		ld		hl,COLOR_FLECHA											; Damos color al sprite en la posición de sprite que le toca	
+		ld		a,(ARMA_USANDO)
+		cp		2
+		jr		nz,.COLOR_FLECHA_OK
+		ld		hl,COLOR_FLECHA_3
+
+.COLOR_FLECHA_OK:
+
 		call	TROZOS_COMUNES_11
 		xor		a
 		call	.FX_ARMA
@@ -526,13 +533,6 @@ PINTA_PROYECTILES_ENEMIGOS:
 
 .pintando_3:
 
-		cp		35*4
-		jr		nz,.pintando_4
-
-		ld		a,(CORAZON_ACTIVO)
-		or		a
-		jr		nz,.DOBLETE
-
 .pintando_4:
 
 		ld		a,(ix+6)
@@ -654,30 +654,53 @@ PINTA_PROYECTILES_ENEMIGOS:
 MIRAMOS_SI_ESTA_LIBRE_ESE_SPRITE:
 
 		push	ix
-		ld		a,10
+		ld		a,8
 		ld		(SPRITE_QUE_TOCA),a	
 
 MIRAMOS_SI_ESTA_LIBRE_ESE_SPRITE_BUCLE:
 
 		ld		ix,SPRITES_ACTIVOS
 		ld		a,(SPRITE_QUE_TOCA)
-		sub		10
+		sub		8
 		ld		e,a
 		ld		d,0
 		add		ix,de
 		ld		a,(ix)
 		or		a
-		jp		z,.OCUPAMOS_EL_SPRITE
+		jp		nz,.SIGUIENTE_SPRITE_LIBRE
+		ld		a,(MIRAMOS_SEGUNDO_SPRITE)
+		cp		2
+		jr		nz,.OCUPAMOS_EL_SPRITE
+		ld		a,(ix+1)
+		or		a
+		jr		nz,.SIGUIENTE_SPRITE_LIBRE
+		ld		a,1
+		ld		(ix+1),a
+		jr		.OCUPAMOS_EL_SPRITE
+
+.SIGUIENTE_SPRITE_LIBRE:
+
 		ld		a,(SPRITE_QUE_TOCA)
 		inc		a
 		ld		(SPRITE_QUE_TOCA),a
 		cp		30
 		jp		c,MIRAMOS_SI_ESTA_LIBRE_ESE_SPRITE_BUCLE
+		jp		NO_HAY_SPRITE_LIBRE
+
+.OCUPAMOS_EL_SPRITE:
+
+		ld		a,1
+		ld		(ix),a
+		pop		ix
+		ret
+
+NO_HAY_SPRITE_LIBRE:
+
 		pop		ix	
 		pop		af
 		ld		a,(MIRAMOS_SEGUNDO_SPRITE)
-		or		a
-		jp		z,NUEVO_PROYECTIL.NOS_VAMOS
+		dec		a
+		jp		nz,NUEVO_PROYECTIL.NOS_VAMOS
 
         ld      a,(ix+12)
         call    DEJA_LIBRE_SPRITE_EN_RAM
@@ -685,20 +708,13 @@ MIRAMOS_SI_ESTA_LIBRE_ESE_SPRITE_BUCLE:
 		ld		(ix+12),a
 		jp		NUEVO_PROYECTIL.NOS_VAMOS
 
-.OCUPAMOS_EL_SPRITE:
-
-		ld		a,1
-		ld		(ix),a
-		pop		ix
-		ret	
-
 DEJA_LIBRE_SPRITE_EN_RAM:
 
         rrca
         rrca
         cp      30
         ret     nc
-        sub     10
+        sub     8
         ret     c
         push    af
         push    ix
@@ -717,9 +733,9 @@ APARTA_TRAS_ULTIMO_SPRITE_ACTIVO:
 
         push    bc
         push    hl
-        ld      hl,SPRITES_ACTIVOS+19
-        ld      b,20
-        ld      c,19
+        ld      hl,SPRITES_ACTIVOS+21
+        ld      b,22
+        ld      c,21
 
 .busca_ultimo_sprite_ocupado:
 
@@ -751,7 +767,7 @@ OCULTA_SPRITE_LIBERADO:
 
         ld      e,a
         ld      d,0
-        ld      hl,#4A00+(4*10)
+        ld      hl,#4A00+(4*8)
     [4] add     hl,de
 
         ld      a,217
@@ -780,7 +796,7 @@ APARTA_SPRITE_LIBERADO:
 
         ld      e,a
         ld      d,0
-        ld      hl,#4A00+(4*10)
+        ld      hl,#4A00+(4*8)
     [4] add     hl,de
 
         ld      a,216
@@ -805,7 +821,7 @@ APARTAMOS_SPRITES_QUE_MOLESTAN:
 
 		push	ix
 		
-		ld		b,20
+		ld		b,22
 
 .bucle_molestias:
 

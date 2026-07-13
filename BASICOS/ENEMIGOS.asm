@@ -175,13 +175,13 @@ UN_NUEVO_ENEMIGO:
         add     10
         ld      (ix+1),a
 
-        call    TROZOS_COMUNES_4
+        call    TROZOS_COMUNES_4_DOS_SPRITES
 	ld	hl,COLOR_CHECK_POINT_1	
 	call    TROZOS_COMUNES_7
 
         ld      a,1
         ld      (MIRAMOS_SEGUNDO_SPRITE),a
-        call    MIRAMOS_SI_ESTA_LIBRE_ESE_SPRITE
+        call    MIRAMOS_SI_ESTA_LIBRE_EL_SPRITE_SIGUIENTE
 
  	call	STANDAR_DA_EL_VALOR_SPRITE_QUE_TOCA_IX3
         call    TROZOS_COMUNES_3
@@ -201,13 +201,13 @@ UN_NUEVO_ENEMIGO:
         pop     bc
         ld      (ix),a
         ld      (ix+4),c
-        call    TROZOS_COMUNES_1
+        call    TROZOS_COMUNES_1_DOS_SPRITES
 	ld	hl,COLOR_SKRULLEX_QUE_DA_COSAS_1						; Damos color al sprite en la posición de sprite que le toca	
 	call    TROZOS_COMUNES_7
 
         ld      a,1
         ld      (MIRAMOS_SEGUNDO_SPRITE),a
-        call    MIRAMOS_SI_ESTA_LIBRE_ESE_SPRITE
+        call    MIRAMOS_SI_ESTA_LIBRE_EL_SPRITE_SIGUIENTE
 
  	call	STANDAR_DA_EL_VALOR_SPRITE_QUE_TOCA_IX3
         call    TROZOS_COMUNES_3
@@ -372,7 +372,7 @@ UN_NUEVO_ENEMIGO:
         pop     bc
         ld      (ix),a
         ld      (ix+4),c
-        call    TROZOS_COMUNES_1
+        call    TROZOS_COMUNES_1_DOS_SPRITES
         ld      a,(ix+1)
         add     20
         ld      (ix+1),a        
@@ -381,7 +381,7 @@ UN_NUEVO_ENEMIGO:
 
         ld      a,1
         ld      (MIRAMOS_SEGUNDO_SPRITE),a
-        call    MIRAMOS_SI_ESTA_LIBRE_ESE_SPRITE
+        call    MIRAMOS_SI_ESTA_LIBRE_EL_SPRITE_SIGUIENTE
 
  	call	STANDAR_DA_EL_VALOR_SPRITE_QUE_TOCA_IX3
         call    TROZOS_COMUNES_3
@@ -401,7 +401,7 @@ UN_NUEVO_ENEMIGO:
         pop     bc
         ld      (ix),a
         ld      (ix+4),c
-        call    TROZOS_COMUNES_1
+        call    TROZOS_COMUNES_1_DOS_SPRITES
         ld      a,(ix+1)
         sub     22
         ld      (ix+1),a
@@ -411,7 +411,7 @@ UN_NUEVO_ENEMIGO:
 
         ld      a,1
         ld      (MIRAMOS_SEGUNDO_SPRITE),a
-        call    MIRAMOS_SI_ESTA_LIBRE_ESE_SPRITE
+        call    MIRAMOS_SI_ESTA_LIBRE_EL_SPRITE_SIGUIENTE
 
  	call	STANDAR_DA_EL_VALOR_SPRITE_QUE_TOCA_IX3
         call    TROZOS_COMUNES_3
@@ -474,7 +474,7 @@ UN_NUEVO_ENEMIGO:
 .DEFINE_ALFONSERRIX_COMUN_1_1:
         ld      (ix),a
         ld      (ix+6),c
-        call    TROZOS_COMUNES_1
+        call    TROZOS_COMUNES_1_DOS_SPRITES
 	ld	hl,COLOR_GUSANO_PARTES_1_3						; Damos color al sprite en la posición de sprite que le toca	
 	jp      TROZOS_COMUNES_7
 
@@ -482,7 +482,7 @@ UN_NUEVO_ENEMIGO:
 
         ld      a,1
         ld      (MIRAMOS_SEGUNDO_SPRITE),a
-        call    MIRAMOS_SI_ESTA_LIBRE_ESE_SPRITE
+        call    MIRAMOS_SI_ESTA_LIBRE_EL_SPRITE_SIGUIENTE
 
  	call	STANDAR_DA_EL_VALOR_SPRITE_QUE_TOCA_IX3
         call    TROZOS_COMUNES_3
@@ -505,9 +505,9 @@ UN_NUEVO_ENEMIGO:
 	ld	a,(SPRITE_QUE_TOCA)	
 	inc	a
 		
-	cp	33
+	cp	30
 	jp	nz,.AUMENTAMOS
-	ld	a,10
+	ld	a,8
 
 .AUMENTAMOS:
 		
@@ -1426,13 +1426,6 @@ TROZOS_COMUNES_28:
         ld      a,b
         cp      c
         jp      c,SECUENCIA_PROYECTILES_Y_ENEMIGOS.PASAMOS_A_LA_SIGUIENTE_POSICION
-
-        ld      a,(ix+8)
-        cp      35*4
-        jr      nz,TROZOS_COMUNES_29
-
-        xor     a
-        ld      (CORAZON_ACTIVO),a
 
 TROZOS_COMUNES_29:
 

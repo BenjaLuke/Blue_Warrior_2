@@ -476,6 +476,45 @@ PINTAMOS_LOS_PUNTOS_DE_MAGIA:
         push    ix
         ld      ix,ATRIBUTOS_NUMERO_DE_VIDAS_O_PUNTOS
         ld      a,(MAGIAS)
+
+.calcula_decenas_magia:
+
+        ld      b,0
+
+.bucle_decenas_magia:
+
+        cp      10
+        jr      c,.digitos_magia_listos
+        sub     10
+        inc     b
+        jr      .bucle_decenas_magia
+
+.digitos_magia_listos:
+
+        ld      c,a
+        push    bc
+        call    .pinta_digito_magia
+        pop     bc
+        push    bc
+	ld	hl,COPIA_NUMERO_DE_MAGIAS	
+	call    STANDAR_LDIR_MARCADOR
+        pop     bc
+        ld      a,162
+        ld      (ix+4),a
+        xor     a
+        ld      (ix+5),a
+        ld      a,b
+        call    .pinta_digito_magia
+
+        ld      hl,COPIA_MARCADOR_0_A_MARCADOR_3
+        call    NOP_50
+        call    DOCOPY
+
+        pop     ix
+        ret
+
+.pinta_digito_magia:
+
     [3] add     a
         ld      l,(ix)
         ld      h,(ix+1)
@@ -490,12 +529,6 @@ PINTAMOS_LOS_PUNTOS_DE_MAGIA:
         ld      hl,ATRIBUTOS_NUMERO_DE_VIDAS_O_PUNTOS
         call    NOP_50
         call    DOCOPY     
-
-        ld      hl,COPIA_MARCADOR_0_A_MARCADOR_3
-        call    NOP_50
-        call    DOCOPY
-
-        pop     ix
         ret
 
 STANDAR_LDIR_MARCADOR:

@@ -89,6 +89,13 @@
 
         call	.TROZOS_COMUNES_13
 	ld		hl,COLOR_FLECHA											; Damos color al sprite en la posición de sprite que le toca	
+	ld		a,(ARMA_USANDO)
+	cp		2
+	jr		nz,.COLOR_FLECHA_OK
+	ld		hl,COLOR_FLECHA_3
+
+.COLOR_FLECHA_OK:
+
 	call	.TROZOS_COMUNES_11
 	xor		a
 	call	.FX_ARMA
@@ -227,24 +234,36 @@
 .MIRAMOS_SI_ESTA_LIBRE_ESE_SPRITE:
 
 	push	ix
-	ld	a,10
+	ld	a,8
 	ld	(SPRITE_QUE_TOCA),a	
 
 .MIRAMOS_SI_ESTA_LIBRE_ESE_SPRITE_BUCLE:
 
 	ld	ix,SPRITES_ACTIVOS
 	ld	a,(SPRITE_QUE_TOCA)
-	sub	10
+	sub	8
 	ld	e,a
 	ld	d,0
 	add	ix,de
 	ld	a,(ix)
 	or	a
-	jp	z,.OCUPAMOS_EL_SPRITE
+	jp	nz,.SIGUIENTE_SPRITE_LIBRE
+	ld	a,(MIRAMOS_SEGUNDO_SPRITE)
+	cp	2
+	jr	nz,.OCUPAMOS_EL_SPRITE
+	ld	a,(ix+1)
+	or	a
+	jr	nz,.SIGUIENTE_SPRITE_LIBRE
+	ld	a,1
+	ld	(ix+1),a
+	jr	.OCUPAMOS_EL_SPRITE
+
+.SIGUIENTE_SPRITE_LIBRE:
+
 	ld	a,(SPRITE_QUE_TOCA)
 	inc	a
 	ld	(SPRITE_QUE_TOCA),a
-	cp	32
+	cp	30
 	jp	c,.MIRAMOS_SI_ESTA_LIBRE_ESE_SPRITE_BUCLE
 	pop	ix	
 	pop	af
@@ -275,12 +294,12 @@
 .DEJA_LIBRE_SPRITE_EN_RAM:
 
 	or	a
-	cp	10*4
+	cp	8*4
 	ret	c
-	cp	32*4
+	cp	30*4
 	ret	nc
 [2]	rrc	a
-	sub	10
+	sub	8
 	push	ix
 	ld	ix,SPRITES_ACTIVOS
 	ld	e,a

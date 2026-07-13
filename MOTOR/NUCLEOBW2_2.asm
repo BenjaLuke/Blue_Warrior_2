@@ -3333,10 +3333,10 @@ FUEGO_AVISO_RAILES:
         ld      (ix+9),a
         ld      a,3
         ld      (ix+11),a
-        call    TROZOS_COMUNES_4
+        call    TROZOS_COMUNES_4_DOS_SPRITES
         ld      a,1
         ld      (MIRAMOS_SEGUNDO_SPRITE),a
-        call    MIRAMOS_SI_ESTA_LIBRE_ESE_SPRITE
+        call    MIRAMOS_SI_ESTA_LIBRE_EL_SPRITE_SIGUIENTE
         ld      a,(SPRITE_QUE_TOCA)
         rlc     a
         rlc     a
@@ -3899,7 +3899,7 @@ PREMIO_EXTRA:
         or      a
         jr      z,.NO_HAY_SITIO_PREMIO_EXTRA
         ld      ix,SPRITES_ACTIVOS
-        ld      b,20
+        ld      b,22
 
 .BUSCA_SPRITE_SITIO_PREMIO_EXTRA:
 
@@ -3936,7 +3936,7 @@ PREMIO_EXTRA:
         push    bc
         push    ix
         ld      ix,SPRITES_ACTIVOS
-        ld      b,20
+        ld      b,22
 
 .BUSCA_SPRITE_LIBRE_PREMIO_EXTRA:
 
@@ -4008,7 +4008,7 @@ PREMIO_EXTRA:
         ld      d,0
         ld      hl,SPRITE_EXTRA
         add     hl,de
-        ld      de,#4000+35*8*4
+        ld      de,#4000+36*8*4
         ld      bc,1*8*4
         jp      TROZOS_COMUNES_15
 
@@ -4735,7 +4735,7 @@ SLIMES:
 		xor		a
 		ld		(ECTOPALLERS_ACTIVO),a
 
-        call    TROZOS_COMUNES_1
+        call    TROZOS_COMUNES_1_DOS_SPRITES
 
         ld      a,(ix+2)
         cp      12
@@ -4769,7 +4769,7 @@ SLIMES:
 
         ld      a,1
         ld      (MIRAMOS_SEGUNDO_SPRITE),a
-        call    MIRAMOS_SI_ESTA_LIBRE_ESE_SPRITE
+        call    MIRAMOS_SI_ESTA_LIBRE_EL_SPRITE_SIGUIENTE
 
  		ld		a,(SPRITE_QUE_TOCA)	
  [2]	rlc		a
@@ -5000,7 +5000,7 @@ ECTO_PALLERS:
 		ld		a,b		
         ld		hl,VALORES_BASICOS_ECTO_PALLER_TOCA_HUEVOS
         call    STANDAR_LDIR_ENEMIGOS
-        call    TROZOS_COMUNES_1
+        call    TROZOS_COMUNES_1_DOS_SPRITES
 
 		ld		a,(ix+1)
 		add		68
@@ -5014,7 +5014,7 @@ ECTO_PALLERS:
 
         ld      a,1
         ld      (MIRAMOS_SEGUNDO_SPRITE),a
-        call    MIRAMOS_SI_ESTA_LIBRE_ESE_SPRITE
+        call    MIRAMOS_SI_ESTA_LIBRE_EL_SPRITE_SIGUIENTE
 
  		ld		a,(SPRITE_QUE_TOCA)	
  [2]	rlc		a
@@ -5068,16 +5068,16 @@ ECTO_PALLERS:
 		ld		(ix+9),a
 		xor		a
 		ld		(ix+11),a
-        call    TROZOS_COMUNES_1
+        call    TROZOS_COMUNES_1_DOS_SPRITES
 
 		ld		hl,COLORES_ECTO_PALLERS_1
         call    TROZOS_COMUNES_7
 
 		ld		a,(ix+1)
-		ld		(ix+14),a
+        ld		(ix+14),a
         ld      a,1
         ld      (MIRAMOS_SEGUNDO_SPRITE),a
-        call    MIRAMOS_SI_ESTA_LIBRE_ESE_SPRITE
+        call    MIRAMOS_SI_ESTA_LIBRE_EL_SPRITE_SIGUIENTE
 
  		ld		a,(SPRITE_QUE_TOCA)	
  [2]	rlc		a
@@ -5543,7 +5543,7 @@ FIREWORKS:
        	call    STANDAR_LDIR_ENEMIGOS
 
 
-        call    TROZOS_COMUNES_1
+        call    TROZOS_COMUNES_1_DOS_SPRITES
 		ld		a,r
 		ld		b,a
 		ld		a,i
@@ -5562,7 +5562,7 @@ FIREWORKS:
 
         ld      a,1
         ld      (MIRAMOS_SEGUNDO_SPRITE),a
-        call    MIRAMOS_SI_ESTA_LIBRE_ESE_SPRITE
+        call    MIRAMOS_SI_ESTA_LIBRE_EL_SPRITE_SIGUIENTE
         call    STANDAR_DA_EL_VALOR_SPRITE_QUE_TOCA_IX3
         call    TROZOS_COMUNES_3
 		ld		hl,COLOR_FIREWORKS
@@ -5822,8 +5822,9 @@ CARGA_SPRITES_1_A_45_STANDARD:
 			call	CARGA_COMUN_45
 			call	MARCA_REAPLICA_VAGON_RET
 			ld		a,(ARMA_USANDO)
+			dec		a
 			cp		2
-			jp		z,CARGA_FLECHA_DOBLE
+			jp		c,CARGA_FLECHA_DOBLE
 			ret
 
 ACTIVAMOS_INTERRUPCIONES_DE_LINEA_REAL:
@@ -5921,7 +5922,7 @@ CARGA_PIES_EN_LODO_REAL:
 
 			ld		hl,SPRITES_BARRO_DEPH
 			ld		de,#4000+5*8*4
-			ld		bc,18*8*4
+			ld		bc,12*8*4
 			jp		TROZOS_COMUNES_15
 
 SPRITES_VAGONETA_APLASTADA:

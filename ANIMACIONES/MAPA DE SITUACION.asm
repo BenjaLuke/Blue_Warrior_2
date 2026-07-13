@@ -26,7 +26,17 @@
 		ld		(V_UNIDADES),a
 		ld		(SCORE_REAL),hl
 		ld		a,2
+		ld		b,a
+		ld		a,(TRUCO_MAGIAS_ACTIVO)
+		or		a
+		ld		a,b
+		jr		z,.MAGIAS_INICIALES_NORMAL
+		ld		a,10
+
+.MAGIAS_INICIALES_NORMAL:
+
 		ld		(MAGIAS),a
+		ld		a,b
 		ld		(VIDAS),a
 		ld		(CORAZONES),a
 		inc		a
@@ -171,9 +181,6 @@ MAPA_DE_SITUACION:
 		ld		hl,DATOS_MAPA_INICIAL_CENTRO_PAGE_1
 		call	DOCOPY
 		call	VDPREADY
-		ld		hl,DATOS_MAPA_INICIAL_IZQUIERDA_PAGE_1
-		call	DOCOPY
-		call	VDPREADY
 		ld		hl,DATOS_MAPA_INICIAL_DERECHA_PAGE_1
 		call	DOCOPY
 		call	VDPREADY
@@ -186,9 +193,6 @@ MAPA_DE_SITUACION:
 		ld		hl,DATOS_MAPA_INICIAL_CENTRO_PAGE_3
 		call	DOCOPY
 		call	VDPREADY
-		ld		hl,DATOS_MAPA_INICIAL_IZQUIERDA_PAGE_3
-		call	DOCOPY
-		call	VDPREADY
 		ld		hl,DATOS_MAPA_INICIAL_DERECHA_PAGE_3
 		call	DOCOPY
 		call	VDPREADY
@@ -197,7 +201,7 @@ MAPA_DE_SITUACION:
 		ld		(MAPA_SITUACION_LEFT_X),a
 		ld		(MAPA_SITUACION_LEFT_X_PAGE_0),a
 		ld		(MAPA_SITUACION_LEFT_X_PAGE_1),a
-		ld		a,128
+		ld		a,18
 		ld		(MAPA_SITUACION_RIGHT_X),a
 		ld		(MAPA_SITUACION_RIGHT_X_PAGE_0),a
 		ld		(MAPA_SITUACION_RIGHT_X_PAGE_1),a
@@ -207,14 +211,7 @@ MAPA_DE_SITUACION:
 .BUCLE_ABRE_MAPA:
 
 		call	AVANZA_POSICION_MAPA_DE_SITUACION
-		ld		a,(MAPA_SITUACION_LEFT_X)
-		ld		b,a
-		ld		a,(MAPA_SITUACION_RIGHT_X)
 		call	PINTA_FRAME_MAPA_DE_SITUACION
-
-		ld		a,(MAPA_SITUACION_LEFT_X)
-		or		a
-		jr		z,.FIN_ABRE_MAPA
 
 		ld		a,(MAPA_SITUACION_RIGHT_X)
 		cp		238
@@ -387,7 +384,6 @@ INICIALIZA_PATRONES_CABEZA_DEPH_MAPA_DE_SITUACION:
 PINTA_FRAME_MAPA_DE_SITUACION:
 
 		call	PINTA_FRANJAS_NUEVAS_MAPA_DE_SITUACION
-		call	PINTA_IZQUIERDA_MAPA_DE_SITUACION
 		call	PINTA_DERECHA_MAPA_DE_SITUACION
 		call	GUARDA_POSICION_BUFFER_MAPA_DE_SITUACION
 
@@ -446,14 +442,10 @@ AVANZA_POSICION_MAPA_DE_SITUACION:
 
 PINTA_FRANJAS_NUEVAS_MAPA_DE_SITUACION:
 
-		ld		a,(MAPA_SITUACION_LEFT_X)
-		ld		b,a
-		add		6
-		ld		d,a
 		ld		a,(MAPA_SITUACION_RIGHT_X)
-		sub		b
-		add		4
-		ret		z
+		sub		18
+		ld		d,a
+		ld		a,28
 		jr		PINTA_FRANJA_MAPA_DE_SITUACION
 
 
@@ -520,28 +512,6 @@ GUARDA_POSICION_BUFFER_MAPA_DE_SITUACION:
 		ld		a,(MAPA_SITUACION_RIGHT_X)
 		ld		(MAPA_SITUACION_RIGHT_X_PAGE_1),a
 		ret
-
-
-PINTA_IZQUIERDA_MAPA_DE_SITUACION:
-
-		ld		ix,DATOS_DEL_TILE_PARA_COPY
-		ld		(ix),0
-		ld		(ix+1),0
-		ld		(ix+2),0
-		ld		(ix+3),0
-		ld		a,(MAPA_SITUACION_LEFT_X)
-		ld		(ix+4),a
-		ld		(ix+5),0
-		call	PONE_Y_DESTINO_BUFFER_MAPA_DE_SITUACION
-		ld		(ix+8),18
-		ld		(ix+9),0
-		ld		(ix+10),178
-		ld		(ix+11),0
-		ld		(ix+12),#00
-		ld		(ix+13),#00
-		ld		(ix+14),10011000b
-		call	HL_DATOS_DEL_COPY
-		jp		VDPREADY
 
 
 PINTA_DERECHA_MAPA_DE_SITUACION:
@@ -1571,6 +1541,8 @@ CONSEGUIMOS_PORCION:
 		call	COPIA_PORCION_GRAN_DIAMANTE_PAGE_3_A_0
 		call	COPIA_FONDO_PORCION_GRAN_DIAMANTE_A_PAGE_0
 		call	COPIA_MEZCLA_PORCION_GRAN_DIAMANTE_A_PAGE_2
+		ld		a,38
+		call	LANZA_FX_DIAMANTES
 		ld		d,11
 		ld		a,2
 
@@ -1593,6 +1565,7 @@ CONSEGUIMOS_PORCION:
 
 		dec		d
 		jr		nz,.BUCLE_PARPADEO
+		call	RECOMPENSA_MAGIA_GRAN_DIAMANTE
 		jp		SALIENDO_DE_DIAMANTES
 
 
@@ -1602,6 +1575,53 @@ PONE_BUFFER_VISIBLE_PAGE_1_GRAN_DIAMANTE:
 		call	SETPAGE
 		ld		(MAPA_SITUACION_BUFFER_PAGE),a
 		ret
+
+
+RECOMPENSA_MAGIA_GRAN_DIAMANTE:
+
+		ld		b,6
+		call	ESPERA_MAPA_DE_SITUACION_B
+		call	COPIA_RECOMPENSA_MAGIA_GRAN_DIAMANTE_A_VISIBLE
+		ld		a,15
+		call	LANZA_FX_DIAMANTES
+		ld		a,(MAGIAS)
+		inc		a
+		ld		(MAGIAS),a
+		ld		b,30
+		jp		ESPERA_MAPA_DE_SITUACION_B
+
+
+COPIA_RECOMPENSA_MAGIA_GRAN_DIAMANTE_A_VISIBLE:
+
+		ld		ix,DATOS_DEL_TILE_PARA_COPY
+		xor		a
+		ld		(ix),a
+		ld		(ix+1),a
+		ld		a,206
+		ld		(ix+2),a
+		ld		(ix+3),3
+		ld		a,120
+		ld		(ix+4),a
+		xor		a
+		ld		(ix+5),a
+		ld		a,190
+		ld		(ix+6),a
+		ld		a,(MAPA_SITUACION_BUFFER_PAGE)
+		ld		(ix+7),a
+		ld		a,15
+		ld		(ix+8),a
+		xor		a
+		ld		(ix+9),a
+		ld		a,15
+		ld		(ix+10),a
+		xor		a
+		ld		(ix+11),a
+		ld		(ix+12),a
+		ld		(ix+13),a
+		ld		a,10011000b
+		ld		(ix+14),a
+		call	HL_DATOS_DEL_COPY
+		jp		VDPREADY
 
 
 NO_CONSEGUIMOS_PORCION:
@@ -2185,50 +2205,34 @@ DATOS_COPIS_MAPA: ;datos_de_mapa_page_1_a_page_2
 
 DATOS_MAPA_INICIAL_CENTRO_PAGE_1:
 
-		dw		#0074,#0200
-		dw		#0074,#0100
-		dw		#0016,#00B2
+		dw		#0000,#0200
+		dw		#0000,#0100
+		dw		#001C,#00B2
 		db		#00,#00,10010000b
-
-
-DATOS_MAPA_INICIAL_IZQUIERDA_PAGE_1:
-
-		dw		#0000,#0000
-		dw		#006E,#0100
-		dw		#0012,#00B2
-		db		#00,#00,10011000b
 
 
 DATOS_MAPA_INICIAL_DERECHA_PAGE_1:
 
 		dw		#00EE,#0000
-		dw		#0080,#0100
+		dw		#0012,#0100
 		dw		#0012,#00B2
 		db		#00,#00,10011000b
 
 
 DATOS_MAPA_INICIAL_CENTRO_PAGE_3:
 
-		dw		#0074,#0200
-		dw		#0074,#0300
-		dw		#0016,#00B2
+		dw		#0000,#0200
+		dw		#0000,#0300
+		dw		#001C,#00B2
 		db		#00,#00,10010000b
-
-
-DATOS_MAPA_INICIAL_IZQUIERDA_PAGE_3:
-
-		dw		#0000,#0000
-		dw		#006E,#0300
-		dw		#0012,#00B2
-		db		#00,#00,10011000b
 
 
 DATOS_MAPA_INICIAL_DERECHA_PAGE_3:
 
 		dw		#00EE,#0000
-		dw		#0080,#0300
+		dw		#0012,#0300
 		dw		#0012,#00B2
-		db		#00,#00,10010000b
+		db		#00,#00,10011000b
 
 
 DATOS_LIMPIA_MAPA_PAGE_0:

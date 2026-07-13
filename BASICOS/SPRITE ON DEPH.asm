@@ -44,6 +44,9 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH:
 
 .COLISION_PROYECTIL_ENEMIGO:
 
+        call    ES_FASE3_VAGON_ACTIVO
+        jp      c,.NO_HAY_COLISION
+
         ld      a,(ix+0)
         add     6
         ld      c,a
@@ -83,19 +86,10 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH:
 
 .EXCEPCIONES_1:
 
-; �ES CORAZON?
-
-        ld      a,(ix+8)
-
-        ld      b,a
         ld      a,(ix+6)
         cp      34
         jp      z,.ES_PREMIO_EXTRA
-        ld      a,b
-
-        cp      35*4
-        jp      nz,.EXCEPCIONES_2
-        jp      .DAMOS_UN_CORAZON
+        ld      a,(ix+8)
 
 .EXCEPCIONES_2:
 
@@ -197,6 +191,7 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH:
         ld     hl,10
         ld      (SCORE_A_SUMAR),hl
         call    SUMA_SCORE
+        call    CARGA_FLECHA_SIMPLE
        
         jp      .FINAL_DE_ENTREGA_DE_PREMIO
 
@@ -322,8 +317,8 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH:
         jp      nc,.FINAL_DE_ENTREGA_DE_PREMIO
 
         ld      a,(ARMA_USANDO)
-        cp      2
-        jp      nz,.CARGAMOS_FLECHA_SIMPLE
+        or      a
+        jp      z,.CARGAMOS_FLECHA_SIMPLE
 
 .CARGAMOS_FLECHA_DOBLE:
 
@@ -340,41 +335,4 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH:
 
         call    STANDARD_DEJA_LIBRE_EL_SPRITE
 
-        jp      .SALIMOS
-
-
-.DAMOS_UN_CORAZON:
-  
-        ld      a,(CORAZONES_MAXIMOS)
-        ld      b,a
-        ld      a,(CORAZONES)
-        cp      b
-        jp      nc,.no_puede_entregarlo
-
-.lo_entregamos:
-
-        inc     a
-        ld      (CORAZONES),a
-
-.lo_pintamos:
-
-        call    PINTA_CORAZONES
-
-        ld      a,15
-        ld      c,0
-        call    A_31_DESDE_10       
-       
-
-        jp      .salimos_de_la_entrega_del_corazon
-
-.no_puede_entregarlo:
-
-        ld      a,16
-        ld      c,0
-        call    A_31_DESDE_10       
-     
-
-.salimos_de_la_entrega_del_corazon:
-
-        call    LIBERA_DOS_SPRITES
         jp      .SALIMOS

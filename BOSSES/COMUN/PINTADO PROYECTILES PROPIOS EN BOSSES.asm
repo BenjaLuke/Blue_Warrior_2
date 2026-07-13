@@ -36,13 +36,6 @@
 
 .pintando_3:
 
-		cp		35*4
-		jp		nz,.pintando_4
-
-		ld		a,(CORAZON_ACTIVO)
-		or		a
-		jp		nz,.DOBLETE
-
 .pintando_4:
 
 		ld		a,(ix+8)

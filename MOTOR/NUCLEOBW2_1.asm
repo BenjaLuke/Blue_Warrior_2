@@ -144,7 +144,7 @@ PREPARACION_SPRITES:
 		di		
 		ld		hl,POSICION_PARTIDA_DEPH	
 		ld		de,ATRIBUTOS_DEPH_VARIABLES								; Pinta al prota
-		ld		bc,40
+		ld		bc,32
 		ldir		
 		ei
 
@@ -336,7 +336,7 @@ INICIA_SCROLL:
 		ld		a,10
 		ld		(ESTADO_COLOR_PERM),a
 
-		ld		a,10
+		ld		a,8
 		ld		(SPRITE_QUE_TOCA),a
 
 		ld		a,20													; El numero de fotograma siempre es el primero de la izquierda abajo, ya que los de arriba son los mismos siempre
@@ -406,6 +406,7 @@ INICIA_SCROLL:
 		ld		(TILE_N+3),a
 					
 		call	BORRA_SPRITES_ACTIVOS
+		call	APARTAMOS_SPRITES_QUE_MOLESTAN
 
 .pinta_proyectiles_y_enemigos:
 
@@ -919,7 +920,7 @@ CONTROL:
 			or		a
 			call	nz,CAMBIAMOS_LA_INTERRUPCION_DE_LINEA_PARA_DESAPARECER
 
-			halt
+			call	ESPERA_VBLANK_REAL
 			call	PINTA_SPRITE_DEPH_VAGON_AJUSTADO
 
 .MIRA_SI_CAMBIA_VELOCIDAD:

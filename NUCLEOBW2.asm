@@ -608,6 +608,15 @@ CARGA_SLOT_MAPA:
 
 		include "MOTOR/NUCLEOBW2_1.asm"				                            ; Incluímos el motor del juego 1
 
+        ds      #8000-$-#2200 
+
+CONTINUA_PAGINA_9_TRAS_COVID_OPTIMIZADO:
+
+		include "BASICOS/RUTINAS CERRADAS (sin etiquetas).asm"				            ; Incluímos las referencias a la BIOS
+		include "AUDIOS/LANZADOR EFECTOS PSG (sin etiquetas).asm"
+        include "PALETAS/PALETAS (sin etiquetas).asm"
+		include "AUDIOS/LANZADOR FMPACK Y MUSIC MODULE (sin etiquetas).asm"        
+
 MIRA_SI_PINTAMOS_COVID_OPTIMIZADO:
 
             ld      a,(ix+10)
@@ -619,14 +628,24 @@ MIRA_SI_PINTAMOS_COVID_OPTIMIZADO:
             scf
             ret
 
-        ds      #8000-$-#2200 
+MIRAMOS_SI_ESTA_LIBRE_EL_SPRITE_SIGUIENTE:
 
-CONTINUA_PAGINA_9_TRAS_COVID_OPTIMIZADO:
+		ld		a,(ix+12)
+		rrca
+		rrca
+		inc		a
+		ld		(SPRITE_QUE_TOCA),a
+		ret
 
-		include "BASICOS/RUTINAS CERRADAS (sin etiquetas).asm"				            ; Incluímos las referencias a la BIOS
-		include "AUDIOS/LANZADOR EFECTOS PSG (sin etiquetas).asm"
-        include "PALETAS/PALETAS (sin etiquetas).asm"
-		include "AUDIOS/LANZADOR FMPACK Y MUSIC MODULE (sin etiquetas).asm"        
+TROZOS_COMUNES_1_DOS_SPRITES:
+
+        call    STANDAR_Y_FUERA_PANTALLA
+
+TROZOS_COMUNES_4_DOS_SPRITES:
+
+        ld      a,2
+        ld      (MIRAMOS_SEGUNDO_SPRITE),a
+        jp      TROZOS_COMUNES_2
 
 REANUDA_MUSICA_DESDE_SLOT1:
 
@@ -2218,7 +2237,7 @@ WRTVDP_ROCKAGER_SIN_EI:
 		out		(#99),a
 		ret
 
-        ds      11                                                      ; Colocamos el resto del programa siempre en el mismo sitio    
+        ds      1                                                       ; Colocamos el resto del programa siempre en el mismo sitio    
 
 		include "BASICOS/RUTINAS CERRADAS (sin etiquetas).asm"				            ; Incluímos las referencias a la BIOS
 		include "AUDIOS/LANZADOR EFECTOS PSG (sin etiquetas).asm"
@@ -2257,6 +2276,13 @@ DESCUENTA_VIDA_ROCKAGER_SI_TOCA:
         dec     a
         ld      (hl),a
         ret
+
+LIMPIA_ATRIBUTOS_SPRITES_ROCKAGER:
+
+        xor     a
+        ld      hl,VRAM_SPRITES_ATRIBUTOS_SEMIBOSS_2+8*4
+        ld      bc,24*4
+        jp      FILVRM_RAM
 
         ds		#8000-$
 

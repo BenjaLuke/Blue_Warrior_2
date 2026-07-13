@@ -2798,7 +2798,7 @@ DATOS_NEGRO_ROTATIVO_EN_PAGE_1:
 
 TEXTO_ROTATIVO_PRESENTACION:
 
-		db		"BLUE WARRIOR II   -   Beta version 5.01.94  -  10-07-2026 - 98 por ciento - (C) Digital Moai",0
+		db		"BLUE WARRIOR II   -   Beta version 5.01.128 -  12-07-2026 - 98 por ciento - (C) Digital Moai",0
 
 TEXTO_ROTATIVO_PRESENTACION_FIN:
 
@@ -2807,8 +2807,10 @@ INICIALIZA_TRUCOS_PRESENTACION:
 		xor		a
 		ld		(TRUCO_FASES_ACTIVO),a
 		ld		(TRUCO_CORAZONES_ACTIVO),a
+		ld		(TRUCO_MAGIAS_ACTIVO),a
 		ld		(TRUCO_ELSLUCKIS_POS),a
 		ld		(TRUCO_CARAMBALAN_POS),a
+		ld		(TRUCO_DIGIMOAI_POS),a
 		ld		(TRUCO_TECLA_PRESENTACION),a
 		ret
 
@@ -2823,7 +2825,10 @@ ACTUALIZA_TRUCOS_PRESENTACION:
 		push	bc
 		call	ACTUALIZA_TRUCO_ELSLUCKIS
 		pop		bc
-		jp		ACTUALIZA_TRUCO_CARAMBALAN
+		push	bc
+		call	ACTUALIZA_TRUCO_CARAMBALAN
+		pop		bc
+		jp		ACTUALIZA_TRUCO_DIGIMOAI
 
 
 ACTUALIZA_TRUCO_ELSLUCKIS:
@@ -2911,6 +2916,50 @@ ACTUALIZA_TRUCO_CARAMBALAN:
 		ld		(TRUCO_CORAZONES_ACTIVO),a
 		xor		a
 		ld		(TRUCO_CARAMBALAN_POS),a
+		jp		FLASH_TRUCO_PRESENTACION
+
+
+ACTUALIZA_TRUCO_DIGIMOAI:
+
+		ld		hl,TEXTO_TRUCO_DIGIMOAI
+		ld		a,(TRUCO_DIGIMOAI_POS)
+		ld		e,a
+		ld		d,0
+		add		hl,de
+		ld		a,(hl)
+		cp		c
+		jr		z,.ACIERTO
+
+		ld		a,c
+		cp		"D"
+		jr		z,.PRIMERA_LETRA
+		xor		a
+		ld		(TRUCO_DIGIMOAI_POS),a
+		ret
+
+.PRIMERA_LETRA:
+
+		ld		a,1
+		ld		(TRUCO_DIGIMOAI_POS),a
+		ret
+
+.ACIERTO:
+
+		ld		a,(TRUCO_DIGIMOAI_POS)
+		inc		a
+		ld		(TRUCO_DIGIMOAI_POS),a
+		ld		e,a
+		ld		d,0
+		ld		hl,TEXTO_TRUCO_DIGIMOAI
+		add		hl,de
+		ld		a,(hl)
+		or		a
+		ret		nz
+
+		ld		a,1
+		ld		(TRUCO_MAGIAS_ACTIVO),a
+		xor		a
+		ld		(TRUCO_DIGIMOAI_POS),a
 		jp		FLASH_TRUCO_PRESENTACION
 
 
@@ -3004,6 +3053,10 @@ TEXTO_TRUCO_CARAMBALAN:
 
 		db		"CARAMBALAN",0
 
+TEXTO_TRUCO_DIGIMOAI:
+
+		db		"DIGIMOAI",0
+
 TABLA_TECLAS_TRUCO_PRESENTACION:
 
 		db		0,00000010b,"1"
@@ -3014,12 +3067,15 @@ TABLA_TECLAS_TRUCO_PRESENTACION:
 		db		2,01000000b,"A"
 		db		2,10000000b,"B"
 		db		3,00000001b,"C"
+		db		3,00000010b,"D"
 		db		3,00000100b,"E"
+		db		3,00010000b,"G"
 		db		3,01000000b,"I"
 		db		4,00000001b,"K"
 		db		4,00000010b,"L"
 		db		4,00000100b,"M"
 		db		4,00001000b,"N"
+		db		4,00010000b,"O"
 		db		4,10000000b,"R"
 		db		5,00000001b,"S"
 		db		5,00000100b,"U"
