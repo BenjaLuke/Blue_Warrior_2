@@ -468,6 +468,10 @@ SPRITES_COVID_TAM_PART3_SEMIBOSS_2				equ		2*8*4
         ld      (hl),a
         inc     hl
         djnz    .LIMPIA_SPRITES_ACTIVOS_ROCKAGER_FIN
+        di
+        ld      a,BANCO_COMUN_PART3_SEMIBOSS_2
+        ld      (PAGE_A_GUARDAR),a
+        ld      (DIRPA2),a
         jp      VOLVEMOS_TRAS_ROCKAGER
 
 .CAMBIA_BANCO_2_SIN_INTERRUPCIONES:

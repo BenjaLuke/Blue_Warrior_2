@@ -96,7 +96,7 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH:
 ; �ES UN PROYECTIL?
 
         cp      40*4
-        jp      z,.SI_QUE_HAY_COLISION
+        jr      z,.SI_QUE_HAY_COLISION_PROYECTIL
 
 ; �ES > 43*4?
 
@@ -121,6 +121,10 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH:
         or      a
         jp      z,.SI_QUE_HAY_COLISION
         jp      .NO_HAY_COLISION
+
+.SI_QUE_HAY_COLISION_PROYECTIL:
+
+        call    STANDARD_DEJA_LIBRE_EL_SPRITE
 
 .SI_QUE_HAY_COLISION:
 ; �ES INMUNE?
@@ -275,6 +279,17 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH:
 
 .PREMIO_EXTRA_MAGIA:
 
+        ld      a,(PUNTO_DEL_SCROLL)
+        cp      #b7
+        jr      z,.FINAL_DE_ENTREGA_DE_PREMIO_EXTRA
+        cp      #a3
+        jr      z,.FINAL_DE_ENTREGA_DE_PREMIO_EXTRA
+        or      a
+        jr      z,.FINAL_DE_ENTREGA_DE_PREMIO_EXTRA
+        cp      255
+        jr      z,.FINAL_DE_ENTREGA_DE_PREMIO_EXTRA
+        cp      #8f
+        jr      z,.FINAL_DE_ENTREGA_DE_PREMIO_EXTRA
         call    MAGIA_GRATIS
         jp      .FINAL_DE_ENTREGA_DE_PREMIO_EXTRA
 

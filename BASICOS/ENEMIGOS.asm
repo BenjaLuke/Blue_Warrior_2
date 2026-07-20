@@ -846,11 +846,11 @@ SECUENCIAS_DE_LOS_ENEMIGOS:
 
         ld      a,(CUANDO_RALENTIZAMOS)
         cp      1
-        jp      z,.SUMAMOS
+        jr      z,.SUMAMOS
 
         ld      a,(CONTROL_DE_C_R)
         cp      2
-        jp      nz,.premio_sin_cambios
+        jr      nz,.premio_sin_cambios
 
 .SUMAMOS:
 
@@ -868,7 +868,7 @@ SECUENCIAS_DE_LOS_ENEMIGOS:
         ld      a,(ix+10)
         inc     a
         cp      62
-        jp      c,.redefine_ix10
+        jr      c,.redefine_ix10
         xor     a
 
 .redefine_ix10:
@@ -877,14 +877,14 @@ SECUENCIAS_DE_LOS_ENEMIGOS:
 
         ld      a,(ix+4)
         cp      3
-        jp      nz,.ultima_vuelta_al_premio
+        jr      nz,.ultima_vuelta_al_premio
 
         ld      a,(ix+8)
 
         cp      172
-        jp      z,.cambio_a_fuego
+        jr      z,.cambio_a_fuego
         cp      176
-        jp      z,.cambio_a_hacha
+        jr      z,.cambio_a_hacha
 
 .cambio_a_flecha:
 
@@ -892,7 +892,7 @@ SECUENCIAS_DE_LOS_ENEMIGOS:
 
         ld      a,172
         ld      (ix+8),a
-        jp      .ultima_vuelta_al_premio
+        jr      .ultima_vuelta_al_premio
 
 .cambio_a_fuego:
 
@@ -900,7 +900,7 @@ SECUENCIAS_DE_LOS_ENEMIGOS:
 
         ld      a,176
         ld      (ix+8),a
-        jp      .ultima_vuelta_al_premio
+        jr      .ultima_vuelta_al_premio
 
 .cambio_a_hacha:
 

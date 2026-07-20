@@ -277,7 +277,7 @@
 	or	a
 	cp	8*4
 	ret	c
-	cp	30*4
+	cp	28*4
 	ret	nc
 [2]	rrc	a
 	sub	8

@@ -493,6 +493,60 @@ CONTROL_RECTIFICA_Y_DEPH_SCROLL_SECTOR_10:
 			jp		BUCLE_PINTA_TILES.SIGUE
 
 
+CONTROL_ENTRADA_VAGON_POR_SCROLL_SECTOR_10:
+
+			ld		a,(FASE)
+			cp		3
+			jr		nz,.NO_ACTIVA_VAGON_SCROLL
+			ld		a,(SUMA_CAMINO)
+			or		a
+			jr		nz,.NO_ACTIVA_VAGON_SCROLL
+
+			ld		c,6
+			ld		d,0
+			ld		a,(TILE_N)
+			call	.REVISA_TILE_ENTRADA_VAGON_SCROLL
+			ret		nc
+
+			ld		c,14
+			ld		d,0
+			ld		a,(TILE_N2)
+
+.REVISA_TILE_ENTRADA_VAGON_SCROLL:
+
+			cp		16
+			jr		c,.NO_ACTIVA_VAGON_SCROLL
+			cp		22
+			jr		nc,.NO_ACTIVA_VAGON_SCROLL
+			ld		b,a
+			call	PUEDE_ENTRAR_VAGON_POR_Y
+			jr		nc,.BLOQUEA_ENTRADA_VAGON_SCROLL
+			ld		a,d
+			ld		(VARIABLE_UN_USO2),a
+			ld		a,b
+			call	PINTA_TRIADA_ENTRADA_FASE3_VAGON
+			xor		a
+			ld		(FASE3_VAGON_CORRIGE_Y_CADENCIA),a
+			dec		a
+			ld		(FASE3_VAGON_INDICE_16_PRE_Y),a
+			call	CONTROL_VELOCIDAD_FASE_VAGON
+			xor		a
+			ret
+
+.BLOQUEA_ENTRADA_VAGON_SCROLL:
+
+			ld		a,1
+			or		a
+			ret
+
+.NO_ACTIVA_VAGON_SCROLL:
+
+			ld		a,1
+			or		a
+			scf
+			ret
+
+
 PINTA_SPRITE_DEPH_SOLO_ATRIBUTOS_VAGON_SECTOR_10:
 
 		push	ix
@@ -1066,7 +1120,7 @@ PUEDE_ENTRAR_VAGON_POR_Y:
 			ld		c,a
 			ld		a,b
 			sub		c
-			cp		64
+			cp		80
 			jr		c,.NO_PUEDE_ENTRAR_VAGON_POR_Y
 
 .SI_PUEDE_ENTRAR_VAGON_POR_Y:
@@ -1108,7 +1162,7 @@ PINTA_TRIADA_ENTRADA_FASE3_VAGON:
 .CALCULA_DESTINO:
 
 			push	af
-			call	CALCULA_XY_TILE_FASE3_VAGON_ENTRADA
+			call	CALCULA_XY_TILE_FASE3_VAGON_ENTRADA_NORMAL
 			call	.COLOCA_X_DEPH_ENTRADA_VAGON
 			ld		a,e
 			cp		17
@@ -1238,6 +1292,9 @@ CALCULA_XY_TILE_FASE3_VAGON_ENTRADA:
 			add		a,c
 			and		#f0
 			ld		b,a
+
+CALCULA_Y_TILE_FASE3_VAGON_ENTRADA:
+
 			ld		a,(Y_DEPH)
 			ld		d,a
 			ld		a,(VARIABLE_UN_USO2)
@@ -1246,6 +1303,19 @@ CALCULA_XY_TILE_FASE3_VAGON_ENTRADA:
 			and		#f0
 			ld		c,a
 			ret
+
+CALCULA_XY_TILE_FASE3_VAGON_ENTRADA_NORMAL:
+
+			ld		a,c
+			cp		14
+			ld		a,(FASE3_VAGON_ENTRADA_X16_1)
+			jr		nz,.X_OK
+			ld		a,(FASE3_VAGON_ENTRADA_X16_2)
+
+.X_OK:
+
+			ld		b,a
+			jr		CALCULA_Y_TILE_FASE3_VAGON_ENTRADA
 
 PINTA_TRIADA_FASE3_VAGON:
 
@@ -1516,14 +1586,19 @@ CONTROL_TILES_ESPECIALES_DEPH:
 .CALCULA_XY_TILE_ESPECIAL_DEPH:
 
 			push	af
-			ld		a,(X_DEPH)
-			add		a,b
-			and		#f0
+			ld		a,b
+			cp		14
+			ld		a,(FASE3_VAGON_ENTRADA_X16_1)
+			jr		nz,.X_TILE_ESPECIAL_RESCATADA
+			ld		a,(FASE3_VAGON_ENTRADA_X16_2)
+
+.X_TILE_ESPECIAL_RESCATADA:
+
 			ld		b,a
 			ld		a,(Y_PINTA_SCROLL)
 			and		#0f
 			ld		e,a
-			ld		a,(Y_DEPH)
+			ld		a,(TILE_ESPECIAL_DEPH_Y_RESCATA)
 			add		a,c
 			sub		e
 			and		#f0
@@ -2783,21 +2858,21 @@ CONTROL_FASE3_TILE_PUNTO_DEPH:
 .CARGA_COLORES_VAGONETA_APLASTADA:
 
 			ld		hl,COLOR_SPRITES_VAGONETA_APLASTADO
-			ld		de,#4840
+			ld		de,#4800
 			ld		bc,8*16
 			jp		PON_COLOR_2.sin_bc_impuesta
 
 .CARGA_COLORES_VAGONETA_CAIDA_1:
 
 			ld		hl,COLOR_SPRITES_VAGONETA_CAIDA_1
-			ld		de,#4840
+			ld		de,#4800
 			ld		bc,8*16
 			jp		PON_COLOR_2.sin_bc_impuesta
 
 .CARGA_COLORES_VAGONETA_CAIDA_2:
 
 			ld		hl,COLOR_SPRITES_VAGONETA_CAIDA_
-			ld		de,#4840
+			ld		de,#4800
 			ld		bc,8*16
 			jp		PON_COLOR_2.sin_bc_impuesta
 

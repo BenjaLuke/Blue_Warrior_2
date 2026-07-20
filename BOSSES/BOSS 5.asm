@@ -12,8 +12,6 @@ PAGE_1_VRAM_Y_BOSS_5:						equ	#0100
 PAGE_2_VRAM_Y_BOSS_5:						equ	#0200
 PAGE_3_VRAM_Y_BOSS_5:						equ	#0300
 PAGE_X_VRAM_BOSS_5:							equ	#0000
-SPRITES_LIMPIA_INICIAL_BOSS_5:				equ	8
-SPRITES_LIMPIA_CANT_INICIAL_BOSS_5:			equ	24
 BARRO_PATRON_INICIAL_BOSS_5:				equ	100
 BARRO_PATRON_DERECHA_BOSS_5:					equ	BARRO_PATRON_INICIAL_BOSS_5
 BARRO_PATRON_IZQUIERDA_BOSS_5:				equ	BARRO_PATRON_INICIAL_BOSS_5+4
@@ -52,7 +50,7 @@ COPY_LOGICA_RELLENO_BOSS_5:					equ	11000000b
 PROYECTILES_BOSS_5_CANTIDAD:				equ	8
 PROYECTIL_BOSS_5_ESPERA_INICIAL:			equ	15
 PROYECTIL_BOSS_5_SPRITE_INICIAL:			equ	22
-PROYECTIL_BOSS_5_SPRITE_FINAL:				equ	30
+PROYECTIL_BOSS_5_SPRITE_FINAL:				equ	28
 PROYECTIL_BOSS_5_Y_OCULTO:					equ	212
 PROYECTIL_BOSS_5_SPRITES_ACTIVOS_OFS:		equ	14
 PROYECTIL_BOSS_5_ATRIBUTOS_VRAM:			equ	SPRITES_ATRIBUTOS_VRAM_BOSS_5+PROYECTIL_BOSS_5_SPRITE_INICIAL*4
@@ -86,8 +84,8 @@ PROYECTIL_BOSS_5_OFFSET_SUPER_Y:			equ	10
 ; Salida y muerte de Agonix
 COLOR_ALEATORIO_SIN_CAMBIOS_BOSS_5:			equ	1
 IDIUS_PAUSA_BOCA_BOSS_5:					equ	100
-IDIUS_LIMPIA_SPRITE_INICIAL_BOSS_5:		equ	10
-IDIUS_LIMPIA_SPRITES_CANT_BOSS_5:			equ	20
+IDIUS_LIMPIA_SPRITE_INICIAL_BOSS_5:		equ	8
+IDIUS_LIMPIA_SPRITES_CANT_BOSS_5:			equ	24
 
 IDIUS_MUERTE_SX_BOSS_5:					equ	0
 IDIUS_MUERTE_SY_BOSS_5:					equ	IDIUS_MOVIMIENTO_Y_BOSS_5
@@ -139,11 +137,6 @@ IDIUS_SECUENCIA_FIN_TOTAL_BOSS_5:			equ	TABLA_SECUENCIA_IDIUS_BOSS_5_FIN-TABLA_S
 RUTINA_BOSS_5:
 
 		call	stpmus
-
-		ld      a,0
-		ld      hl,SPRITES_ATRIBUTOS_VRAM_BOSS_5+SPRITES_LIMPIA_INICIAL_BOSS_5*4
-		ld      bc,SPRITES_LIMPIA_CANT_INICIAL_BOSS_5*4
-		call    FILVRM_RAM
 
 .VARIABLES:
 
@@ -584,7 +577,7 @@ CARGA_SPRITES_BARRO_BOSS_5:
 		call	PON_COLOR_2.sin_bc_impuesta
 
 		; El color de sprites en SCREEN 7 va por NUMERO DE SPRITE,
-		; no por patron. Los proyectiles usan los sprites 22-29,
+		; no por patron. Los proyectiles usan los sprites 22-27,
 		; asi que sus colores deben arrancar en #4800 + 22*16 = #4960.
 		ld		de,PROYECTIL_BOSS_5_COLOR_VRAM
 		ld		b,PROYECTILES_BOSS_5_CANTIDAD
@@ -1564,7 +1557,7 @@ CARGA_ATRIBUTOS_PROYECTIL_BOSS_5:
 CARGA_COLOR_PROYECTIL_BOSS_5_ACTUAL:
 
 		; El color del superdisparo ya queda precargado al entrar en el boss
-		; para todos los slots de proyectil 22-29.
+		; para todos los slots de proyectil 22-27.
 		; No lo copiamos aqui porque durante la pelea COLOR_SUPERDISPARO
 		; no tiene por que estar paginado en RAM. Si lo leemos aqui,
 		; podemos sobreescribir el color bueno con basura o ceros.
@@ -3726,6 +3719,12 @@ MUERTE_DE_IDIUS_BOSS_5:
 
 ; Nos aseguramos que el prota no está en modo transparente ni el fondo en colores varios
 		call	LIMPIA_ESTADO_DANO_DEPH_EN_MUERTE_BOSS
+
+; limpiamos sprites
+		xor		a
+		ld		hl,SPRITES_ATRIBUTOS_VRAM_BOSS_5+IDIUS_LIMPIA_SPRITE_INICIAL_BOSS_5*4
+		ld		bc,IDIUS_LIMPIA_SPRITES_CANT_BOSS_5*4
+		call	FILVRM_RAM
 
 FINAL_b5:
 

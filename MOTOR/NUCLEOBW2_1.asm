@@ -1151,8 +1151,8 @@ CONTROL:
 			call	PAGE_32_A_SEGMENT_2
 			call	PON_COLOR_2.sin_bc_impuesta
 			
-			ld		hl,COLOR_DEPH_AGUJERO_2
-			ld		de,#4820
+			ld		hl,COLOR_DEPH_AGUJERO_FIJO
+			ld		de,#4800
 			ld		bc,64
         	call   	PAGE_32_A_SEGMENT_2
 			call	PON_COLOR_2.sin_bc_impuesta
@@ -1460,7 +1460,7 @@ PRECARGA_SOLO_VAGONETA_EN_PATRONES_ALTOS:
 		call	PON_COLOR_2.sin_bc_impuesta
 
 		ld		hl,COLOR_SPRITE_SOLO_VAGONETA
-		ld		de,#4860
+		ld		de,#4840
 		ld		bc,4*16
 		call	PON_COLOR_2.sin_bc_impuesta
 		jp		PAGE_10_A_SEGMENT_2

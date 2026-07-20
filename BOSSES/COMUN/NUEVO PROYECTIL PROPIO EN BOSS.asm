@@ -263,7 +263,7 @@
 	ld	a,(SPRITE_QUE_TOCA)
 	inc	a
 	ld	(SPRITE_QUE_TOCA),a
-	cp	30
+	cp	28
 	jp	c,.MIRAMOS_SI_ESTA_LIBRE_ESE_SPRITE_BUCLE
 	pop	ix	
 	pop	af
@@ -296,7 +296,7 @@
 	or	a
 	cp	8*4
 	ret	c
-	cp	30*4
+	cp	28*4
 	ret	nc
 [2]	rrc	a
 	sub	8

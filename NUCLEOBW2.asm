@@ -619,12 +619,11 @@ CONTINUA_PAGINA_9_TRAS_COVID_OPTIMIZADO:
 
 MIRA_SI_PINTAMOS_COVID_OPTIMIZADO:
 
-            ld      a,(ix+10)
-            and     00000001B
-            ret     nz
             ld      a,(ix+4)
             or      a
             ret     z
+            bit     0,(ix+10)
+            ret     nz
             scf
             ret
 
@@ -674,7 +673,7 @@ MIRA_SI_PINTAMOS_ENEMIGO_OPTIMIZADO:
 
             ld      a,(ix+8)
             or      a
-            jr      z,.pintar
+            ret     z
 
             ld      a,(ix+6)
             cp      5
@@ -693,32 +692,31 @@ MIRA_SI_PINTAMOS_ENEMIGO_OPTIMIZADO:
 
             ld      a,(ix+13)
             or      a
-            jr      nz,.no_pintar
-            ret
-
-.explosion:
-
-            ld      a,(ix+10)
-            cp      1
-            ret     z
-            cp      11
-            ret     z
-            jr      .no_pintar
-
-.slime_quieto:
-
-            ld      a,(ix+10)
-            or      a
-            ret     z
-            cp      1
-            ret     z
-            cp      31
             ret     z
 
 .no_pintar:
 
             scf
             ret
+
+.slime_quieto:
+
+            ld      a,(ix+10)
+            or      a
+            ret     z
+            dec     a
+            ret     z
+            cp      30
+            ret     z
+            jr      .no_pintar
+
+.explosion:
+
+            ld      a,(ix+10)
+            dec     a
+            ret     z
+            sub     10
+            ret     z
 
         ds		#8000-$
 
@@ -840,6 +838,7 @@ MENU:
 
 CARGAMOS_PAGE_ROCKAGER:
 
+		di
 		ld		a,38
 		ld      (DIRPA1),a
 
@@ -847,8 +846,18 @@ CARGAMOS_PAGE_ROCKAGER:
 
 VOLVEMOS_TRAS_ROCKAGER:
 
+		ld		a,10
+		ld		(PAGE_A_GUARDAR),a
+		ld		(DIRPA2),a
 		ld		a,9
 		ld      (DIRPA1),a
+		ld a,(PUNTO_DEL_SCROLL)
+		add 187
+		ld b,a
+		ld a,(CAMINO_NUEVA_INT)
+		add b
+		ld (DONDE_VA_LA_INTERRUPCION_LINEAL),a
+		ei
 
 		ret
 
@@ -2228,6 +2237,13 @@ TABLA_PASOS_FADE_OUT_BOSS:
 
 		include	"BOSSES/SEMIBOSS 2 PART 1.asm"
 
+                                                                        ; El bloque comun debe comenzar exactamente en #5E00
+
+		include "BASICOS/RUTINAS CERRADAS (sin etiquetas).asm"				            ; Incluímos las referencias a la BIOS
+		include "AUDIOS/LANZADOR EFECTOS PSG (sin etiquetas).asm"
+        include "PALETAS/PALETAS (sin etiquetas).asm"
+		include "AUDIOS/LANZADOR FMPACK Y MUSIC MODULE (sin etiquetas).asm"        
+
 WRTVDP_ROCKAGER_SIN_EI:
 
 		ld		a,b
@@ -2236,13 +2252,6 @@ WRTVDP_ROCKAGER_SIN_EI:
 		add		a,128
 		out		(#99),a
 		ret
-
-        ds      1                                                       ; Colocamos el resto del programa siempre en el mismo sitio    
-
-		include "BASICOS/RUTINAS CERRADAS (sin etiquetas).asm"				            ; Incluímos las referencias a la BIOS
-		include "AUDIOS/LANZADOR EFECTOS PSG (sin etiquetas).asm"
-        include "PALETAS/PALETAS (sin etiquetas).asm"
-		include "AUDIOS/LANZADOR FMPACK Y MUSIC MODULE (sin etiquetas).asm"        
 
 VIDA_TOTAL_ROCKAGER_EN_RANGO_DE_UNO:
 

@@ -10,7 +10,6 @@ COPIAS_RESTO_RAYO_PART2_SEMIBOSS_2					equ		9
 RAYO_BUCLES_EXTERIORES_PART2_SEMIBOSS_2				equ		2
 PAUSA_RAYO_PART2_SEMIBOSS_2							equ		5
 RAYO_CAMBIA_ADJUST_EN_B_PART2_SEMIBOSS_2			equ		7
-ADJUST_ACTIVO_PART2_SEMIBOSS_2						equ		1
 VIDA_INICIAL_ROCKAGER_PART2_SEMIBOSS_2				equ		40
 
 ROCKAGER_LIMITES_CANT_PART2_SEMIBOSS_2				equ		6
@@ -84,6 +83,8 @@ MAGIA_ROCK:
 	ld		(MAGIAS),a
 
 	di															; Paramos la música
+	ld	a,2
+	ld	(SET_PAGE),a
 	call	hltmus
 	ei
 
@@ -231,8 +232,6 @@ MAGIA_ROCK:
 	cp		RAYO_CAMBIA_ADJUST_EN_B_PART2_SEMIBOSS_2
 	jr		nz,.sin_cambio_en_Adjust
 
-;    ld      a,ADJUST_ACTIVO_PART2_SEMIBOSS_2
-;    ld      (TIEMPO_DE_ADJUST),a		
 	call	NOP_50_MAGIA_ROCK
 
 .sin_cambio_en_Adjust:

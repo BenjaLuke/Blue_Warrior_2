@@ -671,6 +671,9 @@ MIRAMOS_SI_ESTA_LIBRE_ESE_SPRITE_BUCLE:
 		ld		a,(MIRAMOS_SEGUNDO_SPRITE)
 		cp		2
 		jr		nz,.OCUPAMOS_EL_SPRITE
+		ld		a,(SPRITE_QUE_TOCA)
+		cp		27
+		jr		nc,.SIGUIENTE_SPRITE_LIBRE
 		ld		a,(ix+1)
 		or		a
 		jr		nz,.SIGUIENTE_SPRITE_LIBRE
@@ -683,7 +686,7 @@ MIRAMOS_SI_ESTA_LIBRE_ESE_SPRITE_BUCLE:
 		ld		a,(SPRITE_QUE_TOCA)
 		inc		a
 		ld		(SPRITE_QUE_TOCA),a
-		cp		30
+		cp		28
 		jp		c,MIRAMOS_SI_ESTA_LIBRE_ESE_SPRITE_BUCLE
 		jp		NO_HAY_SPRITE_LIBRE
 
@@ -712,7 +715,7 @@ DEJA_LIBRE_SPRITE_EN_RAM:
 
         rrca
         rrca
-        cp      30
+        cp      28
         ret     nc
         sub     8
         ret     c
@@ -733,9 +736,9 @@ APARTA_TRAS_ULTIMO_SPRITE_ACTIVO:
 
         push    bc
         push    hl
-        ld      hl,SPRITES_ACTIVOS+21
-        ld      b,22
-        ld      c,21
+        ld      hl,SPRITES_ACTIVOS+19
+        ld      b,20
+        ld      c,19
 
 .busca_ultimo_sprite_ocupado:
 
@@ -1189,6 +1192,8 @@ MAGIA:
 MAGIA_GRATIS:
 
 		di
+		ld		a,2
+		ld		(SET_PAGE),a
 		call	hltmus
 		ei
 

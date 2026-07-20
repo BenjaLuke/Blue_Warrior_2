@@ -58,6 +58,8 @@ SCORE_ROCKAGER_MUERTO_SEMIBOSS_2:			equ	30
 
 ROCKAGER:
 
+        ei
+
 .musica:
 
         call    stpmus

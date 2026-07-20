@@ -166,7 +166,7 @@ RECORRIDO_ROCA:					#1										; Qué recorrido hace la roca de los 3 posibles
 SUMA_CAMINO:					#1										; Controla si se han cumplido ciertas condiciones para avanzar en el mapa
 DATOS_A_SACAR:					#1										; Nos indica la cantidad de datos a sacar de la pila si no se puede definir el sprite
 PROPIEDADES_PATRON_SPRITE:		#3
-SPRITES_ACTIVOS:				#22										; Guarda si están ocupados los sprites del 8 al 29
+SPRITES_ACTIVOS:				#20										; Guarda si están ocupados los sprites del 8 al 27
 MIRAMOS_SEGUNDO_SPRITE:			#1										; Se activa si estamos mirando el segundo sprite, para poder borrar el primero si no hay sitio para el segundo
 ENEMIGOS:						#16*10									; 16 Bytes de información * 10 posibles proyectiles (incluye bases de armas y proyectiles enemigos)
 																		; 0 X
@@ -355,6 +355,8 @@ TRAMO_FASE_3_SALVADO:			#1										; Tramo de fase 3 guardado por check point
 RETENCION_Y_DEPH_POST_RECTIFICA_UP:     #1
 FASE3_VAGON_AJUSTE_TILE_CONTADOR:       #1
 FASE3_VAGON_ARRASTRE_X:                 #1
+FASE3_VAGON_ENTRADA_X16_1:              #1
+FASE3_VAGON_ENTRADA_X16_2:              #1
 TILE_FASE3_VAGON_X16:                   #1
 FASE3_VAGON_TIPO_MUERTE:                #1
 FASE3_VAGON_CORRIGE_Y_CADENCIA:         #1
@@ -368,6 +370,7 @@ FUEGO_AVISO_RAILES_RECOLOCA_Y:          #1
 FUEGO_AVISO_RAILES_LINEA_ANT:           #1
 TILE_ESPECIAL_DEPH_COOLDOWN:            #1
 TILE_ESPECIAL_DEPH_BLOQUEOS:            #1
+TILE_ESPECIAL_DEPH_Y_RESCATA:           #1
 LETRAS_FASES_BITS:                      #3
 
 ROTATIVO_CONTADOR_PRESENTACION:              #1      ; Contador de velocidad del rotativo de presentacion

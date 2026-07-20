@@ -112,23 +112,30 @@
 		ret	
 
 ;SETPALETE_MARCADOR_PARCIAL:
+;SETPALETE_MARCADOR_PARCIAL_SIN_EI:
 
 		ld			hl,PALETA_MARCADOR_STAGE_1+10						; Cambia los colores 5-F
 		ld			a,5
 		ld			b,22
-		jr			SETPALETE_DESDE_A_Y_B
+		jr			SETPALETE_DESDE_A_Y_B_SIN_EI
 
 ;SETPALETE:		
+
+		call		SETPALETE_SIN_EI
+		ei
+		ret
+
+;SETPALETE_SIN_EI:
 
 		xor			a             										; Pon el puntero de la paleta a 0
 		ld			b,32
 
-;SETPALETE_DESDE_A_Y_B:
+;SETPALETE_DESDE_A_Y_B_SIN_EI:
 
 		di
 		out			(#99),a
 		ld			a,16+128
-		ei
+		nop
 		out			(#99),a
 		ld			c,#9A
 		otir
@@ -256,6 +263,12 @@
 
 ;WRTVDP_EN_RAM: 															; BIOS 47h
 
+		call	WRTVDP_EN_RAM_SIN_EI
+		ei
+		ret
+
+;WRTVDP_EN_RAM_SIN_EI:
+
 		di
 
 		push	af
@@ -274,7 +287,7 @@
 ;OUT_VDP_REG2:	
 
 		out		(099h),a
-		ei
+		nop
 	
 	
 		ld		b,0
@@ -294,8 +307,7 @@
 
 	
 		pop		hl
-		ei
-		pop		af		
+		pop		af
 		ret
 
 ;FILVRM_RAM:																; BIOS: 56h
@@ -481,7 +493,11 @@
 		ld		a,(SUMA_CAMINO)
 		or		a
 		jp		nz,BUCLE_PINTA_TILES.RECTIFICA_Y_POR_SCROLL
-						
+
+		call	CONTROL_ENTRADA_VAGON_POR_SCROLL_SECTOR_10
+		jp		z,BUCLE_PINTA_TILES.SIGUE
+		jp		nc,BUCLE_PINTA_TILES.RECTIFICA_CONTROL_Y
+
 		ld		a,(TILE_N)
 		cp		79
 		jp		nc,BUCLE_PINTA_TILES.RECTIFICA_CONTROL_Y
@@ -499,29 +515,6 @@
 ;.RECTIFICA_Y_POR_SCROLL:
 
 		jp		CONTROL_RECTIFICA_Y_DEPH_SCROLL_SECTOR_10
-		or		a
-		jp		nz,BUCLE_PINTA_TILES.RECTIFICA_CONTROL_Y
-				
-		ld		a,(Y_DEPH)												; Rectificamos la posici??n del sprite para que no se vaya con el decorado
-		dec		a
-		ld		(Y_DEPH),a
-
-		cp		216
-		jp		z,BUCLE_PINTA_TILES.RECTIFICA_UP
-
-		cp		200
-		jp		nz,BUCLE_PINTA_TILES.SIGUE
-		
-;.RECTIFICA_UP:
-		
-		dec		a
-		ld		(Y_DEPH),a
-		
-		ld		a,(CONTROL_Y)
-		dec		a
-		ld		(CONTROL_Y),a
-
-		jp		BUCLE_PINTA_TILES.SIGUE
 
 ;.RECTIFICA_CONTROL_Y:
 
@@ -592,6 +585,12 @@
 ;.AVISAMO_FINAL_SCROLL:		
 		
 		call	PAGE_10_A_SEGMENT_2
+
+		xor		a
+		ld		hl,#4A00+8*4
+		ld		bc,(32-8)*4
+		call	FILVRM_RAM
+
 		xor		a
 		ld		(FINAL_DEL_SCROLL),a
 		
@@ -819,14 +818,15 @@
 				
 ;.musica_mas_velocidad_mas_limites_mas_rotacion:
 
-		jp		BUCLE_PINTA_TILES.musica_mas_velocidad_mas_limites
-
 ;.musica_mas_velocidad_mas_limites:
 
 		call	PAGE_10_A_SEGMENT_2
 
 		xor		a
 		ld		(AVANCE_BLOQUEADO),a
+
+		call	ES_FASE3_VAGON_ACTIVO
+		ret		c
 
 ;.musica_mas_velocidad:
 
@@ -836,7 +836,7 @@
 		ld		hl,M_STAGE_1
 		ld		de,(MUSIC_ON)
 		call	XOR_Z_RAM
-		jp		z,BUCLE_PINTA_TILES.VELOCIDAD_DE_FASE_TROTE
+		jr		z,BUCLE_PINTA_TILES.VELOCIDAD_DE_FASE_TROTE
 
 		call	stpmus
 
@@ -1230,7 +1230,6 @@
 		ret
 
 ;ENASCR_RAM:  
-		
 		ld      a,(RG1SAV)
         or      040H
         jr      A057C
@@ -1424,12 +1423,11 @@
         add     a,a
         ld      hl,BAKCLR
         or      (hl)
-        ld      b,a
         jr      A0835	
 ;A0832:  
 		ld      a,(BDRCLR)
 ;A0835:  
-		ld      b,a
+        ld      b,a
         ld      c,007H
         jp      A057F
 
@@ -1470,7 +1468,7 @@
 
 		ld		b,a
 		ld		c,8
-		call	WRTVDP_EN_RAM	
+		call	WRTVDP_EN_RAM_SIN_EI	
 
 		ld		a,(TIEMPO_DE_ADJUST)
 		or		a
@@ -1513,14 +1511,14 @@
 
 		ld		b,a
 		ld		c,18
-		call	WRTVDP_EN_RAM
+		call	WRTVDP_EN_RAM_SIN_EI
 ;.puntoscroll:
 		ld		a,(PUNTO_DEL_SCROLL)
 		di																; Desconectamos las interrupciones
 		out		(#99),a													; Apuntamos el dato a poner en el registro
 	
 		ld		a,23+128												; Cargamos el valor de registro con el bit 8 establecido (+128)
-		ei																; Contectamos las interrupciones que se conectar??n despu??s de la siguiente orden
+		nop																; Dentro de HKEYI no reactivamos interrupciones
 		out		(#99),a													; Apuntamos al registro adecuado (en este caso el 23 para el scroll)
 
 ;PALETA_ESCOGIDA:
@@ -1707,7 +1705,7 @@
 		
 ;COMUN_PALETAS_2:
 
-		call	SETPALETE
+		call	SETPALETE_SIN_EI
 		jp		PALETA_ESCOGIDA.posibles_fx
 
 ;.COMUN_PALETAS_3:
@@ -1806,7 +1804,7 @@
 		ld 		(RG8SAV),a			
 		ld		b,a
 		ld		c,8
-		call	WRTVDP_EN_RAM
+		call	WRTVDP_EN_RAM_SIN_EI
 
 ;.escoge_marcador:
 
@@ -1843,7 +1841,7 @@
 		ld		a,33
 		ld		(DIRPA2),a	
 
-		call	SETPALETE_MARCADOR_PARCIAL
+		call	SETPALETE_MARCADOR_PARCIAL_SIN_EI
 							
 		jp		INTERRUPCION_DE_LINEA.fin
 		
@@ -1870,7 +1868,7 @@
 
 		ld		a,33
 		ld		(DIRPA2),a	
-		call	SETPALETE_MARCADOR_PARCIAL
+		call	SETPALETE_MARCADOR_PARCIAL_SIN_EI
 
 ;.fin:
 
@@ -1911,6 +1909,9 @@
 ;RESCATA_ENTORNO:
 
 		push	ix														; Salvamos IX
+
+		ld		a,(Y_DEPH)
+		ld		(TILE_ESPECIAL_DEPH_Y_RESCATA),a
 		
 		push	af
 		ld		a,(PAGE_DATOS_FASE)
@@ -1919,6 +1920,10 @@
 
 		call	SITUA_LA_X_E_Y
 		add		6
+		ld		b,a
+		and		#f0
+		ld		(FASE3_VAGON_ENTRADA_X16_1),a
+		ld		a,b
 		call	SITUA_LA_X_E_Y_2
 
 		ld		a,(ix)
@@ -1931,6 +1936,10 @@
 
 		call	SITUA_LA_X_E_Y
 		add		14
+		ld		b,a
+		and		#f0
+		ld		(FASE3_VAGON_ENTRADA_X16_2),a
+		ld		a,b
 		call	SITUA_LA_X_E_Y_2
 
 		ld		a,(ix)
@@ -2567,7 +2576,7 @@
 
 ;BORRA_SPRITES_ACTIVOS:
 
-		ld		b,22
+		ld		b,20
 		ld		ix,SPRITES_ACTIVOS
 		xor		a
 		ld		de,1
