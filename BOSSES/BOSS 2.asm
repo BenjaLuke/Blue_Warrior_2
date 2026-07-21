@@ -312,14 +312,9 @@ RUTINA_BOSS_2:
 
 .PINTA_MAGIAS_REALES
 
-	ld		ix,PUNTOS_MAGIA_EN_BOSSES
 	ld		a,(MAGIAS)
-[3]	add		a
-	ld		c,25
-	add		c
-	ld		(ix),a
-	ld		hl,PUNTOS_MAGIA_EN_BOSSES
-	call	DOCOPY
+	ld		(VARIABLE_UN_USO2),a
+	call	PAGE44_A_SEGMENT_1_PINTA_MAGIAS_ROCK
 
 ; terremoto pequeño
 .TERREMOTO_MINI:

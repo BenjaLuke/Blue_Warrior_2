@@ -117,6 +117,7 @@ VIDAS:							#1										; Las vidas del prota aun vigentes
 CORAZONES:						#1										; Los powers que le quedan
 CORAZONES_MAXIMOS:				#1										; El máximo de powers de los que disfruta
 MAGIAS:							#1										; La cantidad de puntos de magia que tiene
+MAGIA_GRATIS_PENDIENTE:			#1										; Premio de magia esperando una posicion segura
 SCORE_A_SUMAR:					#2										; Los puntos que suma el score tras hacer algo
 SCORE_REAL:						#2										; Score del juego
 MAX_SCORE:						#2										; La máxima puntuación
@@ -233,16 +234,7 @@ ayFX_CHANNEL:					#1										; PSG channel to play the ayFX stream
 ayFX_REGS:						#14										; Ram copy of PSG registers
 ;struc	AR
 
-AR_TonA		equ 0														;RESW 1
-AR_TonB		equ 2														;RESW 1
-AR_TonC		equ 4														;RESW 1
-AR_Noise	equ 6														;RESB 1
 AR_Mixer	equ 7														;RESB 1
-AR_AmplA	equ 8														;RESB 1
-AR_AmplB	equ 9														;RESB 1
-AR_AmplC	equ 10														;RESB 1
-AR_Env		equ 11														;RESW 1
-AR_EnvTp	equ 13														;RESB 1
 
 ; fmpac y music module
 

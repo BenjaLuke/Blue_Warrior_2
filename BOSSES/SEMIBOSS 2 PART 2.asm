@@ -1,8 +1,6 @@
 MAGIA_ROCK_FX_PART2_SEMIBOSS_2						equ		13
 FX_CANAL_0_PART2_SEMIBOSS_2							equ		0
-BANCO_FX_PART2_SEMIBOSS_2							equ		31
 BANCO_COMUN_PART2_SEMIBOSS_2						equ		10
-BANCO_SPRITES_PART2_SEMIBOSS_2						equ		32
 BANCO_FASE_OFFSET_MAGIA_PART2_SEMIBOSS_2			equ		20
 
 DATAS_COPY_TAM_PART2_SEMIBOSS_2						equ		15
@@ -991,10 +989,43 @@ PINTAMOS_LOS_PUNTOS_DE_MAGIA_ROCK:
 
 	ld		ix,PUNTOS_MAGIA_EN_BOSSES
 	ld		a,(MAGIAS)
+	ld		b,0
+
+.CALCULA_DECENAS_MAGIA_ROCK:
+
+	cp		10
+	jr		c,.DIGITOS_MAGIA_ROCK_LISTOS
+	sub		10
+	inc		b
+	jr		.CALCULA_DECENAS_MAGIA_ROCK
+
+.DIGITOS_MAGIA_ROCK_LISTOS:
+
+	push	af
+	ld		a,b
+
+.NORMALIZA_DECENAS_MAGIA_ROCK:
+
+	cp		10
+	jr		c,.PINTA_DECENAS_MAGIA_ROCK
+	sub		10
+	jr		.NORMALIZA_DECENAS_MAGIA_ROCK
+
+.PINTA_DECENAS_MAGIA_ROCK:
+
 [3]	add		a
-	ld		c,MAGIA_X_BASE_PART2_SEMIBOSS_2
-	add		c
+	add		MAGIA_X_BASE_PART2_SEMIBOSS_2
 	ld		(ix),a
+	ld		(ix+4),115
+	ld		hl,PUNTOS_MAGIA_EN_BOSSES
+	call	NOP_50_MAGIA_ROCK
+	call	DOCOPY
+
+	pop		af
+[3]	add		a
+	add		MAGIA_X_BASE_PART2_SEMIBOSS_2
+	ld		(ix),a
+	ld		(ix+4),123
 	ld		hl,PUNTOS_MAGIA_EN_BOSSES
 	call	NOP_50_MAGIA_ROCK
 	jp		DOCOPY
@@ -1046,41 +1077,6 @@ PREPARACION_ROCKAGER:
 
 
 	ret
-
-
-RECARGAMOS_GRAFICOS_STAGE_2:
-
-	xor     a
-	ld      ix,SPRITES_ACTIVOS+SPRITES_ACTIVOS_ROCKAGER_OFS_PART2_SEMIBOSS_2
-	ld      b,SPRITES_FIJOS_ROCKAGER_CANT_PART2_SEMIBOSS_2
-
-.LIBERA_SPRITES_FIJOS_ROCKAGER:
-
-	ld      (ix),a
-	inc     ix
-	djnz    .LIBERA_SPRITES_FIJOS_ROCKAGER
-
-    ld      a,BANCO_STAGE_2_A_PART2_SEMIBOSS_2
-    call	CHANGE_BANK_2
-                                                                            ; Cargamos el mapa fase
-    ld		hl,VRAM_GRAFICOS_ORIGEN_PART2_SEMIBOSS_2				; Carga gráficos fase
-    ld		de,VRAM_GRAFICOS_DESTINO_1_PART2_SEMIBOSS_2
-    ld		bc,TAM_BANCO_GRAFICOS_PART2_SEMIBOSS_2
-    call	PON_COLOR_2.sin_bc_impuesta
-
-    ld      a,BANCO_STAGE_2_B_PART2_SEMIBOSS_2
-    call	CHANGE_BANK_2
-                                                                            ; Cargamos el mapa fase
-    ld		hl,VRAM_GRAFICOS_ORIGEN_PART2_SEMIBOSS_2				; Carga gráficos fase
-    ld		de,VRAM_GRAFICOS_DESTINO_2_PART2_SEMIBOSS_2
-    ld		bc,TAM_BANCO_GRAFICOS_PART2_SEMIBOSS_2
-    call	PON_COLOR_2.sin_bc_impuesta
-
-    ld  	a,BANCO_COMUN_PART2_SEMIBOSS_2
-    call	CHANGE_BANK_2
-
-    ld      hl,.BORRA_PARTE_DE_STATUS_PAGE_0
-	jp		DOCOPY 
 
 .BORRA_PARTE_DE_STATUS_PAGE_0
 

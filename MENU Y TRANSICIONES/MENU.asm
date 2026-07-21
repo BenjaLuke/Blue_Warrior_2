@@ -82,7 +82,6 @@ CINEMATICA_NUBE_7_Y               equ     4
 CINEMATICA_NUBE_7_CADA_CICLOS     equ     18
 CINEMATICA_COLOR_0_NORMAL         equ     0
 CINEMATICA_COLOR_0_NEGRO          equ     1
-CINEMATICA_COLOR_0_FADEIN         equ     2
 CINEMATICA_COLOR_0_FINAL          equ     3
 CINEMATICA_COLOR_0_FADEOUT        equ     4
 
@@ -2787,18 +2786,9 @@ DATOS_NEGRO_ROTATIVO_EN_PAGE_1:
         dw      #0100,#0008
         db      #00,#00,11000000b
 
-
-; Editar estas lineas al sacar una version nueva.
-; Regla del porcentaje: cada fase vale 2, cada enemigo y bloque auxiliar vale 1.
-; EN TOTAL HAY 
-; 5 PUNTOS DE 2(FASES) 5 HECHOS
-; 6 PUNTOS DE 2(ENEMIGOS) 6 HECHOS
-; 4 PUNTOS DE 1(LOGO, MENU, ANIMACION PRESENTACION Y ANIMACION CIERRE) 4 HECHO
-; PUNTOS ACTUALES = (5+6)*2 + 4*1 = 26, PORCENTAJE ACTUAL = 26/26 = 100% APROXIMADAMENTE
-
 TEXTO_ROTATIVO_PRESENTACION:
 
-		db		"BLUE WARRIOR II   -   Beta version 5.01.186 -  18-07-2026 - 98 por ciento - (C) Digital Moai",0
+		db		"BLUE WARRIOR II   -   Beta version 5.01.235 -  21-07-2026 - 98 por ciento - (C) Digital Moai",0
 
 TEXTO_ROTATIVO_PRESENTACION_FIN:
 
@@ -3193,6 +3183,7 @@ SEGUIMOS:
 		ld		(V_CENTENAS),a
 		ld		(V_DECENAS),a
 		ld		(V_UNIDADES),a
+		ld		(MAGIA_GRATIS_PENDIENTE),a
 		ld		(SCORE_REAL),hl
 		add		2
 		ld		(MAGIAS),a

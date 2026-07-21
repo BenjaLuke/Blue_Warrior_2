@@ -457,21 +457,85 @@ RUTINA_BOSS_3:
 
 .PINTA_MAGIAS_REALES:
 
-	ld		ix,PUNTOS_MAGIA_EN_BOSSES
-	ld		a,(MAGIAS)
-[3]	add		a
-	ld		c,25
-	add		c
-	ld		(ix),a
-	ld		hl,PUNTOS_MAGIA_EN_BOSSES
-	call	DOCOPY
-		
+	call	.PINTA_MAGIAS_BOSS_3
+
 .PREPARACION_PELEA:
 
-		ld		hl,BOSS_3_PAGE_2_A_PAGE_3_COMPLETA
-		call	DOCOPY
-		call	VDPREADY
+	ld		hl,BOSS_3_PAGE_2_A_PAGE_3_COMPLETA
+	call	DOCOPY
+	call	VDPREADY
 
+	jr		.EMPIEZA_LA_MUSICA
+
+.PINTA_MAGIAS_BOSS_3:
+
+	ld		a,2
+	call	.PINTA_MAGIAS_BOSS_3_EN_PAGE
+	ld		a,3
+
+.PINTA_MAGIAS_BOSS_3_EN_PAGE:
+
+	push	af
+	call	.RECARGA_DATOS_MAGIA_BOSS_3
+	pop		af
+	ld		(ix+7),a
+	push	af
+	ld		a,(MAGIAS)
+	ld		b,0
+
+.CALCULA_DECENAS_MAGIA_BOSS_3:
+
+	cp		10
+	jr		c,.DIGITOS_MAGIA_LISTOS_BOSS_3
+	sub		10
+	inc		b
+	jr		.CALCULA_DECENAS_MAGIA_BOSS_3
+
+.DIGITOS_MAGIA_LISTOS_BOSS_3:
+
+	ld		(VARIABLE_UN_USO),a
+	ld		a,b
+
+.NORMALIZA_DECENAS_MAGIA_BOSS_3:
+
+	cp		10
+	jr		c,.DECENA_MAGIA_NORMALIZADA_BOSS_3
+	sub		10
+	jr		.NORMALIZA_DECENAS_MAGIA_BOSS_3
+
+.DECENA_MAGIA_NORMALIZADA_BOSS_3:
+
+	call	.CALCULA_ORIGEN_DIGITO_MAGIA_BOSS_3
+	ld		(ix),a
+	ld		(ix+4),115
+	ld		hl,PUNTOS_MAGIA_EN_BOSSES
+	call	DOCOPY
+	call	.RECARGA_DATOS_MAGIA_BOSS_3
+	pop		af
+	ld		(ix+7),a
+	ld		a,(VARIABLE_UN_USO)
+	call	.CALCULA_ORIGEN_DIGITO_MAGIA_BOSS_3
+	ld		(ix),a
+	ld		(ix+4),123
+	ld		hl,PUNTOS_MAGIA_EN_BOSSES
+	call	DOCOPY
+	ret
+
+.RECARGA_DATOS_MAGIA_BOSS_3:
+
+	ld		hl,BOSS_3_COPY_PUNTOS_MAGIA
+	ld		de,PUNTOS_MAGIA_EN_BOSSES
+	ld		bc,15
+	ldir
+	ld		ix,PUNTOS_MAGIA_EN_BOSSES
+	ret
+
+.CALCULA_ORIGEN_DIGITO_MAGIA_BOSS_3:
+
+[3]	add		a
+	add		25
+	ret
+		
 .EMPIEZA_LA_MUSICA:
 
 		include	"../AUDIOS/INICIA MUSICA_BOSS.asm"
@@ -1295,7 +1359,7 @@ CONTROLA_INMUNIDAD_DEPH_BOSS_3:
 		ld		(INMUNE),a
 		ret
 
-INICIALIZA_POOL_PROYECTILES_BOSS_3:
+/*INICIALIZA_POOL_PROYECTILES_BOSS_3:
 
 		xor		a
 		ld		(PROYECTIL_BOSS_3_SIGUIENTE_EMISOR),a
@@ -1347,7 +1411,7 @@ INICIALIZA_POOL_PROYECTILES_BOSS_3:
 		ld		(PROYECTIL_BOSS_3_SPRITE_ACTUAL),a
 		ld		a,PROYECTIL_BOSS_3_ESPERA_INICIAL
 		ld		(PROYECTIL_BOSS_3_ESPERA),a
-		ret
+		ret*/
 
 MUEVE_CHUMINIX_BOSS_3:
 
@@ -2304,7 +2368,7 @@ ALTERNA_PAGE_PINTA_CHUMINIX_BOSS_3:
 		ld		(CHUMINIX_BOSS_3_PAGE_PINTA),a
 		ret
 
-BORRA_RASTRO_X_CHUMINIX_PELEA_BOSS_3:
+/*BORRA_RASTRO_X_CHUMINIX_PELEA_BOSS_3:
 
 		ld		a,(CHUMINIX_BOSS_3_X)
 		ld		b,a				; B = X nueva
@@ -2345,9 +2409,9 @@ BORRA_RASTRO_X_CHUMINIX_PELEA_BOSS_3:
 		ld		c,a				; C = Y destino del relleno
 		ld		e,CHUMINIX_APARICION_ALTO_BOSS_3
 		ld		a,#11
-		jp		PINTA_RECTANGULO_COLOR_3_CHUMINIX_BOSS_3
+		jp		PINTA_RECTANGULO_COLOR_3_CHUMINIX_BOSS_3*/
 
-BORRA_RASTRO_Y_CHUMINIX_PELEA_BOSS_3:
+/*BORRA_RASTRO_Y_CHUMINIX_PELEA_BOSS_3:
 
 		ld		a,(CHUMINIX_BOSS_3_ESPERA_MOVIMIENTO)
 		ld		b,a				; B = Y nueva
@@ -2386,9 +2450,9 @@ BORRA_RASTRO_Y_CHUMINIX_PELEA_BOSS_3:
 ;   D = ancho Chuminix
 ; Conserva:
 ;   C = Y destino
-;   E = alto
+;   E = alto*/
 
-CARGA_X_Y_ANCHO_CHUMINIX_BOSS_3:
+/*CARGA_X_Y_ANCHO_CHUMINIX_BOSS_3:
 
 		ld		a,(CHUMINIX_BOSS_3_X)
 		ld		b,a
@@ -2413,7 +2477,7 @@ LIMITA_DELTA_X_CHUMINIX_BOSS_3:
 		cp		CHUMINIX_PELEA_PASO_X_SEC_2_BOSS_3+1
 		ret		c
 		ld		d,CHUMINIX_PELEA_PASO_X_SEC_2_BOSS_3
-		ret
+		ret*/
 
 ; Entrada:
 ;   B = X destino
@@ -2875,12 +2939,12 @@ MATA_COVID_BOSS_3_ACTUAL_CON_EXPLOSION:
 
 		jp		DESACTIVA_COVID_BOSS_3
 
-REVISAMOS_COLISION_CON_CHUMINIX_Y_PROYECTILES_DEPH_ANTIGUA:
+/*REVISAMOS_COLISION_CON_CHUMINIX_Y_PROYECTILES_DEPH_ANTIGUA:
 		ret
 
 
 		; Aquí gestionaremos onsprites entre el malo y los proytectiles de Deph.
-		ret
+		ret*/
 
 REVISAMOS_COLISION_CON_CHUMINIX_Y_PROYECTILES_DEPH:
 
@@ -3107,6 +3171,26 @@ ASEGURA_PAGE_2_VISIBLE_BOSS_3:
 		ld		a,3
 		ld		(CHUMINIX_BOSS_3_PAGE_PINTA),a
 		ret
+
+PREPARA_PAGE_2_PARA_MAGIA_BOSS_3:
+
+		ld		a,(SET_PAGE)
+		cp		3
+		ret		nz
+		ld		hl,BOSS_3_PAGE_3_A_PAGE_2_COMPLETA
+		call	DOCOPY
+		call	VDPREADY
+		ld		a,2
+		ld		(SET_PAGE),a
+		ld		a,3
+		ld		(CHUMINIX_BOSS_3_PAGE_PINTA),a
+		ret
+
+RESTAURA_PAGE_3_TRAS_MAGIA_BOSS_3:
+
+		ld		hl,BOSS_3_PAGE_2_A_PAGE_3_COMPLETA
+		call	DOCOPY
+		jp		VDPREADY
 
 ANIMACION_MUERTE_CHUMINIX_BOSS_3:
 
@@ -3521,22 +3605,22 @@ VOLVEMOS_b3:
 ; Ruta 1: X=250, Y=191 -> sube y empieza hacia la izquierda.
 ; Ruta 2: X=255, Y=0   -> baja y empieza hacia la izquierda.
 ; Ruta 3: X=0,   Y=191 -> sube y empieza hacia la derecha.
-TABLA_X_INICIAL_COVID_BOSS_3:
+/*TABLA_X_INICIAL_COVID_BOSS_3:
 
 		db		0,250,255,0
 
 TABLA_Y_INICIAL_COVID_BOSS_3:
 
-		db		0,191,0,191
+		db		0,191,0,191*/
 
-TABLA_PASO_Y_COVID_BOSS_3:
+/*TABLA_PASO_Y_COVID_BOSS_3:
 
-		db		1,255,1,255			; 255 = -1
+		db		1,255,1,255			; 255 = -1*/
 
 ; Tabla 0: avance horizontal normal.
 ; Suma total derecha: 240 px. Suma total izquierda: -240 px.
 ; Maximo desplazamiento: 4 px por ciclo.
-TABLA_MOVIMIENTO_X_COVID_BOSS_3:
+/*TABLA_MOVIMIENTO_X_COVID_BOSS_3:
 
 		db		1,2,3
 [57]	db		4
@@ -3575,7 +3659,9 @@ TABLA_MOVIMIENTO_X_COVID_BOSS_3_3:
 [57]	db		252				; -4
 		db		253,254,255,0		; -3,-2,-1,0
 
-; Variables COVID/LODO Boss 4 movidas a VARIABLES BOSSES.asm (RAM).
+; Variables COVID/LODO Boss 4 movidas a VARIABLES BOSSES.asm (RAM).*/
 
 
 	include	"BOSS 3 DATA.asm"
+
+PINTA_MAGIAS_BOSS_3:		equ	RUTINA_BOSS_3.PINTA_MAGIAS_BOSS_3

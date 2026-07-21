@@ -181,7 +181,13 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH:
         cp      2
         jp      c,.AUMENTA_ARMA
 
+        ld      hl,10
+        jp      nz,.PUNTOS_FLECHA_PREPARADOS
+
         ld      hl,100
+
+.PUNTOS_FLECHA_PREPARADOS:
+
         ld      (SCORE_A_SUMAR),hl
         call    SUMA_SCORE
 
@@ -192,9 +198,6 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH:
         xor     a
         ld      (ARMA_USANDO),a
 
-        ld     hl,10
-        ld      (SCORE_A_SUMAR),hl
-        call    SUMA_SCORE
         call    CARGA_FLECHA_SIMPLE
        
         jp      .FINAL_DE_ENTREGA_DE_PREMIO
@@ -279,18 +282,9 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH:
 
 .PREMIO_EXTRA_MAGIA:
 
-        ld      a,(PUNTO_DEL_SCROLL)
-        cp      #b7
-        jr      z,.FINAL_DE_ENTREGA_DE_PREMIO_EXTRA
-        cp      #a3
-        jr      z,.FINAL_DE_ENTREGA_DE_PREMIO_EXTRA
-        or      a
-        jr      z,.FINAL_DE_ENTREGA_DE_PREMIO_EXTRA
-        cp      255
-        jr      z,.FINAL_DE_ENTREGA_DE_PREMIO_EXTRA
-        cp      #8f
-        jr      z,.FINAL_DE_ENTREGA_DE_PREMIO_EXTRA
-        call    MAGIA_GRATIS
+        ld      a,1
+        ld      (MAGIA_GRATIS_PENDIENTE),a
+        call    INTENTA_MAGIA_GRATIS_PENDIENTE
         jp      .FINAL_DE_ENTREGA_DE_PREMIO_EXTRA
 
 .PREMIO_EXTRA_500:

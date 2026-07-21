@@ -225,9 +225,29 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES:
 
         ld      a,(ARMA_USANDO)
         cp      3
-        jr      c,.FIN_DE_LAS_REPERCUSIONES_DE_LA_COLISION
+        jr      c,.GOLPE_ECTO_HUEVOS_FLECHA
         cp      6
-        jr      nc,.FIN_DE_LAS_REPERCUSIONES_DE_LA_COLISION
+        jr      c,.GOLPE_ECTO_HUEVOS_FUEGO
+
+.GOLPE_ECTO_HUEVOS_HACHA:
+
+        ld      b,10000000b
+        ld      c,10000110b
+        jr      .CONTROLA_ARMA_GOLPE_ECTO_HUEVOS
+
+.GOLPE_ECTO_HUEVOS_FUEGO:
+
+        ld      b,01000000b
+        ld      c,01000011b
+        jr      .CONTROLA_ARMA_GOLPE_ECTO_HUEVOS
+
+.GOLPE_ECTO_HUEVOS_FLECHA:
+
+        ld      b,00000000b
+        ld      c,00000110b
+
+.CONTROLA_ARMA_GOLPE_ECTO_HUEVOS:
+
         ld      a,(ECTO_PARALIZADO)
         or      a
         jr      nz,.FIN_DE_LAS_REPERCUSIONES_DE_LA_COLISION
@@ -238,9 +258,17 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES:
         or      a
         jr      nz,.FIN_DE_LAS_REPERCUSIONES_DE_LA_COLISION
         ld      a,(ECTO_HUEVOS_GOLPES)
+        and     11000000b
+        cp      b
+        ld      a,b
+        jr      nz,.MISMA_ARMA_GOLPE_ECTO_HUEVOS
+        ld      a,(ECTO_HUEVOS_GOLPES)
+
+.MISMA_ARMA_GOLPE_ECTO_HUEVOS:
+
         inc     a
         ld      (ECTO_HUEVOS_GOLPES),a
-        cp      3
+        cp      c
         jr      z,.MUERE_ECTO_HUEVOS_VISUALMENTE
         
         ld      a,50
@@ -257,6 +285,15 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES:
 
 .MUERE_ECTO_HUEVOS_VISUALMENTE:
 
+        call    PREPARA_MUERTE_ECTO_HUEVOS
+        ld      a,5
+        ld      c,1
+        call    A_31_DESDE_10
+        call    UN_NUEVO_ENEMIGO.DEFINE_EXPLOSION
+        jp      .FIN_DE_LAS_REPERCUSIONES_DE_LA_COLISION
+
+PREPARA_MUERTE_ECTO_HUEVOS:
+
         xor     a
         ld      (ECTO_PARALIZADO),a
         ld      (ECTO_HUEVOS_GOLPES),a
@@ -264,8 +301,4 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES:
         ld      (ECTOPALLERS_ACTIVO),a
         ld      a,250
         ld      (ECTO_HUEVOS_RESPAWN),a
-        ld      a,5
-        ld      c,1
-        call    A_31_DESDE_10
-        call    UN_NUEVO_ENEMIGO.DEFINE_EXPLOSION
-        jp      .FIN_DE_LAS_REPERCUSIONES_DE_LA_COLISION
+        ret

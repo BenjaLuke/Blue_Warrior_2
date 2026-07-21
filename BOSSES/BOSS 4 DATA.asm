@@ -1,11 +1,11 @@
 ; Datos de BOSS 1. Separado del codigo para mantener limpio BOSS 1.asm.
 
-BOSS_4_DATOS_COPY_PAGE_1_A_PAGE_3:
+/*BOSS_4_DATOS_COPY_PAGE_1_A_PAGE_3:
 
 		dw		#0000,#0100		; origen  x=0, y=page 1
 		dw		#0000,#0300		; destino x=0, y=page 3
 		dw		#0100,#0100		; ancho 256, alto 256
-		db		#00,#00,10010000b
+		db		#00,#00,10010000b*/
 
 BOSS_4_PAGE_2_A_PAGE_1_COMPLETA:
 
@@ -110,10 +110,10 @@ SPRITE_EXPLOSION_ERRECENYX_OCULTO_BOSS_4:
 
 		db		EXPLOSION_ERRECENYX_Y_OCULTA_BOSS_4,0,0,0
 
-TABLA_COLOR_SPRITE_CENTRAL_BOSS_4:
+/*TABLA_COLOR_SPRITE_CENTRAL_BOSS_4:
 
 		db		$03,$03,$03,$03,$03,$03,$03,$03
-		db		$03,$03,$03,$03,$03,$03,$03,$03
+		db		$03,$03,$03,$03,$03,$03,$03,$03*/
 
 BOSS_4_BARROS_MUERTE_OFFSET_X:
 

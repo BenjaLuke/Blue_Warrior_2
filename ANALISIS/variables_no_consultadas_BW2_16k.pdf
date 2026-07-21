@@ -4,7 +4,7 @@
 << /Type /Catalog /Pages 2 0 R >>
 endobj
 2 0 obj
-<< /Type /Pages /Kids [6 0 R 8 0 R] /Count 2 >>
+<< /Type /Pages /Kids [6 0 R] /Count 1 >>
 endobj
 3 0 obj
 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>
@@ -13,7 +13,7 @@ endobj
 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>
 endobj
 5 0 obj
-<< /Length 12629 >>
+<< /Length 12023 >>
 stream
 q
 1 1 1 rg
@@ -47,7 +47,7 @@ BT
 /F2 8 Tf
 0.42 0.45 0.48 rg
 522.20 786 Td
-(Pagina 1/2) Tj
+(Pagina 1/1) Tj
 ET
 q
 0.94 0.97 0.98 rg
@@ -84,7 +84,7 @@ BT
 /F1 8 Tf
 0.08 0.10 0.13 rg
 40 710 Td
-(Constantes sin usar: 44) Tj
+(Constantes sin usar: 31) Tj
 ET
 BT
 /F1 7.50 Tf
@@ -96,7 +96,7 @@ BT
 /F1 7 Tf
 0.42 0.45 0.48 rg
 446.38 738 Td
-(Generado: 2026-07-20 13:30:29) Tj
+(Generado: 2026-07-21 20:05:25) Tj
 ET
 q
 0.92 0.97 1 rg
@@ -321,7 +321,7 @@ BT
 /F2 5.25 Tf
 0.72 0.02 0.02 rg
 69 565.80 Td
-(ADJUST_ACTIVO_PART2_SEMIBOSS_2) Tj
+(CALSLT) Tj
 ET
 q
 0.70 0.74 0.77 RG
@@ -348,7 +348,7 @@ BT
 /F2 5.25 Tf
 0.72 0.02 0.02 rg
 69 550.30 Td
-(AR_AmplA) Tj
+(CHPUT) Tj
 ET
 q
 0.70 0.74 0.77 RG
@@ -375,7 +375,7 @@ BT
 /F2 5.25 Tf
 0.72 0.02 0.02 rg
 69 534.80 Td
-(AR_AmplB) Tj
+(CINEMATICA_COLOR_0_FADEOUT) Tj
 ET
 q
 0.70 0.74 0.77 RG
@@ -402,7 +402,7 @@ BT
 /F2 5.25 Tf
 0.72 0.02 0.02 rg
 69 519.30 Td
-(AR_AmplC) Tj
+(CINEMATICA_COLOR_0_FINAL) Tj
 ET
 q
 0.70 0.74 0.77 RG
@@ -429,7 +429,7 @@ BT
 /F2 5.25 Tf
 0.72 0.02 0.02 rg
 69 503.80 Td
-(AR_Env) Tj
+(CINEMATICA_COLOR_0_NEGRO) Tj
 ET
 q
 0.70 0.74 0.77 RG
@@ -456,7 +456,7 @@ BT
 /F2 5.25 Tf
 0.72 0.02 0.02 rg
 69 488.30 Td
-(AR_EnvTp) Tj
+(CINEMATICA_COLOR_0_NORMAL) Tj
 ET
 q
 0.70 0.74 0.77 RG
@@ -483,7 +483,7 @@ BT
 /F2 5.25 Tf
 0.72 0.02 0.02 rg
 69 472.80 Td
-(AR_Noise) Tj
+(CINEMATICA_FINAL_CREDITOS_PAUSA_COPYRIGHT) Tj
 ET
 q
 0.70 0.74 0.77 RG
@@ -510,7 +510,7 @@ BT
 /F2 5.25 Tf
 0.72 0.02 0.02 rg
 69 457.30 Td
-(AR_TonA) Tj
+(CINEMATICA_FINAL_LETRA_ESPECIALES_CANT) Tj
 ET
 q
 0.70 0.74 0.77 RG
@@ -537,7 +537,7 @@ BT
 /F2 5.25 Tf
 0.72 0.02 0.02 rg
 69 441.80 Td
-(AR_TonB) Tj
+(CLS) Tj
 ET
 q
 0.70 0.74 0.77 RG
@@ -564,7 +564,7 @@ BT
 /F2 5.25 Tf
 0.72 0.02 0.02 rg
 69 426.30 Td
-(AR_TonC) Tj
+(ERAFNK) Tj
 ET
 q
 0.70 0.74 0.77 RG
@@ -591,7 +591,7 @@ BT
 /F2 5.25 Tf
 0.72 0.02 0.02 rg
 69 410.80 Td
-(BANCO_FX_PART2_SEMIBOSS_2) Tj
+(EXPTBL) Tj
 ET
 q
 0.70 0.74 0.77 RG
@@ -618,7 +618,7 @@ BT
 /F2 5.25 Tf
 0.72 0.02 0.02 rg
 69 395.30 Td
-(BANCO_SPRITES_PART2_SEMIBOSS_2) Tj
+(INITXT) Tj
 ET
 q
 0.70 0.74 0.77 RG
@@ -645,7 +645,7 @@ BT
 /F2 5.25 Tf
 0.72 0.02 0.02 rg
 69 379.80 Td
-(CALSLT) Tj
+(MENU_FUENTE_ANCHO) Tj
 ET
 q
 0.70 0.74 0.77 RG
@@ -672,7 +672,7 @@ BT
 /F2 5.25 Tf
 0.72 0.02 0.02 rg
 69 364.30 Td
-(CHPUT) Tj
+(MENU_FUENTE_CARACTERES) Tj
 ET
 q
 0.70 0.74 0.77 RG
@@ -699,7 +699,7 @@ BT
 /F2 5.25 Tf
 0.72 0.02 0.02 rg
 69 348.80 Td
-(CINEMATICA_COLOR_0_FADEIN) Tj
+(MENU_SPRITE_CANTIDAD) Tj
 ET
 q
 0.70 0.74 0.77 RG
@@ -726,7 +726,7 @@ BT
 /F2 5.25 Tf
 0.72 0.02 0.02 rg
 69 333.30 Td
-(CINEMATICA_COLOR_0_FADEOUT) Tj
+(MENU_SPRITE_PATRON_INICIAL) Tj
 ET
 q
 0.70 0.74 0.77 RG
@@ -753,7 +753,7 @@ BT
 /F2 5.25 Tf
 0.72 0.02 0.02 rg
 69 317.80 Td
-(CINEMATICA_COLOR_0_FINAL) Tj
+(POSIT) Tj
 ET
 q
 0.70 0.74 0.77 RG
@@ -780,7 +780,7 @@ BT
 /F2 5.25 Tf
 0.72 0.02 0.02 rg
 69 302.30 Td
-(CINEMATICA_COLOR_0_NEGRO) Tj
+(RG2SAV) Tj
 ET
 q
 0.70 0.74 0.77 RG
@@ -807,7 +807,7 @@ BT
 /F2 5.25 Tf
 0.72 0.02 0.02 rg
 69 286.80 Td
-(CINEMATICA_COLOR_0_NORMAL) Tj
+(RG3SAV) Tj
 ET
 q
 0.70 0.74 0.77 RG
@@ -834,7 +834,7 @@ BT
 /F2 5.25 Tf
 0.72 0.02 0.02 rg
 69 271.30 Td
-(CINEMATICA_FINAL_CREDITOS_PAUSA_COPYRIGHT) Tj
+(RG4SAV) Tj
 ET
 q
 0.70 0.74 0.77 RG
@@ -861,7 +861,7 @@ BT
 /F2 5.25 Tf
 0.72 0.02 0.02 rg
 69 255.80 Td
-(CINEMATICA_FINAL_LETRA_ESPECIALES_CANT) Tj
+(RG7SAV) Tj
 ET
 q
 0.70 0.74 0.77 RG
@@ -888,7 +888,7 @@ BT
 /F2 5.25 Tf
 0.72 0.02 0.02 rg
 69 240.30 Td
-(CLS) Tj
+(SECUENCIA_ROCKAGER_TRES_PART2_SEMIBOSS_2) Tj
 ET
 q
 0.70 0.74 0.77 RG
@@ -915,7 +915,7 @@ BT
 /F2 5.25 Tf
 0.72 0.02 0.02 rg
 69 224.80 Td
-(ERAFNK) Tj
+(SECUENCIA_ROCKAGER_UNO_PART2_SEMIBOSS_2) Tj
 ET
 q
 0.70 0.74 0.77 RG
@@ -942,7 +942,7 @@ BT
 /F2 5.25 Tf
 0.72 0.02 0.02 rg
 69 209.30 Td
-(EXPTBL) Tj
+(SPRITES_PIEDRA_DESTINO_PART2_SEMIBOSS_2) Tj
 ET
 q
 0.70 0.74 0.77 RG
@@ -969,7 +969,7 @@ BT
 /F2 5.25 Tf
 0.72 0.02 0.02 rg
 69 193.80 Td
-(INITXT) Tj
+(SPRITES_PIEDRA_ORIGEN_PART2_SEMIBOSS_2) Tj
 ET
 q
 0.70 0.74 0.77 RG
@@ -996,7 +996,7 @@ BT
 /F2 5.25 Tf
 0.72 0.02 0.02 rg
 69 178.30 Td
-(MENU_FUENTE_ANCHO) Tj
+(SPRITES_PIEDRA_TAM_PART2_SEMIBOSS_2) Tj
 ET
 q
 0.70 0.74 0.77 RG
@@ -1023,7 +1023,7 @@ BT
 /F2 5.25 Tf
 0.72 0.02 0.02 rg
 69 162.80 Td
-(MENU_FUENTE_CARACTERES) Tj
+(VDP_25) Tj
 ET
 q
 0.70 0.74 0.77 RG
@@ -1050,7 +1050,7 @@ BT
 /F2 5.25 Tf
 0.72 0.02 0.02 rg
 69 147.30 Td
-(MENU_SPRITE_CANTIDAD) Tj
+(VRAM_SPRITES_ATRIBUTOS_PART2_SEMIBOSS_2) Tj
 ET
 q
 0.70 0.74 0.77 RG
@@ -1077,7 +1077,7 @@ BT
 /F2 5.25 Tf
 0.72 0.02 0.02 rg
 69 131.80 Td
-(MENU_SPRITE_PATRON_INICIAL) Tj
+(VRAM_SPRITES_ATRIBUTOS_PART3_SEMIBOSS_2) Tj
 ET
 q
 0.70 0.74 0.77 RG
@@ -1104,7 +1104,7 @@ BT
 /F2 5.25 Tf
 0.72 0.02 0.02 rg
 69 116.30 Td
-(POSIT) Tj
+(VRAM_SPRITES_COLOR_PART2_SEMIBOSS_2) Tj
 ET
 q
 0.70 0.74 0.77 RG
@@ -1131,7 +1131,7 @@ BT
 /F2 5.25 Tf
 0.72 0.02 0.02 rg
 69 100.80 Td
-(RG2SAV) Tj
+(VRAM_SPRITES_PATRONES_PART3_SEMIBOSS_2) Tj
 ET
 q
 0.70 0.74 0.77 RG
@@ -1144,96 +1144,15 @@ q
 66 96 m 66 111.50 l S
 Q
 q
-0.97 0.98 0.99 rg
-28 80.50 539 15.50 re
-f
-Q
-BT
-/F1 5.25 Tf
-0.10 0.12 0.15 rg
-42.75 85.30 Td
-(032) Tj
-ET
-BT
-/F2 5.25 Tf
-0.72 0.02 0.02 rg
-69 85.30 Td
-(RG3SAV) Tj
-ET
-q
-0.70 0.74 0.77 RG
-0.35 w
-28 80.50 m 567 80.50 l S
-Q
-q
-0.70 0.74 0.77 RG
-0.35 w
-66 80.50 m 66 96 l S
-Q
-q
-1 1 1 rg
-28 65 539 15.50 re
-f
-Q
-BT
-/F1 5.25 Tf
-0.10 0.12 0.15 rg
-42.75 69.80 Td
-(033) Tj
-ET
-BT
-/F2 5.25 Tf
-0.72 0.02 0.02 rg
-69 69.80 Td
-(RG4SAV) Tj
-ET
-q
-0.70 0.74 0.77 RG
-0.35 w
-28 65 m 567 65 l S
-Q
-q
-0.70 0.74 0.77 RG
-0.35 w
-66 65 m 66 80.50 l S
-Q
-q
-0.97 0.98 0.99 rg
-28 49.50 539 15.50 re
-f
-Q
-BT
-/F1 5.25 Tf
-0.10 0.12 0.15 rg
-42.75 54.30 Td
-(034) Tj
-ET
-BT
-/F2 5.25 Tf
-0.72 0.02 0.02 rg
-69 54.30 Td
-(RG7SAV) Tj
-ET
-q
-0.70 0.74 0.77 RG
-0.35 w
-28 49.50 m 567 49.50 l S
-Q
-q
-0.70 0.74 0.77 RG
-0.35 w
-66 49.50 m 66 65 l S
-Q
-q
 0.35 0.44 0.52 RG
 0.70 w
-28 49.50 539 562 re
+28 96 539 515.50 re
 S
 Q
 q
 0.70 0.74 0.77 RG
 0.35 w
-66 49.50 m 66 594.50 l S
+66 96 m 66 594.50 l S
 Q
 
 endstream
@@ -1241,386 +1160,17 @@ endobj
 6 0 obj
 << /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >>  >> /Contents 5 0 R >>
 endobj
-7 0 obj
-<< /Length 3927 >>
-stream
-q
-1 1 1 rg
-0 0 595 842 re
-f
-Q
-q
-0 0.55 0.70 rg
-28 812 539 5 re
-f
-Q
-BT
-/F2 19 Tf
-0.09 0.22 0.34 rg
-28 786 Td
-(ROMANALITHYCS) Tj
-ET
-BT
-/F1 10 Tf
-0.42 0.45 0.48 rg
-28 769 Td
-(Variables y constantes no consultadas) Tj
-ET
-BT
-/F1 6.40 Tf
-0.42 0.45 0.48 rg
-28 756 Td
-(Herramienta desarrollada por Benjamín Miguel Miralpeix · mayo de 2026 · Carambalán Studios) Tj
-ET
-BT
-/F2 8 Tf
-0.42 0.45 0.48 rg
-522.20 786 Td
-(Pagina 2/2) Tj
-ET
-BT
-/F1 8 Tf
-0.42 0.45 0.48 rg
-28 750 Td
-(Archivo: BW2.rom) Tj
-ET
-q
-0.92 0.97 1 rg
-0.70 0.74 0.77 RG
-0.60 w
-28 741 539 17 re
-B
-Q
-BT
-/F2 7.20 Tf
-0.07 0.20 0.28 rg
-36 747 Td
-(CONSTANTES NO CONSULTADAS - alfabetico) Tj
-ET
-q
-0.09 0.22 0.34 rg
-0.09 0.22 0.34 RG
-0.80 w
-28 723 539 18 re
-B
-Q
-BT
-/F2 5.15 Tf
-1 1 1 rg
-41.23 729 Td
-(INC.) Tj
-ET
-BT
-/F2 5.15 Tf
-1 1 1 rg
-303.52 729 Td
-(CONSTANTE) Tj
-ET
-q
-0.22 0.36 0.48 RG
-0.40 w
-66 723 m 66 741 l S
-Q
-q
-1 1 1 rg
-28 707.50 539 15.50 re
-f
-Q
-BT
-/F1 5.25 Tf
-0.10 0.12 0.15 rg
-42.75 712.30 Td
-(035) Tj
-ET
-BT
-/F2 5.25 Tf
-0.72 0.02 0.02 rg
-69 712.30 Td
-(SECUENCIA_ROCKAGER_TRES_PART2_SEMIBOSS_2) Tj
-ET
-q
-0.70 0.74 0.77 RG
-0.35 w
-28 707.50 m 567 707.50 l S
-Q
-q
-0.70 0.74 0.77 RG
-0.35 w
-66 707.50 m 66 723 l S
-Q
-q
-0.97 0.98 0.99 rg
-28 692 539 15.50 re
-f
-Q
-BT
-/F1 5.25 Tf
-0.10 0.12 0.15 rg
-42.75 696.80 Td
-(036) Tj
-ET
-BT
-/F2 5.25 Tf
-0.72 0.02 0.02 rg
-69 696.80 Td
-(SECUENCIA_ROCKAGER_UNO_PART2_SEMIBOSS_2) Tj
-ET
-q
-0.70 0.74 0.77 RG
-0.35 w
-28 692 m 567 692 l S
-Q
-q
-0.70 0.74 0.77 RG
-0.35 w
-66 692 m 66 707.50 l S
-Q
-q
-1 1 1 rg
-28 676.50 539 15.50 re
-f
-Q
-BT
-/F1 5.25 Tf
-0.10 0.12 0.15 rg
-42.75 681.30 Td
-(037) Tj
-ET
-BT
-/F2 5.25 Tf
-0.72 0.02 0.02 rg
-69 681.30 Td
-(SPRITES_PIEDRA_DESTINO_PART2_SEMIBOSS_2) Tj
-ET
-q
-0.70 0.74 0.77 RG
-0.35 w
-28 676.50 m 567 676.50 l S
-Q
-q
-0.70 0.74 0.77 RG
-0.35 w
-66 676.50 m 66 692 l S
-Q
-q
-0.97 0.98 0.99 rg
-28 661 539 15.50 re
-f
-Q
-BT
-/F1 5.25 Tf
-0.10 0.12 0.15 rg
-42.75 665.80 Td
-(038) Tj
-ET
-BT
-/F2 5.25 Tf
-0.72 0.02 0.02 rg
-69 665.80 Td
-(SPRITES_PIEDRA_ORIGEN_PART2_SEMIBOSS_2) Tj
-ET
-q
-0.70 0.74 0.77 RG
-0.35 w
-28 661 m 567 661 l S
-Q
-q
-0.70 0.74 0.77 RG
-0.35 w
-66 661 m 66 676.50 l S
-Q
-q
-1 1 1 rg
-28 645.50 539 15.50 re
-f
-Q
-BT
-/F1 5.25 Tf
-0.10 0.12 0.15 rg
-42.75 650.30 Td
-(039) Tj
-ET
-BT
-/F2 5.25 Tf
-0.72 0.02 0.02 rg
-69 650.30 Td
-(SPRITES_PIEDRA_TAM_PART2_SEMIBOSS_2) Tj
-ET
-q
-0.70 0.74 0.77 RG
-0.35 w
-28 645.50 m 567 645.50 l S
-Q
-q
-0.70 0.74 0.77 RG
-0.35 w
-66 645.50 m 66 661 l S
-Q
-q
-0.97 0.98 0.99 rg
-28 630 539 15.50 re
-f
-Q
-BT
-/F1 5.25 Tf
-0.10 0.12 0.15 rg
-42.75 634.80 Td
-(040) Tj
-ET
-BT
-/F2 5.25 Tf
-0.72 0.02 0.02 rg
-69 634.80 Td
-(VDP_25) Tj
-ET
-q
-0.70 0.74 0.77 RG
-0.35 w
-28 630 m 567 630 l S
-Q
-q
-0.70 0.74 0.77 RG
-0.35 w
-66 630 m 66 645.50 l S
-Q
-q
-1 1 1 rg
-28 614.50 539 15.50 re
-f
-Q
-BT
-/F1 5.25 Tf
-0.10 0.12 0.15 rg
-42.75 619.30 Td
-(041) Tj
-ET
-BT
-/F2 5.25 Tf
-0.72 0.02 0.02 rg
-69 619.30 Td
-(VRAM_SPRITES_ATRIBUTOS_PART2_SEMIBOSS_2) Tj
-ET
-q
-0.70 0.74 0.77 RG
-0.35 w
-28 614.50 m 567 614.50 l S
-Q
-q
-0.70 0.74 0.77 RG
-0.35 w
-66 614.50 m 66 630 l S
-Q
-q
-0.97 0.98 0.99 rg
-28 599 539 15.50 re
-f
-Q
-BT
-/F1 5.25 Tf
-0.10 0.12 0.15 rg
-42.75 603.80 Td
-(042) Tj
-ET
-BT
-/F2 5.25 Tf
-0.72 0.02 0.02 rg
-69 603.80 Td
-(VRAM_SPRITES_ATRIBUTOS_PART3_SEMIBOSS_2) Tj
-ET
-q
-0.70 0.74 0.77 RG
-0.35 w
-28 599 m 567 599 l S
-Q
-q
-0.70 0.74 0.77 RG
-0.35 w
-66 599 m 66 614.50 l S
-Q
-q
-1 1 1 rg
-28 583.50 539 15.50 re
-f
-Q
-BT
-/F1 5.25 Tf
-0.10 0.12 0.15 rg
-42.75 588.30 Td
-(043) Tj
-ET
-BT
-/F2 5.25 Tf
-0.72 0.02 0.02 rg
-69 588.30 Td
-(VRAM_SPRITES_COLOR_PART2_SEMIBOSS_2) Tj
-ET
-q
-0.70 0.74 0.77 RG
-0.35 w
-28 583.50 m 567 583.50 l S
-Q
-q
-0.70 0.74 0.77 RG
-0.35 w
-66 583.50 m 66 599 l S
-Q
-q
-0.97 0.98 0.99 rg
-28 568 539 15.50 re
-f
-Q
-BT
-/F1 5.25 Tf
-0.10 0.12 0.15 rg
-42.75 572.80 Td
-(044) Tj
-ET
-BT
-/F2 5.25 Tf
-0.72 0.02 0.02 rg
-69 572.80 Td
-(VRAM_SPRITES_PATRONES_PART3_SEMIBOSS_2) Tj
-ET
-q
-0.70 0.74 0.77 RG
-0.35 w
-28 568 m 567 568 l S
-Q
-q
-0.70 0.74 0.77 RG
-0.35 w
-66 568 m 66 583.50 l S
-Q
-q
-0.35 0.44 0.52 RG
-0.70 w
-28 568 539 190 re
-S
-Q
-q
-0.70 0.74 0.77 RG
-0.35 w
-66 568 m 66 741 l S
-Q
-
-endstream
-endobj
-8 0 obj
-<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >>  >> /Contents 7 0 R >>
-endobj
 xref
-0 9
+0 7
 0000000000 65535 f 
 0000000015 00000 n 
 0000000064 00000 n 
-0000000127 00000 n 
-0000000224 00000 n 
-0000000326 00000 n 
-0000013008 00000 n 
-0000013145 00000 n 
-0000017124 00000 n 
+0000000121 00000 n 
+0000000218 00000 n 
+0000000320 00000 n 
+0000012396 00000 n 
 trailer
-<< /Size 9 /Root 1 0 R >>
+<< /Size 7 /Root 1 0 R >>
 startxref
-17261
+12533
 %%EOF

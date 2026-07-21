@@ -603,18 +603,18 @@ PINTA_PROYECTILES_ENEMIGOS:
 .VAMOS_TERMINANDO_EL_CICLO:
 
 		ld		a,(ix+6)
-		cp		3
+		cp		17
 		jr		z,.sin_segundo_sprite_final
-		cp		6
+		cp		37
 		jr		z,.sin_segundo_sprite_final
-		cp		7
-		jr		z,.sin_segundo_sprite_final
-		ld		a,(ix+3)
-		cp		7
-		jr		c,.sin_segundo_sprite_final
+		ld		a,(ix+12)
+		add		4
+		cp		(ix+3)
+		jr		nz,.sin_segundo_sprite_final
 		call	SOLO_EL_SEGUNDO
 		xor		a
 		ld		(ix+3),a
+		nop
 
 .sin_segundo_sprite_final:
 
@@ -824,7 +824,7 @@ APARTAMOS_SPRITES_QUE_MOLESTAN:
 
 		push	ix
 		
-		ld		b,22
+		ld		b,20
 
 .bucle_molestias:
 
@@ -1165,9 +1165,14 @@ CALCULAMOS_PROYECTILES_ENEMIGOS:
         sub     b
         ret
 
-MAGIA:
+INTENTA_MAGIA_GRATIS_PENDIENTE:
 
-; MIRAMOS_SI_PUEDE_HACER_MAGIA
+		ld		a,(MAGIA_GRATIS_PENDIENTE)
+		or		a
+		ret		z
+		jp		CONTINUA_INTENTO_MAGIA_GRATIS_PENDIENTE
+
+PUEDE_HACER_MAGIA:
 
 		ld		a,(PUNTO_DEL_SCROLL)
 		cp		#b7
@@ -1179,6 +1184,13 @@ MAGIA:
 		cp		255
 		ret		z
 		cp		#8f
+		ret
+
+MAGIA:
+
+; MIRAMOS_SI_PUEDE_HACER_MAGIA
+
+		call	PUEDE_HACER_MAGIA
 		ret		z
 		
 		ld		a,(MAGIAS)
@@ -1592,8 +1604,8 @@ MAGIA_GRATIS:
 .es_ecto_o_no:
 
 		ld		a,(ECTOPALLERS_ACTIVO)
-		or		a
-		jp		nz,.avanzamos		
+		cp		2
+		call	z,PREPARA_MUERTE_ECTO_HUEVOS
 
 .eliminando:
 

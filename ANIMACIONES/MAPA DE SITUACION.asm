@@ -24,6 +24,7 @@
 		ld		(V_CENTENAS),a
 		ld		(V_DECENAS),a
 		ld		(V_UNIDADES),a
+		ld		(MAGIA_GRATIS_PENDIENTE),a
 		ld		(SCORE_REAL),hl
 		ld		a,2
 		ld		b,a
@@ -296,19 +297,6 @@ DESACTIVA_SPRITES_MAPA_DE_SITUACION_SIN_EI:
 		out		(#99),a
 		ret
 
-ACTIVA_SPRITES_MAPA_DE_SITUACION:
-
-		di
-		ld 		a,(RG8SAV)
-		and		11111101B
-		ld 		(RG8SAV),a
-		ld		b,a
-		ld		c,8
-		call	WRTVDP_EN_RAM
-		ei
-		ret
-
-
 INICIA_MUSICA_MAPA_DE_SITUACION:
 
 		call	stpmus
@@ -365,21 +353,6 @@ STOP_MUSICA_MAPA_DE_SITUACION:
 
 		call	PAGE_10_A_SEGMENT_2
 		ret
-
-
-INICIALIZA_PATRONES_CABEZA_DEPH_MAPA_DE_SITUACION:
-
-		ld		ix,ATRIBUTOS_DEPH_VARIABLES
-		ld		a,4
-		ld		(ix+2),a
-		add		4
-		ld		(ix+6),a
-		add		4
-		ld		(ix+10),a
-		add		4
-		ld		(ix+14),a
-		ret
-
 
 PINTA_FRAME_MAPA_DE_SITUACION:
 

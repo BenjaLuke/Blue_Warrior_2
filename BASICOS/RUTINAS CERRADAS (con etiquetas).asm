@@ -111,7 +111,6 @@ SETPAGE:     															; Cambiar la p??gina en screen 5
 				
 		ret	
 
-SETPALETE_MARCADOR_PARCIAL:
 SETPALETE_MARCADOR_PARCIAL_SIN_EI:
 
 		ld			hl,PALETA_MARCADOR_STAGE_1+10						; Cambia los colores 5-F
@@ -2772,7 +2771,7 @@ PAGE_44_A_SEGMENT_1_MAGIA:
 		push    ix
 		ld		a,(MAGIAS)
 		ld		(VARIABLE_UN_USO2),a
-		call	PARTE_A	
+		call	PREPARA_DOBLE_BUFFER_PARA_MAGIA
         call	MAGIA_ROCK
 
 PARTE_B:
@@ -2783,7 +2782,7 @@ PARTE_B:
 		ld		[DIRPA1],a												; Cambiamos la p??gina del bloque 2	
 		ei	
 
-		ld		a,(MAGIAS)
+		call	RESTAURA_DOBLE_BUFFER_TRAS_MAGIA
 		ld		b,a
 		ld		a,(VARIABLE_UN_USO2)
 		cp		b

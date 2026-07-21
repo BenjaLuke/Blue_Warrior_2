@@ -608,7 +608,7 @@ CARGA_SLOT_MAPA:
 
 		include "MOTOR/NUCLEOBW2_1.asm"				                            ; Incluímos el motor del juego 1
 
-        ds      #8000-$-#2200 
+        ds      4
 
 CONTINUA_PAGINA_9_TRAS_COVID_OPTIMIZADO:
 
@@ -616,6 +616,15 @@ CONTINUA_PAGINA_9_TRAS_COVID_OPTIMIZADO:
 		include "AUDIOS/LANZADOR EFECTOS PSG (sin etiquetas).asm"
         include "PALETAS/PALETAS (sin etiquetas).asm"
 		include "AUDIOS/LANZADOR FMPACK Y MUSIC MODULE (sin etiquetas).asm"        
+
+CONTINUA_INTENTO_MAGIA_GRATIS_PENDIENTE:
+
+		call	PUEDE_HACER_MAGIA
+		ret		z
+
+		xor		a
+		ld		(MAGIA_GRATIS_PENDIENTE),a
+		jp		MAGIA_GRATIS
 
 MIRA_SI_PINTAMOS_COVID_OPTIMIZADO:
 
@@ -661,9 +670,7 @@ REANUDA_MUSICA_DESDE_SLOT1:
             add     20
             call    CHANGE_BANK_2
             call    cntmus
-            call    PAGE_10_A_SEGMENT_2
-            ei
-            ret
+            jp      PAGE_10_A_SEGMENT_2
 
 INICIA_MUSICA_EXTRA:
 
@@ -693,11 +700,7 @@ MIRA_SI_PINTAMOS_ENEMIGO_OPTIMIZADO:
             ld      a,(ix+13)
             or      a
             ret     z
-
-.no_pintar:
-
-            scf
-            ret
+            jr      .no_pintar
 
 .slime_quieto:
 
@@ -718,7 +721,12 @@ MIRA_SI_PINTAMOS_ENEMIGO_OPTIMIZADO:
             sub     10
             ret     z
 
-        ds		#8000-$
+.no_pintar:
+
+            scf
+            ret
+
+        ds      3
 
 /**********************
  ****** PAGINA 9 ******

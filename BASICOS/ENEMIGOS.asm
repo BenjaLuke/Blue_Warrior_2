@@ -33,14 +33,14 @@ UN_NUEVO_ENEMIGO:
         ld      a,(ix+8)
         cp      54*4
         jp      c,.un_solo_sprite
-        jp      .seguimos_definiendo_la_explosion
+        jr      .seguimos_definiendo_la_explosion
 
 .LIMITES_2_5:
 
         ld      a,(ix+8)
         cp      60*4
         jp      c,.un_solo_sprite
-        jp      .seguimos_definiendo_la_explosion
+        jr      .seguimos_definiendo_la_explosion
 
 .un_solo_sprite:
 
@@ -59,6 +59,7 @@ UN_NUEVO_ENEMIGO:
         pop     ix
 	ld	bc,3
 	call	PON_COLOR_2.sin_bc_impuesta
+	inc	(ix+3)                                                                                ; Evita liberar por segunda vez una reserva ya reutilizable
 
 .seguimos_definiendo_la_explosion
 
@@ -245,22 +246,23 @@ UN_NUEVO_ENEMIGO:
         ld      (ix+1),a
         pop     ix
         call    PATRONES_SPRITE_SECUNDARIO
+	inc	(ix+3)                                                                                ; Evita liberar por segunda vez una reserva ya reutilizable
        
         ld      a,(ix)
         cp      180
-        jp      z,.principio_de_secuencia
+        jr      z,.principio_de_secuencia
         cp      50
-        jp      z,.mitad_de_secuencia
+        jr      z,.mitad_de_secuencia
 
 .cuarto_de_secuencia:
 
         ld      a,16
-        jp      .premio_aleatorio
+        jr      .premio_aleatorio
 
 .principio_de_secuencia:   
 
         xor     a
-        jp      .premio_aleatorio
+        jr      .premio_aleatorio
 
 .mitad_de_secuencia:
 
@@ -1378,13 +1380,13 @@ TROZOS_COMUNES_23:
 
         ld      a,b
         cp      c
-        jp      nc,TROZOS_COMUNES_25
+        jr      nc,TROZOS_COMUNES_25
         jp      SECUENCIA_PROYECTILES_Y_ENEMIGOS.PASAMOS_A_LA_SIGUIENTE_POSICION
 
 .partido:
 
         cp      c
-        jp      c,TROZOS_COMUNES_25
+        jr      c,TROZOS_COMUNES_25
         ld      a,b
         cp      c
         jp      c,SECUENCIA_PROYECTILES_Y_ENEMIGOS.PASAMOS_A_LA_SIGUIENTE_POSICION
@@ -1394,7 +1396,8 @@ TROZOS_COMUNES_25:
         call    ENEMIGO_EN_BLINDAJE_NACIMIENTO
         jp      c,SECUENCIA_PROYECTILES_Y_ENEMIGOS.PASAMOS_A_LA_SIGUIENTE_POSICION
         call    LIBERA_DOS_SPRITES
-        jp      TROZOS_COMUNES_30
+	inc	(ix+3)                                ; Evita volver a liberar el segundo sprite en el ciclo de limpieza
+        jr      TROZOS_COMUNES_30
 
 TROZOS_COMUNES_24:
 
