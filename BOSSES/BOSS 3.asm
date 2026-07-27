@@ -1359,60 +1359,6 @@ CONTROLA_INMUNIDAD_DEPH_BOSS_3:
 		ld		(INMUNE),a
 		ret
 
-/*INICIALIZA_POOL_PROYECTILES_BOSS_3:
-
-		xor		a
-		ld		(PROYECTIL_BOSS_3_SIGUIENTE_EMISOR),a
-		ld		(PROYECTIL_BOSS_3_INDICE_ACTUAL),a
-		ld		hl,PROYECTILES_BOSS_3_DIRECCION
-		ld		b,PROYECTILES_BOSS_3_CANTIDAD
-
-.INICIALIZA_DIRECCIONES_PROYECTIL_BOSS_3:
-
-		ld		(hl),a
-		inc		hl
-		djnz	.INICIALIZA_DIRECCIONES_PROYECTIL_BOSS_3
-		ld		hl,PROYECTILES_BOSS_3_PASO_TABLA
-		ld		b,PROYECTILES_BOSS_3_CANTIDAD
-
-.INICIALIZA_PASOS_PROYECTIL_BOSS_3:
-
-		ld		(hl),a
-		inc		hl
-		djnz	.INICIALIZA_PASOS_PROYECTIL_BOSS_3
-		ld		hl,PROYECTILES_BOSS_3_X
-		ld		b,PROYECTILES_BOSS_3_CANTIDAD
-
-.INICIALIZA_X_PROYECTIL_BOSS_3:
-
-		ld		(hl),a
-		inc		hl
-		djnz	.INICIALIZA_X_PROYECTIL_BOSS_3
-		ld		a,PROYECTIL_BOSS_3_Y_OCULTO
-		ld		hl,PROYECTILES_BOSS_3_Y
-		ld		b,PROYECTILES_BOSS_3_CANTIDAD
-
-.INICIALIZA_Y_PROYECTIL_BOSS_3:
-
-		ld		(hl),a
-		inc		hl
-		djnz	.INICIALIZA_Y_PROYECTIL_BOSS_3
-		xor		a
-		ld		hl,SPRITES_ACTIVOS+PROYECTIL_BOSS_3_SPRITES_ACTIVOS_OFS
-		ld		b,PROYECTILES_BOSS_3_CANTIDAD
-
-.INICIALIZA_SPRITES_ACTIVOS_PROYECTIL_BOSS_3:
-
-		ld		(hl),a
-		inc		hl
-		djnz	.INICIALIZA_SPRITES_ACTIVOS_PROYECTIL_BOSS_3
-		ld		a,PROYECTIL_BOSS_3_SPRITE_INICIAL
-		ld		(PROYECTIL_BOSS_3_SIGUIENTE_SPRITE),a
-		ld		(PROYECTIL_BOSS_3_SPRITE_ACTUAL),a
-		ld		a,PROYECTIL_BOSS_3_ESPERA_INICIAL
-		ld		(PROYECTIL_BOSS_3_ESPERA),a
-		ret*/
-
 MUEVE_CHUMINIX_BOSS_3:
 
 		; Control completo de Chuminix durante la pelea.
@@ -2368,122 +2314,6 @@ ALTERNA_PAGE_PINTA_CHUMINIX_BOSS_3:
 		ld		(CHUMINIX_BOSS_3_PAGE_PINTA),a
 		ret
 
-/*BORRA_RASTRO_X_CHUMINIX_PELEA_BOSS_3:
-
-		ld		a,(CHUMINIX_BOSS_3_X)
-		ld		b,a				; B = X nueva
-		ld		a,(VARIABLE_UN_USO)		; A = X anterior
-		cp		b
-		ret		z
-		jr		c,.X_CRECE_CHUMINIX_PELEA_BOSS_3
-
-; X decrece: delta = X anterior - X nueva.
-; Rectangulo: X nueva + ancho, Y nueva, ancho delta, alto Chuminix.
-
-		sub		b
-		ld		d,a				; D = ancho / delta X
-		call	LIMITA_DELTA_X_CHUMINIX_BOSS_3
-		ld		a,(CHUMINIX_BOSS_3_X)
-		add		CHUMINIX_APARICION_ANCHO_BOSS_3
-		ld		b,a				; B = X destino del relleno
-		ld		a,(CHUMINIX_BOSS_3_ESPERA_MOVIMIENTO)
-		ld		c,a				; C = Y destino del relleno
-		ld		e,CHUMINIX_APARICION_ALTO_BOSS_3
-		ld		a,#22
-		jp		PINTA_RECTANGULO_COLOR_3_CHUMINIX_BOSS_3
-
-.X_CRECE_CHUMINIX_PELEA_BOSS_3:
-
-; X crece: delta = X nueva - X anterior.
-; Rectangulo: X nueva - delta, Y nueva, ancho delta, alto Chuminix.
-
-		ld		c,a				; C = X anterior temporal
-		ld		a,(CHUMINIX_BOSS_3_X)
-		sub		c
-		ld		d,a				; D = ancho / delta X
-		call	LIMITA_DELTA_X_CHUMINIX_BOSS_3
-		ld		a,(CHUMINIX_BOSS_3_X)
-		sub		d
-		ld		b,a				; B = X destino del relleno
-		ld		a,(CHUMINIX_BOSS_3_ESPERA_MOVIMIENTO)
-		ld		c,a				; C = Y destino del relleno
-		ld		e,CHUMINIX_APARICION_ALTO_BOSS_3
-		ld		a,#11
-		jp		PINTA_RECTANGULO_COLOR_3_CHUMINIX_BOSS_3*/
-
-/*BORRA_RASTRO_Y_CHUMINIX_PELEA_BOSS_3:
-
-		ld		a,(CHUMINIX_BOSS_3_ESPERA_MOVIMIENTO)
-		ld		b,a				; B = Y nueva
-		ld		a,(VARIABLE_UN_USO2)		; A = Y anterior
-		cp		b
-		ret		z
-		jr		c,.Y_CRECE_CHUMINIX_PELEA_BOSS_3
-
-; Y decrece: delta = Y anterior - Y nueva.
-; Rectangulo: X nueva, Y nueva + alto, ancho Chuminix, alto delta Y.
-
-		sub		b
-		ld		e,a				; E = alto / delta Y
-		ld		a,(CHUMINIX_BOSS_3_ESPERA_MOVIMIENTO)
-		add		CHUMINIX_APARICION_ALTO_BOSS_3
-		ld		c,a				; C = Y destino del relleno
-		call	CARGA_X_Y_ANCHO_CHUMINIX_BOSS_3
-		ld		a,#88
-		jp		PINTA_RECTANGULO_COLOR_3_CHUMINIX_BOSS_3
-
-.Y_CRECE_CHUMINIX_PELEA_BOSS_3:
-
-; Y crece: delta = Y nueva - Y anterior.
-; Rectangulo: X nueva, Y nueva - delta, ancho Chuminix, alto delta Y.
-
-		ld		c,a				; C = Y anterior / Y destino del relleno
-		ld		a,(CHUMINIX_BOSS_3_ESPERA_MOVIMIENTO)
-		sub		c
-		ld		e,a				; E = alto / delta Y
-		call	CARGA_X_Y_ANCHO_CHUMINIX_BOSS_3
-		ld		a,#77
-		jp		PINTA_RECTANGULO_COLOR_3_CHUMINIX_BOSS_3
-
-; Salida:
-;   B = X nueva
-;   D = ancho Chuminix
-; Conserva:
-;   C = Y destino
-;   E = alto*/
-
-/*CARGA_X_Y_ANCHO_CHUMINIX_BOSS_3:
-
-		ld		a,(CHUMINIX_BOSS_3_X)
-		ld		b,a
-		ld		d,CHUMINIX_APARICION_ANCHO_BOSS_3
-		ret
-
-LIMITA_DELTA_X_CHUMINIX_BOSS_3:
-
-		ld		a,(CHUMINIX_BOSS_3_MODO)
-		cp		CHUMINIX_PELEA_SECUENCIA_2_BOSS_3
-		jr		z,.LIMITE_SEC_2_DELTA_X_CHUMINIX
-
-		ld		a,d
-		cp		CHUMINIX_PELEA_PASO_X_SEC_1_BOSS_3+1
-		ret		c
-		ld		d,CHUMINIX_PELEA_PASO_X_SEC_1_BOSS_3
-		ret
-
-.LIMITE_SEC_2_DELTA_X_CHUMINIX:
-
-		ld		a,d
-		cp		CHUMINIX_PELEA_PASO_X_SEC_2_BOSS_3+1
-		ret		c
-		ld		d,CHUMINIX_PELEA_PASO_X_SEC_2_BOSS_3
-		ret*/
-
-; Entrada:
-;   B = X destino
-;   C = Y destino
-;   D = ancho
-;   E = alto
 PINTA_RECTANGULO_COLOR_3_CHUMINIX_BOSS_3:
 
 		ld		iy,CHUMINIX_BOSS_3_DATAS_BORRADO
@@ -2938,13 +2768,6 @@ MATA_COVID_BOSS_3_ACTUAL_CON_EXPLOSION:
 		call	PON_COLOR_2.sin_bc_impuesta
 
 		jp		DESACTIVA_COVID_BOSS_3
-
-/*REVISAMOS_COLISION_CON_CHUMINIX_Y_PROYECTILES_DEPH_ANTIGUA:
-		ret
-
-
-		; Aquí gestionaremos onsprites entre el malo y los proytectiles de Deph.
-		ret*/
 
 REVISAMOS_COLISION_CON_CHUMINIX_Y_PROYECTILES_DEPH:
 
@@ -3573,6 +3396,7 @@ MUERTE_DE_CHUMINIX_BOSS_3:
 		call	FILVRM_RAM
 
 		call	ANIMACION_MUERTE_CHUMINIX_BOSS_3
+		call	PREPARA_VRAM_PARA_MUERTE_DEPH_EN_BOSS
 
 TERMINANDO_LA_BATALLA_b3:
 
@@ -3599,68 +3423,6 @@ ULTIMO_DESPLAZAMIENTO_b3:
 VOLVEMOS_b3:
 
 		jp		CARGA_SLOT_REGRESO_A_JUEGO
-
-; Rutas iniciales de los COVIDs Boss 4.
-; Ruta 0: X=0,   Y=0   -> baja y empieza hacia la derecha.
-; Ruta 1: X=250, Y=191 -> sube y empieza hacia la izquierda.
-; Ruta 2: X=255, Y=0   -> baja y empieza hacia la izquierda.
-; Ruta 3: X=0,   Y=191 -> sube y empieza hacia la derecha.
-/*TABLA_X_INICIAL_COVID_BOSS_3:
-
-		db		0,250,255,0
-
-TABLA_Y_INICIAL_COVID_BOSS_3:
-
-		db		0,191,0,191*/
-
-/*TABLA_PASO_Y_COVID_BOSS_3:
-
-		db		1,255,1,255			; 255 = -1*/
-
-; Tabla 0: avance horizontal normal.
-; Suma total derecha: 240 px. Suma total izquierda: -240 px.
-; Maximo desplazamiento: 4 px por ciclo.
-/*TABLA_MOVIMIENTO_X_COVID_BOSS_3:
-
-		db		1,2,3
-[57]	db		4
-		db		3,2,1,0
-		db		255,254,253			; -1,-2,-3
-[57]	db		252				; -4
-		db		253,254,255,0		; -3,-2,-1,0
-
-; Tabla 1: recorrido inverso horizontal.
-TABLA_MOVIMIENTO_X_COVID_BOSS_3_1:
-
-		db		255,254,253			; -1,-2,-3
-[57]	db		252				; -4
-		db		253,254,255,0		; -3,-2,-1,0
-		db		1,2,3
-[57]	db		4
-		db		3,2,1,0
-
-; Tabla 2: recorrido inverso horizontal, para salida desde X=255,Y=0.
-TABLA_MOVIMIENTO_X_COVID_BOSS_3_2:
-
-		db		255,254,253			; -1,-2,-3
-[57]	db		252				; -4
-		db		253,254,255,0		; -3,-2,-1,0
-		db		1,2,3
-[57]	db		4
-		db		3,2,1,0
-
-; Tabla 3: avance horizontal normal, para salida desde X=0,Y=191.
-TABLA_MOVIMIENTO_X_COVID_BOSS_3_3:
-
-		db		1,2,3
-[57]	db		4
-		db		3,2,1,0
-		db		255,254,253			; -1,-2,-3
-[57]	db		252				; -4
-		db		253,254,255,0		; -3,-2,-1,0
-
-; Variables COVID/LODO Boss 4 movidas a VARIABLES BOSSES.asm (RAM).*/
-
 
 	include	"BOSS 3 DATA.asm"
 

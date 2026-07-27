@@ -451,7 +451,7 @@ SPRITES_COVID_TAM_PART3_SEMIBOSS_2				equ		2*8*4
         ld      hl,0
         ld      (SCORE_A_SUMAR),hl
         call    SUMA_SCORE
-;	call	PINTAMOS_LOS_PUNTOS_DE_MAGIA
+	call	PINTAMOS_LOS_PUNTOS_DE_MAGIA
         call    PINTA_CORAZONES
 
         pop     de

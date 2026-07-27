@@ -1372,7 +1372,7 @@ CALCULA_DANO_MAGIA_BOSS_2:
 
 .DANO_MAGIA_FLECHA_BOSS_2:
 
-		ld		a,24
+		ld		a,1
 		ret
 
 .DANO_MAGIA_FUEGO_BOSS_2:
@@ -1401,23 +1401,34 @@ DANO_MAGIA_EN_DAVEANIX_BOSS_2:
 		or		a
 		jr		z,.ROCKAGER_YA_NO_PROTEGE_A_DAVEANIX_BOSS_2
 
-
-		; Si Rockager sigue vivo, Daveanix no puede bajar de 5.
-		; Es la misma idea que ya usas con los proyectiles normales.
-
 		ld		a,b								; A = vida actual de Daveanix
 		cp		6
-		ret		c								; Si ya tiene 1-5, no recibe más daño mientras Rockager viva
+		jr		c,.RESTA_DANO_MAGIA_AL_ROCKAGER_BOSS_2
 
 		sub		c
 		jr		c,.MINIMO_VIDA_DAVEANIX_CON_ROCKAGER_BOSS_2
 		cp		6
-		jr		nc,.GUARDA_VIDA_MAGIA_DAVEANIX_BOSS_2
+		jr		nc,.GUARDA_VIDA_DAVEANIX_ANTES_DE_ROCKAGER_BOSS_2
 
 .MINIMO_VIDA_DAVEANIX_CON_ROCKAGER_BOSS_2:
 
 		ld		a,5
-		jr		.GUARDA_VIDA_MAGIA_DAVEANIX_BOSS_2
+		
+.GUARDA_VIDA_DAVEANIX_ANTES_DE_ROCKAGER_BOSS_2:
+
+		ld		(VIDA_DAVEANIX_BOSS_2),a
+
+.RESTA_DANO_MAGIA_AL_ROCKAGER_BOSS_2:
+
+		ld		a,(VIDA_ROCKAGER_BOSS_2)
+		sub		c
+		jr		nc,.GUARDA_VIDA_MAGIA_ROCKAGER_BOSS_2
+		xor		a
+
+.GUARDA_VIDA_MAGIA_ROCKAGER_BOSS_2:
+
+		ld		(VIDA_ROCKAGER_BOSS_2),a
+		jr		.REPINTA_VIDA_TRAS_MAGIA_BOSS_2
 
 
 .ROCKAGER_YA_NO_PROTEGE_A_DAVEANIX_BOSS_2:
@@ -1427,17 +1438,16 @@ DANO_MAGIA_EN_DAVEANIX_BOSS_2:
 		jr		nc,.GUARDA_VIDA_MAGIA_DAVEANIX_BOSS_2
 
 		xor		a
-		jr		.GUARDA_VIDA_MAGIA_DAVEANIX_BOSS_2
 
 
 .GUARDA_VIDA_MAGIA_DAVEANIX_BOSS_2:
 
 		ld		(VIDA_DAVEANIX_BOSS_2),a
 
-		push	af
-		call	PINTA_MARCADORES_VIDA_FINAL_BOSS_2
-		pop		af
+.REPINTA_VIDA_TRAS_MAGIA_BOSS_2:
 
+		call	PINTA_MARCADORES_VIDA_FINAL_BOSS_2
+		ld		a,(VIDA_DAVEANIX_BOSS_2)
 		or		a								; Z activo si Daveanix ha muerto
 		ret
 
@@ -2300,6 +2310,30 @@ LIMPIA_ATRIBUTOS_SPRITES_ROCKAGER:
         ld      hl,VRAM_SPRITES_ATRIBUTOS_SEMIBOSS_2+8*4
         ld      bc,24*4
         jp      FILVRM_RAM
+
+DANO_DEPH_SEMIBOSS_2:
+
+		ld		a,(INMUNE)
+		or		a
+		jr		nz,.APLICA_DANO
+
+		ld		a,(CORAZONES)
+		or		a
+		jr		z,.PREPARA_MUERTE
+		dec		a
+		jr		nz,.APLICA_DANO
+
+		ld		a,(TRUCO_CORAZONES_ACTIVO)
+		or		a
+		jr		nz,.APLICA_DANO
+
+.PREPARA_MUERTE:
+
+		call	PREPARA_VRAM_PARA_MUERTE_DEPH_EN_BOSS
+
+.APLICA_DANO:
+
+		jp		REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH.DANO_DE_PUPA
 
         ds		#8000-$
 

@@ -112,7 +112,7 @@ ROCKAGER:
 
         ld      (iy+2),a
         ld      b,a
-        ld      a,0
+        xor     a
         sub     b
         ld      (iy+10),a
         push    af
@@ -131,7 +131,7 @@ ROCKAGER:
         ld      iy,DATAS_COPY_RECUP_SCROLL
         ld      a,(PUNTO_DEL_SCROLL)
         ld      b,a
-        ld      a,0
+        xor     a
         sub     b
         ld      (iy+6),a
         pop     af
@@ -177,7 +177,7 @@ ROCKAGER:
 
 .PUNTO_DE_SCROLL_RETOCADO:
 
-        ld      a,0
+        xor     a
         ld      (PUNTO_DEL_SCROLL),a
 
 .COLOCA_SPRITES_DEPH_EN_SU_SITIO:
