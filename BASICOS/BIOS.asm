@@ -1,5 +1,4 @@
 ; BIOS
-CALSLT      equ     #001C
 RDSLT       equ     #000C                                               ; lee el valor de una dirección en otro slot
 WRSLT       equ     #0014                                               ; Escribe un valor en la dirección de otro slot
                                                                         ; Input:
@@ -7,15 +6,10 @@ WRSLT       equ     #0014                                               ; Escrib
                                                                         ; HL - Dirección
                                                                         ; E  - Valor
 GICINI      equ     #0090                                               ; Reinicia PSG poniendo todos sus valores a 0                                                                     
-EXPTBL      equ     #FCC0
 RG0SAV		equ		#F3DF												; COPIA DE vdp DEL REGISTRO 0 (BASIC:VDP(0))
 RG1SAV		equ		#F3E0												; COPIA DE vdp DEL REGISTRO 1 (BASIC:VDP(1))
-RG2SAV		equ		#F3E1												; COPIA DE vdp DEL REGISTRO 2 (BASIC:VDP(2))
-RG3SAV		equ		#F3E2												; COPIA DE vdp DEL REGISTRO 3 (BASIC:VDP(3))
-RG4SAV		equ		#F3E3												; COPIA DE vdp DEL REGISTRO 4 (BASIC:VDP(4))
 RG5SAV		equ		#F3E4												; COPIA DE vdp DEL REGISTRO 5 (BASIC:VDP(5))
 RG6SAV		equ		#F3E5												; COPIA DE vdp DEL REGISTRO 6 (BASIC:VDP(6))
-RG7SAV		equ		#F3E6												; COPIA DE vdp DEL REGISTRO 7 (BASIC:VDP(7))
 RG8SAV		equ		#FfE7												; COPIA DE vdp DEL REGISTRO 8 (BASIC:VDP(8))
 RG9SAV		equ		#FfE8												; COPIA DE vdp DEL REGISTRO 9 (BASIC:VDP(9))
 RG11SAV		equ		#FFEA												; COPIA DE vdp DEL REGISTRO 11 (BASIC:VDP(11))
@@ -34,11 +28,6 @@ ENASLT		equ		#0024												; Para ampliar la rom
 RSLREG  	equ		#0138												; Lee el registro del slot primario
 SLOTVAR		equ		#C000												; Se usa para control del cambio de slot. Dejar libre esta dirección al escribir variables
 CHGMOD		equ		#005F												; Elige el modo gráfico
-INITXT		equ		#006C												; Inicializa SCREEN 0 de 40 columnas
-CLS			equ		#00C3												; Limpia la pantalla de texto
-POSIT		equ		#00C6												; Situa el cursor en H=x, L=y
-ERAFNK		equ		#00CC												; Oculta las teclas de función en modos texto
-CHPUT		equ		#00A2												; Imprime el carácter de A
 FORCLR		equ		#F3E9												; Define el color de letras para CHGCLR
 BAKCLR		equ		#F3EA												; Define el color de fondo para CHGCLR
 BDRCLR		equ		#F3EB												; Defeine el color de bordes para CHGCLR

@@ -792,7 +792,7 @@ REVISAMOS_SI_MUERE_UN_ROCKAGER:
         ld      a,37+37+37+37-4
         ld      (AGUJERO_INTOCABLE),a
         ld      a,(FOTOGRAMA_SECUENCIA_ROCKAGER_1)
-        add     111
+        add     108
         ld      (FOTOGRAMA_SECUENCIA_ROCKAGER_3),a
         ld      a,2
         jr      .UNO_COMUN

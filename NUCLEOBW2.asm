@@ -636,15 +636,6 @@ MIRA_SI_PINTAMOS_COVID_OPTIMIZADO:
             scf
             ret
 
-MIRAMOS_SI_ESTA_LIBRE_EL_SPRITE_SIGUIENTE:
-
-		ld		a,(ix+12)
-		rrca
-		rrca
-		inc		a
-		ld		(SPRITE_QUE_TOCA),a
-		ret
-
 TROZOS_COMUNES_1_DOS_SPRITES:
 
         call    STANDAR_Y_FUERA_PANTALLA
@@ -683,6 +674,17 @@ MIRA_SI_PINTAMOS_ENEMIGO_OPTIMIZADO:
             ret     z
 
             ld      a,(ix+6)
+            cp      30
+            jr      z,.mira_pintado_alterno
+            cp      17
+            jr      nz,.no_es_ecto_circle
+
+.mira_pintado_alterno:
+
+            jp      MIRA_SI_OMITIMOS_PINTADO_ECTO_CIRCLE
+
+.no_es_ecto_circle:
+
             cp      5
             jr      z,.premio
             cp      10
@@ -726,7 +728,7 @@ MIRA_SI_PINTAMOS_ENEMIGO_OPTIMIZADO:
             scf
             ret
 
-        ds      3
+        ds      2
 
 /**********************
  ****** PAGINA 9 ******
@@ -869,7 +871,67 @@ VOLVEMOS_TRAS_ROCKAGER:
 
 		ret
 
-        ds		#C000-$
+MIRAMOS_SI_ESTA_LIBRE_EL_SPRITE_SIGUIENTE:
+
+		ld		a,(ix+12)
+		rrca
+		rrca
+		inc		a
+		ld		(SPRITE_QUE_TOCA),a
+		ret
+
+PINTA_SPRITE_NORMAL_O_DOBLE_ECTO:
+
+		cp		30
+		jr		z,PINTA_ATRIBUTOS_DOBLES_ECTO_CIRCLE
+		jp		PINTA_PROYECTILES_ENEMIGOS.PINTADO_DE_SPRITE
+
+PINTA_ATRIBUTOS_DOBLES_ECTO_CIRCLE:
+
+		ld		c,(ix+1)
+		ld		b,(ix)
+		ld		e,(ix+8)
+		ld		a,e
+		add		4
+		ld		e,a
+		push	de
+		push	bc
+		sub		4
+		ld		e,a
+		push	de
+		push	bc
+
+		ld		e,(ix+12)
+		ld		d,#4A
+		ld		hl,0
+		add		hl,sp
+		ld		bc,7
+		call	PON_COLOR_2.sin_bc_impuesta
+
+		pop		bc
+		pop		bc
+		pop		bc
+		pop		bc
+		pop		hl
+		jp		PINTA_PROYECTILES_ENEMIGOS.PASAMOS_A_LA_SIGUIENTE_POSICION
+
+MIRA_SI_OMITIMOS_PINTADO_ECTO_CIRCLE:
+
+		ld		b,a
+		ld		a,(ix+10)
+		or		a
+		jr		nz,.PINTA
+		bit		0,(ix+5)
+		jr		nz,.PINTA
+		scf
+		ret
+
+.PINTA:
+
+		ld		a,b
+		jp		MIRA_SI_PINTAMOS_ENEMIGO_OPTIMIZADO.no_es_ecto_circle
+
+        ds		1
 
 
 
@@ -2334,6 +2396,12 @@ DANO_DEPH_SEMIBOSS_2:
 .APLICA_DANO:
 
 		jp		REVISAMOS_COLISION_CON_ENEMIGOS_DE_DEPH.DANO_DE_PUPA
+
+PON_COLOR_2_ROCKAGER_PROTEGIDO:
+
+		call	PON_COLOR_2.sin_bc_impuesta
+		di
+		ret
 
         ds		#8000-$
 

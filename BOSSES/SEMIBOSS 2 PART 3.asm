@@ -380,12 +380,12 @@ SPRITES_COVID_TAM_PART3_SEMIBOSS_2				equ		2*8*4
         ld      a,BANCO_STAGE_2_A_PART3_SEMIBOSS_2
         call    .CAMBIA_BANCO_2_SIN_INTERRUPCIONES
 
-        call    VDPREADY
+        call    VDPREADY_RAYOS_PROTEGIDO
         ld      hl,VRAM_GRAFICOS_ORIGEN_PART3_SEMIBOSS_2
         ld      de,VRAM_GRAFICOS_DESTINO_1_PART3_SEMIBOSS_2
         ld      bc,TAM_BANCO_GRAFICOS_PART3_SEMIBOSS_2
-        call    PON_COLOR_2.sin_bc_impuesta
-        call    VDPREADY
+        call    PON_COLOR_2_ROCKAGER_PROTEGIDO
+        call    VDPREADY_RAYOS_PROTEGIDO
 
         ld      a,BANCO_STAGE_2_B_PART3_SEMIBOSS_2
         call    .CAMBIA_BANCO_2_SIN_INTERRUPCIONES
@@ -393,8 +393,8 @@ SPRITES_COVID_TAM_PART3_SEMIBOSS_2				equ		2*8*4
         ld      hl,VRAM_GRAFICOS_ORIGEN_PART3_SEMIBOSS_2
         ld      de,VRAM_GRAFICOS_DESTINO_2_PART3_SEMIBOSS_2
         ld      bc,TAM_BANCO_GRAFICOS_PART3_SEMIBOSS_2
-        call    PON_COLOR_2.sin_bc_impuesta
-        call    VDPREADY
+        call    PON_COLOR_2_ROCKAGER_PROTEGIDO
+        call    VDPREADY_RAYOS_PROTEGIDO
 
         ld      a,BANCO_COMUN_PART3_SEMIBOSS_2
         call    .CAMBIA_BANCO_2_SIN_INTERRUPCIONES
@@ -404,7 +404,7 @@ SPRITES_COVID_TAM_PART3_SEMIBOSS_2				equ		2*8*4
 	ld	de,SPRITES_TEMPORALES_ATR_BASE_PART3_SEMIBOSS_2
         ld	hl,.VACIO
         ld	bc,SPRITES_TEMPORALES_ATR_TAM_PART3_SEMIBOSS_2
-        call	PON_COLOR_2.sin_bc_impuesta
+        call	PON_COLOR_2_ROCKAGER_PROTEGIDO
 
 .CARGAMOS_SPRITES_PERDIDOS:
 
@@ -414,12 +414,12 @@ SPRITES_COVID_TAM_PART3_SEMIBOSS_2				equ		2*8*4
 	ld	hl,SPRITES_ALPHONSERRYX
 	ld	de,SPRITES_ALPHONSERRYX_DESTINO_PART3_SEMIBOSS_2
         ld      bc,SPRITES_ALPHONSERRYX_TAM_PART3_SEMIBOSS_2
-        call    PON_COLOR_2.sin_bc_impuesta
+        call    PON_COLOR_2_ROCKAGER_PROTEGIDO
 
 	ld	hl,SPRITES_COVID
 	ld	de,SPRITES_COVID_DESTINO_PART3_SEMIBOSS_2
 	ld	bc,SPRITES_COVID_TAM_PART3_SEMIBOSS_2
-        call    PON_COLOR_2.sin_bc_impuesta
+        call    PON_COLOR_2_ROCKAGER_PROTEGIDO
 
         ld      a,BANCO_COMUN_PART3_SEMIBOSS_2
         call    .CAMBIA_BANCO_2_SIN_INTERRUPCIONES
@@ -428,13 +428,21 @@ SPRITES_COVID_TAM_PART3_SEMIBOSS_2				equ		2*8*4
 
         ld      hl,.COPIA_PARTE_PAGE_0_DE_STATUS
 	call	DOCOPY
-        call    VDPREADY
+        call    VDPREADY_RAYOS_PROTEGIDO
 
 .BORRAMOS_ESA_PARTE_DE_PAGE_0:
 
         ld      hl,.BORRA_PARTE_DE_STATUS_PAGE_0
 	call	DOCOPY
-        call    VDPREADY
+        call    VDPREADY_RAYOS_PROTEGIDO
+
+.REGRESAMOS:
+
+        ld      hl,0
+        ld      (SCORE_A_SUMAR),hl
+        call    SUMA_SCORE
+	call	PINTAMOS_LOS_PUNTOS_DE_MAGIA
+        call    PINTA_CORAZONES
 
         pop     af
         ld      b,a
@@ -445,14 +453,6 @@ SPRITES_COVID_TAM_PART3_SEMIBOSS_2				equ		2*8*4
         ld      c,0
         call    WRTVDP_ROCKAGER_SIN_EI
         ei
-
-.REGRESAMOS:
-
-        ld      hl,0
-        ld      (SCORE_A_SUMAR),hl
-        call    SUMA_SCORE
-	call	PINTAMOS_LOS_PUNTOS_DE_MAGIA
-        call    PINTA_CORAZONES
 
         pop     de
         pop     bc

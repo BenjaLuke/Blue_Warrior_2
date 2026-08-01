@@ -507,8 +507,10 @@ PINTAMOS_LOS_PUNTOS_DE_MAGIA:
         call    .pinta_digito_magia
 
         ld      hl,COPIA_MARCADOR_0_A_MARCADOR_3
-        call    NOP_50
-        call    DOCOPY
+        nop
+        nop
+        nop
+        call    DOCOPY_RAYOS_PROTEGIDO
 
         pop     ix
         ret
@@ -527,8 +529,10 @@ PINTAMOS_LOS_PUNTOS_DE_MAGIA:
         ld      a,172
 
         ld      hl,ATRIBUTOS_NUMERO_DE_VIDAS_O_PUNTOS
-        call    NOP_50
-        call    DOCOPY     
+        nop
+        nop
+        nop
+        call    DOCOPY_RAYOS_PROTEGIDO
         ret
 
 STANDAR_LDIR_MARCADOR:

@@ -5167,6 +5167,7 @@ ECTO_PALLERS:
 		jr		nz,.SIGUE_CIRCULO_ECTO
 		ld		a,3
 		ld		(ix+9),a
+		set		0,(ix+5)
 		xor		a
 		ld		(ix+11),a
 		call    TROZOS_COMUNES_17
@@ -5182,36 +5183,39 @@ ECTO_PALLERS:
 		jr		nz,.SIGUE_CIRCULO_ECTO
 		ld		a,4
 		ld		(ix+9),a
+		set		0,(ix+5)
 		xor		a
 		ld		(ix+11),a
 		jp		.CRUZA_ECTO_VERTICAL
 
 .SIGUE_CIRCULO_ECTO:
 
-		push	iy
-		ld		iy,TABLA_MOVIMIENTO_ECTO
-		ld      a,(ix+7) ;el contador
-        ld      e,a
-        ld      d,0
-        add     iy,de
-        ld      a,(iy)
-		ld		b,a
-		ld		a,(ix+13) ;x fija
-		add		b
-		ld		(ix),a
-		ld		a,(iy+1)
-		ld		b,a
-		ld		a,(ix+14) ; y fija
-		add		b
-		ld		(ix+1),a
-		pop		iy
-
 		ld		a,(ix+5)
 		inc		a
 		and		00000001b
 		ld		(ix+5),a
-		or		a
-		jp		nz,TROZOS_COMUNES_23
+		jr		z,.AVANZA_CIRCULO_ECTO
+
+		ld		hl,TABLA_MOVIMIENTO_ECTO
+		ld      a,(ix+7) ;el contador
+        ld      e,a
+        ld      d,0
+        add     hl,de
+        ld      a,(hl)
+		ld		b,a
+		ld		a,(ix+13) ;x fija
+		add		b
+		ld		(ix),a
+		inc		hl
+		ld		a,(hl)
+		ld		b,a
+		ld		a,(ix+14) ; y fija
+		add		b
+		ld		(ix+1),a
+
+		jp		TROZOS_COMUNES_23
+
+.AVANZA_CIRCULO_ECTO:
 
 		ld		a,(ix+7)
 		add		2

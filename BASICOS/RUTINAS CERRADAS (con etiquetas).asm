@@ -1026,18 +1026,18 @@ PINTA_SPRITE_DEPH:
 		add		ix,de
 		djnz	.PATRONES
 
+		ld		a,(SPRITE_CAIDO)
+		or		a
+		jp		nz,.MAS_COLORES
+
 		ld		a,(VARIABLE_CARGA_AGUA)
 		or		a
-		jp		z,.MAS_COLORES
+		jp		z,.COLORES_NORMALES
 
 		ld		hl,COLOR_PIES_EN_LODO
 		jp		.SIGUE_TRAS_COLORES
 
 .MAS_COLORES:
-
-		ld		a,(SPRITE_CAIDO)
-		or		a
-		jp		z,.COLORES_NORMALES
 
 		ld		a,(FOTOGRAMA_DEPH_EN_ORDEN)
 		cp		2
@@ -2452,18 +2452,14 @@ MUERTE_POR_TOQUES:
 		xor		a
 		ld		(ix+14),a
 
-		ld		a,11*4+4+4+4
+		ld		a,14*4
 		ld		(ix+18),a
 		add		4
 		ld		(ix+22),a
-		add		4
+		add		8											; Saltamos la tercera capa del cuadrante 3
 		ld		(ix+26),a
 		add		4
 		ld		(ix+30),a
-		add		4
-		ld		(ix+34),a
-		add		4
-		ld		(ix+38),a
 
 		ld		hl,COLOR_MUERTE
         call    PAGE_32_A_SEGMENT_2
@@ -2495,14 +2491,15 @@ MUERTE_POR_TOQUES:
 
 
 		ld		a,20*4
-		ld		b,5
-		
-.bucle_5_datos:
-
 		ld		(ix+18),a
 		add		4
-		add		ix,de
-		djnz	.bucle_5_datos
+		ld		(ix+22),a
+		add		4											; Saltamos la tercera capa del cuadrante 3
+		add		4
+		ld		(ix+26),a
+		add		4
+		ld		(ix+30),a
+		nop													; Conserva las direcciones del bloque
 		ld		ix,ATRIBUTOS_DEPH_VARIABLES
 		ld		hl,COLOR_MUERTE_2
         call    PAGE_32_A_SEGMENT_2

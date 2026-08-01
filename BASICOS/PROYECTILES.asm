@@ -515,7 +515,7 @@ PINTA_PROYECTILES_ENEMIGOS:
 
 .pintando_sprite_obligatorio:
 
-		call	.PINTADO_DE_SPRITE
+		call	PINTA_SPRITE_NORMAL_O_DOBLE_ECTO
 		ld		a,(ix+8)
 		or		a
 		jp		z,.VAMOS_TERMINANDO_EL_CICLO
@@ -1722,8 +1722,9 @@ PATRONES_SPRITE_SECUNDARIO:
 
 DIRECCIONES_DE_PROYECTIL:
 
-        ld      a,(ix+3)
-        add     a,(ix+5)
+        ld      a,(ix+5)
+        srl     a
+        add     a,(ix+3)
         ld      e,a
         ld      d,0
         ld      hl,TABLA_DE_DIRECCIONES_DE_PROYECTILES

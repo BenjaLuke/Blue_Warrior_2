@@ -551,21 +551,21 @@ SECUENCIAS_DE_LOS_ENEMIGOS:
 
 .SECUENCIA_PROYECTIL_NORMAL:
 
-        call    DIRECCIONES_DE_PROYECTIL
-
-	ld	de,TABLA_MOVIMIENTO_PROYECTIL_ENEMIGO
-	call	SITUAMOS_PUNTERO_EN_TABLA					; Con todos los datos definidos, nos vamos a la rutina que nos llevará al sitio adecuado	
-        
         ld      a,(ix+5)
         inc     a
-        cp      3
-        jp      nz,.seguimos_proyectil_normal
-
+        cp      6
+        jr      c,.GUARDA_CADENCIA_PROYECTIL
         xor     a
 
-.seguimos_proyectil_normal:
+.GUARDA_CADENCIA_PROYECTIL:
 
         ld      (ix+5),a
+        bit     0,a
+        jp      z,SECUENCIA_PROYECTILES_Y_ENEMIGOS.PASAMOS_A_LA_SIGUIENTE_POSICION
+
+        call    DIRECCIONES_DE_PROYECTIL
+        ld      de,TABLA_MOVIMIENTO_PROYECTIL_ENEMIGO
+	call	SITUAMOS_PUNTERO_EN_TABLA
 
         ld      a,(DONDE_VA_LA_INTERRUPCION_LINEAL)
         add     20
@@ -593,55 +593,49 @@ SECUENCIAS_DE_LOS_ENEMIGOS:
 
 .PROYECTIL_2:
 
-        ld      a,(ix)
-        inc     a
-        ld      (ix),a
+        inc     (ix)
+        inc     (ix)
 
 .PROYECTIL_1:
 
         ld      a,(ix+1)
-        sub     2
+        sub     4
         ld      (ix+1),a
         ret
 
 .PROYECTIL_4:
 
-        ld      a,(ix+1)
-        inc     a
-        ld      (ix+1),a
+        inc     (ix+1)
+        inc     (ix+1)
 
 .PROYECTIL_3:
 
-        ld      a,(ix)
-        inc     a
-        ld      (ix),a
+        inc     (ix)
+        inc     (ix)
         ret
 
 .PROYECTIL_6:
 
-        ld      a,(ix)
-        dec     a
-        ld      (ix),a
+        dec     (ix)
+        dec     (ix)
 
 .PROYECTIL_5:
 
-        ld      a,(ix+1)
-        inc     a
-        ld      (ix+1),a
+        inc     (ix+1)
+        inc     (ix+1)
 
         ret
 
 .PROYECTIL_8:
 
         ld      a,(ix+1)
-        sub     2
+        sub     4
         ld      (ix+1),a
 
 .PROYECTIL_7:
 
-        ld      a,(ix)
-        dec     a
-        ld      (ix),a
+        dec     (ix)
+        dec     (ix)
         ret
 
 .SECUENCIA_CORAZON:
