@@ -14,11 +14,11 @@ PINTA_CORAZONES:
 
         ld      a,(CORAZONES_MAXIMOS)
         cp      3
-        jp      z,.cero_tres
+        jr      z,.cero_tres
         cp      4
-        jp      z,.cero_cuatro
+        jr      z,.cero_cuatro
         cp      5
-        jp      z,.cero_cinco
+        jr      z,.cero_cinco
 
 .cero_tres:
 
@@ -45,11 +45,11 @@ PINTA_CORAZONES:
 
         ld      a,(CORAZONES_MAXIMOS)
         cp      3
-        jp      z,.uno_tres
+        jr      z,.uno_tres
         cp      4
-        jp      z,.uno_cuatro
+        jr      z,.uno_cuatro
         cp      5
-        jp      z,.uno_cinco
+        jr      z,.uno_cinco
 
 .uno_tres:
 
@@ -76,85 +76,85 @@ PINTA_CORAZONES:
 
         ld      a,(CORAZONES_MAXIMOS)
         cp      3
-        jp      z,.dos_tres
+        jr      z,.dos_tres
         cp      4
-        jp      z,.dos_cuatro
+        jr      z,.dos_cuatro
         cp      5
-        jp      z,.dos_cinco
+        jr      z,.dos_cinco
 
 .dos_tres:
 
         ld      hl,COPIA_1_BLANCOS_DE_3
         push    hl
         ld      hl,COPIA_2_ROJOS
-        jp      .A_COPIAR
+        jr      .A_COPIAR
 
 .dos_cuatro:
 
         ld      hl,COPIA_2_BLANCOS_DE_4
         push    hl
         ld      hl,COPIA_2_ROJOS
-        jp      .A_COPIAR
+        jr      .A_COPIAR
 
 .dos_cinco:
 
         ld      hl,COPIA_3_BLANCOS_DE_5
         push    hl
         ld      hl,COPIA_2_ROJOS
-        jp      .A_COPIAR
+        jr      .A_COPIAR
 
 .TRES:
 
         ld      a,(CORAZONES_MAXIMOS)
         cp      3
-        jp      z,.tres_tres
+        jr      z,.tres_tres
         cp      4
-        jp      z,.tres_cuatro
+        jr      z,.tres_cuatro
         cp      5
-        jp      z,.tres_cinco
+        jr      z,.tres_cinco
 
 .tres_tres:
 
         ld      hl,COPIA_0_BLANCOS_DE_3
         push    hl
         ld      hl,COPIA_3_ROJOS
-        jp      .A_COPIAR
+        jr      .A_COPIAR
 
 .tres_cuatro:
 
         ld      hl,COPIA_1_BLANCOS_DE_4
         push    hl
         ld      hl,COPIA_3_ROJOS
-        jp      .A_COPIAR
+        jr      .A_COPIAR
 
 .tres_cinco:
 
         ld      hl,COPIA_2_BLANCOS_DE_5
         push    hl
         ld      hl,COPIA_3_ROJOS
-        jp      .A_COPIAR
+        jr      .A_COPIAR
 
 .CUATRO:
 
         ld      a,(CORAZONES_MAXIMOS)
         cp      4
-        jp      z,.cuatro_cuatro
+        jr      z,.cuatro_cuatro
         cp      5
-        jp      z,.cuatro_cinco
+        jr      z,.cuatro_cinco
 
 .cuatro_cuatro:
 
         ld      hl,COPIA_0_BLANCOS_DE_3
         push    hl
         ld      hl,COPIA_4_ROJOS
-        jp      .A_COPIAR
+        jr      .A_COPIAR
 
 .cuatro_cinco:
 
         ld      hl,COPIA_1_BLANCOS_DE_5
         push    hl
         ld      hl,COPIA_4_ROJOS
-        jp      .A_COPIAR   
+        jr      .A_COPIAR
 
 .CINCO:
 
@@ -169,13 +169,30 @@ PINTA_CORAZONES:
         call    DOCOPY
         ld      hl,COPIA_MARCADOR_0_A_MARCADOR_3
         jp      DOCOPY
-        RET
 PINTA_VIDAS:
 
-	ld	hl,COPIA_NUMERO_DE_VIDAS	
+	ld	hl,COPIA_NUMERO_DE_VIDAS
+	ld	a,6
+	call	PINTA_VIDAS_EN_DESTINO_Y
+	ld	hl,COPIA_MARCADOR_0_A_MARCADOR_3
+	jp	DOCOPY
+
+PINTA_VIDAS_EN_BASE_MARCADOR_BOSS:
+
+	ld	hl,PUNTOS_MAGIA_EN_BOSSES
+	ld	a,206
+
+PINTA_VIDAS_EN_DESTINO_Y:
+
+	push	af
 	call    STANDAR_LDIR_MARCADOR
+	pop	af
         push    ix
         ld      ix,ATRIBUTOS_NUMERO_DE_VIDAS_O_PUNTOS
+	ld	(ix+4),33
+	ld	(ix+6),a
+	xor	a
+	ld	(ix+7),a
         ld      a,(VIDAS)
     [3] add     a
         ld      l,(ix)
@@ -189,8 +206,7 @@ PINTA_VIDAS:
         ld      hl,ATRIBUTOS_NUMERO_DE_VIDAS_O_PUNTOS
         call    DOCOPY
         pop     ix
-        ld      hl,COPIA_MARCADOR_0_A_MARCADOR_3
-        jp      DOCOPY
+	ret
 PINTA_ARMA:
 
                 ld      a,(ARMA_USANDO)

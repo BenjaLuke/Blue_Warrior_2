@@ -2326,14 +2326,15 @@ CAMBIAMOS_LA_INTERRUPCION_DE_LINEA_PARA_DESAPARECER:
 		ld		a,(LIM_MUERTE)
 		dec		a
 		ld		(LIM_MUERTE),a
+		ld		b,a
 		
 		ld		a,(CONTROL_Y)
-		cp		190
+		cp		b
 		jp		c,.bajando2
-		sub		10
+		sub		1
 		ld		(CONTROL_Y),a
 		ld		a,(Y_DEPH)
-		sub		10
+		sub		1
 		ld		(Y_DEPH),a
 		
 .bajando2:
@@ -2449,14 +2450,13 @@ MUERTE_POR_TOQUES:
 		ld		(ix+6),a
 		add		4
 		ld		(ix+10),a
-		xor		a
+		add		4
 		ld		(ix+14),a
-
-		ld		a,14*4
+		add		4
 		ld		(ix+18),a
 		add		4
 		ld		(ix+22),a
-		add		8											; Saltamos la tercera capa del cuadrante 3
+		add		4
 		ld		(ix+26),a
 		add		4
 		ld		(ix+30),a
@@ -2490,16 +2490,16 @@ MUERTE_POR_TOQUES:
 		ld		ix,ATRIBUTOS_DEPH_VARIABLES
 
 
-		ld		a,20*4
+		ld		a,19*4
 		ld		(ix+18),a
 		add		4
 		ld		(ix+22),a
-		add		4											; Saltamos la tercera capa del cuadrante 3
 		add		4
 		ld		(ix+26),a
 		add		4
 		ld		(ix+30),a
 		nop													; Conserva las direcciones del bloque
+		nop
 		ld		ix,ATRIBUTOS_DEPH_VARIABLES
 		ld		hl,COLOR_MUERTE_2
         call    PAGE_32_A_SEGMENT_2
@@ -2693,7 +2693,7 @@ RECUPERA_SPRITES_TRAS_MUERTE_SIN_HL:
         call    PAGE_32_A_SEGMENT_2
 
 		ld		de,#4160
-		ld		bc,544
+		ld		bc,384
 
 COMUN_RECUPERA_SPRITES:
 

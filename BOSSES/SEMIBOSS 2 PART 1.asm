@@ -258,6 +258,7 @@ ROCKAGER:
 	call	DOCOPY 
 
         call    .PREPARA_CORAZONES_MAXIMOS_DEPH
+	call	PINTA_VIDAS_EN_BASE_MARCADOR_BOSS
 
         ld      b,DATAS_COPY_TAM_SEMIBOSS_2
         ld      hl,.COPIA_STATUS_BOSS_A_PAGE_2
@@ -517,8 +518,7 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK:
 .revision_1:
 
         ld      ix,.DATAS_REVISIONES
-        ld      a,REVISION_ROCKAGER_TAM_DATOS_SEMIBOSS_2
-        ld      e,a
+        ld      e,REVISION_ROCKAGER_TAM_DATOS_SEMIBOSS_2
         ld      d,0
         ld      b,PROYECTILES_DEPH_CANT_SEMIBOSS_2
 
@@ -682,13 +682,13 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES_ROCK:
 
         ld      hl,VIDA_ROCKAGER_1
         call    DESCUENTA_VIDA_ROCKAGER_SI_TOCA
-        jp      .sobre_el_proyectil
+        jr      .sobre_el_proyectil
 
 .descuenta_2:
 
         ld      hl,VIDA_ROCKAGER_2
         call    DESCUENTA_VIDA_ROCKAGER_SI_TOCA
-        jp      .sobre_el_proyectil
+        jr      .sobre_el_proyectil
 
 .revision_bloque_3:
 

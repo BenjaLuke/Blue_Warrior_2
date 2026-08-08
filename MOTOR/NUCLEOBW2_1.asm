@@ -588,7 +588,7 @@ CONTROL:
 			or		a
 			jp		z,.si_que_puede
 			ld		a,(CONTROL_Y)
-			cp		65
+			cp		66
 			jp		c,.hay_que_sumar
 						
 .si_que_puede:

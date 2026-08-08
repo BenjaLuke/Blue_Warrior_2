@@ -931,10 +931,6 @@ MIRA_SI_OMITIMOS_PINTADO_ECTO_CIRCLE:
 		ld		a,b
 		jp		MIRA_SI_PINTAMOS_ENEMIGO_OPTIMIZADO.no_es_ecto_circle
 
-        ds		1
-
-
-
 /**********************
  ****** PAGINA 10******
  ******   END    ******

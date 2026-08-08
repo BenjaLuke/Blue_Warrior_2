@@ -5052,16 +5052,22 @@ ECTO_PALLERS:
 		ld		a,2
 		ld		(ECTOPALLERS_ACTIVO),a
 		xor		a
-		ld		(ECTO_HUEVOS_GOLPES),a
-		ld		(ECTO_HUEVOS_EXPLOSION),a
-		ld		(ECTO_HUEVOS_RESPAWN),a
-		ld		(ECTO_HUEVOS_SCROLL_ANT),a
-		ld		(ECTO_HUEVOS_X),a
+		ld		hl,ECTO_HUEVOS_GOLPES
+		ld		(hl),a
+		inc		hl
+		ld		(hl),a
+		inc		hl
+		ld		(hl),a
+		inc		hl
+		ld		(hl),a
+		inc		hl
+		ld		(hl),a
 
 		ld		a,b		
         ld		hl,VALORES_BASICOS_ECTO_PALLER_TOCA_HUEVOS
         call    STANDAR_LDIR_ENEMIGOS
-        call    TROZOS_COMUNES_1_DOS_SPRITES
+		ld		(ix+1),a									; La plantilla pone Y=0: restauramos la Y real antes del primer pintado
+        call    TROZOS_COMUNES_4_DOS_SPRITES					; Reserva sin volver a calcular y sobrescribir la Y
 
 		ld		a,(ix+1)
 		add		68
