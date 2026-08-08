@@ -325,9 +325,10 @@ INICIA_SCROLL:
 		inc		a
 		inc		a
 		ld		(FINAL_DEL_SCROLL),a									; Activamos el scroll
-		ld		(AVANCE_BLOQUEADO),a
 		ld		(AGU_ACTIVO),a
 		ld		(SPRITE_CAIDO),a
+		ld		a,66
+		ld		(AVANCE_BLOQUEADO),a
 		call	RECUPERA_SPRITES
 		
 		ld		a,6
@@ -587,8 +588,9 @@ CONTROL:
 			ld		a,(AVANCE_BLOQUEADO)
 			or		a
 			jp		z,.si_que_puede
+			ld		b,a
 			ld		a,(CONTROL_Y)
-			cp		66
+			cp		b
 			jp		c,.hay_que_sumar
 						
 .si_que_puede:
@@ -694,12 +696,13 @@ CONTROL:
 			jp		nc,.pre_sigue_comun
 
 			ld		a,(AVANCE_BLOQUEADO)
+			ld		b,a
 			or		a
-			jp		nz,.avance_con_reservas
+			jr		nz,.avance_con_reservas
 
 			ld		a,(CONTROL_Y)
 			cp		220
-			jp		c,.hay_que_restar
+			jr		c,.hay_que_restar
 			cp		250
 			jp		c,.pre_sigue_comun
 			jp		.hay_que_restar
@@ -707,7 +710,11 @@ CONTROL:
 .avance_con_reservas:
 
 			ld		a,(CONTROL_Y)
-			cp		66
+			; Bloqueamos tambien la igualdad: no salimos del limite para
+			; rectificar en sentido contrario durante el ciclo siguiente.
+			inc		b
+			cp		b
+			dec		b
 			jp		c,.pre_sigue_comun
 			cp		220
 			jp		c,.hay_que_restar
@@ -715,7 +722,7 @@ CONTROL:
 .hay_que_restar:
 
 			call    CONTROL_RETENCION_Y_DEPH_POST_RECTIFICA_UP
-			jp      c,.pre_sigue_comun
+			jr      c,.pre_sigue_comun
 			
 			ld      a,(CONTROL_Y)
 			dec     a
@@ -728,9 +735,9 @@ CONTROL:
 
 			ld		(Y_DEPH),a
 			cp		216
-			jp		z,.rectifica_up
+			jr		z,.rectifica_up
 			cp		200
-			jp		nz,.pre_sigue_comun
+			jr		nz,.pre_sigue_comun
 				
 .rectifica_up:
 	
@@ -739,11 +746,19 @@ CONTROL:
 
 			ld      a,(CONTROL_Y)
 			dec     a
+			; El salto interno de Y_DEPH en 200/216 no puede atravesar
+			; el limite superior guardado en B.
+			cp		b
+			jr		nc,.guarda_control_y_up
+			ld		a,b
+
+.guarda_control_y_up:
+
 			ld      (CONTROL_Y),a
 
 			call    SUMA_RETENCION_Y_DEPH_POST_RECTIFICA_UP
 					
-        jp      .pre_sigue_comun
+        jr      .pre_sigue_comun
 
 .suma_comun_y:
 
@@ -751,21 +766,23 @@ CONTROL:
 			ld		d,16
 			ld		a,(TILE_S)
 			call	CONTROL_FASE3_TILE_145
-			jp		nc,.pre_sigue_comun
+			jr		nc,.pre_sigue_comun
 
 			ld		c,14
 			ld		d,16
 			ld		a,(TILE_S2)
 			call	CONTROL_FASE3_TILE_145
-			jp		nc,.pre_sigue_comun
+			jr		nc,.pre_sigue_comun
 
 			ld		a,(LIM_Y_INF)
 			ld		b,a
 			ld		a,(CONTROL_Y)
 			cp		b
-			jp		c,.hay_que_sumar
+			jr		c,.hay_que_sumar
 			cp		210
-			jp		c,.pre_sigue_comun
+			jr		c,.pre_sigue_comun
+			; Zona de salida por aplastamiento: aqui no aplicamos LIM_Y_INF.
+			ld		b,255
 
 .hay_que_sumar:
 		
@@ -780,10 +797,10 @@ CONTROL:
 
 			ld		(Y_DEPH),a
 			cp		216
-			jp		z,.rectifica_down
+			jr		z,.rectifica_down
 
 			cp		200
-			jp		nz,.pre_sigue_comun
+			jr		nz,.pre_sigue_comun
 
 .rectifica_down:
 		
@@ -792,6 +809,14 @@ CONTROL:
 
 			ld		a,(CONTROL_Y)
 			add		2
+			; Saturamos el salto de Y_DEPH en el limite que lleva B:
+			; superior al recolocar a Deph o inferior al bajar normalmente.
+			cp		b
+			jr		c,.guarda_control_y_down
+			ld		a,b
+
+.guarda_control_y_down:
+
 			ld		(CONTROL_Y),a
 		
 .pre_sigue_comun:

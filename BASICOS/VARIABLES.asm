@@ -104,7 +104,7 @@ TILE_FASE3_VAGON:				#1
 GUARDA_STRIG:					#1										; Guarda el valor de strig para ver si luego resta una pos
 GUARDA_STRIG_2:					#1
 PAUSA_BLOQUEADA:				#1										; Sólo podremos pulsar pause si está a 0
-AVANCE_BLOQUEADO:				#1										; 0 Puede avanzar 1 No puede
+AVANCE_BLOQUEADO:				#1										; 0 libre, 66 limite de stage, 120 limite de boss
 HACIA_DONDE_INTERRUPT:			#1										; 0 En la LT. 1 Hay que subir 30 pixeles. 2 Hay que bajar 30 pixeles
 CAMINO_NUEVA_INT:				#1										; Contador para mover la interrupción
 ESTADO_MARCADOR:				#1										; 1 a vista, 0 escondido

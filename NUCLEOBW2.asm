@@ -608,7 +608,7 @@ CARGA_SLOT_MAPA:
 
 		include "MOTOR/NUCLEOBW2_1.asm"				                            ; Incluímos el motor del juego 1
 
-        ds      4
+        ds      2
 
 CONTINUA_PAGINA_9_TRAS_COVID_OPTIMIZADO:
 

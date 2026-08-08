@@ -17,7 +17,6 @@ RG14SAV		equ		#FFED
 
 VDP_0		equ		#F3DF												; Para direccionarse a los registros (entre 0 y 7) hay que sumarle el número de registro
 VDP_8		equ		#FFDF												; Para direccionarse a los registros (entre 8 y 23) hay que sumarle el número de registro	
-VDP_25		equ		#FFE1												; Para direccionarse a los registros (entre 25 y 27) hay que sumarle el número de registro
 
 HTIMI		equ		#FD9F												; Lugar al que se va cada vez que hay una interrupción de video (60 veces por segundo)
 HKEYI		equ		#FD9A												; Lugar al que se va cada vez que hay una interrupción de cualquier tipo

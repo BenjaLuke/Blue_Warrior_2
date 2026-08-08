@@ -811,7 +811,7 @@ BUCLE_PINTA_TILES:
 
 .bloqueamos_el_avance:
 
-		ld		a,1
+		ld		a,120
 		ld		(AVANCE_BLOQUEADO),a
 		ret
 

@@ -13,7 +13,7 @@ endobj
 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>
 endobj
 5 0 obj
-<< /Length 6230 >>
+<< /Length 3375 >>
 stream
 q
 1 1 1 rg
@@ -84,7 +84,7 @@ BT
 /F1 8 Tf
 0.08 0.10 0.13 rg
 40 710 Td
-(Constantes sin usar: 10) Tj
+(Constantes sin usar: 0) Tj
 ET
 BT
 /F1 7.50 Tf
@@ -96,7 +96,7 @@ BT
 /F1 7 Tf
 0.42 0.45 0.48 rg
 446.38 738 Td
-(Generado: 2026-07-30 18:59:58) Tj
+(Generado: 2026-08-08 16:59:00) Tj
 ET
 q
 0.92 0.97 1 rg
@@ -312,280 +312,21 @@ q
 f
 Q
 BT
-/F1 5.25 Tf
-0.10 0.12 0.15 rg
-42.75 565.80 Td
-(001) Tj
+/F1 6.10 Tf
+0.45 0.48 0.50 rg
+34 566 Td
+(No se han encontrado constantes sin consultar.) Tj
 ET
-BT
-/F2 5.25 Tf
-0.72 0.02 0.02 rg
-69 565.80 Td
-(SPRITES_ACTIVOS_ROCKAGER_OFS_PART2_SEMIBOSS_2) Tj
-ET
-q
-0.70 0.74 0.77 RG
-0.35 w
-28 561 m 567 561 l S
-Q
-q
-0.70 0.74 0.77 RG
-0.35 w
-66 561 m 66 576.50 l S
-Q
-q
-0.97 0.98 0.99 rg
-28 545.50 539 15.50 re
-f
-Q
-BT
-/F1 5.25 Tf
-0.10 0.12 0.15 rg
-42.75 550.30 Td
-(002) Tj
-ET
-BT
-/F2 5.25 Tf
-0.72 0.02 0.02 rg
-69 550.30 Td
-(SPRITES_FIJOS_ROCKAGER_CANT_PART2_SEMIBOSS_2) Tj
-ET
-q
-0.70 0.74 0.77 RG
-0.35 w
-28 545.50 m 567 545.50 l S
-Q
-q
-0.70 0.74 0.77 RG
-0.35 w
-66 545.50 m 66 561 l S
-Q
-q
-1 1 1 rg
-28 530 539 15.50 re
-f
-Q
-BT
-/F1 5.25 Tf
-0.10 0.12 0.15 rg
-42.75 534.80 Td
-(003) Tj
-ET
-BT
-/F2 5.25 Tf
-0.72 0.02 0.02 rg
-69 534.80 Td
-(VDP_25) Tj
-ET
-q
-0.70 0.74 0.77 RG
-0.35 w
-28 530 m 567 530 l S
-Q
-q
-0.70 0.74 0.77 RG
-0.35 w
-66 530 m 66 545.50 l S
-Q
-q
-0.97 0.98 0.99 rg
-28 514.50 539 15.50 re
-f
-Q
-BT
-/F1 5.25 Tf
-0.10 0.12 0.15 rg
-42.75 519.30 Td
-(004) Tj
-ET
-BT
-/F2 5.25 Tf
-0.72 0.02 0.02 rg
-69 519.30 Td
-(VRAM_GRAFICOS_DESTINO_1_PART2_SEMIBOSS_2) Tj
-ET
-q
-0.70 0.74 0.77 RG
-0.35 w
-28 514.50 m 567 514.50 l S
-Q
-q
-0.70 0.74 0.77 RG
-0.35 w
-66 514.50 m 66 530 l S
-Q
-q
-1 1 1 rg
-28 499 539 15.50 re
-f
-Q
-BT
-/F1 5.25 Tf
-0.10 0.12 0.15 rg
-42.75 503.80 Td
-(005) Tj
-ET
-BT
-/F2 5.25 Tf
-0.72 0.02 0.02 rg
-69 503.80 Td
-(VRAM_GRAFICOS_DESTINO_2_PART2_SEMIBOSS_2) Tj
-ET
-q
-0.70 0.74 0.77 RG
-0.35 w
-28 499 m 567 499 l S
-Q
-q
-0.70 0.74 0.77 RG
-0.35 w
-66 499 m 66 514.50 l S
-Q
-q
-0.97 0.98 0.99 rg
-28 483.50 539 15.50 re
-f
-Q
-BT
-/F1 5.25 Tf
-0.10 0.12 0.15 rg
-42.75 488.30 Td
-(006) Tj
-ET
-BT
-/F2 5.25 Tf
-0.72 0.02 0.02 rg
-69 488.30 Td
-(VRAM_GRAFICOS_ORIGEN_PART2_SEMIBOSS_2) Tj
-ET
-q
-0.70 0.74 0.77 RG
-0.35 w
-28 483.50 m 567 483.50 l S
-Q
-q
-0.70 0.74 0.77 RG
-0.35 w
-66 483.50 m 66 499 l S
-Q
-q
-1 1 1 rg
-28 468 539 15.50 re
-f
-Q
-BT
-/F1 5.25 Tf
-0.10 0.12 0.15 rg
-42.75 472.80 Td
-(007) Tj
-ET
-BT
-/F2 5.25 Tf
-0.72 0.02 0.02 rg
-69 472.80 Td
-(VRAM_SPRITES_ATRIBUTOS_PART2_SEMIBOSS_2) Tj
-ET
-q
-0.70 0.74 0.77 RG
-0.35 w
-28 468 m 567 468 l S
-Q
-q
-0.70 0.74 0.77 RG
-0.35 w
-66 468 m 66 483.50 l S
-Q
-q
-0.97 0.98 0.99 rg
-28 452.50 539 15.50 re
-f
-Q
-BT
-/F1 5.25 Tf
-0.10 0.12 0.15 rg
-42.75 457.30 Td
-(008) Tj
-ET
-BT
-/F2 5.25 Tf
-0.72 0.02 0.02 rg
-69 457.30 Td
-(VRAM_SPRITES_ATRIBUTOS_PART3_SEMIBOSS_2) Tj
-ET
-q
-0.70 0.74 0.77 RG
-0.35 w
-28 452.50 m 567 452.50 l S
-Q
-q
-0.70 0.74 0.77 RG
-0.35 w
-66 452.50 m 66 468 l S
-Q
-q
-1 1 1 rg
-28 437 539 15.50 re
-f
-Q
-BT
-/F1 5.25 Tf
-0.10 0.12 0.15 rg
-42.75 441.80 Td
-(009) Tj
-ET
-BT
-/F2 5.25 Tf
-0.72 0.02 0.02 rg
-69 441.80 Td
-(VRAM_SPRITES_COLOR_PART2_SEMIBOSS_2) Tj
-ET
-q
-0.70 0.74 0.77 RG
-0.35 w
-28 437 m 567 437 l S
-Q
-q
-0.70 0.74 0.77 RG
-0.35 w
-66 437 m 66 452.50 l S
-Q
-q
-0.97 0.98 0.99 rg
-28 421.50 539 15.50 re
-f
-Q
-BT
-/F1 5.25 Tf
-0.10 0.12 0.15 rg
-42.75 426.30 Td
-(010) Tj
-ET
-BT
-/F2 5.25 Tf
-0.72 0.02 0.02 rg
-69 426.30 Td
-(VRAM_SPRITES_PATRONES_PART3_SEMIBOSS_2) Tj
-ET
-q
-0.70 0.74 0.77 RG
-0.35 w
-28 421.50 m 567 421.50 l S
-Q
-q
-0.70 0.74 0.77 RG
-0.35 w
-66 421.50 m 66 437 l S
-Q
 q
 0.35 0.44 0.52 RG
 0.70 w
-28 421.50 539 190 re
+28 561 539 50.50 re
 S
 Q
 q
 0.70 0.74 0.77 RG
 0.35 w
-66 421.50 m 66 594.50 l S
+66 561 m 66 594.50 l S
 Q
 
 endstream
@@ -601,9 +342,9 @@ xref
 0000000121 00000 n 
 0000000218 00000 n 
 0000000320 00000 n 
-0000006602 00000 n 
+0000003747 00000 n 
 trailer
 << /Size 7 /Root 1 0 R >>
 startxref
-6739
+3884
 %%EOF
