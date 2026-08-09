@@ -159,6 +159,14 @@ PREPARACION_INTERRUPCIONES:
 
 		call	ACTIVAMOS_INTERRUPCIONES_DE_LINEA
 
+		di
+		ld		a,PAGINA_VECTOR_IM2_JUEGO
+		ld		i,a
+		im		2
+		ei
+
+/*
+
 		di																; Desconectamos las interrupciones																	
 		ld		a,#C3													; #c3 es el código binario de jump (jp)
 		ld		[HKEYI],a												; Metemos en HTIMI ese jp
@@ -166,6 +174,7 @@ PREPARACION_INTERRUPCIONES:
 		ld		[HKEYI+1],hl											; La ponemos a continuación del jp
 		ei																; Conectamos las interrupciones	
 
+*/
 		jp		VARIABLES_PARA_EMPEZAR_LA_PARTIDA		
 
 ACTIVAMOS_INTERRUPCIONES_DE_LINEA:
@@ -366,7 +375,7 @@ INICIA_SCROLL:
 		ld		(X_DEPH),a
 
 
-		ld		a,187
+		ld		a,188
 		ld		(DONDE_VA_LA_INTERRUPCION_LINEAL),a
 			
 		ld		a,224

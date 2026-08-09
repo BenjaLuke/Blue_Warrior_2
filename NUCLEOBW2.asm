@@ -9,6 +9,11 @@ VARIABLES:
 		include	"BASICOS/VARIABLES.asm"				                    ; Incluímos las referencias a las variables que se usarán en el juego
 		include	"BOSSES/VARIABLES BOSSES.asm"
 
+VECTOR_IM2_JUEGO_RAM:			equ		#CC00
+RUTINA_IM2_JUEGO_RAM:			equ		#CECE
+BYTE_VECTOR_IM2_JUEGO:			equ		#CE
+PAGINA_VECTOR_IM2_JUEGO:		equ		#CC
+
 /**********************
  ****** PAGINA 0 ******
  ****** SLOT   1 ******     
@@ -58,6 +63,7 @@ LIMPIA_SALTO_DE_INTERRUPCIONES:
 		ld		a,#C9													; A tiene el valor de ret
 		ld		(HTIMI),a												; Colocamos ese ret en el gancho H.Timi POR SI EL ORDENADOR TUVIERA ALGO (ALGUN MSX 2 CONTROL DE DISQUETERA)
 		ld		(HKEYI),a												; Colocamos ese ret en el gancho H.Key POR SI EL ORDENADOR TUVIERA ALGO
+		call	PREPARA_INTERRUPCIONES_IM2_JUEGO
         ei                                                              ; Conecta interrupciones
 
 CREAMOS_UN_MEGAROM:
@@ -156,6 +162,128 @@ MARCA:
         include "MENU Y TRANSICIONES/ANIMACION DE MARCA sc7.asm" 
 
         include "AUDIOS/FMPAC FOUND.asm"
+
+PREPARA_INTERRUPCIONES_IM2_JUEGO:
+
+		di
+		ld		hl,VECTOR_IM2_JUEGO_RAM
+		ld		de,VECTOR_IM2_JUEGO_RAM+1
+		ld		bc,256
+		ld		(hl),BYTE_VECTOR_IM2_JUEGO
+		ldir
+
+		ld		hl,PLANTILLA_RUTINA_IM2_JUEGO
+		ld		de,RUTINA_IM2_JUEGO_RAM
+		ld		bc,FIN_PLANTILLA_RUTINA_IM2_JUEGO-PLANTILLA_RUTINA_IM2_JUEGO
+		ldir
+		ret
+
+PLANTILLA_RUTINA_IM2_JUEGO:
+
+		push	af
+
+		; La interrupción de línea se resuelve antes de apilar el resto.
+		ld		a,1
+		out 	(#99),a
+		ld 		a,128+15
+		out 	(#99),a
+		in		a,(#99)
+		rrca
+		jr		c,PLANTILLA_RUTINA_IM2_LINEA
+
+		; Si no era de línea, comprobamos VBlank.
+		xor		a
+		out 	(#99),a
+		ld 		a,128+15
+		out 	(#99),a
+		in		a,(#99)
+		rlca
+		jr		c,PLANTILLA_RUTINA_IM2_VBLANK
+
+		pop		af
+		ei
+		reti
+
+PLANTILLA_RUTINA_IM2_LINEA:
+
+		push	bc
+		push	hl
+		call	INTERRUPCION_DE_LINEA
+
+		; La salida rápida de la rutina de línea deja seleccionado S#2.
+		; Seleccionamos y leemos siempre S#0 antes de devolver el control.
+		xor		a
+		out 	(#99),a
+		ld 		a,128+15
+		out 	(#99),a
+		in		a,(#99)
+
+		pop		hl
+		pop		bc
+		pop		af
+		ei
+		reti
+
+PLANTILLA_RUTINA_IM2_VBLANK:
+
+		; Protección completa equivalente a la de KEYINT. Dejamos activos
+		; los registros alternativos al llamar, igual que hace la BIOS.
+		push	bc
+		push	de
+		push	hl
+		exx
+		ex		af,af'
+		push	hl
+		push	de
+		push	bc
+		push	af
+		push	iy
+		push	ix
+
+		call	INTERRUPCION_DE_VBLANK
+
+		pop		ix
+		pop		iy
+		pop		af
+		pop		bc
+		pop		de
+		pop		hl
+		ex		af,af'
+		exx
+		pop		hl
+		pop		de
+		pop		bc
+		pop		af
+		ei
+		reti
+
+PLANTILLA_DESACTIVA_INTERRUPCIONES_IM2_JUEGO:
+
+		di
+		im		1
+		ld		a,#C9
+		ld		(HTIMI),a
+		ld		(HKEYI),a
+		ret
+
+PLANTILLA_RESTAURA_HKEYI_PARA_GAME_OVER:
+
+		; GAME OVER vuelve a usar la entrada BIOS/H.KEYI original.
+		; Esta rutina reside en RAM para seguir accesible al cambiar la página 1.
+		di
+		im		1
+		ld		a,#C9
+		ld		(HTIMI),a
+		ld		a,#C3
+		ld		(HKEYI),a
+		ld		hl,NUESTRAS_INT
+		ld		(HKEYI+1),hl
+		ret
+
+FIN_PLANTILLA_RUTINA_IM2_JUEGO:
+
+DESACTIVA_INTERRUPCIONES_IM2_JUEGO_RAM:	equ	RUTINA_IM2_JUEGO_RAM+PLANTILLA_DESACTIVA_INTERRUPCIONES_IM2_JUEGO-PLANTILLA_RUTINA_IM2_JUEGO
+RESTAURA_HKEYI_PARA_GAME_OVER_RAM:		equ	RUTINA_IM2_JUEGO_RAM+PLANTILLA_RESTAURA_HKEYI_PARA_GAME_OVER-PLANTILLA_RUTINA_IM2_JUEGO
 
         ds      #8000-$-#2200   
 				                                        ; Colocamos el resto del programa siempre en el mismo sitio    
@@ -608,7 +736,7 @@ CARGA_SLOT_MAPA:
 
 		include "MOTOR/NUCLEOBW2_1.asm"				                            ; Incluímos el motor del juego 1
 
-        ds      2
+		ds      7
 
 CONTINUA_PAGINA_9_TRAS_COVID_OPTIMIZADO:
 
@@ -766,10 +894,7 @@ CARGA_SLOT_REGRESO_A_JUEGO:
 		halt
 		djnz	.ESPERA_MUSICA_ANTERIOR_TRAS_BOSS
 
-		di
-		ld		a,#C9
-		ld		(HTIMI),a
-		ld		(HKEYI),a
+		call	DESACTIVA_INTERRUPCIONES_IM2_JUEGO_RAM
 
 		ld 		a,(RG0SAV)												; Disable Line Interrupt: Reset R#0 bit 4
 		and		11101111B
@@ -790,16 +915,15 @@ CARGA_SLOT_PARA_GAME_OVER:
 		or		a
 		jp		nz,MENU
 
+		call	RESTAURA_HKEYI_PARA_GAME_OVER_RAM
+
 		ld		a,38
 		ld      (DIRPA1),a											    ; Banco 1, pagina 39 del MEGAROM
 		jp		MOSTRAMOS_GAME_OVER
 
 CARGA_SLOT_JUEGO_TRAS_GAME_OVER:
 
-		di
-		ld		a,#C9
-		ld		(HTIMI),a
-		ld		(HKEYI),a
+		call	DESACTIVA_INTERRUPCIONES_IM2_JUEGO_RAM
 
 		ld		a,10
 		ld		(DIRPA2),a
@@ -829,10 +953,7 @@ HACIA_CINEMATICAS_FINALES:
 
 MENU:
 
-		di
-		ld		a,#C9
-		ld		(HTIMI),a
-		ld		(HKEYI),a
+		call	DESACTIVA_INTERRUPCIONES_IM2_JUEGO_RAM
 		ld		sp,0xE500
 		ld 		a,(RG0SAV)
 		and		11101111B
@@ -930,6 +1051,8 @@ MIRA_SI_OMITIMOS_PINTADO_ECTO_CIRCLE:
 
 		ld		a,b
 		jp		MIRA_SI_PINTAMOS_ENEMIGO_OPTIMIZADO.no_es_ecto_circle
+
+		ds		15
 
 /**********************
  ****** PAGINA 10******
@@ -2312,6 +2435,8 @@ TABLA_PASOS_FADE_OUT_BOSS:
 		include "BASICOS/GAME OVER 2.asm"
 
 		include	"BOSSES/SEMIBOSS 2 PART 1.asm"
+
+		ds		6
 
                                                                         ; El bloque comun debe comenzar exactamente en #5E00
 

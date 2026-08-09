@@ -159,10 +159,7 @@ MOSTRAMOS_GAME_OVER:
 
     call    DISSCR_RAM
 
-	di
-	ld		a,#C9
-	ld		(HTIMI),a
-	ld		(HKEYI),a
+	call	DESACTIVA_INTERRUPCIONES_IM2_JUEGO_RAM
 	xor		a
 	ld		(busply),a
 
