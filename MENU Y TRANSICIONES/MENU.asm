@@ -2778,7 +2778,7 @@ DATOS_NEGRO_ROTATIVO_EN_PAGE_1:
 
 TEXTO_ROTATIVO_PRESENTACION:
 
-		db		"BLUE WARRIOR II   -   Beta version 5.01.297 -  8-08-2026 - 98 por ciento - (C) Digital Moai",0
+		db		"BLUE WARRIOR II   -   Beta version 5.01.305 -  10-8-2026 - 98 por ciento - (C) Digital Moai",0
 
 TEXTO_ROTATIVO_PRESENTACION_FIN:
 
