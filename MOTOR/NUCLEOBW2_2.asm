@@ -5070,7 +5070,7 @@ ECTO_PALLERS:
         call    TROZOS_COMUNES_4_DOS_SPRITES					; Reserva sin volver a calcular y sobrescribir la Y
 
 		ld		a,(ix+1)
-		add		68
+		sub		60									; 112+68 modulo 128 = 52: primer indice valido de TABLA_ECTO_HUEVOS_Y
 		ld		(ix+14),a
 		ld		a,2
 		ld		(ix+10),a

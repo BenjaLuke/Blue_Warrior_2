@@ -16,7 +16,7 @@
 		dw		RETORNO
 		dw		HIDE_STATUS_COMP
 		dw		RETORNO
-		dw		RETORNO
+		dw		BUCLE_PINTA_TILES.bloqueamos_el_avance
 		dw		RETORNO
 		dw		NUEVO_COVID_2_IZQUIERDA_DISPARA
 		dw		RETORNO

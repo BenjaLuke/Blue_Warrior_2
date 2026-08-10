@@ -24,10 +24,14 @@ REVISAMOS_COLISION_CON_ENEMIGOS_DE_PROYECTILES:
         jp      z,.NO_HAY_COLISION
 
         ld      a,(ix+6)
+        cp      17
+        jr      z,.NO_HAY_COLISION
         cp      35
-        jp      z,.NO_HAY_COLISION
-        cp      36
-        jp      z,.NO_HAY_COLISION
+        jr      c,.COMPRUEBA_DISTANCIA_COLISION
+        cp      38
+        jr      c,.NO_HAY_COLISION
+
+.COMPRUEBA_DISTANCIA_COLISION:
 
         ld      a,(ix+0)
         ld      e,(iy+0)

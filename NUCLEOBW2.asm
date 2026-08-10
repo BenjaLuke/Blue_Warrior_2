@@ -736,7 +736,7 @@ CARGA_SLOT_MAPA:
 
 		include "MOTOR/NUCLEOBW2_1.asm"				                            ; Incluímos el motor del juego 1
 
-		ds      7
+		ds      0
 
 CONTINUA_PAGINA_9_TRAS_COVID_OPTIMIZADO:
 
@@ -1052,7 +1052,7 @@ MIRA_SI_OMITIMOS_PINTADO_ECTO_CIRCLE:
 		ld		a,b
 		jp		MIRA_SI_PINTAMOS_ENEMIGO_OPTIMIZADO.no_es_ecto_circle
 
-		ds		15
+		ds		13
 
 /**********************
  ****** PAGINA 10******

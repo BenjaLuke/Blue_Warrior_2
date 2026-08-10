@@ -591,14 +591,33 @@ PINTA_PROYECTILES_ENEMIGOS:
         ld      a,(ix+8)
         ld      (iy+2),a
 
-        ld      e,(ix+12)
-        ld      d,0
-        ld      hl,#4A00
-        add     hl,de
-        ex      de,hl
+        di
+        ld      a,1
+        out     (#99),a
+        ld      a,14+128
+        out     (#99),a
+        ld      a,(ix+12)
+        out     (#99),a
+        ld      a,#4A
+        out     (#99),a
         ld      hl,PROPIEDADES_PATRON_SPRITE
-        ld      bc,3
-        jp      PON_COLOR_2.sin_bc_impuesta
+        ld      c,#98
+        ld      b,3
+        otir
+        call    .RESTAURA_R14_TRAS_ATRIBUTOS_RAPIDO
+        ret
+
+.RESTAURA_R14_TRAS_ATRIBUTOS_RAPIDO:
+
+        xor     a
+        ld      (RG14SAV),a
+        di
+        out     (#99),a
+        ld      a,14+128
+        out     (#99),a
+        xor     a
+        ei
+        ret
 
 .VAMOS_TERMINANDO_EL_CICLO:
 
@@ -781,10 +800,7 @@ OCULTA_SPRITE_LIBERADO:
         xor     a
         out     (#98),a
 
-        ld      (RG14SAV),a
-        ld      b,a
-        ld      c,14
-        call    WRTVDP_EN_RAM
+        call    PINTA_PROYECTILES_ENEMIGOS.RESTAURA_R14_TRAS_ATRIBUTOS_RAPIDO
 
         pop     hl
         pop     de
@@ -809,11 +825,7 @@ APARTA_SPRITE_LIBERADO:
         out     (#98),a
         out     (#98),a
 
-        xor     a
-        ld      (RG14SAV),a
-        ld      b,a
-        ld      c,14
-        call    WRTVDP_EN_RAM
+        call    PINTA_PROYECTILES_ENEMIGOS.RESTAURA_R14_TRAS_ATRIBUTOS_RAPIDO
 
         pop     hl
         pop     de
@@ -850,10 +862,7 @@ LIMPIA_ATRIBUTOS_SPRITE_13:
         out     (#98),a
         out     (#98),a
         out     (#98),a
-        ld      (RG14SAV),a
-        ld      b,a
-        ld      c,14
-        call    WRTVDP_EN_RAM
+        call    PINTA_PROYECTILES_ENEMIGOS.RESTAURA_R14_TRAS_ATRIBUTOS_RAPIDO
         pop     hl
 		ret
 

@@ -811,7 +811,7 @@
 
 	;.bloqueamos_el_avance:
 
-		ld		a,120
+		ld		a,150
 		ld		(AVANCE_BLOQUEADO),a
 		ret
 				
