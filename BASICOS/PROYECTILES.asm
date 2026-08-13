@@ -6,6 +6,9 @@ NUEVO_PROYECTIL:
 		cp		6
 		jr		nc,.NUEVO_PROYECTIL_2
 
+		call	HAY_TRES_HUECOS_LIBRES_PARA_FUEGO
+		ret		c
+
 		ld		a,(FUEGO_QUE_TOCA)
 		cp		1
 		jr		nz,.NUEVO_PROYECTIL_3

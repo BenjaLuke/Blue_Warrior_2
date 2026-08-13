@@ -1,12 +1,15 @@
 		ld		a,(ARMA_USANDO)
 		cp		3
-		jp		c,.NUEVO_PROYECTIL_2
+		jr		c,.NUEVO_PROYECTIL_2
 		cp		6
-		jp		nc,.NUEVO_PROYECTIL_2
+		jr		nc,.NUEVO_PROYECTIL_2
+
+		call	HAY_TRES_HUECOS_LIBRES_PARA_FUEGO
+		ret		c
 
 		ld		a,(FUEGO_QUE_TOCA)
 		cp		1
-		jp		nz,.NUEVO_PROYECTIL_3
+		jr		nz,.NUEVO_PROYECTIL_3
 
 
 .NUEVO_PROYECTIL_2:
@@ -107,7 +110,7 @@
 	inc	a
 	and	00000011b
 	or	a
-	jp	nz,.FUEGO_2
+	jr	nz,.FUEGO_2
 	inc	a
 
 .FUEGO_2:

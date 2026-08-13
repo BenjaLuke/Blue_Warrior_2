@@ -12,7 +12,6 @@ Y_PINTA_SCROLL:					#1										; La posición de la pantalla donde se tiene que
 NUMERO_DE_TILE_EN_LINEA:		#1										; El tile que se está pintando de la linea horizontal entre 0 y 15
 DATOS_DEL_TILE_PARA_COPY:		#15										; Aquí se copian y se leen los datos para hacer el copy adecuado
 DATOS_DEL_TILE_PARA_COPY_IL:	#15
-DATOS_DEL_CUADRADO_NEGRO:		#15
 PUNTO_DEL_SCROLL:				#1										; Posición del scroll para pintar la pantalla
 CUANDO_RALENTIZAMOS:			#2										; Los ciclos que espera para adelantar el scroll
 CONTROL_DE_C_R:					#2										; Esta es la que cambia y deberá volver o alcanzar CUANTO_RALENTIZAMOS

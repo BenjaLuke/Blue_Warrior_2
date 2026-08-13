@@ -231,7 +231,7 @@
 		dw		RETORNO
 		dw		RETORNO	
 		dw		SHOW_STATUS_COMP
-		dw		CHECK_POINT
+		dw		RETORNO
 		dw		RETORNO
 		dw		CHECK_POINT
 		dw		RETORNO

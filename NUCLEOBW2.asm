@@ -736,7 +736,7 @@ CARGA_SLOT_MAPA:
 
 		include "MOTOR/NUCLEOBW2_1.asm"				                            ; Incluímos el motor del juego 1
 
-		ds      0
+		ds      4,0                                                     ; Compensa la limpieza de ALPHONSERRYX_ACTIVO y la validacion del fuego; conserva #5E00
 
 CONTINUA_PAGINA_9_TRAS_COVID_OPTIMIZADO:
 
@@ -856,7 +856,33 @@ MIRA_SI_PINTAMOS_ENEMIGO_OPTIMIZADO:
             scf
             ret
 
-        ds      2
+HAY_TRES_HUECOS_LIBRES_PARA_FUEGO:
+
+		ld		a,(FUEGO_QUE_TOCA)
+		dec		a
+		and		00000010b
+		ret		z                                                       ; La rafaga ya esta iniciada: terminamos las tres bolas
+
+		ld		hl,PROYECTILES+2
+		ld		de,16
+		ld		bc,#0603                                                ; B = seis entradas; C = tres huecos necesarios
+
+.BUSCA_HUECOS_FUEGO:
+
+		ld		a,(hl)
+		inc		a
+		jr		nz,.SIGUIENTE_HUECO_FUEGO
+		dec		c
+		ret		z                                                       ; Hay tres huecos: CY sigue limpio
+
+.SIGUIENTE_HUECO_FUEGO:
+
+		add		hl,de
+		djnz	.BUSCA_HUECOS_FUEGO
+		scf                                                             ; Hay menos de tres huecos: anulamos toda la rafaga
+		ret
+
+		ds      2                                                       ; 27 bytes usados de los 29 libres al retirar el YMMM
 
 /**********************
  ****** PAGINA 9 ******
@@ -1052,7 +1078,7 @@ MIRA_SI_OMITIMOS_PINTADO_ECTO_CIRCLE:
 		ld		a,b
 		jp		MIRA_SI_PINTAMOS_ENEMIGO_OPTIMIZADO.no_es_ecto_circle
 
-		ds		13
+		ds		12                                                          ; 16 bytes usados por las excepciones de tiles 57/58 de fase 5
 
 /**********************
  ****** PAGINA 10******
@@ -1523,7 +1549,9 @@ CALCULA_DANO_MAGIA_BOSS_1:
 		ld		a,3
 		ret
 
-        ds		#8000-$
+		ds		#7FE3-$
+		include "BOSSES/COMUN/HAY TRES HUECOS LIBRES PARA FUEGO.asm"
+		ds		#8000-$
 
 /**********************
  ****** PAGINA 26******
@@ -1634,7 +1662,9 @@ DANO_MAGIA_EN_DAVEANIX_BOSS_2:
 
 
 
-        ds		#8000-$
+		ds		#7FE3-$
+		include "BOSSES/COMUN/HAY TRES HUECOS LIBRES PARA FUEGO.asm"
+		ds		#8000-$
 
 /**********************
  ****** PAGINA 27******
@@ -1661,6 +1691,7 @@ DANO_MAGIA_EN_DAVEANIX_BOSS_2:
 
 DANO_MAGIA_EN_CHUMIINIX_BOSS_3:
 
+		call	MATA_TODOS_LOS_COVIDS_POR_MAGIA_BOSS_3
 		ld		a,(VIDA_CHUMINIX_BOSS_3)
 		or		a
 		ret		z
@@ -1705,7 +1736,9 @@ CALCULA_DANO_MAGIA_BOSS_3:
 		ld		a,3
 		ret  
 
-        ds		#8000-$
+		ds		#7FE3-$
+		include "BOSSES/COMUN/HAY TRES HUECOS LIBRES PARA FUEGO.asm"
+		ds		#8000-$
 
 /**********************
  ****** PAGINA 28******
@@ -1732,6 +1765,7 @@ CALCULA_DANO_MAGIA_BOSS_3:
 
 DANO_MAGIA_EN_ERRECENYX_BOSS_4:
 
+		call	MATA_TODOS_LOS_COVIDS_POR_MAGIA_BOSS_4
 		ld		a,(VIDA_ERRECENYX_BOSS_4)
 		or		a
 		ret		z
@@ -1776,7 +1810,9 @@ CALCULA_DANO_MAGIA_BOSS_4:
 		ld		a,3
 		ret
 
-        ds		#8000-$
+		ds		#7FE3-$
+		include "BOSSES/COMUN/HAY TRES HUECOS LIBRES PARA FUEGO.asm"
+		ds		#8000-$
 
 /**********************
  ****** PAGINA 29******
@@ -1803,29 +1839,11 @@ CALCULA_DANO_MAGIA_BOSS_4:
 
 DANO_MAGIA_EN_IDIUS_BOSS_5:
 
-		ld		a,(VIDA_IDIUS_BOSS_5)
-		or		a
-		ret		z
-		call	CALCULA_DANO_MAGIA_BOSS_5
-		ld		c,a
-		ld		a,(VIDA_IDIUS_BOSS_5)
-		cp		c
-		jr		nc,.RESTA_DANO_MAGIA_IDIUS_BOSS_5
-		xor		a
-		jr		.GUARDA_VIDA_MAGIA_IDIUS_BOSS_5
-
-.RESTA_DANO_MAGIA_IDIUS_BOSS_5:
-
-		sub		c
-
-.GUARDA_VIDA_MAGIA_IDIUS_BOSS_5:
-
-		ld		(VIDA_IDIUS_BOSS_5),a
-		push	af
-		call	PINTA_MARCADORES_VIDA_FINAL_BOSS_5
-		pop		af
-		or		a								; Z activo si Idus ha muerto
+		call	MATA_TODOS_LOS_COVIDS_POR_MAGIA_BOSS_5
+		ld		a,1								; Idus no recibe dano por magia
+		or		a								; Siempre volvemos con NZ
 		ret
+		ds		22,0							; Conserva CALCULA_DANO_MAGIA_BOSS_5 en su direccion
 
 CALCULA_DANO_MAGIA_BOSS_5:
 
@@ -1847,7 +1865,9 @@ CALCULA_DANO_MAGIA_BOSS_5:
 		ld		a,3
 		ret
 
-        ds		#8000-$
+		ds		#7FE3-$
+		include "BOSSES/COMUN/HAY TRES HUECOS LIBRES PARA FUEGO.asm"
+		ds		#8000-$
 
 /**********************
  ****** PAGINA 30******
@@ -2524,7 +2544,9 @@ PON_COLOR_2_ROCKAGER_PROTEGIDO:
 		di
 		ret
 
-        ds		#8000-$
+		ds		#7FE3-$
+		include "BOSSES/COMUN/HAY TRES HUECOS LIBRES PARA FUEGO.asm"
+		ds		#8000-$
 
 /**********************
  ****** PAGINA 38******
