@@ -1,4 +1,4 @@
-Sjasm Z80 Assembler v0.42c - www.xl2s.tk             [2026.08.13 - 18:17:18]
+Sjasm Z80 Assembler v0.42c - www.xl2s.tk             [2026.08.15 - 13:08:28]
 
 NUCLEOBW2.asm
 Errors: 0
@@ -9637,11 +9637,11 @@ Errors: 0
     2778.  00:50BE                      
     2779.  00:50BE                      TEXTO_ROTATIVO_PRESENTACION:
     2780.  00:50BE                      
-    2781.  00:50BE                      		db		"BLUE WARRIOR II   -   Beta version 5.01.325 -  10-8-2026 - 98 por ciento - (C) Digital Moai",0
+    2781.  00:50BE                      		db		"BLUE WARRIOR II   -   Beta version 5.01.356 -  14-8-2026 - 98 por ciento - (C) Digital Moai",0
     2781.  00:50BE  42 4C 55 45 20 57 41 52 52 49 4F 52 20 49 49 20 
     2781.  00:50CE  20 20 2D 20 20 20 42 65 74 61 20 76 65 72 73 69 
-    2781.  00:50DE  6F 6E 20 35 2E 30 31 2E 33 32 35 20 2D 20 20 31 
-    2781.  00:50EE  30 2D 38 2D 32 30 32 36 20 2D 20 39 38 20 70 6F 
+    2781.  00:50DE  6F 6E 20 35 2E 30 31 2E 33 35 36 20 2D 20 20 31 
+    2781.  00:50EE  34 2D 38 2D 32 30 32 36 20 2D 20 39 38 20 70 6F 
     2781.  00:50FE  72 20 63 69 65 6E 74 6F 20 2D 20 28 43 29 20 44 
     2781.  00:510E  69 67 69 74 61 6C 20 4D 6F 61 69 00 
     2782.  00:511A                      
@@ -46661,9 +46661,9 @@ Errors: 0
     1568   00:8000                      		org		#4000
     1569   00:4000                      ; RESUMEN: 27 - Rutinas de Boss 2
     1570   00:4000                      		include	"BOSSES/BOSS 2.asm"
-       1.  00:4000  (00:0028)           VIDA_INICIAL_ROCKAGER_BOSS_2:			equ	40
+       1.  00:4000  (00:0014)           VIDA_INICIAL_ROCKAGER_BOSS_2:			equ	20
        2.  00:4000  (00:0028)           VIDA_INICIAL_DAVEANIX_BOSS_2:			equ	40
-       3.  00:4000  (00:0050)           VIDA_TOTAL_INICIAL_BOSS_2:				equ	VIDA_INICIAL_ROCKAGER_BOSS_2+VIDA_INICIAL_DAVEANIX_BOSS_2
+       3.  00:4000  (00:003C)           VIDA_TOTAL_INICIAL_BOSS_2:				equ	VIDA_INICIAL_ROCKAGER_BOSS_2+VIDA_INICIAL_DAVEANIX_BOSS_2
        4.  00:4000  (00:0063)           VIDA_ANCHO_BARRA_BOSS_2:				equ	99
        5.  00:4000                      
        6.  00:4000  (00:001B)           PAGINA_REGRESO_BOSS_2:					equ	27
@@ -46757,7 +46757,7 @@ Errors: 0
       94.  00:4041  21 00 00            		ld		hl,#0000
       95.  00:4044  22 72 C1            		ld		(VALORES_EXPLOSION_CON_ROCK),hl
       96.  00:4047  22 74 C1            		ld		(VALORES_EXPLOSION_CON_ROCK+2),hl
-      97.  00:404A  3E 28               		ld		a,VIDA_INICIAL_ROCKAGER_BOSS_2
+      97.  00:404A  3E 14               		ld		a,VIDA_INICIAL_ROCKAGER_BOSS_2
       98.  00:404C  32 D8 C6            		ld		(VIDA_ROCKAGER_BOSS_2),a
       99.  00:404F  3E 28               		ld		a,VIDA_INICIAL_DAVEANIX_BOSS_2
      100.  00:4051  32 D9 C6            		ld		(VIDA_DAVEANIX_BOSS_2),a
@@ -49285,7 +49285,7 @@ Errors: 0
     1448.  00:4E32                      CONVIERTE_VIDA_FINAL_A_BARRA_BOSS_2:
     1449.  00:4E32                      
     1450.  00:4E32  4F                  		ld		c,a
-    1451.  00:4E33  3E 50               		ld		a,VIDA_TOTAL_INICIAL_BOSS_2
+    1451.  00:4E33  3E 3C               		ld		a,VIDA_TOTAL_INICIAL_BOSS_2
     1452.  00:4E35  91                  		sub		c
     1453.  00:4E36  47                          ld      b,a
     1454.  00:4E37  AF                          xor     a
@@ -49305,10 +49305,10 @@ Errors: 0
     1468.  00:4E42                      
     1469.  00:4E42                      .AJUSTA_ESCALA_VIDA_FINAL_BOSS_2:
     1470.  00:4E42                      
-    1471.  00:4E42  FE 50                       cp      VIDA_TOTAL_INICIAL_BOSS_2
+    1471.  00:4E42  FE 3C                       cp      VIDA_TOTAL_INICIAL_BOSS_2
     1472.  00:4E44  38 05                       jr      c,.GUARDA_RESTO_ESCALA_VIDA_FINAL_BOSS_2
     1473.  00:4E46                      
-    1474.  00:4E46  D6 50                       sub     VIDA_TOTAL_INICIAL_BOSS_2
+    1474.  00:4E46  D6 3C                       sub     VIDA_TOTAL_INICIAL_BOSS_2
     1475.  00:4E48  14                          inc     d
     1476.  00:4E49  18 F7                       jr      .AJUSTA_ESCALA_VIDA_FINAL_BOSS_2
     1477.  00:4E4B                      
@@ -77330,8 +77330,8 @@ Errors: 0
     1829   00:8000                      		org		#4000
     1830   00:4000                      ; RESUMEN: 30 - Rutinas de Boss 5
     1831   00:4000                      		include	"BOSSES/BOSS 5.asm"
-       1.  00:4000  (00:00A0)           VIDA_INICIAL_IDIUS_BOSS_5:					equ	160
-       2.  00:4000  (00:00A0)           VIDA_TOTAL_INICIAL_BOSS_5:					equ	VIDA_INICIAL_IDIUS_BOSS_5
+       1.  00:4000  (00:009C)           VIDA_INICIAL_IDIUS_BOSS_5:					equ	156
+       2.  00:4000  (00:009C)           VIDA_TOTAL_INICIAL_BOSS_5:					equ	VIDA_INICIAL_IDIUS_BOSS_5
        3.  00:4000  (00:0063)           VIDA_ANCHO_BARRA_BOSS_5:					equ	99
        4.  00:4000                      
        5.  00:4000  (00:001E)           PAGINA_REGRESO_BOSS_5:						equ	30
@@ -77506,7 +77506,7 @@ Errors: 0
      174.  00:404D  32 74 C1            		ld		(VALORES_EXPLOSION_CON_ROCK+2),a
      175.  00:4050  32 75 C1            		ld		(VALORES_EXPLOSION_CON_ROCK+3),a
      176.  00:4053  CD 5B 56            		call	OCULTA_EXPLOSION_IDIUS_BOSS_5
-     177.  00:4056  3E A0               		ld		a,VIDA_INICIAL_IDIUS_BOSS_5
+     177.  00:4056  3E 9C               		ld		a,VIDA_INICIAL_IDIUS_BOSS_5
      178.  00:4058  32 19 C8            		ld		(VIDA_IDIUS_BOSS_5),a
      179.  00:405B  3E FF               		ld		a,255
      180.  00:405D  32 1A C8            		ld		(IDIUS_BOSS_5_X),a
@@ -77549,7 +77549,7 @@ Errors: 0
      217.  00:40B1                      
      218.  00:40B1                      .COPIA_A_1_PARTE_ALTA:
      219.  00:40B1                      
-     220.  00:40B1  DD 21 BB 58                 ld      ix,BOSS_5_PAGE_2_A_PAGE_1_COMPLETA
+     220.  00:40B1  DD 21 C3 58                 ld      ix,BOSS_5_PAGE_2_A_PAGE_1_COMPLETA
      221.  00:40B5  FD 21 9A C2                 ld      iy,DATAS_COPY_RECUP_SCROLL
      222.  00:40B9  CD 18 43                    call    .BUCLE_PINTA_DATAS
      223.  00:40BC                      
@@ -77570,7 +77570,7 @@ Errors: 0
      238.  00:40DB                      
      239.  00:40DB                      .COPIA_A_1_PARTE_BAJA:
      240.  00:40DB                              
-     241.  00:40DB  DD 21 BB 58                 ld      ix,BOSS_5_PAGE_2_A_PAGE_1_COMPLETA
+     241.  00:40DB  DD 21 C3 58                 ld      ix,BOSS_5_PAGE_2_A_PAGE_1_COMPLETA
      242.  00:40DF  FD 21 9A C2                 ld      iy,DATAS_COPY_RECUP_SCROLL
      243.  00:40E3  CD 18 43                    call    .BUCLE_PINTA_DATAS
      244.  00:40E6                      
@@ -77594,19 +77594,19 @@ Errors: 0
      262.  00:410A                      
      263.  00:410A                      .GUARDA_DATOS_VIDA_IDIUS:
      264.  00:410A                      
-     265.  00:410A  DD 21 15 59                 ld      ix,BOSS_5_COPI_MARCADOR_BOSSES_CORAZONES_VACIOS
+     265.  00:410A  DD 21 1D 59                 ld      ix,BOSS_5_COPI_MARCADOR_BOSSES_CORAZONES_VACIOS
      266.  00:410E  FD 21 2A C1                 ld      iy,DATAS_COR_EMPT_MALO
      267.  00:4112  CD 18 43                    call    .BUCLE_PINTA_DATAS
      268.  00:4115                      
      269.  00:4115                      .GUARDA_DATOS_COPY_CORAZONES_EMPTY_DEPH:
      270.  00:4115                      
-     271.  00:4115  DD 21 E8 58                 ld      ix,BOSS_5_COPY_CORAZONES_EMPTY_DEPH
+     271.  00:4115  DD 21 F0 58                 ld      ix,BOSS_5_COPY_CORAZONES_EMPTY_DEPH
      272.  00:4119  FD 21 3A C1                 ld      iy,CORAZONES_DEPH_EN_BOSSES
      273.  00:411D  CD 18 43                    call    .BUCLE_PINTA_DATAS
      274.  00:4120                      
      275.  00:4120                      .GUARDA_DATOS_COPY_PUNTOS_MAGIA:
      276.  00:4120                      
-     277.  00:4120  DD 21 24 59                 ld      ix,BOSS_5_COPY_PUNTOS_MAGIA
+     277.  00:4120  DD 21 2C 59                 ld      ix,BOSS_5_COPY_PUNTOS_MAGIA
      278.  00:4124  FD 21 4A C1                 ld      iy,PUNTOS_MAGIA_EN_BOSSES
      279.  00:4128  CD 18 43                    call    .BUCLE_PINTA_DATAS
      280.  00:412B                      
@@ -77637,7 +77637,7 @@ Errors: 0
      305.  00:414B                      
      306.  00:414B                      .COPIA_ESCENARIO_RECOLOCADO_A_PAGE_2:
      307.  00:414B                      
-     308.  00:414B  21 33 59             		ld	hl,BOSS_5_PAGE_1_A_PAGE_2_COMPLETA
+     308.  00:414B  21 3B 59             		ld	hl,BOSS_5_PAGE_1_A_PAGE_2_COMPLETA
      309.  00:414E  CD 2A 5E            		call	DOCOPY
      310.  00:4151  CD 33 5E                    call    VDPREADY
      311.  00:4154                      
@@ -77685,14 +77685,14 @@ Errors: 0
      353.  00:418F                      .PINTA_STATUS:
      354.  00:418F                      
      355.  00:418F  06 0F                       ld      b,15
-     356.  00:4191  21 42 59                    ld      hl,BOSS_5_COPIA_PARTE_PAGE_2_DE_STATUS
+     356.  00:4191  21 4A 59                    ld      hl,BOSS_5_COPIA_PARTE_PAGE_2_DE_STATUS
      357.  00:4194  CD 2A 5E            		call	DOCOPY 
      358.  00:4197                      
      359.  00:4197  CD A6 42            		call	.PREPARA_CORAZONES_MAXIMOS_DEPH
      360.  00:419A  CD FF 80            		call	PINTA_VIDAS_EN_BASE_MARCADOR_BOSS
      361.  00:419D                      
      362.  00:419D  06 0F                       ld      b,15
-     363.  00:419F  21 51 59                    ld      hl,BOSS_5_COPIA_STATUS_BOSS_A_PAGE_2
+     363.  00:419F  21 59 59                    ld      hl,BOSS_5_COPIA_STATUS_BOSS_A_PAGE_2
      364.  00:41A2  CD 2A 5E            		call	DOCOPY 
      365.  00:41A5  CD 91 52            		call	PINTA_MARCADORES_VIDA_FINAL_BOSS_5
      366.  00:41A8                      
@@ -77754,7 +77754,7 @@ Errors: 0
      422.  00:41E3                      
      423.  00:41E3                      .PREPARACION_PELEA:
      424.  00:41E3                      
-     425.  00:41E3  21 CA 58            	ld		hl,BOSS_5_PAGE_2_A_PAGE_3_COMPLETA
+     425.  00:41E3  21 D2 58            	ld		hl,BOSS_5_PAGE_2_A_PAGE_3_COMPLETA
      426.  00:41E6  CD 2A 5E            	call	DOCOPY
      427.  00:41E9  CD 33 5E            	call	VDPREADY
      428.  00:41EC                      
@@ -77816,7 +77816,7 @@ Errors: 0
      484.  00:4243                      
      485.  00:4243                      .RECARGA_DATOS_MAGIA_BOSS_5:
      486.  00:4243                      
-     487.  00:4243  21 24 59            	ld		hl,BOSS_5_COPY_PUNTOS_MAGIA
+     487.  00:4243  21 2C 59            	ld		hl,BOSS_5_COPY_PUNTOS_MAGIA
      488.  00:4246  11 4A C1            	ld		de,PUNTOS_MAGIA_EN_BOSSES
      489.  00:4249  01 0F 00            	ld		bc,15
      490.  00:424C  ED B0               	ldir
@@ -77900,10 +77900,10 @@ Errors: 0
      550.  00:42BC                      
      551.  00:42BC                      .CORAZONES_MAXIMOS_DEPH_OK:
      552.  00:42BC                      
-     553.  00:42BC  DD 21 F7 58         	ld		ix,BOSS_5_CUADRO_CORAZONES_FUERA_MAX_STATUS
+     553.  00:42BC  DD 21 FF 58         	ld		ix,BOSS_5_CUADRO_CORAZONES_FUERA_MAX_STATUS
      554.  00:42C0  CD CB 42            	call	.PINTA_CUADRO_CORAZONES_FUERA_MAX
      555.  00:42C3                      
-     556.  00:42C3  DD 21 06 59         	ld		ix,BOSS_5_CUADRO_CORAZONES_FUERA_MAX_EMPTY
+     556.  00:42C3  DD 21 0E 59         	ld		ix,BOSS_5_CUADRO_CORAZONES_FUERA_MAX_EMPTY
      557.  00:42C7  CD CB 42            	call	.PINTA_CUADRO_CORAZONES_FUERA_MAX
      558.  00:42CA  C9                  	ret
      559.  00:42CB                      
@@ -79007,7 +79007,7 @@ Errors: 0
     1656.  00:4878  87                  		add		a,a
     1657.  00:4879  5F                  		ld		e,a
     1658.  00:487A  16 00               		ld		d,0
-    1659.  00:487C  21 60 59            		ld		hl,TABLA_DIRECCIONES_VRAM_ATRIBUTOS_PROYECTIL_BOSS_5
+    1659.  00:487C  21 68 59            		ld		hl,TABLA_DIRECCIONES_VRAM_ATRIBUTOS_PROYECTIL_BOSS_5
     1660.  00:487F  19                  		add		hl,de
     1661.  00:4880  5E                  		ld		e,(hl)
     1662.  00:4881  23                  		inc		hl
@@ -79178,7 +79178,7 @@ Errors: 0
     1827.  00:4938  80                  		add		a,b
     1828.  00:4939  5F                  		ld		e,a
     1829.  00:493A  16 00               		ld		d,0
-    1830.  00:493C  21 70 59            		ld		hl,TABLA_DIRECCIONES_PROYECTIL_BOSS_5
+    1830.  00:493C  21 78 59            		ld		hl,TABLA_DIRECCIONES_PROYECTIL_BOSS_5
     1831.  00:493F  19                  		add		hl,de
     1832.  00:4940  E5                  		push	hl
     1833.  00:4941  CD 3B 48            		call	OBTIENE_PUNTERO_PASO_TABLA_PROYECTIL_BOSS_5_ACTUAL
@@ -79932,7 +79932,7 @@ Errors: 0
     1895.  00:4D78  3A 1F C8            		ld		a,(IDIUS_BOSS_5_MODO)
     1896.  00:4D7B  4F                  		ld		c,a
     1897.  00:4D7C  06 00               		ld		b,0
-    1898.  00:4D7E  21 E2 59            		ld		hl,TABLA_SECUENCIA_IDIUS_BOSS_5
+    1898.  00:4D7E  21 EA 59            		ld		hl,TABLA_SECUENCIA_IDIUS_BOSS_5
     1899.  00:4D81  09                  		add		hl,bc
     1900.  00:4D82  7E                  		ld		a,(hl)
     1901.  00:4D83  B7                  		or		a
@@ -80040,11 +80040,11 @@ Errors: 0
     2003.  00:4DFE                      
     2004.  00:4DFE  4F                  		ld		c,a
     2005.  00:4DFF  06 00               		ld		b,0
-    2006.  00:4E01  21 D0 59            		ld		hl,TABLA_POSICIONES_IDIUS_X_BOSS_5
+    2006.  00:4E01  21 D8 59            		ld		hl,TABLA_POSICIONES_IDIUS_X_BOSS_5
     2007.  00:4E04  09                  		add		hl,bc
     2008.  00:4E05  7E                  		ld		a,(hl)
     2009.  00:4E06  32 1A C8            		ld		(IDIUS_BOSS_5_X),a
-    2010.  00:4E09  21 D9 59            		ld		hl,TABLA_POSICIONES_IDIUS_Y_BOSS_5
+    2010.  00:4E09  21 E1 59            		ld		hl,TABLA_POSICIONES_IDIUS_Y_BOSS_5
     2011.  00:4E0C  09                  		add		hl,bc
     2012.  00:4E0D  7E                  		ld		a,(hl)
     2013.  00:4E0E  32 1B C8            		ld		(IDIUS_BOSS_5_Y),a
@@ -80060,11 +80060,11 @@ Errors: 0
     2023.  00:4E1D  3D                  		dec		a
     2024.  00:4E1E  4F                  		ld		c,a
     2025.  00:4E1F  06 00               		ld		b,0
-    2026.  00:4E21  21 A0 59            		ld		hl,BOSS_5_IDIUS_SX
+    2026.  00:4E21  21 A8 59            		ld		hl,BOSS_5_IDIUS_SX
     2027.  00:4E24  09                  		add		hl,bc
     2028.  00:4E25  7E                  		ld		a,(hl)
     2029.  00:4E26  32 25 C8            		ld		(IDIUS_BOSS_5_SX_ACTUAL),a
-    2030.  00:4E29  21 A9 59            		ld		hl,BOSS_5_IDIUS_SY
+    2030.  00:4E29  21 B1 59            		ld		hl,BOSS_5_IDIUS_SY
     2031.  00:4E2C  09                  		add		hl,bc
     2032.  00:4E2D  7E                  		ld		a,(hl)
     2033.  00:4E2E  32 26 C8            		ld		(IDIUS_BOSS_5_SY_ACTUAL),a
@@ -80086,7 +80086,7 @@ Errors: 0
     2049.  00:4E56                      
     2050.  00:4E56                      .FONDO_IDIUS_YA_PREPARADO_BOSS_5:
     2051.  00:4E56                      
-    2052.  00:4E56  DD 21 91 59         		ld		ix,BOSS_5_COPY_MOVIMIENTO_IDIUS
+    2052.  00:4E56  DD 21 99 59         		ld		ix,BOSS_5_COPY_MOVIMIENTO_IDIUS
     2053.  00:4E5A  FD 21 9A C2         		ld		iy,DATAS_COPY_RECUP_SCROLL
     2054.  00:4E5E  CD 18 43            		call	RUTINA_BOSS_5.BUCLE_PINTA_DATAS
     2055.  00:4E61  FD 21 9A C2         		ld		iy,DATAS_COPY_RECUP_SCROLL
@@ -80121,7 +80121,7 @@ Errors: 0
     2084.  00:4EAA                      
     2085.  00:4EAA                      GUARDA_FONDO_IDIUS_BOSS_5:
     2086.  00:4EAA                      
-    2087.  00:4EAA  DD 21 B2 59         		ld		ix,BOSS_5_COPY_GUARDA_FONDO_IDIUS
+    2087.  00:4EAA  DD 21 BA 59         		ld		ix,BOSS_5_COPY_GUARDA_FONDO_IDIUS
     2088.  00:4EAE  FD 21 9A C2         		ld		iy,DATAS_COPY_RECUP_SCROLL
     2089.  00:4EB2  CD 18 43            		call	RUTINA_BOSS_5.BUCLE_PINTA_DATAS
     2090.  00:4EB5  FD 21 9A C2         		ld		iy,DATAS_COPY_RECUP_SCROLL
@@ -80194,7 +80194,7 @@ Errors: 0
     2157.  00:4F31  FE FF               		cp		255
     2158.  00:4F33  C8                  		ret		z
     2159.  00:4F34                      
-    2160.  00:4F34  DD 21 C1 59         		ld		ix,BOSS_5_COPY_RESTAURA_FONDO_IDIUS
+    2160.  00:4F34  DD 21 C9 59         		ld		ix,BOSS_5_COPY_RESTAURA_FONDO_IDIUS
     2161.  00:4F38  FD 21 9A C2         		ld		iy,DATAS_COPY_RECUP_SCROLL
     2162.  00:4F3C  CD 18 43            		call	RUTINA_BOSS_5.BUCLE_PINTA_DATAS
     2163.  00:4F3F  FD 21 9A C2         		ld		iy,DATAS_COPY_RECUP_SCROLL
@@ -80849,7 +80849,7 @@ Errors: 0
     2344.  00:52D6                      CONVIERTE_VIDA_FINAL_A_BARRA_BOSS_5:
     2345.  00:52D6                      
     2346.  00:52D6  4F                  		ld		c,a
-    2347.  00:52D7  3E A0               		ld		a,VIDA_TOTAL_INICIAL_BOSS_5
+    2347.  00:52D7  3E 9C               		ld		a,VIDA_TOTAL_INICIAL_BOSS_5
     2348.  00:52D9  91                  		sub		c
     2349.  00:52DA  47                          ld      b,a
     2350.  00:52DB  AF                          xor     a
@@ -80869,10 +80869,10 @@ Errors: 0
     2364.  00:52E6                      
     2365.  00:52E6                      .AJUSTA_ESCALA_VIDA_FINAL_BOSS_5:
     2366.  00:52E6                      
-    2367.  00:52E6  FE A0                       cp      VIDA_TOTAL_INICIAL_BOSS_5
+    2367.  00:52E6  FE 9C                       cp      VIDA_TOTAL_INICIAL_BOSS_5
     2368.  00:52E8  38 05                       jr      c,.GUARDA_RESTO_ESCALA_VIDA_FINAL_BOSS_5
     2369.  00:52EA                      
-    2370.  00:52EA  D6 A0                       sub     VIDA_TOTAL_INICIAL_BOSS_5
+    2370.  00:52EA  D6 9C                       sub     VIDA_TOTAL_INICIAL_BOSS_5
     2371.  00:52EC  14                          inc     d
     2372.  00:52ED  18 F7                       jr      .AJUSTA_ESCALA_VIDA_FINAL_BOSS_5
     2373.  00:52EF                      
@@ -81128,7 +81128,7 @@ Errors: 0
     2623.  00:5422  DD 77 02            		ld		(ix+2),a
     2624.  00:5425                      
     2625.  00:5425  11 10 49            		ld		de,#4800+EXPLOSION_IDIUS_SPRITE_BOSS_5*16
-    2626.  00:5428  21 10 5A            		ld		hl,BOSS_5_COLOR_EXPLOSION_IDIUS
+    2626.  00:5428  21 18 5A            		ld		hl,BOSS_5_COLOR_EXPLOSION_IDIUS
     2627.  00:542B  01 10 00            		ld		bc,16
     2628.  00:542E  CD A2 5F            		call	PON_COLOR_2.sin_bc_impuesta
     2629.  00:5431                      
@@ -81366,7 +81366,7 @@ Errors: 0
     2861.  00:5594  DD 77 02            		ld		(ix+2),a
     2862.  00:5597                      
     2863.  00:5597  11 10 49            		ld		de,#4800+EXPLOSION_IDIUS_SPRITE_BOSS_5*16
-    2864.  00:559A  21 10 5A            		ld		hl,BOSS_5_COLOR_EXPLOSION_IDIUS
+    2864.  00:559A  21 18 5A            		ld		hl,BOSS_5_COLOR_EXPLOSION_IDIUS
     2865.  00:559D  01 10 00            		ld		bc,16
     2866.  00:55A0  CD A2 5F            		call	PON_COLOR_2.sin_bc_impuesta
     2867.  00:55A3                      
@@ -81493,7 +81493,7 @@ Errors: 0
     2988.  00:565B                      OCULTA_EXPLOSION_IDIUS_BOSS_5:
     2989.  00:565B                      
     2990.  00:565B  11 44 4A            		ld		de,EXPLOSION_IDIUS_ATRIBUTOS_VRAM_BOSS_5
-    2991.  00:565E  21 20 5A            		ld		hl,SPRITE_EXPLOSION_IDIUS_OCULTO_BOSS_5
+    2991.  00:565E  21 28 5A            		ld		hl,SPRITE_EXPLOSION_IDIUS_OCULTO_BOSS_5
     2992.  00:5661  01 04 00            		ld		bc,4
     2993.  00:5664  C3 A2 5F            		jp		PON_COLOR_2.sin_bc_impuesta
     2994.  00:5667                      
@@ -81587,7 +81587,7 @@ Errors: 0
     3065.  00:57A1  3A 4A C0            		ld		a,(SET_PAGE)
     3066.  00:57A4  FE 03               		cp		3
     3067.  00:57A6  C0                  		ret		nz
-    3068.  00:57A7  21 D9 58            		ld		hl,BOSS_5_PAGE_3_A_PAGE_2_COMPLETA
+    3068.  00:57A7  21 E1 58            		ld		hl,BOSS_5_PAGE_3_A_PAGE_2_COMPLETA
     3069.  00:57AA  CD 2A 5E            		call	DOCOPY
     3070.  00:57AD  CD 33 5E            		call	VDPREADY
     3071.  00:57B0  3E 02               		ld		a,2
@@ -81598,350 +81598,353 @@ Errors: 0
     3076.  00:57BB                      
     3077.  00:57BB                      RESTAURA_PAGE_3_TRAS_MAGIA_BOSS_5:
     3078.  00:57BB                      
-    3079.  00:57BB  21 CA 58            		ld		hl,BOSS_5_PAGE_2_A_PAGE_3_COMPLETA
+    3079.  00:57BB  21 D2 58            		ld		hl,BOSS_5_PAGE_2_A_PAGE_3_COMPLETA
     3080.  00:57BE  CD 2A 5E            		call	DOCOPY
     3081.  00:57C1  C3 33 5E            		jp		VDPREADY
     3082.  00:57C4                      
     3083.  00:57C4                      MUERTE_DE_IDIUS_BOSS_5:
     3084.  00:57C4  CD 8C 57            		call	ASEGURA_PAGE_2_VISIBLE_BOSS_5
-    3085.  00:57C7                      
-    3086.  00:57C7                      ; paramos la música
-    3087.  00:57C7  CD 01 7C            		call	stpmus
-    3088.  00:57CA                      
-    3089.  00:57CA                      ; Nos aseguramos que el prota no está en modo transparente ni el fondo en colores varios
-    3090.  00:57CA  CD DB 6E            		call	LIMPIA_ESTADO_DANO_DEPH_EN_MUERTE_BOSS
-    3091.  00:57CD                      
-    3092.  00:57CD                      ; limpiamos sprites
-    3093.  00:57CD  AF                  		xor		a
-    3094.  00:57CE  21 20 4A            		ld		hl,SPRITES_ATRIBUTOS_VRAM_BOSS_5+IDIUS_LIMPIA_SPRITE_INICIAL_BOSS_5*4
-    3095.  00:57D1  01 60 00            		ld		bc,IDIUS_LIMPIA_SPRITES_CANT_BOSS_5*4
-    3096.  00:57D4  CD 83 5F            		call	FILVRM_RAM
-    3097.  00:57D7                      
-    3098.  00:57D7                      FINAL_b5:
-    3099.  00:57D7                      
-    3100.  00:57D7                      		include	"../ANIMACIONES/FINAL FASE 5 VAMOS A TERMINAR.asm"		
-       1:  00:57D7                      ; -----------------------------------------------------------------------------
-       2:  00:57D7                      ; FINAL FASE 5 VAMOS A TERMINAR.asm
-       3:  00:57D7                      ;
-       4:  00:57D7                      ; Include ejecutado desde BOSS 5.asm en la etiqueta FINAL_b5.
-       5:  00:57D7                      ;
-       6:  00:57D7                      ; Objetivo:
-       7:  00:57D7                      ;   - Borrar visualmente la page 2 visible.
-       8:  00:57D7                      ;   - Pintar bloques negros en orden pseudoaleatorio.
-       9:  00:57D7                      ;   - No repetir nunca el mismo bloque.
-      10:  00:57D7                      ;   - Al terminar, NO hacer ret ni jp: el flujo cae al codigo siguiente
-      11:  00:57D7                      ;     del include, es decir, VOLVEMOS_b5.
-      12:  00:57D7                      ;
-      13:  00:57D7                      ; Nota:
-      14:  00:57D7                      ;   La pantalla se divide en bloques de 4x4.
-      15:  00:57D7                      ;   64 columnas x 53 filas = 3392 bloques.
-      16:  00:57D7                      ;   Cada bloque se pinta una sola vez mediante HMMV.
-      17:  00:57D7                      ; -----------------------------------------------------------------------------
-      18:  00:57D7                      
-      19:  00:57D7  C3 53 58            		jp		FINAL_FASE_5_VAMOS_A_TERMINAR_INICIO
-      20:  00:57DA                      
-      21:  00:57DA                      ; Buffer de comando VDP.
-      22:  00:57DA                      ; Formato DOCOPY:
-      23:  00:57DA                      ;   0-1   SX
-      24:  00:57DA                      ;   2-3   SY
-      25:  00:57DA                      ;   4-5   DX
-      26:  00:57DA                      ;   6-7   DY
-      27:  00:57DA                      ;   8-9   NX
-      28:  00:57DA                      ;   10-11 NY
-      29:  00:57DA                      ;   12    color
-      30:  00:57DA                      ;   13    argumento
-      31:  00:57DA                      ;   14    comando
-      32:  00:57DA                      ;
-      33:  00:57DA                      ; HMMV (#C0) rellena un rectangulo con un color.
-      34:  00:57DA                      ; DY alto = 2 para pintar en la page 2.
-      35:  00:57DA                      FINAL_FASE_5_VAMOS_A_TERMINAR_PLANTILLA_HMMV:
-      36:  00:57DA                      
-      37:  00:57DA  00 00 00 00         		db		0,0,0,0
-      38:  00:57DE  00 00               		db		0,0
-      39:  00:57E0  00 02               		db		0,PAGE_2_VRAM_Y_BOSS_5/256
-      40:  00:57E2  04 00               		db		4,0
-      41:  00:57E4  02 00               		db		2,0
-      42:  00:57E6  00                  		db		#00
-      43:  00:57E7  00                  		db		#00
-      44:  00:57E8  C0                  		db		COPY_LOGICA_RELLENO_BOSS_5
-      45:  00:57E9                      
-      46:  00:57E9                      ; Filas en orden pseudoaleatorio.
-      47:  00:57E9                      ; Son las 53 filas de bloques de 4 pixeles: 0,4,8,...,208,
-      48:  00:57E9                      ; pero mezcladas. No hay repeticiones.
-      49:  00:57E9                      
-      50:  00:57E9                      FINAL_FASE_5_VAMOS_A_TERMINAR_TABLA_Y:
-      51:  00:57E9                      
-      52:  00:57E9                      		db		46,120,194,56,130,204,66,140,2,76,150,12,86,160,22,96
-      52:  00:57E9  2E 78 C2 38 82 CC 42 8C 02 4C 96 0C 56 A0 16 60 
-      53:  00:57F9                      		db		170,32,106,180,42,116,190,52,126,200,62,136,210,72,146,8
-      53:  00:57F9  AA 20 6A B4 2A 74 BE 34 7E C8 3E 88 D2 48 92 08 
-      54:  00:5809                      		db		82,156,18,92,166,28,102,176,38,112,186,48,122,196,58,132
-      54:  00:5809  52 9C 12 5C A6 1C 66 B0 26 70 BA 30 7A C4 3A 84 
-      55:  00:5819                      		db		206,68,142,4,78,152,14,88,162,24,98,172,34,108,182,44
-      55:  00:5819  CE 44 8E 04 4E 98 0E 58 A2 18 62 AC 22 6C B6 2C 
-      56:  00:5829                      		db		118,192,54,128,202,64,138,0,74,148,10,84,158,20,94,168
-      56:  00:5829  76 C0 36 80 CA 40 8A 00 4A 94 0A 54 9E 14 5E A8 
-      57:  00:5839                      		db		30,104,178,40,114,188,50,124,198,60,134,208,70,144,6,80
-      57:  00:5839  1E 68 B2 28 72 BC 32 7C C6 3C 86 D0 46 90 06 50 
-      58:  00:5849                      		db		154,16,90,164,26,100,174,36,110,184
-      58:  00:5849  9A 10 5A A4 1A 64 AE 24 6E B8 
-      59:  00:5853                      
-      60:  00:5853                      FINAL_FASE_5_VAMOS_A_TERMINAR_INICIO:
-      61:  00:5853                      
-      62:  00:5853                      		; Lanzamos FX 34 al empezar la secuencia final.
-      63:  00:5853  3E 22               		ld		a,34
-      64:  00:5855  0E 01               		ld		c,1
-      65:  00:5857  CD 83 57            		call	TIRA_FX_BOSS_5
-      66:  00:585A                      
-      67:  00:585A                      		; Aseguramos que la page visible es la 2, que es donde vamos a pintar.
-      68:  00:585A  3E 02               		ld		a,2
-      69:  00:585C  32 4A C0            		ld		(SET_PAGE),a
-      70:  00:585F                      
-      71:  00:585F                      		; Copiamos la plantilla ROM al buffer real en RAM.
-      72:  00:585F  21 DA 57            		ld		hl,FINAL_FASE_5_VAMOS_A_TERMINAR_PLANTILLA_HMMV
-      73:  00:5862  11 4F C6            		ld		de,FINAL_FASE_5_VAMOS_A_TERMINAR_DATAS_HMMV
-      74:  00:5865  01 0F 00            		ld		bc,15
-      75:  00:5868  ED B0               		ldir
-      76:  00:586A                              
-      77:  00:586A  06 6A               		ld		b,106
-      78:  00:586C  FD 21 E9 57         		ld		iy,FINAL_FASE_5_VAMOS_A_TERMINAR_TABLA_Y
-      79:  00:5870                      
-      80:  00:5870                      .BUCLE_FILAS_FINAL_FASE_5:
-      81:  00:5870                      
-      82:  00:5870  C5                  		push	bc
-      83:  00:5871                      
-      84:  00:5871                      		; DY = fila actual en page 2.
-      85:  00:5871  FD 7E 00            		ld		a,(iy)
-      86:  00:5874  FD 23               		inc		iy
-      87:  00:5876  32 55 C6            		ld		(FINAL_FASE_5_VAMOS_A_TERMINAR_DATAS_HMMV+6),a
-      88:  00:5879                      
-      89:  00:5879                      		; Semilla X distinta para cada fila.
-      90:  00:5879                      		; Como la tabla Y ya esta mezclada, esto evita que todas las filas
-      91:  00:5879                      		; se borren con el mismo orden horizontal.
-      92:  00:5879  CB 3F               		srl		a
-      93:  00:587B  CB 3F               		srl		a
-      94:  00:587D  C6 07               		add		a,7
-      95:  00:587F  E6 3F               		and		00111111b
-      96:  00:5881  32 5E C6            		ld		(FINAL_FASE_5_VAMOS_A_TERMINAR_X_SEED),a
-      97:  00:5884                      
-      98:  00:5884  06 40               		ld		b,64
-      99:  00:5886                      
-     100:  00:5886                      .BUCLE_COLUMNAS_FINAL_FASE_5:
-     101:  00:5886                      
-     102:  00:5886  C5                  		push	bc
-     103:  00:5887  FD E5               		push	iy
-     104:  00:5889                      
-     105:  00:5889                      		; DX = (semilla X modulo 64) * 4.
-     106:  00:5889  3A 5E C6            		ld		a,(FINAL_FASE_5_VAMOS_A_TERMINAR_X_SEED)
-     107:  00:588C  E6 3F               		and		00111111b
-     108:  00:588E  87                  		add		a,a
-     109:  00:588F  87                  		add		a,a
-     110:  00:5890  32 53 C6            		ld		(FINAL_FASE_5_VAMOS_A_TERMINAR_DATAS_HMMV+4),a
-     111:  00:5893                      
-     112:  00:5893                      		; Pintamos bloque negro 4x4 en page 2.
-     113:  00:5893  21 4F C6            		ld		hl,FINAL_FASE_5_VAMOS_A_TERMINAR_DATAS_HMMV
-     114:  00:5896  CD 2A 5E            		call	DOCOPY
-     115:  00:5899  CD 33 5E            		call	VDPREADY
-     116:  00:589C                      
-     117:  00:589C                      		; Siguiente X pseudoaleatoria.
-     118:  00:589C                      		; 21 es coprimo con 64, asi que recorre las 64 columnas
-     119:  00:589C                      		; sin repetir ninguna dentro de la misma fila.
-     120:  00:589C  3A 5E C6            		ld		a,(FINAL_FASE_5_VAMOS_A_TERMINAR_X_SEED)
-     121:  00:589F  C6 15               		add		a,21
-     122:  00:58A1  E6 3F               		and		00111111b
-     123:  00:58A3  32 5E C6            		ld		(FINAL_FASE_5_VAMOS_A_TERMINAR_X_SEED),a
-     124:  00:58A6                      
-     125:  00:58A6  FD E1               		pop		iy
-     126:  00:58A8  C1                  		pop		bc
-     127:  00:58A9  10 DB               		djnz	.BUCLE_COLUMNAS_FINAL_FASE_5
-     128:  00:58AB                      
-     129:  00:58AB  C1                  		pop		bc
-     130:  00:58AC                      
-     131:  00:58AC                      		; Pausa corta entre filas para que el borrado respire.
-     132:  00:58AC  C5                  		push	bc
-     133:  00:58AD  01 00 04            		ld		bc,#0400
-     134:  00:58B0                      
-     135:  00:58B0                      .PAUSA_ENTRE_FILAS_FINAL_FASE_5:
-     136:  00:58B0                      
-     137:  00:58B0  0B                  		dec		bc
-     138:  00:58B1  78                  		ld		a,b
-     139:  00:58B2  B1                  		or		c
-     140:  00:58B3  20 FB               		jr		nz,.PAUSA_ENTRE_FILAS_FINAL_FASE_5
-     141:  00:58B5                      
-     142:  00:58B5  C1                  		pop		bc
-     143:  00:58B6                      
-     144:  00:58B6  10 B8               		djnz	.BUCLE_FILAS_FINAL_FASE_5
-     145:  00:58B8                      
-     146:  00:58B8                      ; Fin del include.
-     147:  00:58B8                      ; No hay ret.
-     148:  00:58B8                      ; El ensamblador continua con la siguiente linea de BOSS 5.asm:
-     149:  00:58B8                      ; VOLVEMOS_b5 -> jp CARGA_SLOT_REGRESO_A_JUEGO
-    3101.  00:58B8                      
-    3102.  00:58B8                      VOLVEMOS_b5:
-    3103.  00:58B8                      
-    3104.  00:58B8  C3 03 BF            		jp		CARGA_SLOT_REGRESO_A_JUEGO
-    3105.  00:58BB                      
-    3106.  00:58BB                      	include	"BOSS 5 DATA.asm"
-       1:  00:58BB                      BOSS_5_PAGE_2_A_PAGE_1_COMPLETA:
-       2:  00:58BB                      
-       3:  00:58BB                      		dw      #0000,#0200,#0000,#0100,#0100,#0100
-       3:  00:58BB  00 00 00 02 00 00 00 01 00 01 00 01 
-       4:  00:58C7  00 00 90            		db      #00,#00,10010000b
-       5:  00:58CA                      
-       6:  00:58CA                      BOSS_5_PAGE_2_A_PAGE_3_COMPLETA:
-       7:  00:58CA                      
-       8:  00:58CA                      		dw      #0000,#0200,#0000,#0300,#0100,#0100
-       8:  00:58CA  00 00 00 02 00 00 00 03 00 01 00 01 
-       9:  00:58D6  00 00 90            		db      #00,#00,10010000b
-      10:  00:58D9                      
-      11:  00:58D9                      BOSS_5_PAGE_3_A_PAGE_2_COMPLETA:
-      12:  00:58D9                      
-      13:  00:58D9                      		dw      #0000,#0300,#0000,#0200,#0100,#0100
-      13:  00:58D9  00 00 00 03 00 00 00 02 00 01 00 01 
-      14:  00:58E5  00 00 90            		db      #00,#00,10010000b
-      15:  00:58E8                      
-      16:  00:58E8                      BOSS_5_COPY_CORAZONES_EMPTY_DEPH:
-      17:  00:58E8                      
-      18:  00:58E8                              dw      #0000,#0000+29+200,#0000,#0200+6,#0000+10,#0000+8
-      18:  00:58E8  00 00 E5 00 00 00 06 02 0A 00 08 00 
-      19:  00:58F4  00 00 90                   	db      #00,#00,10010000b
-      20:  00:58F7                      
-      21:  00:58F7                      BOSS_5_CUADRO_CORAZONES_FUERA_MAX_STATUS:
-      22:  00:58F7                      
-      23:  00:58F7                              dw      #0000,#0000,#0000+72,#0000+200+6,#0000+20,#0000+8
-      23:  00:58F7  00 00 00 00 48 00 CE 00 14 00 08 00 
-      24:  00:5903  99 00 C0                   	db      #99,#00,11000000b
-      25:  00:5906                      
-      26:  00:5906                      BOSS_5_CUADRO_CORAZONES_FUERA_MAX_EMPTY:
-      27:  00:5906                      
-      28:  00:5906                              dw      #0000,#0000,#0000+72,#0000+29+200,#0000+20,#0000+8
-      28:  00:5906  00 00 00 00 48 00 E5 00 14 00 08 00 
-      29:  00:5912  99 00 C0                   	db      #99,#00,11000000b
-      30:  00:5915                      
-      31:  00:5915                      BOSS_5_COPI_MARCADOR_BOSSES_CORAZONES_VACIOS:
-      32:  00:5915                      
-      33:  00:5915                      		dw	#0000+151,#0000+220,#0000+151,#0203,#0000+VIDA_ANCHO_BARRA_BOSS_5,#000C
-      33:  00:5915  97 00 DC 00 97 00 03 02 63 00 0C 00 
-      34:  00:5921  00 00 C0            		db      #00,#00,11000000b
-      35:  00:5924                      
-      36:  00:5924                      BOSS_5_COPY_PUNTOS_MAGIA:
-      37:  00:5924                      
-      38:  00:5924                              dw      #0000+25,#0000+45+200,#0000+123,#0200+6,#0000+8,#0000+8
-      38:  00:5924  19 00 F5 00 7B 00 06 02 08 00 08 00 
-      39:  00:5930  00 00 90                   	db      #00,#00,10010000b
-      40:  00:5933                      
-      41:  00:5933                      BOSS_5_PAGE_1_A_PAGE_2_COMPLETA:
-      42:  00:5933                      
-      43:  00:5933                      		dw	#0000,#0100,#0000,#0200,#0100,#0100
-      43:  00:5933  00 00 00 01 00 00 00 02 00 01 00 01 
-      44:  00:593F  00 00 90            		db      #00,#00,10010000b
-      45:  00:5942                      
-      46:  00:5942                      BOSS_5_COPIA_PARTE_PAGE_2_DE_STATUS:
-      47:  00:5942                      
-      48:  00:5942                              dw      #0000,#0200,#0000,#00B4,256,20
-      48:  00:5942  00 00 00 02 00 00 B4 00 00 01 14 00 
-      49:  00:594E  00 00 90                   	db      #00,#00,10010000b
-      50:  00:5951                      
-      51:  00:5951                      BOSS_5_COPIA_STATUS_BOSS_A_PAGE_2:
-      52:  00:5951                      
-      53:  00:5951                              dw      #0000,#00C8,#0000,#0200,256,20
-      53:  00:5951  00 00 C8 00 00 00 00 02 00 01 14 00 
-      54:  00:595D  00 00 90                   	db      #00,#00,10010000b
-      55:  00:5960                      
-      56:  00:5960                      TABLA_DIRECCIONES_VRAM_ATRIBUTOS_PROYECTIL_BOSS_5:
-      57:  00:5960                      	dw		#4A58,#4A5C,#4A60,#4A64,#4A68,#4A6C,#4A70,#4A74
-      57:  00:5960  58 4A 5C 4A 60 4A 64 4A 68 4A 6C 4A 70 4A 74 4A 
-      58:  00:5970                       
-      59:  00:5970                      TABLA_DIRECCIONES_PROYECTIL_BOSS_5:
-      60:  00:5970  05 05 05            	db		5,5,5
-      61:  00:5973  05 04 05            	db		5,4,5
-      62:  00:5976  04 05 04            	db		4,5,4
-      63:  00:5979  03 05 04            	db		3,5,4
-      64:  00:597C  03 04 04            	db		3,4,4
-      65:  00:597F  03 04 03            	db		3,4,3
-      66:  00:5982  05 06 05            	db		5,6,5
-      67:  00:5985  06 05 06            	db		6,5,6
-      68:  00:5988  07 05 06            	db		7,5,6
-      69:  00:598B  07 06 06            	db		7,6,6
-      70:  00:598E  07 06 07            	db		7,6,7
-      71:  00:5991                      
-      72:  00:5991                      BOSS_5_COPY_MOVIMIENTO_IDIUS:
-      73:  00:5991                      
-      74:  00:5991                      		dw		#0000,#0100,#0000,PAGE_2_VRAM_Y_BOSS_5
-      74:  00:5991  00 00 00 01 00 00 00 02 
-      75:  00:5999  46 00 4A 00         		dw		IDIUS_MOVIMIENTO_ANCHO_BOSS_5,IDIUS_MOVIMIENTO_ALTO_BOSS_5
-      76:  00:599D  00 00 90            		db		COPY_SIN_OFFSET_BOSS_5,COPY_SIN_OFFSET_BOSS_5,COPY_LOGICA_NORMAL_BOSS_5
-      77:  00:59A0                      
-      78:  00:59A0                      BOSS_5_IDIUS_SX:
-      79:  00:59A0                      
-      80:  00:59A0                      		db		4,84,165,4,84,165,4,84,165
-      80:  00:59A0  04 54 A5 04 54 A5 04 54 A5 
-      81:  00:59A9                      
-      82:  00:59A9                      BOSS_5_IDIUS_SY:
-      83:  00:59A9                      
-      84:  00:59A9                      		db		6,6,6,86,86,86,166,166,166
-      84:  00:59A9  06 06 06 56 56 56 A6 A6 A6 
-      85:  00:59B2                      
-      86:  00:59B2                      BOSS_5_COPY_GUARDA_FONDO_IDIUS:
-      87:  00:59B2                      
-      88:  00:59B2                      		dw		#0000,PAGE_2_VRAM_Y_BOSS_5,#0000,#0000
-      88:  00:59B2  00 00 00 02 00 00 00 00 
-      89:  00:59BA  46 00 4A 00         		dw		IDIUS_MOVIMIENTO_ANCHO_BOSS_5,IDIUS_MOVIMIENTO_ALTO_BOSS_5
-      90:  00:59BE  00 00 90            		db		COPY_SIN_OFFSET_BOSS_5,COPY_SIN_OFFSET_BOSS_5,COPY_LOGICA_NORMAL_BOSS_5
-      91:  00:59C1                      
-      92:  00:59C1                      BOSS_5_COPY_RESTAURA_FONDO_IDIUS:
-      93:  00:59C1                      
-      94:  00:59C1                      		dw		#0000,#0000,#0000,PAGE_2_VRAM_Y_BOSS_5
-      94:  00:59C1  00 00 00 00 00 00 00 02 
-      95:  00:59C9  46 00 4A 00         		dw		IDIUS_MOVIMIENTO_ANCHO_BOSS_5,IDIUS_MOVIMIENTO_ALTO_BOSS_5
-      96:  00:59CD  00 00 90            		db		COPY_SIN_OFFSET_BOSS_5,COPY_SIN_OFFSET_BOSS_5,COPY_LOGICA_NORMAL_BOSS_5
-      97:  00:59D0                      
-      98:  00:59D0                      TABLA_POSICIONES_IDIUS_X_BOSS_5:
-      99:  00:59D0                      
-     100:  00:59D0                      		db		24,116,132,56,104,156,104,160,112
-     100:  00:59D0  18 74 84 38 68 9C 68 A0 70 
-     101:  00:59D9                      
-     102:  00:59D9                      TABLA_POSICIONES_IDIUS_Y_BOSS_5:
-     103:  00:59D9                      
-     104:  00:59D9                      		db		24,36,28,88,80,92,120,32,88
-     104:  00:59D9  18 24 1C 58 50 5C 78 20 58 
-     105:  00:59E2                      
-     106:  00:59E2                      TABLA_SECUENCIA_IDIUS_BOSS_5:
-     107:  00:59E2                      
-     108:  00:59E2                      		db		7,0,7,8,7,8,9,8,9
-     108:  00:59E2  07 00 07 08 07 08 09 08 09 
-     109:  00:59EB  01 01 01 01         		db		1,1,1,1
-     110:  00:59EF                      		db		2,1,2,1,2,1,2,1,2
-     110:  00:59EF  02 01 02 01 02 01 02 01 02 
-     111:  00:59F8                      TABLA_SECUENCIA_IDIUS_BOSS_5_TRAMO_ESPECIAL
-     112:  00:59F8                      		db		3,4,5,6,5,4,3
-     112:  00:59F8  03 04 05 06 05 04 03 
-     113:  00:59FF                      TABLA_SECUENCIA_IDIUS_BOSS_5_TRAS_TRAMO_ESPECIAL
-     114:  00:59FF                      		db		9,3,9,8,9,8,7,8,7,0,7
-     114:  00:59FF  09 03 09 08 09 08 07 08 07 00 07 
-     115:  00:5A0A                      
-     116:  00:5A0A                      TABLA_SECUENCIA_IDIUS_BOSS_5_FIN_NORMAL:
-     117:  00:5A0A                      
-     118:  00:5A0A                      TABLA_SECUENCIA_IDIUS_BOSS_5_ALTERNATIVA
-     119:  00:5A0A                      
-     120:  00:5A0A  01 02 01 02 01 02   		db		1,2,1,2,1,2
-     121:  00:5A10                      
-     122:  00:5A10                      TABLA_SECUENCIA_IDIUS_BOSS_5_FIN:
-     123:  00:5A10                      
-     124:  00:5A10                      BOSS_5_COLOR_EXPLOSION_IDIUS:
-     125:  00:5A10                      
-     126:  00:5A10                      		db		$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F
-     126:  00:5A10  0F 0F 0F 0F 0F 0F 0F 0F 
-     127:  00:5A18                      		db		$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F
-     127:  00:5A18  0F 0F 0F 0F 0F 0F 0F 0F 
-     128:  00:5A20                      
-     129:  00:5A20                      SPRITE_EXPLOSION_IDIUS_OCULTO_BOSS_5:
-     130:  00:5A20                      
-     131:  00:5A20  D4 00 00 00         		db		EXPLOSION_IDIUS_Y_OCULTA_BOSS_5,0,0,0
-    3107.  00:5A24                      
-    3108.  00:5A24  (00:41EE)           PINTA_MAGIAS_BOSS_5:		equ	RUTINA_BOSS_5.PINTA_MAGIAS_BOSS_5
-    1832   00:5A24                      
-    1833   00:5A24  00 (988)                    ds      #5E00-$                                                 ; Colocamos el resto del programa siempre en el mismo sitio    
+    3085.  00:57C7  CD 33 5E            		call	VDPREADY
+    3086.  00:57CA  3E 04               		ld		a,4
+    3087.  00:57CC  CD BB 62            		call	BUCLE_PINTA_TILES.rutina_de_pausa
+    3088.  00:57CF                      
+    3089.  00:57CF                      ; paramos la música
+    3090.  00:57CF  CD 01 7C            		call	stpmus
+    3091.  00:57D2                      
+    3092.  00:57D2                      ; Nos aseguramos que el prota no está en modo transparente ni el fondo en colores varios
+    3093.  00:57D2  CD DB 6E            		call	LIMPIA_ESTADO_DANO_DEPH_EN_MUERTE_BOSS
+    3094.  00:57D5                      
+    3095.  00:57D5                      ; limpiamos sprites
+    3096.  00:57D5  AF                  		xor		a
+    3097.  00:57D6  21 20 4A            		ld		hl,SPRITES_ATRIBUTOS_VRAM_BOSS_5+IDIUS_LIMPIA_SPRITE_INICIAL_BOSS_5*4
+    3098.  00:57D9  01 60 00            		ld		bc,IDIUS_LIMPIA_SPRITES_CANT_BOSS_5*4
+    3099.  00:57DC  CD 83 5F            		call	FILVRM_RAM
+    3100.  00:57DF                      
+    3101.  00:57DF                      FINAL_b5:
+    3102.  00:57DF                      
+    3103.  00:57DF                      		include	"../ANIMACIONES/FINAL FASE 5 VAMOS A TERMINAR.asm"		
+       1:  00:57DF                      ; -----------------------------------------------------------------------------
+       2:  00:57DF                      ; FINAL FASE 5 VAMOS A TERMINAR.asm
+       3:  00:57DF                      ;
+       4:  00:57DF                      ; Include ejecutado desde BOSS 5.asm en la etiqueta FINAL_b5.
+       5:  00:57DF                      ;
+       6:  00:57DF                      ; Objetivo:
+       7:  00:57DF                      ;   - Borrar visualmente la page 2 visible.
+       8:  00:57DF                      ;   - Pintar bloques negros en orden pseudoaleatorio.
+       9:  00:57DF                      ;   - No repetir nunca el mismo bloque.
+      10:  00:57DF                      ;   - Al terminar, NO hacer ret ni jp: el flujo cae al codigo siguiente
+      11:  00:57DF                      ;     del include, es decir, VOLVEMOS_b5.
+      12:  00:57DF                      ;
+      13:  00:57DF                      ; Nota:
+      14:  00:57DF                      ;   La pantalla se divide en bloques de 4x4.
+      15:  00:57DF                      ;   64 columnas x 53 filas = 3392 bloques.
+      16:  00:57DF                      ;   Cada bloque se pinta una sola vez mediante HMMV.
+      17:  00:57DF                      ; -----------------------------------------------------------------------------
+      18:  00:57DF                      
+      19:  00:57DF  C3 5B 58            		jp		FINAL_FASE_5_VAMOS_A_TERMINAR_INICIO
+      20:  00:57E2                      
+      21:  00:57E2                      ; Buffer de comando VDP.
+      22:  00:57E2                      ; Formato DOCOPY:
+      23:  00:57E2                      ;   0-1   SX
+      24:  00:57E2                      ;   2-3   SY
+      25:  00:57E2                      ;   4-5   DX
+      26:  00:57E2                      ;   6-7   DY
+      27:  00:57E2                      ;   8-9   NX
+      28:  00:57E2                      ;   10-11 NY
+      29:  00:57E2                      ;   12    color
+      30:  00:57E2                      ;   13    argumento
+      31:  00:57E2                      ;   14    comando
+      32:  00:57E2                      ;
+      33:  00:57E2                      ; HMMV (#C0) rellena un rectangulo con un color.
+      34:  00:57E2                      ; DY alto = 2 para pintar en la page 2.
+      35:  00:57E2                      FINAL_FASE_5_VAMOS_A_TERMINAR_PLANTILLA_HMMV:
+      36:  00:57E2                      
+      37:  00:57E2  00 00 00 00         		db		0,0,0,0
+      38:  00:57E6  00 00               		db		0,0
+      39:  00:57E8  00 02               		db		0,PAGE_2_VRAM_Y_BOSS_5/256
+      40:  00:57EA  04 00               		db		4,0
+      41:  00:57EC  02 00               		db		2,0
+      42:  00:57EE  00                  		db		#00
+      43:  00:57EF  00                  		db		#00
+      44:  00:57F0  C0                  		db		COPY_LOGICA_RELLENO_BOSS_5
+      45:  00:57F1                      
+      46:  00:57F1                      ; Filas en orden pseudoaleatorio.
+      47:  00:57F1                      ; Son las 53 filas de bloques de 4 pixeles: 0,4,8,...,208,
+      48:  00:57F1                      ; pero mezcladas. No hay repeticiones.
+      49:  00:57F1                      
+      50:  00:57F1                      FINAL_FASE_5_VAMOS_A_TERMINAR_TABLA_Y:
+      51:  00:57F1                      
+      52:  00:57F1                      		db		46,120,194,56,130,204,66,140,2,76,150,12,86,160,22,96
+      52:  00:57F1  2E 78 C2 38 82 CC 42 8C 02 4C 96 0C 56 A0 16 60 
+      53:  00:5801                      		db		170,32,106,180,42,116,190,52,126,200,62,136,210,72,146,8
+      53:  00:5801  AA 20 6A B4 2A 74 BE 34 7E C8 3E 88 D2 48 92 08 
+      54:  00:5811                      		db		82,156,18,92,166,28,102,176,38,112,186,48,122,196,58,132
+      54:  00:5811  52 9C 12 5C A6 1C 66 B0 26 70 BA 30 7A C4 3A 84 
+      55:  00:5821                      		db		206,68,142,4,78,152,14,88,162,24,98,172,34,108,182,44
+      55:  00:5821  CE 44 8E 04 4E 98 0E 58 A2 18 62 AC 22 6C B6 2C 
+      56:  00:5831                      		db		118,192,54,128,202,64,138,0,74,148,10,84,158,20,94,168
+      56:  00:5831  76 C0 36 80 CA 40 8A 00 4A 94 0A 54 9E 14 5E A8 
+      57:  00:5841                      		db		30,104,178,40,114,188,50,124,198,60,134,208,70,144,6,80
+      57:  00:5841  1E 68 B2 28 72 BC 32 7C C6 3C 86 D0 46 90 06 50 
+      58:  00:5851                      		db		154,16,90,164,26,100,174,36,110,184
+      58:  00:5851  9A 10 5A A4 1A 64 AE 24 6E B8 
+      59:  00:585B                      
+      60:  00:585B                      FINAL_FASE_5_VAMOS_A_TERMINAR_INICIO:
+      61:  00:585B                      
+      62:  00:585B                      		; Lanzamos FX 34 al empezar la secuencia final.
+      63:  00:585B  3E 22               		ld		a,34
+      64:  00:585D  0E 01               		ld		c,1
+      65:  00:585F  CD 83 57            		call	TIRA_FX_BOSS_5
+      66:  00:5862                      
+      67:  00:5862                      		; Aseguramos que la page visible es la 2, que es donde vamos a pintar.
+      68:  00:5862  3E 02               		ld		a,2
+      69:  00:5864  32 4A C0            		ld		(SET_PAGE),a
+      70:  00:5867                      
+      71:  00:5867                      		; Copiamos la plantilla ROM al buffer real en RAM.
+      72:  00:5867  21 E2 57            		ld		hl,FINAL_FASE_5_VAMOS_A_TERMINAR_PLANTILLA_HMMV
+      73:  00:586A  11 4F C6            		ld		de,FINAL_FASE_5_VAMOS_A_TERMINAR_DATAS_HMMV
+      74:  00:586D  01 0F 00            		ld		bc,15
+      75:  00:5870  ED B0               		ldir
+      76:  00:5872                              
+      77:  00:5872  06 6A               		ld		b,106
+      78:  00:5874  FD 21 F1 57         		ld		iy,FINAL_FASE_5_VAMOS_A_TERMINAR_TABLA_Y
+      79:  00:5878                      
+      80:  00:5878                      .BUCLE_FILAS_FINAL_FASE_5:
+      81:  00:5878                      
+      82:  00:5878  C5                  		push	bc
+      83:  00:5879                      
+      84:  00:5879                      		; DY = fila actual en page 2.
+      85:  00:5879  FD 7E 00            		ld		a,(iy)
+      86:  00:587C  FD 23               		inc		iy
+      87:  00:587E  32 55 C6            		ld		(FINAL_FASE_5_VAMOS_A_TERMINAR_DATAS_HMMV+6),a
+      88:  00:5881                      
+      89:  00:5881                      		; Semilla X distinta para cada fila.
+      90:  00:5881                      		; Como la tabla Y ya esta mezclada, esto evita que todas las filas
+      91:  00:5881                      		; se borren con el mismo orden horizontal.
+      92:  00:5881  CB 3F               		srl		a
+      93:  00:5883  CB 3F               		srl		a
+      94:  00:5885  C6 07               		add		a,7
+      95:  00:5887  E6 3F               		and		00111111b
+      96:  00:5889  32 5E C6            		ld		(FINAL_FASE_5_VAMOS_A_TERMINAR_X_SEED),a
+      97:  00:588C                      
+      98:  00:588C  06 40               		ld		b,64
+      99:  00:588E                      
+     100:  00:588E                      .BUCLE_COLUMNAS_FINAL_FASE_5:
+     101:  00:588E                      
+     102:  00:588E  C5                  		push	bc
+     103:  00:588F  FD E5               		push	iy
+     104:  00:5891                      
+     105:  00:5891                      		; DX = (semilla X modulo 64) * 4.
+     106:  00:5891  3A 5E C6            		ld		a,(FINAL_FASE_5_VAMOS_A_TERMINAR_X_SEED)
+     107:  00:5894  E6 3F               		and		00111111b
+     108:  00:5896  87                  		add		a,a
+     109:  00:5897  87                  		add		a,a
+     110:  00:5898  32 53 C6            		ld		(FINAL_FASE_5_VAMOS_A_TERMINAR_DATAS_HMMV+4),a
+     111:  00:589B                      
+     112:  00:589B                      		; Pintamos bloque negro 4x4 en page 2.
+     113:  00:589B  21 4F C6            		ld		hl,FINAL_FASE_5_VAMOS_A_TERMINAR_DATAS_HMMV
+     114:  00:589E  CD 2A 5E            		call	DOCOPY
+     115:  00:58A1  CD 33 5E            		call	VDPREADY
+     116:  00:58A4                      
+     117:  00:58A4                      		; Siguiente X pseudoaleatoria.
+     118:  00:58A4                      		; 21 es coprimo con 64, asi que recorre las 64 columnas
+     119:  00:58A4                      		; sin repetir ninguna dentro de la misma fila.
+     120:  00:58A4  3A 5E C6            		ld		a,(FINAL_FASE_5_VAMOS_A_TERMINAR_X_SEED)
+     121:  00:58A7  C6 15               		add		a,21
+     122:  00:58A9  E6 3F               		and		00111111b
+     123:  00:58AB  32 5E C6            		ld		(FINAL_FASE_5_VAMOS_A_TERMINAR_X_SEED),a
+     124:  00:58AE                      
+     125:  00:58AE  FD E1               		pop		iy
+     126:  00:58B0  C1                  		pop		bc
+     127:  00:58B1  10 DB               		djnz	.BUCLE_COLUMNAS_FINAL_FASE_5
+     128:  00:58B3                      
+     129:  00:58B3  C1                  		pop		bc
+     130:  00:58B4                      
+     131:  00:58B4                      		; Pausa corta entre filas para que el borrado respire.
+     132:  00:58B4  C5                  		push	bc
+     133:  00:58B5  01 00 04            		ld		bc,#0400
+     134:  00:58B8                      
+     135:  00:58B8                      .PAUSA_ENTRE_FILAS_FINAL_FASE_5:
+     136:  00:58B8                      
+     137:  00:58B8  0B                  		dec		bc
+     138:  00:58B9  78                  		ld		a,b
+     139:  00:58BA  B1                  		or		c
+     140:  00:58BB  20 FB               		jr		nz,.PAUSA_ENTRE_FILAS_FINAL_FASE_5
+     141:  00:58BD                      
+     142:  00:58BD  C1                  		pop		bc
+     143:  00:58BE                      
+     144:  00:58BE  10 B8               		djnz	.BUCLE_FILAS_FINAL_FASE_5
+     145:  00:58C0                      
+     146:  00:58C0                      ; Fin del include.
+     147:  00:58C0                      ; No hay ret.
+     148:  00:58C0                      ; El ensamblador continua con la siguiente linea de BOSS 5.asm:
+     149:  00:58C0                      ; VOLVEMOS_b5 -> jp CARGA_SLOT_REGRESO_A_JUEGO
+    3104.  00:58C0                      
+    3105.  00:58C0                      VOLVEMOS_b5:
+    3106.  00:58C0                      
+    3107.  00:58C0  C3 03 BF            		jp		CARGA_SLOT_REGRESO_A_JUEGO
+    3108.  00:58C3                      
+    3109.  00:58C3                      	include	"BOSS 5 DATA.asm"
+       1:  00:58C3                      BOSS_5_PAGE_2_A_PAGE_1_COMPLETA:
+       2:  00:58C3                      
+       3:  00:58C3                      		dw      #0000,#0200,#0000,#0100,#0100,#0100
+       3:  00:58C3  00 00 00 02 00 00 00 01 00 01 00 01 
+       4:  00:58CF  00 00 90            		db      #00,#00,10010000b
+       5:  00:58D2                      
+       6:  00:58D2                      BOSS_5_PAGE_2_A_PAGE_3_COMPLETA:
+       7:  00:58D2                      
+       8:  00:58D2                      		dw      #0000,#0200,#0000,#0300,#0100,#0100
+       8:  00:58D2  00 00 00 02 00 00 00 03 00 01 00 01 
+       9:  00:58DE  00 00 90            		db      #00,#00,10010000b
+      10:  00:58E1                      
+      11:  00:58E1                      BOSS_5_PAGE_3_A_PAGE_2_COMPLETA:
+      12:  00:58E1                      
+      13:  00:58E1                      		dw      #0000,#0300,#0000,#0200,#0100,#0100
+      13:  00:58E1  00 00 00 03 00 00 00 02 00 01 00 01 
+      14:  00:58ED  00 00 90            		db      #00,#00,10010000b
+      15:  00:58F0                      
+      16:  00:58F0                      BOSS_5_COPY_CORAZONES_EMPTY_DEPH:
+      17:  00:58F0                      
+      18:  00:58F0                              dw      #0000,#0000+29+200,#0000,#0200+6,#0000+10,#0000+8
+      18:  00:58F0  00 00 E5 00 00 00 06 02 0A 00 08 00 
+      19:  00:58FC  00 00 90                   	db      #00,#00,10010000b
+      20:  00:58FF                      
+      21:  00:58FF                      BOSS_5_CUADRO_CORAZONES_FUERA_MAX_STATUS:
+      22:  00:58FF                      
+      23:  00:58FF                              dw      #0000,#0000,#0000+72,#0000+200+6,#0000+20,#0000+8
+      23:  00:58FF  00 00 00 00 48 00 CE 00 14 00 08 00 
+      24:  00:590B  99 00 C0                   	db      #99,#00,11000000b
+      25:  00:590E                      
+      26:  00:590E                      BOSS_5_CUADRO_CORAZONES_FUERA_MAX_EMPTY:
+      27:  00:590E                      
+      28:  00:590E                              dw      #0000,#0000,#0000+72,#0000+29+200,#0000+20,#0000+8
+      28:  00:590E  00 00 00 00 48 00 E5 00 14 00 08 00 
+      29:  00:591A  99 00 C0                   	db      #99,#00,11000000b
+      30:  00:591D                      
+      31:  00:591D                      BOSS_5_COPI_MARCADOR_BOSSES_CORAZONES_VACIOS:
+      32:  00:591D                      
+      33:  00:591D                      		dw	#0000+151,#0000+220,#0000+151,#0203,#0000+VIDA_ANCHO_BARRA_BOSS_5,#000C
+      33:  00:591D  97 00 DC 00 97 00 03 02 63 00 0C 00 
+      34:  00:5929  00 00 C0            		db      #00,#00,11000000b
+      35:  00:592C                      
+      36:  00:592C                      BOSS_5_COPY_PUNTOS_MAGIA:
+      37:  00:592C                      
+      38:  00:592C                              dw      #0000+25,#0000+45+200,#0000+123,#0200+6,#0000+8,#0000+8
+      38:  00:592C  19 00 F5 00 7B 00 06 02 08 00 08 00 
+      39:  00:5938  00 00 90                   	db      #00,#00,10010000b
+      40:  00:593B                      
+      41:  00:593B                      BOSS_5_PAGE_1_A_PAGE_2_COMPLETA:
+      42:  00:593B                      
+      43:  00:593B                      		dw	#0000,#0100,#0000,#0200,#0100,#0100
+      43:  00:593B  00 00 00 01 00 00 00 02 00 01 00 01 
+      44:  00:5947  00 00 90            		db      #00,#00,10010000b
+      45:  00:594A                      
+      46:  00:594A                      BOSS_5_COPIA_PARTE_PAGE_2_DE_STATUS:
+      47:  00:594A                      
+      48:  00:594A                              dw      #0000,#0200,#0000,#00B4,256,20
+      48:  00:594A  00 00 00 02 00 00 B4 00 00 01 14 00 
+      49:  00:5956  00 00 90                   	db      #00,#00,10010000b
+      50:  00:5959                      
+      51:  00:5959                      BOSS_5_COPIA_STATUS_BOSS_A_PAGE_2:
+      52:  00:5959                      
+      53:  00:5959                              dw      #0000,#00C8,#0000,#0200,256,20
+      53:  00:5959  00 00 C8 00 00 00 00 02 00 01 14 00 
+      54:  00:5965  00 00 90                   	db      #00,#00,10010000b
+      55:  00:5968                      
+      56:  00:5968                      TABLA_DIRECCIONES_VRAM_ATRIBUTOS_PROYECTIL_BOSS_5:
+      57:  00:5968                      	dw		#4A58,#4A5C,#4A60,#4A64,#4A68,#4A6C,#4A70,#4A74
+      57:  00:5968  58 4A 5C 4A 60 4A 64 4A 68 4A 6C 4A 70 4A 74 4A 
+      58:  00:5978                       
+      59:  00:5978                      TABLA_DIRECCIONES_PROYECTIL_BOSS_5:
+      60:  00:5978  05 05 05            	db		5,5,5
+      61:  00:597B  05 04 05            	db		5,4,5
+      62:  00:597E  04 05 04            	db		4,5,4
+      63:  00:5981  03 05 04            	db		3,5,4
+      64:  00:5984  03 04 04            	db		3,4,4
+      65:  00:5987  03 04 03            	db		3,4,3
+      66:  00:598A  05 06 05            	db		5,6,5
+      67:  00:598D  06 05 06            	db		6,5,6
+      68:  00:5990  07 05 06            	db		7,5,6
+      69:  00:5993  07 06 06            	db		7,6,6
+      70:  00:5996  07 06 07            	db		7,6,7
+      71:  00:5999                      
+      72:  00:5999                      BOSS_5_COPY_MOVIMIENTO_IDIUS:
+      73:  00:5999                      
+      74:  00:5999                      		dw		#0000,#0100,#0000,PAGE_2_VRAM_Y_BOSS_5
+      74:  00:5999  00 00 00 01 00 00 00 02 
+      75:  00:59A1  46 00 4A 00         		dw		IDIUS_MOVIMIENTO_ANCHO_BOSS_5,IDIUS_MOVIMIENTO_ALTO_BOSS_5
+      76:  00:59A5  00 00 90            		db		COPY_SIN_OFFSET_BOSS_5,COPY_SIN_OFFSET_BOSS_5,COPY_LOGICA_NORMAL_BOSS_5
+      77:  00:59A8                      
+      78:  00:59A8                      BOSS_5_IDIUS_SX:
+      79:  00:59A8                      
+      80:  00:59A8                      		db		4,84,165,4,84,165,4,84,165
+      80:  00:59A8  04 54 A5 04 54 A5 04 54 A5 
+      81:  00:59B1                      
+      82:  00:59B1                      BOSS_5_IDIUS_SY:
+      83:  00:59B1                      
+      84:  00:59B1                      		db		6,6,6,86,86,86,166,166,166
+      84:  00:59B1  06 06 06 56 56 56 A6 A6 A6 
+      85:  00:59BA                      
+      86:  00:59BA                      BOSS_5_COPY_GUARDA_FONDO_IDIUS:
+      87:  00:59BA                      
+      88:  00:59BA                      		dw		#0000,PAGE_2_VRAM_Y_BOSS_5,#0000,#0000
+      88:  00:59BA  00 00 00 02 00 00 00 00 
+      89:  00:59C2  46 00 4A 00         		dw		IDIUS_MOVIMIENTO_ANCHO_BOSS_5,IDIUS_MOVIMIENTO_ALTO_BOSS_5
+      90:  00:59C6  00 00 90            		db		COPY_SIN_OFFSET_BOSS_5,COPY_SIN_OFFSET_BOSS_5,COPY_LOGICA_NORMAL_BOSS_5
+      91:  00:59C9                      
+      92:  00:59C9                      BOSS_5_COPY_RESTAURA_FONDO_IDIUS:
+      93:  00:59C9                      
+      94:  00:59C9                      		dw		#0000,#0000,#0000,PAGE_2_VRAM_Y_BOSS_5
+      94:  00:59C9  00 00 00 00 00 00 00 02 
+      95:  00:59D1  46 00 4A 00         		dw		IDIUS_MOVIMIENTO_ANCHO_BOSS_5,IDIUS_MOVIMIENTO_ALTO_BOSS_5
+      96:  00:59D5  00 00 90            		db		COPY_SIN_OFFSET_BOSS_5,COPY_SIN_OFFSET_BOSS_5,COPY_LOGICA_NORMAL_BOSS_5
+      97:  00:59D8                      
+      98:  00:59D8                      TABLA_POSICIONES_IDIUS_X_BOSS_5:
+      99:  00:59D8                      
+     100:  00:59D8                      		db		24,116,132,56,104,156,104,160,112
+     100:  00:59D8  18 74 84 38 68 9C 68 A0 70 
+     101:  00:59E1                      
+     102:  00:59E1                      TABLA_POSICIONES_IDIUS_Y_BOSS_5:
+     103:  00:59E1                      
+     104:  00:59E1                      		db		24,36,28,88,80,92,120,32,88
+     104:  00:59E1  18 24 1C 58 50 5C 78 20 58 
+     105:  00:59EA                      
+     106:  00:59EA                      TABLA_SECUENCIA_IDIUS_BOSS_5:
+     107:  00:59EA                      
+     108:  00:59EA                      		db		7,0,7,8,7,8,9,8,9
+     108:  00:59EA  07 00 07 08 07 08 09 08 09 
+     109:  00:59F3  01 01 01 01         		db		1,1,1,1
+     110:  00:59F7                      		db		2,1,2,1,2,1,2,1,2
+     110:  00:59F7  02 01 02 01 02 01 02 01 02 
+     111:  00:5A00                      TABLA_SECUENCIA_IDIUS_BOSS_5_TRAMO_ESPECIAL
+     112:  00:5A00                      		db		3,4,5,6,5,4,3
+     112:  00:5A00  03 04 05 06 05 04 03 
+     113:  00:5A07                      TABLA_SECUENCIA_IDIUS_BOSS_5_TRAS_TRAMO_ESPECIAL
+     114:  00:5A07                      		db		9,3,9,8,9,8,7,8,7,0,7
+     114:  00:5A07  09 03 09 08 09 08 07 08 07 00 07 
+     115:  00:5A12                      
+     116:  00:5A12                      TABLA_SECUENCIA_IDIUS_BOSS_5_FIN_NORMAL:
+     117:  00:5A12                      
+     118:  00:5A12                      TABLA_SECUENCIA_IDIUS_BOSS_5_ALTERNATIVA
+     119:  00:5A12                      
+     120:  00:5A12  01 02 01 02 01 02   		db		1,2,1,2,1,2
+     121:  00:5A18                      
+     122:  00:5A18                      TABLA_SECUENCIA_IDIUS_BOSS_5_FIN:
+     123:  00:5A18                      
+     124:  00:5A18                      BOSS_5_COLOR_EXPLOSION_IDIUS:
+     125:  00:5A18                      
+     126:  00:5A18                      		db		$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F
+     126:  00:5A18  0F 0F 0F 0F 0F 0F 0F 0F 
+     127:  00:5A20                      		db		$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F
+     127:  00:5A20  0F 0F 0F 0F 0F 0F 0F 0F 
+     128:  00:5A28                      
+     129:  00:5A28                      SPRITE_EXPLOSION_IDIUS_OCULTO_BOSS_5:
+     130:  00:5A28                      
+     131:  00:5A28  D4 00 00 00         		db		EXPLOSION_IDIUS_Y_OCULTA_BOSS_5,0,0,0
+    3110.  00:5A2C                      
+    3111.  00:5A2C  (00:41EE)           PINTA_MAGIAS_BOSS_5:		equ	RUTINA_BOSS_5.PINTA_MAGIAS_BOSS_5
+    1832   00:5A2C                      
+    1833   00:5A2C  00 (980)                    ds      #5E00-$                                                 ; Colocamos el resto del programa siempre en el mismo sitio    
     1834   00:5E00                      
     1835   00:5E00                      		include "BASICOS/RUTINAS CERRADAS (sin etiquetas).asm"				            ; Incluímos las referencias a la BIOS
        1.  00:5E00                      ; ROMAN: PAR
@@ -91011,18 +91014,18 @@ Errors: 0
       18.  00:9D6E  F0 6C               		dw		RETORNO
       19.  00:9D70  F0 6C               		dw		RETORNO
       20.  00:9D72  62 62               		dw		BUCLE_PINTA_TILES.bloqueamos_el_avance
-      21.  00:9D74  2C 5A               		dw		NUEVO_SLIME_VERDE_6
-      22.  00:9D76  DC 59               		dw		NUEVO_SLIME_BLANCO
-      23.  00:9D78  31 5A               		dw		NUEVO_SLIME_VERDE_7
-      24.  00:9D7A  C8 59               		dw		NUEVO_COVID_2_IZQUIERDA_DISPARA
+      21.  00:9D74  F0 6C               		dw		RETORNO
+      22.  00:9D76  F0 6C               		dw		RETORNO
+      23.  00:9D78  F0 6C               		dw		RETORNO
+      24.  00:9D7A  F0 6C               		dw		RETORNO
       25.  00:9D7C  EA 5A               		dw		NUEVO_SKRULLEX_7_RANDOM
-      26.  00:9D7E  C3 59               		dw		NUEVO_COVID_2_IZQUIERDA
+      26.  00:9D7E  F0 6C               		dw		RETORNO
       27.  00:9D80  AE 5A               		dw		NUEVO_SKRULLEX_7_FLECHA
-      28.  00:9D82  C3 59               		dw		NUEVO_COVID_2_IZQUIERDA
+      28.  00:9D82  F0 6C               		dw		RETORNO
       29.  00:9D84  F0 6C               		dw		RETORNO
-      30.  00:9D86  C3 59               		dw		NUEVO_COVID_2_IZQUIERDA
+      30.  00:9D86  F0 6C               		dw		RETORNO
       31.  00:9D88  27 5A               		dw		NUEVO_SLIME_VERDE_1
-      32.  00:9D8A  F0 6C               		dw		RETORNO
+      32.  00:9D8A  DC 59               		dw		NUEVO_SLIME_BLANCO
       33.  00:9D8C  F0 6C               		dw		RETORNO
       34.  00:9D8E  F0 6C               		dw		RETORNO
       35.  00:9D90  F5 59               		dw		NUEVO_SLIME_AZUL_13
@@ -91873,8 +91876,8 @@ Errors: 0
      158.  00:89B0  1F 28 9C 28 9C 85 13 13 13 13 13 13 13 13 04 13 
      159.  00:89C0                      		db	27,28,27,28,28,149,19,19,19,19,19,10,19,19,10,19
      159.  00:89C0  1B 1C 1B 1C 1C 95 13 13 13 13 13 0A 13 13 0A 13 
-     160.  00:89D0                      		db	32,33,32,33,33,165,19,19,19,19,19,19,19,19,19,19
-     160.  00:89D0  20 21 20 21 21 A5 13 13 13 13 13 13 13 13 13 13 
+     160.  00:89D0                      		db	32,33,32,33,33,165,19,7,19,19,19,19,19,19,19,19
+     160.  00:89D0  20 21 20 21 21 A5 13 07 13 13 13 13 13 13 13 13 
      161.  00:89E0                      		db	180,180,180,180,180,181,19,19,19,19,19,19,10,19,19,1
      161.  00:89E0  B4 B4 B4 B4 B4 B5 13 13 13 13 13 13 0A 13 13 01 
      162.  00:89F0                      		db	17,17,17,17,17,18,19,19,19,19,19,19,19,19,19,11
@@ -92518,15 +92521,15 @@ Errors: 0
       17.  00:9D6C  5C 69               		dw		HIDE_STATUS_COMP
       18.  00:9D6E  F0 6C               		dw		RETORNO
       19.  00:9D70  F0 6C               		dw		RETORNO
-      20.  00:9D72  DC 59               		dw		NUEVO_SLIME_BLANCO
-      21.  00:9D74  EB 59               		dw		NUEVO_SLIME_AZUL_8
+      20.  00:9D72  F0 6C               		dw		RETORNO
+      21.  00:9D74  F0 6C               		dw		RETORNO
       22.  00:9D76  62 62               		dw		BUCLE_PINTA_TILES.bloqueamos_el_avance
-      23.  00:9D78  18 5A               		dw		NUEVO_SLIME_AZUL_14_QUIETO
+      23.  00:9D78  F0 6C               		dw		RETORNO
       24.  00:9D7A  F0 6C               		dw		RETORNO
-      25.  00:9D7C  0E 5A               		dw		NUEVO_SLIME_AZUL_6_QUIETO
-      26.  00:9D7E  83 47               		dw		CARGA_SKRULLEX_SLIME
+      25.  00:9D7C  F0 6C               		dw		RETORNO
+      26.  00:9D7E  DC 59               		dw		NUEVO_SLIME_BLANCO
       27.  00:9D80  C3 59               		dw		NUEVO_COVID_2_IZQUIERDA
-      28.  00:9D82  F0 6C               		dw		RETORNO
+      28.  00:9D82  83 47               		dw		CARGA_SKRULLEX_SLIME
       29.  00:9D84  F0 6C               		dw		RETORNO
       30.  00:9D86  F0 6C               		dw		RETORNO
       31.  00:9D88  F0 6C               		dw		RETORNO
@@ -133013,14 +133016,14 @@ Errors: 0
 00:000059DC   NUEVO_SLIME_BLANCO
 00:000059E1   NUEVO_SLIME_AZUL_4
 00:000059E6   NUEVO_SLIME_AZUL_7
-00:000059EB   NUEVO_SLIME_AZUL_8
+00:000059EB X NUEVO_SLIME_AZUL_8
 00:000059F0   NUEVO_SLIME_AZUL_9
 00:000059F5   NUEVO_SLIME_AZUL_13
 00:000059FA   NUEVO_SLIME_AZUL_14
 00:000059FF   NUEVO_SLIME_AZUL_1_QUIETO
 00:00005A04   NUEVO_SLIME_AZUL_2_QUIETO
 00:00005A09   NUEVO_SLIME_AZUL_3_QUIETO
-00:00005A0E   NUEVO_SLIME_AZUL_6_QUIETO
+00:00005A0E X NUEVO_SLIME_AZUL_6_QUIETO
 00:00005A13   NUEVO_SLIME_AZUL_7_QUIETO
 00:00005A18   NUEVO_SLIME_AZUL_14_QUIETO
 00:00005A1D   NUEVO_SLIME_AZUL_HACIA_DERECHA
@@ -134700,9 +134703,9 @@ Errors: 0
 00:00007F80   CALCULA_DANO_MAGIA_BOSS_1.DANO_MAGIA_FUEGO_BOSS_1
 00:00007FF3   CALCULA_DANO_MAGIA_BOSS_1.BUSCA_HUECOS_FUEGO
 00:00007FF9   CALCULA_DANO_MAGIA_BOSS_1.SIGUIENTE_HUECO_FUEGO
-00:00000028   VIDA_INICIAL_ROCKAGER_BOSS_2
+00:00000014   VIDA_INICIAL_ROCKAGER_BOSS_2
 00:00000028   VIDA_INICIAL_DAVEANIX_BOSS_2
-00:00000050   VIDA_TOTAL_INICIAL_BOSS_2
+00:0000003C   VIDA_TOTAL_INICIAL_BOSS_2
 00:00000063   VIDA_ANCHO_BARRA_BOSS_2
 00:0000001B   PAGINA_REGRESO_BOSS_2
 00:00004A00   SPRITES_ATRIBUTOS_VRAM_BOSS_2
@@ -136417,8 +136420,8 @@ Errors: 0
 00:00007F80   CALCULA_DANO_MAGIA_BOSS_4.DANO_MAGIA_FUEGO_BOSS_4
 00:00007FF3   CALCULA_DANO_MAGIA_BOSS_4.BUSCA_HUECOS_FUEGO
 00:00007FF9   CALCULA_DANO_MAGIA_BOSS_4.SIGUIENTE_HUECO_FUEGO
-00:000000A0   VIDA_INICIAL_IDIUS_BOSS_5
-00:000000A0   VIDA_TOTAL_INICIAL_BOSS_5
+00:0000009C   VIDA_INICIAL_IDIUS_BOSS_5
+00:0000009C   VIDA_TOTAL_INICIAL_BOSS_5
 00:00000063   VIDA_ANCHO_BARRA_BOSS_5
 00:0000001E   PAGINA_REGRESO_BOSS_5
 00:00004A00   SPRITES_ATRIBUTOS_VRAM_BOSS_5
@@ -136924,42 +136927,42 @@ Errors: 0
 00:000057A1   PREPARA_PAGE_2_PARA_MAGIA_BOSS_5
 00:000057BB   RESTAURA_PAGE_3_TRAS_MAGIA_BOSS_5
 00:000057C4   MUERTE_DE_IDIUS_BOSS_5
-00:000057D7 X FINAL_b5
-00:000057DA   FINAL_FASE_5_VAMOS_A_TERMINAR_PLANTILLA_HMMV
-00:000057E9   FINAL_FASE_5_VAMOS_A_TERMINAR_TABLA_Y
-00:00005853   FINAL_FASE_5_VAMOS_A_TERMINAR_INICIO
-00:00005870   FINAL_FASE_5_VAMOS_A_TERMINAR_INICIO.BUCLE_FILAS_FINAL_FASE_5
-00:00005886   FINAL_FASE_5_VAMOS_A_TERMINAR_INICIO.BUCLE_COLUMNAS_FINAL_FASE_5
-00:000058B0   FINAL_FASE_5_VAMOS_A_TERMINAR_INICIO.PAUSA_ENTRE_FILAS_FINAL_FASE_5
-00:000058B8 X VOLVEMOS_b5
-00:000058BB   BOSS_5_PAGE_2_A_PAGE_1_COMPLETA
-00:000058CA   BOSS_5_PAGE_2_A_PAGE_3_COMPLETA
-00:000058D9   BOSS_5_PAGE_3_A_PAGE_2_COMPLETA
-00:000058E8   BOSS_5_COPY_CORAZONES_EMPTY_DEPH
-00:000058F7   BOSS_5_CUADRO_CORAZONES_FUERA_MAX_STATUS
-00:00005906   BOSS_5_CUADRO_CORAZONES_FUERA_MAX_EMPTY
-00:00005915   BOSS_5_COPI_MARCADOR_BOSSES_CORAZONES_VACIOS
-00:00005924   BOSS_5_COPY_PUNTOS_MAGIA
-00:00005933   BOSS_5_PAGE_1_A_PAGE_2_COMPLETA
-00:00005942   BOSS_5_COPIA_PARTE_PAGE_2_DE_STATUS
-00:00005951   BOSS_5_COPIA_STATUS_BOSS_A_PAGE_2
-00:00005960   TABLA_DIRECCIONES_VRAM_ATRIBUTOS_PROYECTIL_BOSS_5
-00:00005970   TABLA_DIRECCIONES_PROYECTIL_BOSS_5
-00:00005991   BOSS_5_COPY_MOVIMIENTO_IDIUS
-00:000059A0   BOSS_5_IDIUS_SX
-00:000059A9   BOSS_5_IDIUS_SY
-00:000059B2   BOSS_5_COPY_GUARDA_FONDO_IDIUS
-00:000059C1   BOSS_5_COPY_RESTAURA_FONDO_IDIUS
-00:000059D0   TABLA_POSICIONES_IDIUS_X_BOSS_5
-00:000059D9   TABLA_POSICIONES_IDIUS_Y_BOSS_5
-00:000059E2   TABLA_SECUENCIA_IDIUS_BOSS_5
-00:000059F8   TABLA_SECUENCIA_IDIUS_BOSS_5_TRAMO_ESPECIAL
-00:000059FF   TABLA_SECUENCIA_IDIUS_BOSS_5_TRAS_TRAMO_ESPECIAL
-00:00005A0A   TABLA_SECUENCIA_IDIUS_BOSS_5_FIN_NORMAL
-00:00005A0A   TABLA_SECUENCIA_IDIUS_BOSS_5_ALTERNATIVA
-00:00005A10   TABLA_SECUENCIA_IDIUS_BOSS_5_FIN
-00:00005A10   BOSS_5_COLOR_EXPLOSION_IDIUS
-00:00005A20   SPRITE_EXPLOSION_IDIUS_OCULTO_BOSS_5
+00:000057DF X FINAL_b5
+00:000057E2   FINAL_FASE_5_VAMOS_A_TERMINAR_PLANTILLA_HMMV
+00:000057F1   FINAL_FASE_5_VAMOS_A_TERMINAR_TABLA_Y
+00:0000585B   FINAL_FASE_5_VAMOS_A_TERMINAR_INICIO
+00:00005878   FINAL_FASE_5_VAMOS_A_TERMINAR_INICIO.BUCLE_FILAS_FINAL_FASE_5
+00:0000588E   FINAL_FASE_5_VAMOS_A_TERMINAR_INICIO.BUCLE_COLUMNAS_FINAL_FASE_5
+00:000058B8   FINAL_FASE_5_VAMOS_A_TERMINAR_INICIO.PAUSA_ENTRE_FILAS_FINAL_FASE_5
+00:000058C0 X VOLVEMOS_b5
+00:000058C3   BOSS_5_PAGE_2_A_PAGE_1_COMPLETA
+00:000058D2   BOSS_5_PAGE_2_A_PAGE_3_COMPLETA
+00:000058E1   BOSS_5_PAGE_3_A_PAGE_2_COMPLETA
+00:000058F0   BOSS_5_COPY_CORAZONES_EMPTY_DEPH
+00:000058FF   BOSS_5_CUADRO_CORAZONES_FUERA_MAX_STATUS
+00:0000590E   BOSS_5_CUADRO_CORAZONES_FUERA_MAX_EMPTY
+00:0000591D   BOSS_5_COPI_MARCADOR_BOSSES_CORAZONES_VACIOS
+00:0000592C   BOSS_5_COPY_PUNTOS_MAGIA
+00:0000593B   BOSS_5_PAGE_1_A_PAGE_2_COMPLETA
+00:0000594A   BOSS_5_COPIA_PARTE_PAGE_2_DE_STATUS
+00:00005959   BOSS_5_COPIA_STATUS_BOSS_A_PAGE_2
+00:00005968   TABLA_DIRECCIONES_VRAM_ATRIBUTOS_PROYECTIL_BOSS_5
+00:00005978   TABLA_DIRECCIONES_PROYECTIL_BOSS_5
+00:00005999   BOSS_5_COPY_MOVIMIENTO_IDIUS
+00:000059A8   BOSS_5_IDIUS_SX
+00:000059B1   BOSS_5_IDIUS_SY
+00:000059BA   BOSS_5_COPY_GUARDA_FONDO_IDIUS
+00:000059C9   BOSS_5_COPY_RESTAURA_FONDO_IDIUS
+00:000059D8   TABLA_POSICIONES_IDIUS_X_BOSS_5
+00:000059E1   TABLA_POSICIONES_IDIUS_Y_BOSS_5
+00:000059EA   TABLA_SECUENCIA_IDIUS_BOSS_5
+00:00005A00   TABLA_SECUENCIA_IDIUS_BOSS_5_TRAMO_ESPECIAL
+00:00005A07   TABLA_SECUENCIA_IDIUS_BOSS_5_TRAS_TRAMO_ESPECIAL
+00:00005A12   TABLA_SECUENCIA_IDIUS_BOSS_5_FIN_NORMAL
+00:00005A12   TABLA_SECUENCIA_IDIUS_BOSS_5_ALTERNATIVA
+00:00005A18   TABLA_SECUENCIA_IDIUS_BOSS_5_FIN
+00:00005A18   BOSS_5_COLOR_EXPLOSION_IDIUS
+00:00005A28   SPRITE_EXPLOSION_IDIUS_OCULTO_BOSS_5
 00:000041EE   PINTA_MAGIAS_BOSS_5
 00:00005FDF   PINTA_MAGIAS_BOSS_5.sin_carry
 00:00006ED5   PINTA_MAGIAS_BOSS_5.MUERE_DEPH_EN_BOSS_COMUN
