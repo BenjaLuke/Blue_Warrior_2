@@ -683,6 +683,7 @@ BUCLE_PELEA_BOSS_2:
 .CONTROL_POST_BUCLE_2:
 
 		call	PINTA_PROYECTIL_BOSS_2
+		call	BUCLE_REVISION_TODOS_LOS_PROYECTILES_OJO_BOSS_2
 		jp	BUCLE_PELEA_BOSS_2
 
 INICIALIZA_POOL_PROYECTILES_BOSS_2:
@@ -1320,7 +1321,7 @@ ON_SPRITE_GLOBAL:
 	xor	a
 	ld	(VARIABLE_UN_USO3),a
 	call	BUCLE_REVISION_4_PIEDRAS_BOSS_2
-	jp	BUCLE_REVISION_TODOS_LOS_PROYECTILES_OJO_BOSS_2
+	ret
 		
 BUCLE_REVISION_4_PIEDRAS_BOSS_2:
 
@@ -1330,6 +1331,14 @@ BUCLE_REVISION_4_PIEDRAS_BOSS_2:
 	ld	e,a
 	ld	d,0
 	add	ix,de
+
+	ld	a,(ix+3)
+	cp	25
+	jr	c,.ROCA_ACTIVA_EN_COLISION
+	cp	27
+	jr	nz,.SIGUIENTE_EN_EL_BUCLE
+
+.ROCA_ACTIVA_EN_COLISION:
 	
 	ld	a,(ix)
 	sub	8
@@ -1399,13 +1408,17 @@ PINTA_MARCADORES_VIDA_FINAL_BOSS_2:
         cp      VIDA_ANCHO_BARRA_BOSS_2
         jr      z,.ANCHO_BARRA_BOSS_2_OK
 
+        ; Conserva los 6 ultimos pixeles hasta que la vida sea 0.
+        cp      93
+        jr      nc,.ULTIMOS_6_PIXELES_BARRA_BOSS_2
+
         ; Redondeamos hacia abajo a múltiplos de 6
         ; 1-5   -> 0
         ; 6-11  -> 6
         ; 12-17 -> 12
         ; 18-23 -> 18
         ; etc.
-        ld      b,0
+        ld      b,a
 
 .REDONDEA_BARRA_A_6_BOSS_2:
 
@@ -1413,17 +1426,20 @@ PINTA_MARCADORES_VIDA_FINAL_BOSS_2:
         jr      c,.FIN_REDONDEA_BARRA_A_6_BOSS_2
 
         sub     6
-        ld      c,a
-        ld      a,b
-        add     a,6
-        ld      b,a
-        ld      a,c
 
         jr      .REDONDEA_BARRA_A_6_BOSS_2	
 
 .FIN_REDONDEA_BARRA_A_6_BOSS_2:
 
+        ld      c,a
         ld      a,b
+        sub     c
+
+        jr      .ANCHO_BARRA_BOSS_2_OK
+
+.ULTIMOS_6_PIXELES_BARRA_BOSS_2:
+
+        ld      a,93
 
 .ANCHO_BARRA_BOSS_2_OK:
 

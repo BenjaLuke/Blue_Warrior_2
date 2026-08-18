@@ -355,7 +355,13 @@ SPRITES_COVID_TAM_PART3_SEMIBOSS_2				equ		2*8*4
 .PINTAMOS_FOTOGRAMA:
 
  	ld	hl,DATAS_COPY_RECUP_SCROLL
-	jp	DOCOPY
+
+        ld      b,20
+        
+.bucle_de_espera:
+        djnz    .bucle_de_espera
+
+        jp	DOCOPY
 
 .RECARGAMOS_GRAFICOS_STAGE_2:
 

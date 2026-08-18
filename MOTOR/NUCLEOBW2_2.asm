@@ -4171,12 +4171,16 @@ PREMIO_EXTRA:
         add     c
         ld      (ix),a
 
+        ld      a,(ix+5)
+        ld      e,a
+        inc     a
+        and     00001111b
+        ld      (ix+5),a
+        ld      d,0
         ld      hl,TABLA_PREMIO_EXTRA_Y
         add     hl,de
-        ld      c,(hl)
-
-        ld      a,(ix+11)
-        add     c
+        ld      a,(hl)
+        add     a,(ix+11)
         ld      (ix+1),a
 
         ld      a,(ix+10)
@@ -4239,7 +4243,8 @@ TABLA_PREMIO_EXTRA_X:
 
 TABLA_PREMIO_EXTRA_Y:
 
-        db      0,0,0,0,2,2,2,2,4,4,4,4,6,6,6,6,8,8,8,8,6,6,6,6,4,4,4,4,2,2,2,2
+        db      0,1,3,4,5,4,3,1
+        db      0,#FF,#FD,#FC,#FB,#FC,#FD,#FF
 
 LLAMA_PAUSE_VAGON_FASE_3:
 

@@ -1078,7 +1078,7 @@ MIRA_SI_OMITIMOS_PINTADO_ECTO_CIRCLE:
 		ld		a,b
 		jp		MIRA_SI_PINTAMOS_ENEMIGO_OPTIMIZADO.no_es_ecto_circle
 
-		ds		12                                                          ; 16 bytes usados por las excepciones de tiles 57/58 de fase 5
+		ds		17                                                          ; 16 bytes usados por las excepciones de tiles 57/58 de fase 5
 
 /**********************
  ****** PAGINA 10******
@@ -2456,7 +2456,7 @@ TABLA_PASOS_FADE_OUT_BOSS:
 
 		include	"BOSSES/SEMIBOSS 2 PART 1.asm"
 
-		ds		6
+		ds		1
 
                                                                         ; El bloque comun debe comenzar exactamente en #5E00
 
